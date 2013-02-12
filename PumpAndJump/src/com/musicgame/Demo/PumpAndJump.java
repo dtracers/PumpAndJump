@@ -1,4 +1,4 @@
-package com.musicgame.PumpAndJump;
+package com.musicgame.Demo;
 
 /*import java.util.Iterator;
 
@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.TimeUtils;*/
 import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.Game;
-import com.musicgame.PumpAndJump.GameScreen;
+import com.musicgame.Demo.GameScreen;
 
 public class PumpAndJump extends Game {
 	Screen gs;

@@ -2,7 +2,7 @@ package com.musicgame.PumpAndJump;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.musicgame.PumpAndJump.PumpAndJump;
+import com.musicgame.Demo.PumpAndJump;
 
 public class Main {
 	public static void main(String[] args) {

@@ -1,5 +1,5 @@
 
-package com.musicgame.PumpAndJump;
+package com.musicgame.Demo;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 

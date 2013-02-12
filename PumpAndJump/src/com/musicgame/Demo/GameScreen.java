@@ -1,4 +1,4 @@
-package com.musicgame.PumpAndJump;
+package com.musicgame.Demo;
 
 
 import java.util.Iterator;
