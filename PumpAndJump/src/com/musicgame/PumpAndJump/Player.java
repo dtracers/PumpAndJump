@@ -1,5 +1,5 @@
 package com.musicgame.PumpAndJump;
 
-public class Player {
+public class Player extends GameObject{
 
 }
