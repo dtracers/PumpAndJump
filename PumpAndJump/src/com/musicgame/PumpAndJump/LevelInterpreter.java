@@ -1,5 +1,11 @@
 package com.musicgame.PumpAndJump;
 
-public class LevelInterpreter {
+import java.util.ArrayList;
 
+public class LevelInterpreter
+{
+	public ArrayList<GameObject> loadLevel()
+	{
+		return null;
+	}
 }
