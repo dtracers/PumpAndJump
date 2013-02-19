@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -25,10 +26,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.audio.io.*;
 
 import com.badlogic.gdx.graphics.*;
+import com.musicgame.PumpAndJump.Player;
 
 public class GameScreen implements Screen, InputProcessor {
 	//private World world;
-	
+
 	Texture dropImage;
 	Texture bucketImage;
 	Sound dropSound;
@@ -42,56 +44,56 @@ public class GameScreen implements Screen, InputProcessor {
 	boolean isfalling=false;
 	int bucket_initialY=20;
 	int bucket_initialX=20;
-	
+
 	Decoder mysounddecoder;
 	short[] mysoundsamples;
 	int soundbuffersize;
 	boolean ismoresoundsamples;
-	
+
 	private Mesh waveFormMesh;
 	private float[] waveFormVertices;
-	
+
 	@Override
 	public void show()
 	{
 			//world = new World();
-		
+
 		      // load the images for the droplet and the bucket, 48x48 pixels each
 		      dropImage = new Texture(Gdx.files.internal("droplet.png"));
 		      bucketImage = new Texture(Gdx.files.internal("bucket.png"));
-		      
+
 		      // load the drop sound effect and the rain background "music"
 		     //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
 		      dropSound = Gdx.audio.newSound(Gdx.files.internal("kendrum.mp3"));
 		      rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-		      
+
 		      // start the playback of the background music immediately
 		      rainMusic.setLooping(true);
 		      rainMusic.play();
-		      
+
 		      mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
-		      
+
 		      // create the camera and the SpriteBatch
 		      camera = new OrthographicCamera();
 		      camera.setToOrtho(false, 800, 480);
 		      //camera.update();
-		      
+
 		      batch = new SpriteBatch();
-		      
+
 		      // create a Rectangle to logically represent the bucket
 		      bucket = new Rectangle();
 		      bucket.x = bucket_initialX; // center the bucket horizontally
 		      bucket.y = bucket_initialY; // bottom left corner of the bucket is 20 pixels above the bottom screen edge
 		      bucket.width = 32;
 		      bucket.height = 32;
-		      
+
 		      // create the raindrops array and spawn the first raindrop
 		      raindrops = new Array<Rectangle>();
-		      
+
 		      makeTrack();
-		      
+
 		      Gdx.input.setInputProcessor(this);
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 	void printWaveFormVertices()
 	{
@@ -100,9 +102,16 @@ public class GameScreen implements Screen, InputProcessor {
 			   Gdx.app.log("\t"+i, "("+waveFormVertices[i]+", "+waveFormVertices[i+1]+", "+waveFormVertices[i+2]+")");
 		   }
 	}
+
+	private void makePlayer()
+	{
+		Player testPlayer = new Player();
+		testPlayer.hull = new Polygon(new float[]{0,0,10,10,20,20,10,20,20,10});
+	}
+
 	   private void makeTrack() {
-		   
-		   mysoundsamples = mysounddecoder.readAllSamples();		   
+
+		   mysoundsamples = mysounddecoder.readAllSamples();
 		   int startx=10;
 		   int numsamples=mysoundsamples.length;
 		   waveFormVertices = new float[numsamples*3*2];
@@ -111,18 +120,18 @@ public class GameScreen implements Screen, InputProcessor {
 			   waveFormVertices[6*i] = i+startx; //x
 			   waveFormVertices[6*i+1] = 200;//y
 			   waveFormVertices[6*i+2] = 0;
-			   
+
 			   waveFormVertices[6*i+3] = i+startx; //x
 			   waveFormVertices[6*i+4] = 200+(mysoundsamples[i]/256f);//y
 			   waveFormVertices[6*i+5] = 0;
 		   }
 		   //printWaveFormVertices();
-		   
+
            waveFormMesh = new Mesh(true, waveFormVertices.length, 0,
-        		   new VertexAttribute( Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE)); 
+        		   new VertexAttribute( Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE));
 
            waveFormMesh.setVertices(waveFormVertices);
-           
+
 		   spawnRaindropAt(100,20);
 		   spawnRaindropAt(200,20);
 		   spawnRaindropAt(300,20);
@@ -134,7 +143,7 @@ public class GameScreen implements Screen, InputProcessor {
 		   spawnRaindropAt(800,20);
 		   spawnRaindropAt(900,20);
 		   spawnRaindropAt(1000,20);
-		   
+
 	   }
 	   public Mesh createFullScreenQuad() {
 
@@ -165,7 +174,7 @@ public class GameScreen implements Screen, InputProcessor {
 		   verts[i++] = 0f; // u4
 		   verts[i++] = 1f; // v4
 
-		   Mesh mesh = new Mesh( true, 4, 0,  
+		   Mesh mesh = new Mesh( true, 4, 0,
 		     new VertexAttribute( Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE ),
 		     new VertexAttribute( Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE+"0" ) );
 
@@ -182,7 +191,7 @@ public class GameScreen implements Screen, InputProcessor {
 	         raindrops.add(raindrop);
 	         lastDropTime = TimeUtils.nanoTime();
 	      }
-	      
+
 	      private void spawnRaindropAt(int x, int y) {
 	   	      Rectangle raindrop = new Rectangle();
 	   	      raindrop.x = x;
@@ -215,7 +224,7 @@ public class GameScreen implements Screen, InputProcessor {
 		// TODO Auto-generated method stub
    	 	if(!this.isjumping && bucket.y <= this.bucket_initialY)
    	 		this.isjumping=true;
-   	 	
+
 		return false;
 	}
 
@@ -254,18 +263,18 @@ public class GameScreen implements Screen, InputProcessor {
 	      // of the color to be used to clear the screen.
 	      Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 	      Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-	      
+
 	      // tell the camera to update its matrices.
 	      if(bucket.x > camera.position.x)
 	    	  camera.position.x = bucket.x;
 	      camera.update();
-	      
+
 	      // tell the SpriteBatch to render in the
 	      // coordinate system specified by the camera.
 	      batch.setProjectionMatrix(camera.combined);
-	      
+
 	      waveFormMesh.render(GL10.GL_LINES);
-	      
+
 	      // begin a new batch and draw the bucket and
 	      // all drops
 	      batch.begin();
@@ -274,10 +283,10 @@ public class GameScreen implements Screen, InputProcessor {
 	         batch.draw(dropImage, raindrop.x, raindrop.y);
 	      }
 	      batch.end();
-	      
-          
-          
-          
+
+
+
+
 	      if(this.isjumping)
 	      {
 	    	  bucket.y += 100 * Gdx.graphics.getDeltaTime();
@@ -293,11 +302,11 @@ public class GameScreen implements Screen, InputProcessor {
 		  	else if(bucket.y < this.bucket_initialY)
 		  		bucket.y = this.bucket_initialY;
 	      }
-	      
-	      
+
+
 	      bucket.x += 200 * Gdx.graphics.getDeltaTime();
-	      
-	      
+
+
 	      //make sure the bucket stays within the screen bounds
 	      //if(bucket.x < 0) bucket.x = 0;
 	      //if(bucket.x > 800 - 32) bucket.x = 800 - 32;
@@ -308,7 +317,7 @@ public class GameScreen implements Screen, InputProcessor {
 	      }*/
 	      // check if we need to create a new raindrop
 	      //if(TimeUtils.nanoTime() - lastDropTime > 1000000000) spawnRaindrop();
-	      
+
 	      // move the raindrops, remove any that are beneath the bottom edge of
 	      // the screen or that hit the bucket. In the later case we play back
 	      // a sound effect as well.
@@ -323,31 +332,31 @@ public class GameScreen implements Screen, InputProcessor {
 	         }
 	      }
 
-		
+
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

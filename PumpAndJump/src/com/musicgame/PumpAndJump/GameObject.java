@@ -5,29 +5,29 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Intersector;
 
 public abstract class GameObject
-{	
-	Polygon hull;// store points as Furlongs
-	
+{
+	public Polygon hull;// store points as Furlongs
+
 	public Polygon getHull()
 	{
 		return hull;
 	}
-	
+
 	public boolean intersects( Polygon poly )
 	{
 		return Intersector.overlapConvexPolygons( hull, poly );
 	}
-	
+
 	public boolean intersects( GameObject gmObj )
 	{
 		return Intersector.overlapConvexPolygons( hull, gmObj.getHull() );
 	}
-	
+
 	public void draw()
 	{
-		
+
 	}
-	
+
 	public void draw( ShapeRenderer sr )
 	{
 		 sr.begin( ShapeRenderer.ShapeType.Line );
@@ -41,12 +41,12 @@ public abstract class GameObject
 			 {
 				 float newX = v[i*2];
 				 float newY = v[i*2+1];
-				 
+
 				 if( !firstRound )
 				 {
 					 sr.line( lastX, lastY, newX, newY );
 				 }
-				 
+
 				 lastX = newX;
 				 lastY = newY;
 			 }
@@ -54,9 +54,9 @@ public abstract class GameObject
 		 }
 		 sr.end();
 	}
-	
+
 	public void update( double sec )
 	{
-		
+
 	}
 }
