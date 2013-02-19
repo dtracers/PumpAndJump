@@ -5,20 +5,30 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Intersector;
 
 public abstract class GameObject
-{
-	Polygon hull;
+{	
+	Polygon hull;// store points as Furlongs
 	
-	Polygon getHull()
+	public Polygon getHull()
 	{
 		return hull;
 	}
 	
-	boolean intersects( Polygon poly )
+	public boolean intersects( Polygon poly )
 	{
 		return Intersector.overlapConvexPolygons( hull, poly );
 	}
 	
-	void draw( ShapeRenderer sr )
+	public boolean intersects( GameObject gmObj )
+	{
+		return Intersector.overlapConvexPolygons( hull, gmObj.getHull() );
+	}
+	
+	public void draw()
+	{
+		
+	}
+	
+	public void draw( ShapeRenderer sr )
 	{
 		 sr.begin( ShapeRenderer.ShapeType.Line );
 		 float v[] = hull.getVertices();
@@ -43,5 +53,10 @@ public abstract class GameObject
 			 sr.line( lastX, lastY, v[0], v[1] );
 		 }
 		 sr.end();
+	}
+	
+	public void update( double sec )
+	{
+		
 	}
 }
