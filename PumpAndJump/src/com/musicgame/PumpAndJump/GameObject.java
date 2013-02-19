@@ -6,7 +6,17 @@ import com.badlogic.gdx.math.Intersector;
 
 public abstract class GameObject
 {
-	public Polygon hull;// store points as Furlongs
+	Polygon hull;// store points as Furlongs
+
+	public GameObject()
+	{
+
+	}
+
+	public GameObject(Polygon hull)
+	{
+		this.hull = hull;
+	}
 
 	public Polygon getHull()
 	{

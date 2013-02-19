@@ -1,5 +1,10 @@
 package com.musicgame.PumpAndJump;
 
-public class Player extends GameObject{
+import com.badlogic.gdx.math.Polygon;
 
+public class Player extends GameObject{
+	public Player(Polygon hull)
+	{
+		super(hull);
+	}
 }

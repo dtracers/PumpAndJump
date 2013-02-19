@@ -105,8 +105,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 	private void makePlayer()
 	{
-		Player testPlayer = new Player();
-		testPlayer.hull = new Polygon(new float[]{0,0,10,10,20,20,10,20,20,10});
+		Player testPlayer = new Player(new Polygon(new float[]{0,0,10,10,20,20,10,20,20,10}));
 	}
 
 	   private void makeTrack() {
