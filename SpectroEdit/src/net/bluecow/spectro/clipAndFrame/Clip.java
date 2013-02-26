@@ -15,6 +15,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoableEditSupport;
 
+import ddf.minim.effects.BandPass;
+import ddf.minim.effects.IIRFilter;
+
 import net.bluecow.spectro.AudioFileUtils;
 import net.bluecow.spectro.ClipDataChangeEvent;
 import net.bluecow.spectro.ClipDataChangeListener;
@@ -44,6 +47,7 @@ public class Clip
 
 	private WindowFunction preWindowFunction = new VorbisWindowFunction(this.frameSize);;
 	private WindowFunction postWindowFunction = new NullWindowFunction();
+	private IIRFilter filter = new BandPass(100.0F,20.0F,44100.0F);
 
 	/*
 	public Clip(File file)
@@ -96,7 +100,7 @@ public class Clip
 	{
 		BufferedInputStream in = createInputStream(file);
 
-		double[] wholeArray = readEntireArray(in);
+		float[] wholeArray = readEntireArray(in);
 		prefilter(wholeArray);
 		int index = 0;
 		ArrayList<double[]> backToBuffers = new ArrayList<double[]>();
@@ -105,7 +109,7 @@ public class Clip
 			double[] samples = new double[this.frameSize];
 			for(int i = 0; i<samples.length; i++)
 			{
-				samples[i] = wholeArray[index];
+				samples[i] =(double) wholeArray[index];
 				index++;
 			}
 			backToBuffers.add(samples);
@@ -138,7 +142,7 @@ public class Clip
 	 * @return
 	 * @throws IOException
 	 */
-	private double[] readEntireArray(BufferedInputStream in) throws IOException
+	private float[] readEntireArray(BufferedInputStream in) throws IOException
 	{
 		ArrayList<double[]> buffers = new ArrayList<double[]>();
 		byte[] buf = new byte[this.frameSize * 2];
@@ -176,7 +180,7 @@ public class Clip
 			}
 			in.mark(buf.length * 2);
 		}
-		double[] totalBuffer = new double[buffers.size()*this.frameSize];
+		float[] totalBuffer = new float[buffers.size()*this.frameSize];
 		int index = 0 ;
 
 		//copy the entire thing over
@@ -184,7 +188,7 @@ public class Clip
 		{
 			for(int k=0;k<tempBuffer.length;k++)
 			{
-				totalBuffer[index] = tempBuffer[k];
+				totalBuffer[index] = (float)tempBuffer[k];
 				index++;
 			}
 		}
@@ -199,9 +203,9 @@ public class Clip
 	 * @param in
 	 * @return
 	 */
-	private void prefilter(double[] input)
+	private void prefilter(float[] input)
 	{
-
+		filter.process(input);
 	}
 	private int readFully(InputStream in, byte[] buf)
 	    throws IOException
