@@ -1,4 +1,4 @@
-/*     */ package net.bluecow.spectro;
+/*     */ package net.bluecow.spectro.painting;
 /*     */
 /*     */ import java.awt.Color;
 import java.awt.Component;
@@ -27,6 +27,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 import javax.swing.undo.UndoableEditSupport;
 
+import net.bluecow.spectro.PlayerThread;
 import net.bluecow.spectro.clipAndFrame.Clip;
 import net.bluecow.spectro.clipAndFrame.Frame;
 /*     */
@@ -90,7 +91,7 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /* 115 */     return cp;
 /*     */   }
 /*     */
-/*     */   ClipPanel(Clip clip) {
+/*     */   public ClipPanel(Clip clip) {
 /* 119 */     this.clip = clip;
 				System.out.println("frame count "+clip.getFrameCount());
 /* 120 */     setPreferredSize(new Dimension(clip.getFrameCount(), clip.getFrameFreqSamples()));

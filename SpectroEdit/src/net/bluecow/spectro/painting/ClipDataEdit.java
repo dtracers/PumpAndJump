@@ -1,4 +1,4 @@
-/*     */ package net.bluecow.spectro;
+/*     */ package net.bluecow.spectro.painting;
 /*     */ 
 /*     */ import java.awt.Rectangle;
 /*     */ import java.util.Arrays;

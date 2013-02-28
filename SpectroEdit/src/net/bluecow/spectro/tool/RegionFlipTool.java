@@ -6,10 +6,10 @@
 /*     */ import javax.swing.Box;
 /*     */ import javax.swing.JButton;
 /*     */ import javax.swing.JComponent;
-/*     */ import net.bluecow.spectro.ClipPanel;
 /*     */ import net.bluecow.spectro.SpectroEditSession;
 import net.bluecow.spectro.clipAndFrame.Clip;
 import net.bluecow.spectro.clipAndFrame.Frame;
+import net.bluecow.spectro.painting.ClipPanel;
 /*     */ 
 /*     */ public class RegionFlipTool
 /*     */   implements Tool

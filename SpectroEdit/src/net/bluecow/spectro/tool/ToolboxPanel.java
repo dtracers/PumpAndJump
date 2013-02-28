@@ -13,11 +13,11 @@
 /*     */ import javax.swing.ButtonGroup;
 /*     */ import javax.swing.JPanel;
 /*     */ import javax.swing.JRadioButton;
-/*     */ import net.bluecow.spectro.ClipPanel;
-/*     */ import net.bluecow.spectro.MemoryMonitor;
-/*     */ import net.bluecow.spectro.PositionReadout;
 /*     */ import net.bluecow.spectro.SpectroEditSession;
-/*     */ import net.bluecow.spectro.ValueColorizer;
+import net.bluecow.spectro.math.MemoryMonitor;
+import net.bluecow.spectro.painting.ClipPanel;
+import net.bluecow.spectro.painting.PositionReadout;
+import net.bluecow.spectro.painting.ValueColorizer;
 /*     */ 
 /*     */ public class ToolboxPanel
 /*     */ {

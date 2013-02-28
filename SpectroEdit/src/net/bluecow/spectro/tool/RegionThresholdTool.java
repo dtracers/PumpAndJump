@@ -11,11 +11,11 @@
 /*     */ import javax.swing.JLabel;
 /*     */ import javax.swing.event.ChangeEvent;
 /*     */ import javax.swing.event.ChangeListener;
-/*     */ import net.bluecow.spectro.ClipDataEdit;
-/*     */ import net.bluecow.spectro.ClipPanel;
 /*     */ import net.bluecow.spectro.SpectroEditSession;
 import net.bluecow.spectro.clipAndFrame.Clip;
 import net.bluecow.spectro.clipAndFrame.Frame;
+import net.bluecow.spectro.painting.ClipDataEdit;
+import net.bluecow.spectro.painting.ClipPanel;
 /*     */ 
 /*     */ public class RegionThresholdTool
 /*     */   implements Tool

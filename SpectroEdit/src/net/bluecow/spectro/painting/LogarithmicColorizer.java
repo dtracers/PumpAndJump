@@ -1,4 +1,4 @@
-/*     */ package net.bluecow.spectro;
+/*     */ package net.bluecow.spectro.painting;
 /*     */ 
 /*     */ import java.awt.event.ActionEvent;
 /*     */ import java.awt.event.ActionListener;

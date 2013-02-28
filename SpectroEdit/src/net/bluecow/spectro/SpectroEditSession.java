@@ -27,6 +27,8 @@ import javax.swing.JDialog;
 /*     */ import net.bluecow.spectro.action.SaveAction;
 /*     */ import net.bluecow.spectro.action.UndoRedoAction;
 import net.bluecow.spectro.clipAndFrame.Clip;
+import net.bluecow.spectro.painting.ClipPanel;
+import net.bluecow.spectro.painting.UndoManager;
 /*     */ import net.bluecow.spectro.tool.ToolboxPanel;
 /*     */
 /*     */ public class SpectroEditSession

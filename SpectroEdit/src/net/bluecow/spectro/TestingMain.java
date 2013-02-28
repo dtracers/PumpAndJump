@@ -11,6 +11,8 @@ import javax.swing.JDialog;
 /*    */ import javax.swing.SwingUtilities;
 
 import net.bluecow.spectro.clipAndFrame.Clip;
+import net.bluecow.spectro.painting.ClipPanel;
+import net.bluecow.spectro.painting.ToolboxPanel;
 /*    */
 /*    */ public class TestingMain
 /*    */ {

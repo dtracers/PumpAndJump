@@ -18,11 +18,11 @@ import javax.swing.undo.UndoableEditSupport;
 import ddf.minim.effects.BandPass;
 import ddf.minim.effects.IIRFilter;
 
-import net.bluecow.spectro.AudioFileUtils;
-import net.bluecow.spectro.ClipDataChangeEvent;
-import net.bluecow.spectro.ClipDataChangeListener;
-import net.bluecow.spectro.ClipDataEdit;
-import net.bluecow.spectro.OverlapBuffer;
+import net.bluecow.spectro.math.AudioFileUtils;
+import net.bluecow.spectro.math.OverlapBuffer;
+import net.bluecow.spectro.painting.ClipDataChangeEvent;
+import net.bluecow.spectro.painting.ClipDataChangeListener;
+import net.bluecow.spectro.painting.ClipDataEdit;
 import net.bluecow.spectro.windowFunctions.NullWindowFunction;
 import net.bluecow.spectro.windowFunctions.VorbisWindowFunction;
 import net.bluecow.spectro.windowFunctions.WindowFunction;

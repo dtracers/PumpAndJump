@@ -4,7 +4,8 @@
 /*    */ import javax.swing.AbstractAction;
 /*    */ import javax.swing.event.ChangeEvent;
 /*    */ import javax.swing.event.ChangeListener;
-/*    */ import net.bluecow.spectro.UndoManager;
+
+import net.bluecow.spectro.painting.UndoManager;
 /*    */ 
 /*    */ public class UndoRedoAction extends AbstractAction
 /*    */ {

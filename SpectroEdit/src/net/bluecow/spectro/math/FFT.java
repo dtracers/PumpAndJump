@@ -1,4 +1,4 @@
-/*     */ package net.bluecow.spectro;
+/*     */ package net.bluecow.spectro.math;
 /*     */
 /*     */ import java.io.PrintStream;
 /*     */ import java.text.DecimalFormat;

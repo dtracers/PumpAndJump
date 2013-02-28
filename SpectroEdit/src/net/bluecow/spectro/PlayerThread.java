@@ -13,6 +13,8 @@
 /*     */ import javax.swing.event.ChangeListener;
 
 import net.bluecow.spectro.clipAndFrame.Clip;
+import net.bluecow.spectro.painting.PlaybackPositionEvent;
+import net.bluecow.spectro.painting.PlaybackPositionListener;
 /*     */ 
 /*     */ public class PlayerThread extends Thread
 /*     */ {

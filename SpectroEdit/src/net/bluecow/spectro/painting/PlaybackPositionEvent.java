@@ -1,4 +1,7 @@
-/*    */ package net.bluecow.spectro;
+/*    */ package net.bluecow.spectro.painting;
+
+import net.bluecow.spectro.PlayerThread;
+
 /*    */ 
 /*    */ public class PlaybackPositionEvent
 /*    */ {

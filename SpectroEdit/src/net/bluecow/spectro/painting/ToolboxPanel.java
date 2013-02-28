@@ -1,4 +1,4 @@
-/*     */ package net.bluecow.spectro;
+/*     */ package net.bluecow.spectro.painting;
 /*     */
 /*     */ import java.awt.Component;
 /*     */ import java.awt.Dialog;
@@ -23,6 +23,8 @@ import javax.sound.sampled.AudioFileFormat;
 /*     */ import javax.swing.SwingUtilities;
 /*     */ import javax.swing.event.ChangeEvent;
 /*     */ import javax.swing.event.ChangeListener;
+
+import net.bluecow.spectro.PlayerThread;
 /*     */
 /*     */ public class ToolboxPanel
 /*     */ {
