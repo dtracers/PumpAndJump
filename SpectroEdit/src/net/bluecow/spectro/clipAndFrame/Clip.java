@@ -22,6 +22,8 @@ import javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream;
 import ddf.minim.effects.BandPass;
 import ddf.minim.effects.IIRFilter;
 
+import net.bluecow.spectro.inputReader.InputDecoder;
+import net.bluecow.spectro.inputReader.MP3Decoder;
 import net.bluecow.spectro.math.AudioFileUtils;
 import net.bluecow.spectro.math.OverlapBuffer;
 import net.bluecow.spectro.painting.ClipDataChangeEvent;
@@ -52,6 +54,8 @@ public class Clip
 	private WindowFunction preWindowFunction = new VorbisWindowFunction(this.frameSize);;
 	private WindowFunction postWindowFunction = new NullWindowFunction();
 	private IIRFilter filter = new BandPass(600.0F, 200.0f, 44100.0F);
+
+	private InputDecoder input;
 
 	/*
 	public Clip(File file)
@@ -102,11 +106,12 @@ public class Clip
 	public Clip(File file)
 		    throws UnsupportedAudioFileException, IOException
 	{
-	    AudioInputStream din = AudioFileUtils.readMP3AsMono( file );
-		//BufferedInputStream din= createInputStream( file );
+		input = new MP3Decoder(spectralScale,file);
+	}
 
-		float[] wholeArray = readEntireArray(din);
-		din.close();
+	public void readAndFilter() throws IOException
+	{
+		float[] wholeArray = input.readEntireArray();
 		prefilter(wholeArray);
 		int index = 0;
 		ArrayList<double[]> backToBuffers = new ArrayList<double[]>();
@@ -124,142 +129,10 @@ public class Clip
 		{
 			this.frames.add(new Frame(backToBuffers.remove(0), preWindowFunction,postWindowFunction));
 		}
-		logger.info(String.format("Read %d frames from %s (%d bytes). frameSize=%d overlap=%d\n", new Object[] { Integer.valueOf(this.frames.size()), file.getAbsolutePath(), Integer.valueOf(this.frames.size() * this.frameSize*2), Integer.valueOf(this.frameSize), Integer.valueOf(this.overlap) }));
+//		logger.info(String.format("Read %d frames from %s (%d bytes). frameSize=%d overlap=%d\n", new Object[] { Integer.valueOf(this.frames.size()), file.getAbsolutePath(), Integer.valueOf(this.frames.size() * this.frameSize*2), Integer.valueOf(this.frameSize), Integer.valueOf(this.overlap) }));
+
 	}
 
-	/**
-	 * Creates an input stream from the file and the desired audio format
-	 * @param file
-	 * @return
-	 * @throws UnsupportedAudioFileException
-	 * @throws IOException
-	 */
-	private BufferedInputStream createInputStream(File file) throws UnsupportedAudioFileException, IOException
-	{
-		AudioFormat desiredFormat = AUDIO_FORMAT;
-		BufferedInputStream in = new BufferedInputStream(AudioFileUtils.readAsMono(desiredFormat, file));
-
-		return in;
-	}
-
-	/**
-	 * Puts the entire song into a single buffer (memory expensive yes but then the filter should work better)
-	 * @param in
-	 * @return
-	 * @throws IOException
-	 */
-	private float[] readEntireArray(InputStream in) throws IOException
-	{
-		ArrayList<double[]> buffers = new ArrayList<double[]>();
-		/*byte[] buf = new byte[ this.frameSize*2 ];
-		int nBytesRead = 0;
-		while (nBytesRead != -1)
-		{
-			nBytesRead = in.read(buf, 0, buf.length);
-			
-			double[] samples = new double[this.frameSize];
-		        
-	        for (int i = 0; i < this.frameSize; i++)
-			{
-				int hi = buf[(2 * i)];
-				int low = buf[(2 * i + 1)] & 0xFF;
-				int sampVal = hi << 8 | low;
-				samples[i] = (sampVal / this.spectralScale);
-			}
-			
-			buffers.add( samples );
-		}*/
-		
-		byte[] buf = new byte[this.frameSize];
-		byte[] oldbuf = new byte[this.frameSize];
-		
-		int nBytesRead = 0;
-		
-	    while (nBytesRead != -1)
-	    {
-	        nBytesRead = in.read(buf, 0, buf.length);
-	        
-	        double[] samples = new double[this.frameSize];
-	        
-	        for (int i = 0; i < this.frameSize/2; i++)
-			{
-				int hi = oldbuf[(2 * i)];
-				int low = oldbuf[(2 * i + 1)] & 0xFF;
-				int sampVal = hi << 8 | low;
-				samples[i] = (sampVal / this.spectralScale);
-			}
-	        
-	        for (int i = 0; i < this.frameSize/2; i++)
-			{
-				int hi = buf[(2 * i)];
-				int low = buf[(2 * i + 1)] & 0xFF;
-				int sampVal = hi << 8 | low;
-				samples[ this.frameSize/2 + i] = (sampVal / this.spectralScale);
-			}
-	        
-	        
-	        for( int i = 0; i < buf.length; i++ )
-	        {
-	        	oldbuf[i] = buf[i];
-	        }
-	        
-	        buffers.add( samples );
-	        
-	    }
-		
-
-		/*//in.mark(buf.length * 2);
-		
-		int n;
-		while ((n = readFully(in, buf)) != -1)
-		{
-			logger.finest("Read " + n + " bytes");
-			if (n != buf.length)
-			{
-				logger.warning("Only read " + n + " of " + buf.length + " bytes at frame " + this.frames.size());
-
-				for (int i = n; i < buf.length; i++)
-				{
-					buf[i] = 0;
-				}
-			}
-			double[] samples = new double[this.frameSize];
-			for (int i = 0; i < this.frameSize; i++)
-			{
-				int hi = buf[(2 * i)];
-				int low = buf[(2 * i + 1)] & 0xFF;
-				int sampVal = hi << 8 | low;
-				samples[i] = (sampVal / this.spectralScale);
-			}
-			buffers.add(samples);
-			//this.frames.add(new Frame(samples, windowFunc));
-			//in.reset();
-			long bytesToSkip = this.frameSize * 2 / this.overlap;
-			long bytesSkipped;
-			if ((bytesSkipped = in.skip(bytesToSkip)) != bytesToSkip)
-			{
-				logger.info("Skipped " + bytesSkipped + " bytes, but wanted " + bytesToSkip + " at frame " + this.frames.size());
-			}
-			//in.mark(buf.length * 2);
-		}*/
-	    
-		float[] totalBuffer = new float[buffers.size()*this.frameSize];
-		int index = 0 ;
-
-		//copy the entire thing over
-		for(double[] tempBuffer:buffers)
-		{
-			for(int k=0;k<tempBuffer.length;k++)
-			{
-				totalBuffer[index] = (float)tempBuffer[k];
-				index++;
-			}
-		}
-		buffers.clear();
-		buffers = null;
-		System.gc();
-		return totalBuffer;
-	}
 
 	/**
 	 * runs the entire array through a filter to filter out certain sounds
@@ -269,24 +142,6 @@ public class Clip
 	private void prefilter(float[] input)
 	{
 		filter.process(input);
-	}
-	private int readFully(InputStream in, byte[] buf)
-	    throws IOException
-	{
-		int offset = 0;
-		int length = buf.length;
-		int bytesRead = 0;
-		while ((offset < buf.length) && ((bytesRead = in.read(buf, offset, length)) != -1))
-		{
-			length -= bytesRead;
-			offset += bytesRead;
-		}
-		if (offset > 0) {
-			logger.fine("Returning " + offset + " bytes read into buf");
-			return offset;
-		}
-		logger.fine("Returning EOF");
-		return -1;
 	}
 
 	  public int getFrameTimeSamples()
