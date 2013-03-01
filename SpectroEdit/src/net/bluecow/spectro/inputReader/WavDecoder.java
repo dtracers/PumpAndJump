@@ -116,4 +116,42 @@ public class WavDecoder extends InputDecoder{
 			return -1;
 		}
 
+
+	@Override
+	public float[] readSeparately() throws IOException {
+		byte[] buf = new byte[this.frameSize * 2];
+
+		din.mark(buf.length * 2);
+		int n;
+		float[] samples = null;
+		if((n = readFully(din, buf)) != -1)
+		{
+			if (n != buf.length)
+			{
+				for (int i = n; i < buf.length; i++)
+				{
+					buf[i] = 0;
+				}
+			}
+			samples = new float[this.frameSize];
+			for (int i = 0; i < this.frameSize; i++)
+			{
+				int hi = buf[(2 * i)];
+				int low = buf[(2 * i + 1)] & 0xFF;
+				int sampVal = hi << 8 | low;
+				samples[i] = (float)(sampVal / this.spectralScale);
+			}
+			//this.frames.add(new Frame(samples, windowFunc));
+			din.reset();
+			long bytesToSkip = this.frameSize * 2 / this.overlap;
+			long bytesSkipped;
+			if ((bytesSkipped = din.skip(bytesToSkip)) != bytesToSkip)
+			{
+			}
+			din.mark(buf.length * 2);
+		}
+
+		return samples;
+	}
+
 }

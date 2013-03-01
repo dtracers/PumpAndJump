@@ -8,9 +8,9 @@ import java.io.InputStream;
 public abstract class InputDecoder
 {
 	protected int overlap = 2;
-	InputStream din;
+	protected InputStream din;
 	protected double spectralScale;
-	protected int frameSize = 4096;
+	public static final int frameSize = 42314;
 	protected float sampleRate;
 	public InputDecoder(double spectralScale,File file)
 	{
@@ -43,6 +43,13 @@ public abstract class InputDecoder
 	}
 
 	/**
+	 * It reads then separately and returns them in the order it is read
+	 * @return
+	 * @throws IOException
+	 */
+	public abstract float[] readSeparately() throws IOException;
+
+	/**
 	 * Reads th entire array from the given input stream
 	 * @param in
 	 * @return
@@ -53,5 +60,14 @@ public abstract class InputDecoder
 	public float getSampleRate()
 	{
 		return sampleRate;
+	}
+
+	public final void close()
+	{
+		try {
+			din.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
