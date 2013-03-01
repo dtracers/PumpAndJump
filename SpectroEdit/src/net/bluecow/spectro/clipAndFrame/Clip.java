@@ -57,52 +57,6 @@ public class Clip
 
 	private InputDecoder input;
 
-	/*
-	public Clip(File file)
-		    throws UnsupportedAudioFileException, IOException
-	{
-		WindowFunction windowFunc = new VorbisWindowFunction(this.frameSize);
-		AudioFormat desiredFormat = AUDIO_FORMAT;
-		BufferedInputStream in = new BufferedInputStream(AudioFileUtils.readAsMono(desiredFormat, file));
-		byte[] buf = new byte[this.frameSize * 2];
-
-		in.mark(buf.length * 2);
-		int n;
-		while ((n = readFully(in, buf)) != -1)
-		{
-			logger.finest("Read " + n + " bytes");
-			if (n != buf.length)
-			{
-				logger.warning("Only read " + n + " of " + buf.length + " bytes at frame " + this.frames.size());
-
-				for (int i = n; i < buf.length; i++)
-				{
-					buf[i] = 0;
-				}
-			}
-			double[] samples = new double[this.frameSize];
-			for (int i = 0; i < this.frameSize; i++)
-			{
-				int hi = buf[(2 * i)];
-				int low = buf[(2 * i + 1)] & 0xFF;
-				int sampVal = hi << 8 | low;
-				samples[i] = (sampVal / this.spectralScale);
-			}
-			this.frames.add(new Frame(samples, windowFunc));
-			in.reset();
-			long bytesToSkip = this.frameSize * 2 / this.overlap;
-			long bytesSkipped;
-			if ((bytesSkipped = in.skip(bytesToSkip)) != bytesToSkip)
-			{
-				logger.info("Skipped " + bytesSkipped + " bytes, but wanted " + bytesToSkip + " at frame " + this.frames.size());
-			}
-			in.mark(buf.length * 2);
-		}
-
-
-		logger.info(String.format("Read %d frames from %s (%d bytes). frameSize=%d overlap=%d\n", new Object[] { Integer.valueOf(this.frames.size()), file.getAbsolutePath(), Integer.valueOf(this.frames.size() * buf.length), Integer.valueOf(this.frameSize), Integer.valueOf(this.overlap) }));
-	}
-	*/
 	public Clip(File file)
 		    throws UnsupportedAudioFileException, IOException
 	{
