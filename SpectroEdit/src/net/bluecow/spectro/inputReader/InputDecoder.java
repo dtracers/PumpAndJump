@@ -10,7 +10,7 @@ public abstract class InputDecoder
 	protected int overlap = 2;
 	protected InputStream din;
 	protected double spectralScale;
-	public static final int frameSize = 42314;
+	public static int frameSize = 42314;
 	protected float sampleRate;
 	public InputDecoder(double spectralScale,File file)
 	{
@@ -50,7 +50,7 @@ public abstract class InputDecoder
 	public abstract float[] readSeparately() throws IOException;
 
 	/**
-	 * Reads th entire array from the given input stream
+	 * Reads the entire array from the given input stream
 	 * @param in
 	 * @return
 	 * @throws IOException

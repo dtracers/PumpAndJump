@@ -53,14 +53,24 @@ public class Clip
 
 	private WindowFunction preWindowFunction = new VorbisWindowFunction(this.frameSize);;
 	private WindowFunction postWindowFunction = new NullWindowFunction();
-	private IIRFilter filter = new BandPass(600.0F, 200.0f, 44100.0F);
-
+	private IIRFilter f12800t20000;// = new BandPass(16400.0F, 3600.0f, 44100.0f );
+	private IIRFilter f6400t12800;// = new BandPass(9600.0F, 3200.0f, 44100.0f );
+	private IIRFilter f3200t6400;// = new BandPass(4800.0F, 1600.0f, 44100.0f );
+	private IIRFilter f1600t3200;// = new BandPass(2400.0F, 800.0f, 44100.0f );
+	private IIRFilter f800t1600;// = new BandPass(1200.0F, 400.0f, 44100.0f );
+	private IIRFilter f400t800;// = new BandPass(600.0F, 200.0f, 44100.0f );
+	private IIRFilter f200t400;// = new BandPass(300.0f, 100.0f, 44100.0f );
+	private IIRFilter f100t200;// = new BandPass(150.0f, 50.0f, 44100.0f );
+	private IIRFilter f50t100;// = new BandPass(75.0f, 25.0f, 44100.0f );
+	private IIRFilter f25t50;// = new BandPass(37.5f, 12.5f, 44100.0f );
+	private IIRFilter f12t25;// = new BandPass(18.75f, 6.25f, 44100.0f );
 	private InputDecoder input;
 
 	public Clip(File file)
 		    throws UnsupportedAudioFileException, IOException
 	{
 		input = new MP3Decoder(spectralScale,file);
+		
 	}
 
 	public void readAndFilter() throws IOException
@@ -93,9 +103,9 @@ public class Clip
 	 * @param in
 	 * @return
 	 */
-	private void prefilter(float[] input)
+	private void prefilter( float[] input )
 	{
-		filter.process(input);
+		//filter.process(input);
 	}
 
 	  public int getFrameTimeSamples()
