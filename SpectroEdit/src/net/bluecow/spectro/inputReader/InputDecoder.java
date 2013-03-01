@@ -10,11 +10,21 @@ public abstract class InputDecoder
 	protected int overlap = 2;
 	protected InputStream din;
 	protected double spectralScale;
-	public static int frameSize = 42314;
+	public int frameSize = 42314;
 	protected float sampleRate;
 	public InputDecoder(double spectralScale,File file)
 	{
 		this.spectralScale = spectralScale;
+	}
+	
+	public void setFrameSize( float sampleRate )
+	{
+		int t = (int)(sampleRate/1.042208253D);
+		
+		if( t % 2 == 0 )
+			frameSize = t;
+		else
+			frameSize = t+1;
 	}
 
 	/**

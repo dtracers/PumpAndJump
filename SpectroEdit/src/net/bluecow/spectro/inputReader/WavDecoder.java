@@ -29,6 +29,7 @@ public class WavDecoder extends InputDecoder{
 	{
 		AudioFormat desiredFormat = AUDIO_FORMAT;
 		this.sampleRate = desiredFormat.getSampleRate();
+		setFrameSize(sampleRate);
 		BufferedInputStream in = null;
 		try {
 			in = new BufferedInputStream(AudioFileUtils.readAsMono(desiredFormat, file));
