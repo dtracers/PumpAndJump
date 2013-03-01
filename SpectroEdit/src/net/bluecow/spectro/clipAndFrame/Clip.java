@@ -11,9 +11,13 @@ import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoableEditSupport;
+
+import javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream;
 
 import ddf.minim.effects.BandPass;
 import ddf.minim.effects.IIRFilter;
@@ -35,7 +39,7 @@ public class Clip
 
 	private final List<Frame> frames = new ArrayList();
 
-	private int frameSize = 1024;
+	private int frameSize = 2644;
 
 	private int overlap = 2;
 
@@ -47,7 +51,7 @@ public class Clip
 
 	private WindowFunction preWindowFunction = new VorbisWindowFunction(this.frameSize);;
 	private WindowFunction postWindowFunction = new NullWindowFunction();
-	private IIRFilter filter = new BandPass(100.0F,20.0F,44100.0F);
+	private IIRFilter filter = new BandPass(600.0F, 200.0f, 44100.0F);
 
 	/*
 	public Clip(File file)
@@ -98,16 +102,18 @@ public class Clip
 	public Clip(File file)
 		    throws UnsupportedAudioFileException, IOException
 	{
-		BufferedInputStream in = createInputStream(file);
+	    AudioInputStream din = AudioFileUtils.readMP3AsMono( file );
+		//BufferedInputStream din= createInputStream( file );
 
-		float[] wholeArray = readEntireArray(in);
+		float[] wholeArray = readEntireArray(din);
+		din.close();
 		prefilter(wholeArray);
 		int index = 0;
 		ArrayList<double[]> backToBuffers = new ArrayList<double[]>();
 		for(int k = 0; k<wholeArray.length/this.frameSize;k++)
 		{
 			double[] samples = new double[this.frameSize];
-			for(int i = 0; i<samples.length; i++)
+			for(int i = 0; i<this.frameSize; i++)
 			{
 				samples[i] =(double) wholeArray[index];
 				index++;
@@ -142,12 +148,68 @@ public class Clip
 	 * @return
 	 * @throws IOException
 	 */
-	private float[] readEntireArray(BufferedInputStream in) throws IOException
+	private float[] readEntireArray(InputStream in) throws IOException
 	{
 		ArrayList<double[]> buffers = new ArrayList<double[]>();
-		byte[] buf = new byte[this.frameSize * 2];
+		/*byte[] buf = new byte[ this.frameSize*2 ];
+		int nBytesRead = 0;
+		while (nBytesRead != -1)
+		{
+			nBytesRead = in.read(buf, 0, buf.length);
+			
+			double[] samples = new double[this.frameSize];
+		        
+	        for (int i = 0; i < this.frameSize; i++)
+			{
+				int hi = buf[(2 * i)];
+				int low = buf[(2 * i + 1)] & 0xFF;
+				int sampVal = hi << 8 | low;
+				samples[i] = (sampVal / this.spectralScale);
+			}
+			
+			buffers.add( samples );
+		}*/
+		
+		byte[] buf = new byte[this.frameSize];
+		byte[] oldbuf = new byte[this.frameSize];
+		
+		int nBytesRead = 0;
+		
+	    while (nBytesRead != -1)
+	    {
+	        nBytesRead = in.read(buf, 0, buf.length);
+	        
+	        double[] samples = new double[this.frameSize];
+	        
+	        for (int i = 0; i < this.frameSize/2; i++)
+			{
+				int hi = oldbuf[(2 * i)];
+				int low = oldbuf[(2 * i + 1)] & 0xFF;
+				int sampVal = hi << 8 | low;
+				samples[i] = (sampVal / this.spectralScale);
+			}
+	        
+	        for (int i = 0; i < this.frameSize/2; i++)
+			{
+				int hi = buf[(2 * i)];
+				int low = buf[(2 * i + 1)] & 0xFF;
+				int sampVal = hi << 8 | low;
+				samples[ this.frameSize/2 + i] = (sampVal / this.spectralScale);
+			}
+	        
+	        
+	        for( int i = 0; i < buf.length; i++ )
+	        {
+	        	oldbuf[i] = buf[i];
+	        }
+	        
+	        buffers.add( samples );
+	        
+	    }
+		
 
-		in.mark(buf.length * 2);
+		/*//in.mark(buf.length * 2);
+		
 		int n;
 		while ((n = readFully(in, buf)) != -1)
 		{
@@ -171,15 +233,16 @@ public class Clip
 			}
 			buffers.add(samples);
 			//this.frames.add(new Frame(samples, windowFunc));
-			in.reset();
+			//in.reset();
 			long bytesToSkip = this.frameSize * 2 / this.overlap;
 			long bytesSkipped;
 			if ((bytesSkipped = in.skip(bytesToSkip)) != bytesToSkip)
 			{
 				logger.info("Skipped " + bytesSkipped + " bytes, but wanted " + bytesToSkip + " at frame " + this.frames.size());
 			}
-			in.mark(buf.length * 2);
-		}
+			//in.mark(buf.length * 2);
+		}*/
+	    
 		float[] totalBuffer = new float[buffers.size()*this.frameSize];
 		int index = 0 ;
 

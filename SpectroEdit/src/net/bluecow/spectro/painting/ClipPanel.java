@@ -144,7 +144,7 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /*     */
 /* 223 */     for (int col = region.x; col < endCol; col++) {
 /* 224 */       Frame f = this.clip.getFrame(col);
-/* 225 */       for (int row = region.y; row < endRow; row++)
+/* 225 */       for (int row = region.y+26; row < endRow; row++)
 /*     */       {
 /* 227 */         this.imgPixels[(col + row * this.img.getWidth())] = this.colorizer.colorFor(f.getReal(row));
 /*     */       }
