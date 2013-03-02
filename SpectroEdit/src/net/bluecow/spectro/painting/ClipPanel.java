@@ -373,20 +373,20 @@ private ValueColorizer colorizer = new LogarithmicColorizer(this);
 			return "Region move: " + this.oldr + " -> " + this.newr;
 			}
 		}
-/*     */
-/*     */   private class RegionMouseHandler
-/*     */     implements MouseMotionListener, MouseListener
-/*     */   {
-/* 352 */     ClipPanel.MouseMode mode = ClipPanel.MouseMode.IDLE;
-/*     */     Point moveHandle;
-/*     */     Rectangle tempRegion;
-/*     */
-/*     */     private RegionMouseHandler()
-/*     */     {
-/*     */     }
-/*     */
-/*     */     public void mouseDragged(MouseEvent e)
-/*     */     {
+	private class RegionMouseHandler
+	implements MouseMotionListener, MouseListener
+	{
+		ClipPanel.MouseMode mode = ClipPanel.MouseMode.IDLE;
+		Point moveHandle;
+		Rectangle tempRegion;
+
+		private RegionMouseHandler()
+		{
+
+		}
+
+		public void mouseDragged(MouseEvent e)
+		{
 /*
        switch (ClipPanel.MouseMode[this.mode.ordinal()]) {
        case 1:
@@ -403,63 +403,73 @@ private ValueColorizer colorizer = new LogarithmicColorizer(this);
        */
     }
 
-/*     */
-/*     */     public void mousePressed(MouseEvent e) {
-/* 383 */       this.tempRegion = ClipPanel.this.normalized(ClipPanel.this.region);
-/* 384 */       Point p = e.getPoint();
-/* 385 */       if ((this.tempRegion != null) && (this.tempRegion.contains(p))) {
-/* 386 */         this.mode = ClipPanel.MouseMode.MOVING;
-/* 387 */         this.moveHandle = new Point(p.x - this.tempRegion.x, p.y - this.tempRegion.y);
-/*     */       } else {
-/* 389 */         startRect(p);
-/* 390 */         this.mode = ClipPanel.MouseMode.SIZING;
-/*     */       }
-/* 392 */       ClipPanel.this.setRegion(this.tempRegion);
-/*     */     }
-/*     */
-/*     */     public void mouseReleased(MouseEvent e) {
-/* 396 */       this.mode = ClipPanel.MouseMode.IDLE;
-/*     */
-/* 398 */       ClipPanel.this.setRegion(this.tempRegion);
-/* 399 */       this.tempRegion = null;
-/*     */     }
-/*     */
-/*     */     public void mouseMoved(MouseEvent e)
-/*     */     {
-/*     */     }
-/*     */
-/*     */     public void mouseClicked(MouseEvent e)
-/*     */     {
-/*     */     }
-/*     */
-/*     */     public void mouseEntered(MouseEvent e)
-/*     */     {
-/*     */     }
-/*     */
-/*     */     public void mouseExited(MouseEvent e)
-/*     */     {
-/*     */     }
-/*     */
-/*     */     private void startRect(Point p) {
-/* 419 */       this.tempRegion = new Rectangle(p.x, p.y, 0, 0);
-/*     */     }
-/*     */
-/*     */     private void resizeRect(Point p) {
-/* 423 */       this.tempRegion.width = (p.x - this.tempRegion.x);
-/* 424 */       this.tempRegion.height = (p.y - this.tempRegion.y);
-/* 425 */       ClipPanel.logger.finer("Resizing region to: " + this.tempRegion);
-/*     */     }
-/*     */
-/*     */     private void moveRect(Point p) {
-/* 429 */       this.tempRegion.x = (p.x - this.moveHandle.x);
-/* 430 */       this.tempRegion.y = (p.y - this.moveHandle.y);
-/*     */     }
-/*     */   }
-/*     */
-/*     */   static enum MouseMode
-/*     */   {
-/* 344 */     IDLE, SIZING, MOVING;
-/*     */   }
-/*     */
-public void setSpectralToScreenMultiplier(double d) {
-} }
+		public void mousePressed(MouseEvent e)
+		{
+			this.tempRegion = ClipPanel.this.normalized(ClipPanel.this.region);
+			Point p = e.getPoint();
+			if ((this.tempRegion != null) && (this.tempRegion.contains(p)))
+			{
+				this.mode = ClipPanel.MouseMode.MOVING;
+				this.moveHandle = new Point(p.x - this.tempRegion.x, p.y - this.tempRegion.y);
+				}else
+				{
+					startRect(p);
+					this.mode = ClipPanel.MouseMode.SIZING;
+				}
+			ClipPanel.this.setRegion(this.tempRegion);
+			}
+		public void mouseReleased(MouseEvent e)
+		{
+			this.mode = ClipPanel.MouseMode.IDLE;
+			ClipPanel.this.setRegion(this.tempRegion);
+			this.tempRegion = null;
+		}
+
+		public void mouseMoved(MouseEvent e)
+		{
+
+		}
+
+		public void mouseClicked(MouseEvent e)
+		{
+
+		}
+
+		public void mouseEntered(MouseEvent e)
+		{
+
+		}
+
+		public void mouseExited(MouseEvent e)
+		{
+
+		}
+		private void startRect(Point p)
+		{
+			this.tempRegion = new Rectangle(p.x, p.y, 0, 0);
+		}
+
+		private void resizeRect(Point p)
+		{
+			this.tempRegion.width = (p.x - this.tempRegion.x);
+			this.tempRegion.height = (p.y - this.tempRegion.y);
+			ClipPanel.logger.finer("Resizing region to: " + this.tempRegion);
+		}
+
+		private void moveRect(Point p)
+		{
+			this.tempRegion.x = (p.x - this.moveHandle.x);
+			this.tempRegion.y = (p.y - this.moveHandle.y);
+		}
+
+	}
+
+	static enum MouseMode
+	{
+		IDLE, SIZING, MOVING;
+	}
+
+	public void setSpectralToScreenMultiplier(double d)
+	{
+	}
+}
