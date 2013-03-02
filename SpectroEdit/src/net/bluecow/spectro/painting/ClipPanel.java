@@ -47,8 +47,9 @@ implements Scrollable
 	private boolean undoing;
 	private ValueColorizer colorizer = new LogarithmicColorizer(this);
 
+	//Playback points used for playing back
 	private Point playbackPoint = new Point();
-	private Point offsetPoint = new Point();
+	private Point offsetPoint = new Point(-20,0);
 
 	private ClipDataChangeListener clipDataChangeHandler = new ClipDataChangeListener()
 	{
@@ -493,5 +494,9 @@ implements Scrollable
 
 	public void setPlaybackPoint(Point playbackPoint) {
 		this.playbackPoint = playbackPoint;
+	}
+
+	public int getTotalSamples() {
+		return this.clip.getFrameCount()*this.clip.getFrameFreqSamples();
 	}
 }
