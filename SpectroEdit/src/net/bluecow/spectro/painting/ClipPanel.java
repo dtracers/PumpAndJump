@@ -34,7 +34,6 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 public class ClipPanel extends JPanel
 implements Scrollable
 {
-	private static final Logger logger = Logger.getLogger(ClipPanel.class.getName());
 	private final Clip clip;
 	private final BufferedImage img;
 	private final int[] imgPixels;
@@ -479,7 +478,6 @@ implements Scrollable
 		{
 			this.tempRegion.width = (p.x - this.tempRegion.x);
 			this.tempRegion.height = (p.y - this.tempRegion.y);
-			ClipPanel.logger.finer("Resizing region to: " + this.tempRegion);
 		}
 
 		private void moveRect(Point p)

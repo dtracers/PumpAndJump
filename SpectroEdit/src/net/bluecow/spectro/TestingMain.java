@@ -19,6 +19,9 @@ import net.bluecow.spectro.painting.ToolboxPanel;
 /*    */   public static void main(String[] args)
 /*    */     throws Exception
 /*    */   {
+				SpectroEditSession.main(args);
+				if(false)
+				{
 /* 21 */     final JFrame f = new JFrame("Spectro-Edit ME" );
 /* 22 */     SwingUtilities.invokeLater(new Runnable() {
 /*    */       public void run() {
@@ -51,7 +54,9 @@ import net.bluecow.spectro.painting.ToolboxPanel;
 /*    */         }
 /*    */       }
 /*    */     });
+				}
 /*    */   }
+
 /*    */ }
 
 /* Location:           /Users/gigemjt/workspace/PumpAndJump/PumpAndJump/resources/spectro-edit_0.4 /

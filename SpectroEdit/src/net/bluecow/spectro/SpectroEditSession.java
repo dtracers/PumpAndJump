@@ -34,7 +34,6 @@ import net.bluecow.spectro.painting.UndoManager;
 /*     */
 public class SpectroEditSession
 {
-	private static final Logger logger = Logger.getLogger(SpectroEditSession.class.getName());
 
 	private static final Preferences prefs = Preferences.userNodeForPackage(SpectroEditSession.class);
 
@@ -108,7 +107,7 @@ public class SpectroEditSession
 				}
 				catch (BackingStoreException ex)
 				{
-					SpectroEditSession.logger.log(Level.WARNING, "Failed to flush preferences", ex);
+					ex.printStackTrace();
 				}
 			}
 		});

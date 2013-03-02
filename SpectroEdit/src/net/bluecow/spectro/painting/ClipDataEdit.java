@@ -1,5 +1,5 @@
 /*     */ package net.bluecow.spectro.painting;
-/*     */ 
+/*     */
 /*     */ import java.awt.Rectangle;
 /*     */ import java.util.Arrays;
 /*     */ import java.util.logging.Logger;
@@ -10,16 +10,15 @@
 
 import net.bluecow.spectro.clipAndFrame.Clip;
 import net.bluecow.spectro.clipAndFrame.Frame;
-/*     */ 
+/*     */
 /*     */ public class ClipDataEdit extends AbstractUndoableEdit
 /*     */ {
-/*  34 */   private static final Logger logger = Logger.getLogger(ClipDataEdit.class.getName());
 /*     */   private final Clip clip;
 /*     */   private final int firstFrame;
 /*     */   private final int firstFreqIndex;
 /*     */   private double[][] oldData;
 /*     */   private double[][] newData;
-/*     */ 
+/*     */
 /*     */   public ClipDataEdit(Clip clip, int firstFrame, int firstFreqIndex, int nFrames, int nFreqs)
 /*     */   {
 /*  55 */     if (nFrames == 0) {
@@ -34,12 +33,12 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /*  64 */     this.oldData = new double[nFrames][nFreqs];
 /*  65 */     capture(this.oldData);
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public ClipDataEdit(Clip clip, Rectangle r)
 /*     */   {
 /*  76 */     this(clip, r.x, r.y, r.width, r.height);
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public boolean replaceEdit(UndoableEdit anEdit)
 /*     */   {
 /*  81 */     boolean replace = false;
@@ -52,10 +51,9 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /*  92 */         other.die();
 /*     */       }
 /*     */     }
-/*  95 */     logger.fine("Replace edit? " + replace);
 /*  96 */     return replace;
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public void captureNewData()
 /*     */   {
 /* 104 */     if (this.newData != null) {
@@ -64,26 +62,25 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /* 107 */     this.newData = new double[this.oldData.length][this.oldData[0].length];
 /* 108 */     capture(this.newData);
 /* 109 */     if (Arrays.deepEquals(this.oldData, this.newData))
-/* 110 */       logger.fine("Captured new data == old data!");
+{
+}
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public void undo()
 /*     */     throws CannotUndoException
 /*     */   {
 /* 116 */     super.undo();
-/* 117 */     logger.fine("Undoing edit at " + getRegion());
 /* 118 */     apply(this.oldData);
 /* 119 */     this.clip.regionChanged(getRegion());
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public void redo() throws CannotRedoException
 /*     */   {
 /* 124 */     super.redo();
-/* 125 */     logger.fine("Redoing edit at " + getRegion());
 /* 126 */     apply(this.newData);
 /* 127 */     this.clip.regionChanged(getRegion());
 /*     */   }
-/*     */ 
+/*     */
 /*     */   private void apply(double[][] data)
 /*     */   {
 /* 136 */     for (int i = 0; i < data.length; i++) {
@@ -92,7 +89,7 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /* 139 */         f.setReal(j + this.firstFreqIndex, data[i][j]);
 /*     */     }
 /*     */   }
-/*     */ 
+/*     */
 /*     */   private void capture(double[][] data)
 /*     */   {
 /* 150 */     for (int i = 0; i < data.length; i++) {
@@ -101,12 +98,12 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /* 153 */         data[i][j] = f.getReal(j + this.firstFreqIndex);
 /*     */     }
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public Rectangle getRegion()
 /*     */   {
 /* 164 */     return new Rectangle(this.firstFrame, this.firstFreqIndex, this.oldData.length, this.oldData[0].length);
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public boolean isSameRegion(Rectangle r)
 /*     */   {
 /* 174 */     if (r == null) {
@@ -114,12 +111,12 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /*     */     }
 /* 177 */     return (r.x == this.firstFrame) && (r.y == this.firstFreqIndex) && (r.width == this.oldData.length) && (r.height == this.oldData[0].length);
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public double[][] getOldData()
 /*     */   {
 /* 190 */     return this.oldData;
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public String toString()
 /*     */   {
 /* 195 */     return String.format("Clip Data Edit @ [%d, %d %d x %d]", new Object[] { Integer.valueOf(this.firstFrame), Integer.valueOf(this.firstFreqIndex), Integer.valueOf(this.oldData.length), Integer.valueOf(this.oldData[0].length) });

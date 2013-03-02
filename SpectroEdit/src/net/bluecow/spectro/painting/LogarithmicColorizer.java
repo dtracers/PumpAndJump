@@ -1,5 +1,5 @@
 /*     */ package net.bluecow.spectro.painting;
-/*     */ 
+/*     */
 /*     */ import java.awt.event.ActionEvent;
 /*     */ import java.awt.event.ActionListener;
 /*     */ import java.io.PrintStream;
@@ -11,7 +11,7 @@
 /*     */ import javax.swing.event.ChangeEvent;
 /*     */ import javax.swing.event.ChangeListener;
 /*     */ import net.bluecow.spectro.tool.CurvedSlider;
-/*     */ 
+/*     */
 /*     */ public class LogarithmicColorizer
 /*     */   implements ValueColorizer
 /*     */ {
@@ -21,11 +21,11 @@
 /*  37 */   private boolean useRed = false;
 /*     */   private final ClipPanel clipPanel;
 /*     */   private final JComponent settingsPanel;
-/*     */ 
+/*     */
 /*     */   LogarithmicColorizer(ClipPanel clipPanel)
 /*     */   {
 /*  44 */     this.clipPanel = clipPanel;
-/*     */ 
+/*     */
 /*  46 */     final CurvedSlider preMultSlider = new CurvedSlider(0.0D, 7000.0D, 4.0D);
 /*  47 */     preMultSlider.addChangeListener(new ChangeListener() {
 /*     */       public void stateChanged(ChangeEvent e) {
@@ -59,16 +59,16 @@
 /*  80 */     this.settingsPanel.add(new JLabel("Contrast"));
 /*  81 */     this.settingsPanel.add(contrastSlider);
 /*  82 */     this.settingsPanel.add(useRedCheckbox);
-/*     */ 
+/*     */
 /*  84 */     preMultSlider.setValue(20);
 /*  85 */     brightnessSlider.setValue(0);
 /*  86 */     contrastSlider.setValue(50);
-				preMult = 0.1;
+				preMult = 0.15;
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public int colorFor(double val) {
 /*  90 */     int greyVal = (int)(this.brightness + this.contrast * Math.log1p(Math.abs(this.preMult * val)));
-/*     */ 
+/*     */
 /*  92 */     if (this.useRed) {
 /*  93 */       if (greyVal < 0)
 /*  94 */         return 0;
@@ -81,11 +81,11 @@
 /*     */       }
 /* 102 */       return 16711680;
 /*     */     }
-/*     */ 
+/*     */
 /* 105 */     greyVal = Math.min(255, Math.max(0, greyVal));
 /* 106 */     return greyVal << 16 | greyVal << 8 | greyVal;
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public void setPreMult(double multiplier)
 /*     */   {
 /* 112 */     System.out.println("multiplier: " + multiplier);
@@ -93,27 +93,27 @@
 /* 114 */     this.clipPanel.updateImage(null);
 /* 115 */     this.clipPanel.repaint();
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public void setBrightness(double brightness) {
 /* 119 */     System.out.println("brightness: " + brightness);
 /* 120 */     this.brightness = brightness;
 /* 121 */     this.clipPanel.updateImage(null);
 /* 122 */     this.clipPanel.repaint();
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public void setContrast(double contrast) {
 /* 126 */     System.out.println("contrast: " + contrast);
 /* 127 */     this.contrast = contrast;
 /* 128 */     this.clipPanel.updateImage(null);
 /* 129 */     this.clipPanel.repaint();
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public void setUseRed(boolean useRed) {
 /* 133 */     this.useRed = useRed;
 /* 134 */     this.clipPanel.updateImage(null);
 /* 135 */     this.clipPanel.repaint();
 /*     */   }
-/*     */ 
+/*     */
 /*     */   public JComponent getSettingsPanel() {
 /* 139 */     return this.settingsPanel;
 /*     */   }
