@@ -43,13 +43,15 @@ implements Scrollable
 	private boolean regionMode;
 	private final RegionMouseHandler mouseHandler = new RegionMouseHandler();
 
-	private final ClipPositionHeader clipPositionHeader = new ClipPositionHeader();
+	//private final ClipPositionHeader clipPositionHeader = new ClipPositionHeader();
 	private boolean undoing;
 	private ValueColorizer colorizer = new LogarithmicColorizer(this);
 
+	private ClipPlayBackLocation clipPlayLoc;
+
 	//Playback points used for playing back
 	private Point playbackPoint = new Point();
-	private Point offsetPoint = new Point(-20,0);
+	private Point offsetPoint = new Point(-50,0);
 
 	private ClipDataChangeListener clipDataChangeHandler = new ClipDataChangeListener()
 	{
@@ -67,8 +69,8 @@ implements Scrollable
 	{
 		ClipPanel cp = new ClipPanel(clip);
 		clip.addClipDataChangeListener(cp.clipDataChangeHandler);
-		playerThread.addPlaybackPositionListener(cp.clipPositionHeader);
-		cp.clipPositionHeader.setPlayerThread(playerThread);
+		//playerThread.addPlaybackPositionListener(cp.clipPositionHeader);
+		//cp.clipPositionHeader.setPlayerThread(playerThread);
 		return cp;
 	}
 
@@ -139,7 +141,6 @@ implements Scrollable
 
 		Rectangle clipBounds = g2.getClipBounds();
 
-		logger.finer(String.format("Clip bounds: (%d, %d) %dx%d", new Object[] { Integer.valueOf(clipBounds.x), Integer.valueOf(clipBounds.y), Integer.valueOf(clipBounds.width), Integer.valueOf(clipBounds.height) }));
 		if (clipBounds.x + clipBounds.width > this.img.getWidth())
 		{
 			clipBounds.width = (this.img.getWidth() - clipBounds.x);
@@ -152,6 +153,24 @@ implements Scrollable
 		{
 			g2.drawImage(this.img, 0, 0, null);
 		}
+
+		if(clipPlayLoc!=null)
+		{
+			g2.setColor(Color.red);
+			int position = (int)clipPlayLoc.clipPosition;
+			int myX = -(int)offsetPoint.getX();
+			if(position<myX)
+			{
+				myX = position;
+			}
+
+			g2.drawLine(position-(int)offsetPoint.getX(), 0, position-(int)offsetPoint.getX(), img.getHeight());
+
+			g2.setColor(Color.yellow);
+			//img.getHeight()-25
+			g2.drawLine(myX, 0, myX, img.getHeight());
+		}
+
 		g2.setTransform(backupTransform);
 		if (this.region != null)
 		{
@@ -248,7 +267,7 @@ implements Scrollable
 		Component p = getParent();
 		if (((p instanceof JViewport)) && ((p.getParent() instanceof JScrollPane))) {
 			JScrollPane sp = (JScrollPane)p.getParent();
-			sp.setColumnHeaderView(this.clipPositionHeader);
+		//	sp.setColumnHeaderView(this.clipPositionHeader);
 			}
 		}
 
@@ -498,5 +517,13 @@ implements Scrollable
 
 	public int getTotalSamples() {
 		return this.clip.getFrameCount()*this.clip.getFrameFreqSamples();
+	}
+
+	public ClipPlayBackLocation getClipPlayLoc() {
+		return clipPlayLoc;
+	}
+
+	public void setClipPlayLoc(ClipPlayBackLocation clipPlayLoc) {
+		this.clipPlayLoc = clipPlayLoc;
 	}
 }

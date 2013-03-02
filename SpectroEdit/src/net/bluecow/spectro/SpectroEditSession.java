@@ -61,7 +61,11 @@ public class SpectroEditSession
 		//creates a scroll pane
 		JScrollPane pane = new JScrollPane(this.clipPanel);
 		//adds the playback listener that moves the scroll pane
-		this.playerThread.addPlaybackPositionListener(new ClipPlayBackLocation(clipPanel.getPlaybackPoint(),clipPanel.getOffsetPoint(),pane,clipPanel.getTotalSamples()));
+		ClipPlayBackLocation playLoc = new ClipPlayBackLocation(clipPanel.getPlaybackPoint(),clipPanel.getOffsetPoint(),pane,clipPanel.getTotalSamples());
+		this.playerThread.addPlaybackPositionListener(playLoc);
+
+		this.clipPanel.setClipPlayLoc(playLoc);
+
 		splitPane.setBottomComponent(pane);
 		f.add(splitPane, "Center");
 
