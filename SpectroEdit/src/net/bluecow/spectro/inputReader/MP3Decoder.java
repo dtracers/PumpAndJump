@@ -23,14 +23,15 @@ public class MP3Decoder extends InputDecoder
 	protected void createAudioStream(File file)
 	{
 		AudioInputStream ain = null;
-			try{
-				ain= AudioSystem.getAudioInputStream( file );
-			}catch( Exception e )
-			{
+		try{
+			ain= AudioSystem.getAudioInputStream( file );
+		}catch( Exception e )
+		{
 
-			}
+		}
 		AudioFormat baseFormat = ain.getFormat();
 		this.sampleRate =baseFormat.getSampleRate();
+		setFrameSize(sampleRate);
 		try {
 			din = AudioFileUtils.readMP3AsMono( file ,ain);
 		} catch (IOException e) {
