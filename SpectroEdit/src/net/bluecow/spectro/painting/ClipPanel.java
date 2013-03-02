@@ -34,18 +34,21 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 public class ClipPanel extends JPanel
 implements Scrollable
 {
-private static final Logger logger = Logger.getLogger(ClipPanel.class.getName());
-private final Clip clip;
-private final BufferedImage img;
-private final int[] imgPixels;
-private Rectangle region;
-private Rectangle oldRegion;
-private boolean regionMode;
-private final RegionMouseHandler mouseHandler = new RegionMouseHandler();
+	private static final Logger logger = Logger.getLogger(ClipPanel.class.getName());
+	private final Clip clip;
+	private final BufferedImage img;
+	private final int[] imgPixels;
+	private Rectangle region;
+	private Rectangle oldRegion;
+	private boolean regionMode;
+	private final RegionMouseHandler mouseHandler = new RegionMouseHandler();
 
-private final ClipPositionHeader clipPositionHeader = new ClipPositionHeader();
-private boolean undoing;
-private ValueColorizer colorizer = new LogarithmicColorizer(this);
+	private final ClipPositionHeader clipPositionHeader = new ClipPositionHeader();
+	private boolean undoing;
+	private ValueColorizer colorizer = new LogarithmicColorizer(this);
+
+	private Point playbackPoint = new Point();
+	private Point offsetPoint = new Point();
 
 	private ClipDataChangeListener clipDataChangeHandler = new ClipDataChangeListener()
 	{
@@ -263,6 +266,7 @@ private ValueColorizer colorizer = new LogarithmicColorizer(this);
 		return 50;
 	}
 
+	@Override
 	public boolean getScrollableTracksViewportHeight()
 	{
 		return false;
@@ -387,20 +391,22 @@ private ValueColorizer colorizer = new LogarithmicColorizer(this);
 
 		public void mouseDragged(MouseEvent e)
 		{
-/*
-       switch (ClipPanel.MouseMode[this.mode.ordinal()]) {
-       case 1:
-         startRect(e.getPoint());
-         break;
-       case 2:
-         resizeRect(e.getPoint());
-         break;
-       case 3:
-         moveRect(e.getPoint());
+
+			/*
+       switch (ClipPanel.MouseMode.values()[this.mode.ordinal()]) {
+	       case 1:
+	         startRect(e.getPoint());
+	         break;
+	       case 2:
+	         resizeRect(e.getPoint());
+	         break;
+	       case 3:
+	         moveRect(e.getPoint());
        }
 
        ClipPanel.this.setRegion(this.tempRegion);
        */
+
     }
 
 		public void mousePressed(MouseEvent e)
@@ -471,5 +477,21 @@ private ValueColorizer colorizer = new LogarithmicColorizer(this);
 
 	public void setSpectralToScreenMultiplier(double d)
 	{
+	}
+
+	public Point getOffsetPoint() {
+		return offsetPoint;
+	}
+
+	public void setOffsetPoint(Point offsetPoint) {
+		this.offsetPoint = offsetPoint;
+	}
+
+	public Point getPlaybackPoint() {
+		return playbackPoint;
+	}
+
+	public void setPlaybackPoint(Point playbackPoint) {
+		this.playbackPoint = playbackPoint;
 	}
 }
