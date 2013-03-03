@@ -94,15 +94,6 @@ public class Clip
 		}
 		System.out.println( "done"+k );
 		
-			/*for( int j = 0; j < 11; j++ )
-			{
-				double temp[] = getFrame(j).get( 40 ).asTimeData();
-				for( int x = 0; x < temp.length; x+=2000 )
-				{
-					System.out.print( temp[x]+" " );
-				}
-				System.out.println();
-			}*/
 	}
 
 	public void readAndFilter() throws IOException

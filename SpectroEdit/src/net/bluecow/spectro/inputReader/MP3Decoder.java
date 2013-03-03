@@ -29,7 +29,7 @@ public class MP3Decoder extends InputDecoder
 		AudioInputStream ain = null;
 		try{
 			AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(file);
-			AudioFormat baseFormat = baseFileFormat.getFormat();
+			//AudioFormat baseFormat = baseFileFormat.getFormat();
 			if (baseFileFormat instanceof TAudioFileFormat)
 			{
 				Map<String, Object> properties = ((TAudioFileFormat)baseFileFormat).properties();
@@ -47,7 +47,7 @@ public class MP3Decoder extends InputDecoder
 		System.out.println( "SampleRate: " + sampleRate );
 		setFrameSize(sampleRate);
 		try {
-			din = AudioFileUtils.readMP3AsMono( file ,ain);
+			din = AudioFileUtils.readMP3AsMono( file , ain );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

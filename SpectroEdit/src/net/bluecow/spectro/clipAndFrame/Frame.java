@@ -13,7 +13,6 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 		public class Frame
 		{
 			//private static final Logger logger = Logger.getLogger(Frame.class.getName());
-			private static final double preMult[] = { 50.0D, 5.0D, .5D, .5D, .04D, .04D, .04D, .1D, 0.2D, 0.4D, 0.8D };
 			public int octave;
 			private static DoubleDCT_1D dct[];
 			private static WindowFunction preFunc[];
@@ -22,7 +21,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 			private static int binNumber[];
 			private double noteData[][];
 			private int timeLength;
-			private double mult;
+			private double mult[];
 			//private final WindowFunction preWindowFunc;
 			//private final WindowFunction postWindowFunc;
 			
@@ -33,12 +32,12 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 					midiValues = new double[128];
 					for( int i = 0; i < 128; i++ )
 					{
-						midiValues[i] = 8.1757989916D*Math.pow( 2.0D, (1.0D/12.0D)*((double)i+8.0D) );
+						midiValues[i] = 8.1757989916D*Math.pow( 2.0D, (1.0D/12.0D)*((double)i+8.0D) );// midi formula
 						System.out.println( "Octave"+i/12+" Note"+i%12+" MidiFreq"+midiValues[i] );
 					}
 				}
 				
-				if( coef == null )// the coefficients for each linear regression approximated
+				if( coef == null )// the coefficients for each linear regression approximated and creates the proper Vorbis Window Function
 				{
 					coef = new double[11];
 					preFunc = new WindowFunction[11];
@@ -96,7 +95,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 				
 				this.octave = octave;
 				
-				if( octave < 7 )
+				if( octave < 7 )// after about octave 7 it becomes too expensive to do more sections for the higher frequencies
 					numOfSections = 1<<octave;
 				else
 					numOfSections = 1<<7;
@@ -108,14 +107,18 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 				//WindowFunction postWindowFunc = new NullWindowFunction();
 				
 				double sectionData[][] = new double[numOfSections][ frameSize ];
-				for( int i = 0; i < numOfSections; i++ )
+				
+				for( int i = 0; i < numOfSections; i++ )//separating the sections of the time data
 				{
 					for( int j = 0; j < frameSize; j++ )
 					{
 						sectionData[i][j] = timeData[ frameSize*i + j ];
 					}
 				}
-				for( int i = 0; i < numOfSections; i++ )
+				
+				double SectionSums[] = new double[ numOfSections ];
+				double SectionAverage[] = new double[ numOfSections ];
+				for( int i = 0; i < numOfSections; i++ )// changing each section from time domain to frequency domain
 				{
 					//applies the function before the transform
 					preFunc[octave].applyWindow( sectionData[i] );
@@ -125,32 +128,58 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 
 					//post transform window
 					//postWindowFunc.applyWindow( sectionData[i] );
+					for( int j = 0; j < frameSize; j++ )// Section average
+					{
+						SectionSums[i] += Math.abs( sectionData[ i ][ j ] );
+					}
+					SectionAverage[i] = SectionSums[i]/frameSize;
 				}
 				
 				noteData = new double[ 12 ][ numOfSections ];
 				
-				double sum = 0.0D;
-				int numOfValues = 0; 
+				double noteSum[] = new double[numOfSections];
+				int noteCount = 0;
 				
-				for( int i = 0; i < 12 && octave*12+i < 128; i++ )
+				for( int i = 0; i < 12 && octave*12+i < 128; i++ )//finding notes
 				{
 					int bn = binNumber[ octave*12 + i ];
 					for( int j = 0; j < numOfSections; j++ )
 					{
 						noteData[ i ][ j ] = sectionData[j][ bn ];
-						sum += sectionData[j][bn];
-						numOfValues++;
+						noteSum[j] += Math.abs( sectionData[j][bn] );
+						noteCount++;
 					}
 				}
 				
-				double averageValue = sum/((double)numOfValues);
-				mult = preMult[octave]*(1 - 5*averageValue ) ;
+				double averageNoteValue[] = new double[numOfSections];
+				for( int i = 0; i < numOfSections; i++ )// note average
+				{
+					averageNoteValue[i] = noteSum[i]/(noteCount);
+				}
+				
+				double noteSTDDeviations[] = new double[numOfSections];
+				for( int i = 0; i < numOfSections; i++ )// note deviation
+				{
+					for( int note = 0; note < 12 && octave*12+note < 128 ; note++ )
+					{
+						noteSTDDeviations[i] += (noteData[note][i] - averageNoteValue[i])*(noteData[note][i] - averageNoteValue[i]);
+					}
+					
+					noteSTDDeviations[i] = Math.sqrt( noteSTDDeviations[i] );
+				}
+				
+				
+				mult = new double[numOfSections];
+				for( int i = 0; i < numOfSections; i++ )// calculating signal to noise ratio and confidence
+				{
+					mult[i] = SectionAverage[i] / noteSTDDeviations[i]; // SNR
+				}
 				
 				for( int i = 0; i < noteData.length; i++ )
 				{
 					for( int j = 0; j < noteData[i].length; j++ )
 					{
-							noteData[i][j] *= mult;
+							noteData[i][j] *= mult[j];
 					}
 				}
 				timeData = null;
