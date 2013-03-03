@@ -20,11 +20,11 @@ public class AudioFileUtils
 
   public static float currentSamplingRate;
 
-  public static AudioInputStream readMP3AsMono( File file ,AudioInputStream ain)
+  public static AudioInputStream readMP3AsMono( File file , AudioInputStream ain)
 		    throws IOException
 		  {
 
-			AudioFormat baseFormat = ain.getFormat();
+					AudioFormat baseFormat = ain.getFormat();
 					final AudioFormat desiredFormat = AUDIO_FORMAT;
 					final AudioInputStream din = new DecodedMpegAudioInputStream( baseFormat, ain);
 

@@ -86,9 +86,9 @@ import net.bluecow.spectro.painting.ClipPanel;
 /*     */
 /*  99 */       PaintbrushTool.this.clip.beginEdit(updateRegion, "Brush stroke");
 /* 100 */       for (int x = p.x - radius; x < p.x + radius; x++) {
-/* 101 */         Frame f = PaintbrushTool.this.clip.getFrame(x);
+/* 101 */        // Frame f = PaintbrushTool.this.clip.getFrame(x);
 /* 102 */         for (int y = p.y - radius; y < p.y + radius; y++) {
-/* 103 */           f.setReal(y, 0.0D);
+/* 103 */           //f.setReal(y, 0.0D);
 /*     */         }
 /*     */       }
 /* 106 */       PaintbrushTool.this.clip.endEdit();

@@ -97,9 +97,9 @@ import net.bluecow.spectro.painting.ClipPanel;
 /* 135 */     this.clip.beginEdit(frameRegion, "Scale Region");
 /* 136 */     double[][] orig = this.origData.getOldData();
 /* 137 */     for (int i = frameRegion.x; i < frameRegion.x + frameRegion.width; i++) {
-/* 138 */       Frame frame = this.clip.getFrame(i);
+/* 138 */      // Frame frame = this.clip.getFrame(i);
 /* 139 */       for (int j = frameRegion.y; j < frameRegion.y + frameRegion.height; j++) {
-/* 140 */         frame.setReal(j, orig[(i - frameRegion.x)][(j - frameRegion.y)] * amount);
+/* 140 */        // frame.setReal(j, orig[(i - frameRegion.x)][(j - frameRegion.y)] * amount);
 /*     */       }
 /*     */     }
 /*     */ 

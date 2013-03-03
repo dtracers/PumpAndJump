@@ -26,7 +26,7 @@ public class ClipPlayBackLocation implements PlaybackPositionListener{
 	public void playbackPositionUpdate(PlaybackPositionEvent e)
 	{
 		drawPosition.setLocation(e.getSamplePos(),drawPosition.getY());
-		clipPosition = ((double)drawPosition.getX())/numSamples*((double)bar.getMaximum());
+		clipPosition = ((double)drawPosition.getX())/numSamples*((double)bar.getMaximum())/2;
 		clipPosition +=offset.getX();
 	//	System.out.println(offset.getX()+" "+clipPosition);
 		if(clipPosition<0)

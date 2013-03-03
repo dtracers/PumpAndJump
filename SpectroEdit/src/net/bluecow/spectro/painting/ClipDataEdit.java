@@ -83,20 +83,20 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /*     */
 /*     */   private void apply(double[][] data)
 /*     */   {
-/* 136 */     for (int i = 0; i < data.length; i++) {
-/* 137 */       Frame f = this.clip.getFrame(i + this.firstFrame);
-/* 138 */       for (int j = 0; j < data[0].length; j++)
-/* 139 */         f.setReal(j + this.firstFreqIndex, data[i][j]);
-/*     */     }
+/* 136 */     //for (int i = 0; i < data.length; i++) {
+/* 137 */       //Frame f = this.clip.getFrame(i + this.firstFrame);
+/* 138 */       //for (int j = 0; j < data[0].length; j++)
+/* 139 */         //f.setReal(j + this.firstFreqIndex, data[i][j]);
+/*     */     //}
 /*     */   }
 /*     */
 /*     */   private void capture(double[][] data)
 /*     */   {
-/* 150 */     for (int i = 0; i < data.length; i++) {
-/* 151 */       Frame f = this.clip.getFrame(i + this.firstFrame);
-/* 152 */       for (int j = 0; j < data[0].length; j++)
-/* 153 */         data[i][j] = f.getReal(j + this.firstFreqIndex);
-/*     */     }
+/* 150 */     //for (int i = 0; i < data.length; i++) {
+/* 151 */       //Frame f = this.clip.getFrame(i + this.firstFrame);
+/* 152 */       //for (int j = 0; j < data[0].length; j++)
+/* 153 */         //data[i][j] = f.getReal(j + this.firstFreqIndex);
+/*     */     //}
 /*     */   }
 /*     */
 /*     */   public Rectangle getRegion()

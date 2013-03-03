@@ -63,7 +63,6 @@
 /*  84 */     preMultSlider.setValue(20);
 /*  85 */     brightnessSlider.setValue(0);
 /*  86 */     contrastSlider.setValue(50);
-				preMult = 0.15;
 /*     */   }
 /*     */
 /*     */   public int colorFor(double val) {

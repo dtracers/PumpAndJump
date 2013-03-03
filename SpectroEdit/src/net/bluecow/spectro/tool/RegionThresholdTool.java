@@ -100,16 +100,16 @@ import net.bluecow.spectro.painting.ClipPanel;
 /* 144 */     this.clip.beginEdit(frameRegion, "Region Threshold");
 /* 145 */     double[][] orig = this.origData.getOldData();
 /* 146 */     for (int i = frameRegion.x; i < frameRegion.x + frameRegion.width; i++) {
-/* 147 */       Frame frame = this.clip.getFrame(i);
+/* 147 */     //  Frame frame = this.clip.getFrame(i);
 /* 148 */       for (int j = frameRegion.y; j < frameRegion.y + frameRegion.height; j++) {
-/* 149 */         double origVal = orig[(i - frameRegion.x)][(j - frameRegion.y)];
-/* 150 */         if ((this.upper.isSelected()) && (Math.abs(origVal) > threshold))
-/* 151 */           frame.setReal(j, 0.0D);
-/* 152 */         else if ((!this.upper.isSelected()) && (Math.abs(origVal) < threshold))
-/* 153 */           frame.setReal(j, 0.0D);
-/*     */         else {
-/* 155 */           frame.setReal(j, origVal);
-/*     */         }
+/* 149 */        // double origVal = orig[(i - frameRegion.x)][(j - frameRegion.y)];
+/* 150 */        // if ((this.upper.isSelected()) && (Math.abs(origVal) > threshold))
+/* 151 */         //  frame.setReal(j, 0.0D);
+/* 152 */         //else if ((!this.upper.isSelected()) && (Math.abs(origVal) < threshold))
+/* 153 */        //   frame.setReal(j, 0.0D);
+/*     */        // else {
+/* 155 */          // frame.setReal(j, origVal);
+/*     */         //}
 /*     */       }
 /*     */     }
 /* 159 */     this.clip.endEdit();

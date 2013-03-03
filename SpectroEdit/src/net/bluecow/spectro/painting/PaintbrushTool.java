@@ -44,9 +44,9 @@ import net.bluecow.spectro.clipAndFrame.Frame;
 /*    */     {
 /* 36 */       Point p = PaintbrushTool.this.clipPanel.toClipCoords(e.getPoint());
 /* 37 */       for (int x = p.x - PaintbrushTool.this.radius; x < p.x + PaintbrushTool.this.radius; x++) {
-/* 38 */         Frame f = PaintbrushTool.this.clip.getFrame(x);
+/* 38 */         //Frame f = PaintbrushTool.this.clip.getFrame(x);
 /* 39 */         for (int y = p.y - PaintbrushTool.this.radius; y < p.y + PaintbrushTool.this.radius; y++) {
-/* 40 */           f.setReal(y, 0.0D);
+/* 40 */           //f.setReal(y, 0.0D);
 /*    */         }
 /*    */       }
 /* 43 */       Rectangle updateRegion = new Rectangle(e.getX() - PaintbrushTool.this.radius, e.getY() - PaintbrushTool.this.radius, PaintbrushTool.this.radius * 2, PaintbrushTool.this.radius * 2);

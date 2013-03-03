@@ -7,7 +7,7 @@
 /*    */ public class VorbisWindowFunction
 /*    */   implements WindowFunction
 /*    */ {
-/* 24 */   private static final Logger logger = Logger.getLogger(VorbisWindowFunction.class.getName());
+/* 24 */   //private static final Logger logger = Logger.getLogger(VorbisWindowFunction.class.getName());
 /*    */   private final double[] scalars;
 /*    */   private static final double PI = 3.141592653589793D;
 /*    */
@@ -19,7 +19,7 @@
 /* 38 */       double xx = Math.sin(3.141592653589793D / (2.0D * size) * (2.0D * i));
 /* 39 */       this.scalars[i] = Math.sin(1.570796326794897D * (xx * xx));
 /*    */     }
-/* 41 */     logger.finest(String.format("VorbisWindowFunction scalars (size=%d): %s\n", new Object[] { Integer.valueOf(this.scalars.length), Arrays.toString(this.scalars) }));
+/* 41 */     //logger.finest(String.format("VorbisWindowFunction scalars (size=%d): %s\n", new Object[] { Integer.valueOf(this.scalars.length), Arrays.toString(this.scalars) }));
 /*    */   }
 /*    */
 /*    */   public void applyWindow(double[] data) {

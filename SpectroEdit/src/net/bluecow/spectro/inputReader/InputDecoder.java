@@ -19,12 +19,12 @@ public abstract class InputDecoder
 	
 	public void setFrameSize( float sampleRate )
 	{
-		int t = (int)(sampleRate/1.042208253D);
+		int t = (int)(sampleRate/133.4031928D);
 		
-		if( t % 2 == 0 )
-			frameSize = t;
-		else
-			frameSize = t+1;
+		if( t % 2 == 1)
+			t = t+1;
+		
+		frameSize = t*(int)(Math.pow(2.0, 7.0));
 	}
 
 	/**

@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Map;
 
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import net.bluecow.spectro.math.AudioFileUtils;
+import org.tritonus.share.sampled.TAudioFormat;
+import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 public class MP3Decoder extends InputDecoder
 {
@@ -21,16 +25,26 @@ public class MP3Decoder extends InputDecoder
 
 	@Override
 	protected void createAudioStream(File file)
-	{
+	{	
 		AudioInputStream ain = null;
 		try{
+			AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(file);
+			AudioFormat baseFormat = baseFileFormat.getFormat();
+			if (baseFileFormat instanceof TAudioFileFormat)
+			{
+				Map<String, Object> properties = ((TAudioFileFormat)baseFileFormat).properties();
+				sampleRate = (Integer)properties.get("mp3.frequency.hz");
+			}
+			else
+			{
+				sampleRate = 44100;
+			}
 			ain= AudioSystem.getAudioInputStream( file );
 		}catch( Exception e )
 		{
-
+			
 		}
-		AudioFormat baseFormat = ain.getFormat();
-		this.sampleRate =baseFormat.getSampleRate();
+		System.out.println( "SampleRate: " + sampleRate );
 		setFrameSize(sampleRate);
 		try {
 			din = AudioFileUtils.readMP3AsMono( file ,ain);
@@ -52,9 +66,8 @@ public class MP3Decoder extends InputDecoder
 	{
 		ArrayList<double[]> buffers = new ArrayList<double[]>();
 
-		byte[] buf = new byte[this.frameSize];
-		byte[] oldbuf = new byte[this.frameSize];
-
+		byte[] buf = new byte[this.frameSize*2];
+		
 		int nBytesRead = 0;
 
 	    while (nBytesRead != -1)
@@ -63,27 +76,13 @@ public class MP3Decoder extends InputDecoder
 
 	        double[] samples = new double[this.frameSize];
 
-	        for (int i = 0; i < this.frameSize/2; i++)
-			{
-				int hi = oldbuf[(2 * i)];
-				int low = oldbuf[(2 * i + 1)] & 0xFF;
-				int sampVal = hi << 8 | low;
-				samples[i] = (sampVal / this.spectralScale);
-			}
-
-	        for (int i = 0; i < this.frameSize/2; i++)
+	        for (int i = 0; i < this.frameSize; i++)
 			{
 				int hi = buf[(2 * i)];
 				int low = buf[(2 * i + 1)] & 0xFF;
 				int sampVal = hi << 8 | low;
-				samples[ this.frameSize/2 + i] = (sampVal / this.spectralScale);
+				samples[i] = (sampVal / this.spectralScale);
 			}
-
-
-	        for( int i = 0; i < buf.length; i++ )
-	        {
-	        	oldbuf[i] = buf[i];
-	        }
 
 	        buffers.add( samples );
 
@@ -112,8 +111,7 @@ public class MP3Decoder extends InputDecoder
 	public float[] readSeparately() throws IOException
 	{
 
-		byte[] buf = new byte[this.frameSize];
-		byte[] oldbuf = new byte[this.frameSize];
+		byte[] buf = new byte[this.frameSize*2];
 
 		int nBytesRead = 0;
         nBytesRead = din.read(buf, 0, buf.length);
@@ -122,27 +120,14 @@ public class MP3Decoder extends InputDecoder
         {
 	        samples= new float[this.frameSize];
 
-	        for (int i = 0; i < this.frameSize/2; i++)
-			{
-				int hi = oldbuf[(2 * i)];
-				int low = oldbuf[(2 * i + 1)] & 0xFF;
-				int sampVal = hi << 8 | low;
-				samples[i] = (float)(sampVal / this.spectralScale);
-			}
-
-	        for (int i = 0; i < this.frameSize/2; i++)
+	        for (int i = 0; i < this.frameSize; i++)
 			{
 				int hi = buf[(2 * i)];
 				int low = buf[(2 * i + 1)] & 0xFF;
 				int sampVal = hi << 8 | low;
-				samples[ this.frameSize/2 + i] = (float)(sampVal / this.spectralScale);
+				samples[i] = (float)(sampVal / this.spectralScale);
 			}
-
-
-	        for( int i = 0; i < buf.length; i++ )
-	        {
-	        	oldbuf[i] = buf[i];
-	        }
+	        
         }
 	    return samples;
 

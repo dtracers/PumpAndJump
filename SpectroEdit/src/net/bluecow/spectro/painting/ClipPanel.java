@@ -14,6 +14,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
@@ -76,8 +77,9 @@ implements Scrollable
 	public ClipPanel(Clip clip) {
 		this.clip = clip;
 		System.out.println("frame count "+clip.getFrameCount());
-		setPreferredSize(new Dimension(clip.getFrameCount(), clip.getFrameFreqSamples()));
-		this.img = new BufferedImage(clip.getFrameCount(), clip.getFrameFreqSamples(), 1);
+		int width = clip.getFrameCount()*( (int)Math.pow( 2.0, 7 ) );
+		setPreferredSize(new Dimension( width, 128));
+		this.img = new BufferedImage( width, 128, 1);
 		this.imgPixels = ((DataBufferInt)this.img.getRaster().getDataBuffer()).getData();
 		updateImage(null);
 		setBackground(Color.BLACK);
@@ -112,8 +114,10 @@ implements Scrollable
 	{
 		if (this.clip == null) return;
 
+		int width = clip.getFrameCount()*( (int)Math.pow( 2.0, 7 ) );
+		
 		if (region == null)
-			region = new Rectangle(0, 0, this.clip.getFrameCount(), this.clip.getFrameFreqSamples());
+			region = new Rectangle(0, 0, width, 128);
 		else
 		{
 			region = new Rectangle(region);
@@ -121,15 +125,29 @@ implements Scrollable
 		toClipCoords(region);
 		int endCol = region.x + region.width;
 		int endRow = region.y + region.height;
-		for (int col = region.x; col < endCol; col++)
+		
+		int k = 0;
+		for( int row = region.y; row < endRow; row++ )
 		{
-			Frame f = this.clip.getFrame(col);
-			for (int row = region.y+26; row < endRow; row++)
+			//if( row%2 == 1 ) continue;
+			int rowIndex = (region.height - (row - region.y) - 1);///2;
+			int noteNumber = rowIndex%12;
+			int octave = (rowIndex)/12;
+			ArrayList< Frame > frames = clip.getFrame( octave );
+			for( int col = region.x; col < endCol; col++ )
 			{
-				this.imgPixels[(col + row * this.img.getWidth())] = this.colorizer.colorFor(f.getReal(row));
-				}
+				int columnIndex = col - region.x;
+				int frameNumber = columnIndex / ( (int)(Math.pow(2.0, 7.0 )) );
+				Frame f = frames.get( frameNumber );
+				double noteData[] = f.getNoteDataFor( noteNumber );
+				int colInFrame = ( columnIndex % ( (int)(Math.pow(2.0, 7.0 ))));
+				int divide = (int)(Math.pow(2.0, 7.0 )) / noteData.length ;
+				int noteColNumber = colInFrame / divide;
+				double noteValue = noteData[noteColNumber];
+				this.imgPixels[ (columnIndex + /*2**/rowIndex * this.img.getWidth())] = this.colorizer.colorFor( noteValue );
 			}
 		}
+	}
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
@@ -514,7 +532,7 @@ implements Scrollable
 	}
 
 	public int getTotalSamples() {
-		return this.clip.getFrameCount()*this.clip.getFrameFreqSamples();
+		return clip.getFrameCount()*clip.getFrameFreqSamples();
 	}
 
 	public ClipPlayBackLocation getClipPlayLoc() {

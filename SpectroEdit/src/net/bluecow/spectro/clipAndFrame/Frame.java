@@ -1,24 +1,86 @@
-/*     */ package net.bluecow.spectro.clipAndFrame;
-/*     */
-/*     */ import edu.emory.mathcs.jtransforms.dct.DoubleDCT_1D;
-/*     */ import java.io.PrintStream;
-/*     */ import java.util.Arrays;
-/*     */ import java.util.logging.Logger;
+package net.bluecow.spectro.clipAndFrame;
+
+import edu.emory.mathcs.jtransforms.dct.DoubleDCT_1D;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 import net.bluecow.spectro.windowFunctions.NullWindowFunction;
+import net.bluecow.spectro.windowFunctions.VorbisWindowFunction;
 import net.bluecow.spectro.windowFunctions.WindowFunction;
-/*     */
-/*     */ public class Frame
-/*     */ {
-/*  30 */   private static final Logger logger = Logger.getLogger(Frame.class.getName());
-/*     */   private double[] data;
-/*     */   private static DoubleDCT_1D dct;
-/*     */   private final WindowFunction preWindowFunc;
-			private final WindowFunction postWindowFunc;
-/*     */
-/*     */   public Frame(double[] timeData, WindowFunction windowFunc)
-/*     */   {
-				this(timeData,windowFunc,new NullWindowFunction());
+
+		public class Frame
+		{
+			//private static final Logger logger = Logger.getLogger(Frame.class.getName());
+			private static final double preMult[] = { 50.0D, 5.0D, .5D, .5D, .04D, .04D, .04D, .1D, 0.2D, 0.4D, 0.8D };
+			public int octave;
+			private static DoubleDCT_1D dct[];
+			private static WindowFunction preFunc[];
+			private static double midiValues[];
+			private static double coef[];
+			private static int binNumber[];
+			private double noteData[][];
+			private int timeLength;
+			private double mult;
+			//private final WindowFunction preWindowFunc;
+			//private final WindowFunction postWindowFunc;
+			
+			public static void SetUp( double sampleRate, int frameSize )
+			{	
+				if( midiValues == null )// actual values of each midi value
+				{
+					midiValues = new double[128];
+					for( int i = 0; i < 128; i++ )
+					{
+						midiValues[i] = 8.1757989916D*Math.pow( 2.0D, (1.0D/12.0D)*((double)i+8.0D) );
+						System.out.println( "Octave"+i/12+" Note"+i%12+" MidiFreq"+midiValues[i] );
+					}
+				}
+				
+				if( coef == null )// the coefficients for each linear regression approximated
+				{
+					coef = new double[11];
+					preFunc = new WindowFunction[11];
+					for( int i = 0; i < 11; i++ )
+					{
+						int fs;
+						if( i < 7 )
+							fs = (frameSize)/( 1<<i );// find the frame size for octave
+						else
+							fs = (frameSize)/( 1<<7 );
+						coef[i] = sampleRate/((double)fs);
+						System.out.println( "Octave"+i+" frameSize"+fs+" Coeff"+coef[i] );
+						preFunc[i] = new VorbisWindowFunction( fs );
+					}
+				}
+				
+				if( binNumber == null )// calculating which bin the midi note will go in 
+				{
+					binNumber = new int[ 128 ];
+					for( int i = 0; i < 11; i++ )
+					{
+						for( int j = 0; j < 12 && i*12+j < 128; j++ )
+						{
+							binNumber[i*12+j] = (int)( midiValues[i*12+j ] / coef[i] ); 
+							System.out.println( "Octave"+i+" Note"+j+" bin"+binNumber[i*12+j] );
+						}
+					}
+				}
+				
+				if( dct == null )// constructing the needed dcts
+				{
+					dct = new DoubleDCT_1D[11];
+					for(int i = 0; i < 11; i++ )
+					{
+						int fs;
+						if( i < 7 )
+							fs = (frameSize)/( 1<<i );// find the frame size for octave
+						else
+							fs = (frameSize)/( 1<<7 );
+						dct[i] = new DoubleDCT_1D( fs );
+					}
+				}
 			}
 
 			/**
@@ -28,78 +90,130 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 			 * @param windowBefore
 			 * @param windowAfter
 			 */
-			public Frame(double[] timeData, WindowFunction windowBefore,WindowFunction windowAfter)
+			public Frame(double[] timeData, int octave )
 			{
-				this.preWindowFunc = windowBefore;
-				this.postWindowFunc = windowAfter;
-				if(dct == null)
+				int numOfSections;
+				
+				this.octave = octave;
+				
+				if( octave < 7 )
+					numOfSections = 1<<octave;
+				else
+					numOfSections = 1<<7;
+				
+				int frameSize = timeData.length/numOfSections;
+				
+				timeLength = timeData.length;
+				//WindowFunction preWindowFunc = preFunc[ octave ]; 
+				//WindowFunction postWindowFunc = new NullWindowFunction();
+				
+				double sectionData[][] = new double[numOfSections][ frameSize ];
+				for( int i = 0; i < numOfSections; i++ )
 				{
-					dct = new DoubleDCT_1D(timeData.length);
+					for( int j = 0; j < frameSize; j++ )
+					{
+						sectionData[i][j] = timeData[ frameSize*i + j ];
+					}
 				}
-
-				//applies the function before the transform
-				preWindowFunc.applyWindow(timeData);
-
-				//transform is scaled
-				dct.forward(timeData, true);
-
-				//post transform window
-				postWindowFunc.applyWindow(timeData);
-
-				this.data = new double[timeData.length];
-				double min = (1.0D / 0.0D);//infinity, (largest possible value)
-				double max = (-1.0D / 0.0D);//-infinity (smallest possible value)
-				for (int i = 0; i < this.data.length; i++)
+				for( int i = 0; i < numOfSections; i++ )
 				{
-					this.data[i] = timeData[i];
-					min = Math.min(this.data[i], min);
-					max = Math.max(this.data[i], max);
-				}
+					//applies the function before the transform
+					preFunc[octave].applyWindow( sectionData[i] );
 
-				logger.finer(String.format("Computed frame. min=%4.6f max=%4.6f",
-						new Object[] { Double.valueOf(min), Double.valueOf(max) }));
+					//transform is scaled
+					dct[octave].forward( sectionData[i], true);
+
+					//post transform window
+					//postWindowFunc.applyWindow( sectionData[i] );
+				}
+				
+				noteData = new double[ 12 ][ numOfSections ];
+				
+				double sum = 0.0D;
+				int numOfValues = 0; 
+				
+				for( int i = 0; i < 12 && octave*12+i < 128; i++ )
+				{
+					int bn = binNumber[ octave*12 + i ];
+					for( int j = 0; j < numOfSections; j++ )
+					{
+						noteData[ i ][ j ] = sectionData[j][ bn ];
+						sum += sectionData[j][bn];
+						numOfValues++;
+					}
+				}
+				
+				double averageValue = sum/((double)numOfValues);
+				mult = preMult[octave]*(1 - 5*averageValue ) ;
+				
+				for( int i = 0; i < noteData.length; i++ )
+				{
+					for( int j = 0; j < noteData[i].length; j++ )
+					{
+							noteData[i][j] *= mult;
+					}
+				}
+				timeData = null;
+				sectionData = null;
 			}
-/*     */
-/*     */   public int getLength()
-/*     */   {
-/*  72 */     return this.data.length;
-/*     */   }
-/*     */
-/*     */   public double getReal(int idx)
-/*     */   {
-/*  79 */     return this.data[idx];
-/*     */   }
-/*     */
-/*     */   public double getImag(int idx)
-/*     */   {
-/*  86 */     return 0.0D;
-/*     */   }
-/*     */
-/*     */   public void setReal(int idx, double d)
-/*     */   {
-/*  98 */     this.data[idx] = d;
-/*     */   }
-/*     */
-/*     */   public double[] asTimeData()
-/*     */   {
-/* 109 */     double[] timeData = new double[this.data.length];
-/* 110 */     System.arraycopy(this.data, 0, timeData, 0, this.data.length);
-/* 111 */     dct.inverse(timeData, true);
-/* 112 */     this.preWindowFunc.applyWindow(timeData);
-/* 113 */     return timeData;
-/*     */   }
-/*     */
-/*     */  // public static void main(String[] args)
-/*     */  // {
-/* 120 */   //  double[] orig = { 1.0D, 2.0D, 3.0D, 4.0D, 5.0D, 0.0D, 9.0D, 8.0D, 7.0D, 6.0D, 5.0D, 4.0D, 3.0D, 2.0D, 1.0D, 7.0D };
-/* 121 */   //  System.out.println(Arrays.toString(orig));
-/* 122 */   //  Frame f = new Frame(orig, new NullWindowFunction());
-/* 123 */  //   System.out.println(Arrays.toString(f.data));
-/* 124 */  //   System.out.println(Arrays.toString(f.asTimeData()));
-/*     */ //  }
-/*     */ }
-
-/* Location:           /Users/gigemjt/workspace/PumpAndJump/PumpAndJump/resources/spectro-edit_0.4 /
- * Qualified Name:     net.bluecow.spectro.Frame
- * JD-Core Version:    0.6.1
- */
+			
+		public double[] getNoteDataFor( int note )
+		{
+			return noteData[ note ];
+		}
+		
+		public static int getOctaveLB( int octave )
+		{
+			if( binNumber == null )
+				return -1;
+			return binNumber[ octave*12 ];
+		}
+		
+		public static int getOctaveUB( int octave )
+		{
+			if( binNumber == null )
+				return -1;
+			int note = octave*12 + 11;
+			if( note >= 128 ) note = 127;
+			return binNumber[ note ];
+		}
+	
+	   	public double[] asTimeData()
+	   	{
+		   	double[] timeData = new double[timeLength];
+		   	
+		   	int numOfSections;
+			
+			if( octave < 7 )
+				numOfSections = 1<<octave;
+			else
+				numOfSections = 1<<7;
+			
+			int frameSize = timeLength/numOfSections;
+			
+			for( int i = 0; i < numOfSections; i++ )
+			{
+				double timeDataTemp[] = new double[frameSize];
+				
+				for( int note = 0; note < 12 && (octave*12 + note) < 128; note++ )// place notes in appropriate bins
+				{
+					int bn = binNumber[ octave*12+note ]; 
+					timeDataTemp[ bn ] += noteData[ note ][ i ]; 
+				}
+				/*for( int j = 0; j < frameSize; j++ )
+				{
+					timeDataTemp[ j ] = sectionData[ i ][ j ];
+				}*/
+				
+				dct[ octave ].inverse( timeDataTemp, true);//do inverse
+			
+				preFunc[ octave ].applyWindow( timeDataTemp );// reapply the window function
+				
+				for( int j = 0; j < timeDataTemp.length; j++ )// place into time data
+				{
+					timeData[ frameSize*i + j ] = timeDataTemp[ j ]; 
+				}
+			}
+	    	return timeData;
+	  	}
+}
