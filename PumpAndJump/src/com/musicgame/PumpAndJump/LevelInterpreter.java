@@ -1,5 +1,6 @@
 package com.musicgame.PumpAndJump;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class LevelInterpreter
@@ -10,6 +11,14 @@ public class LevelInterpreter
 	 */
 	public ArrayList<GameObject> loadLevel()
 	{
+		File f= new File("resources");
+		for(File inside : f.listFiles())
+		{
+			if(inside.getName().endsWith("txt"))
+			{
+				System.out.println("I am a text file");
+			}
+		}
 		return null;
 	}
 }

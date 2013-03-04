@@ -91,8 +91,6 @@ public class GameScreen implements Screen, InputProcessor {
 		      raindrops = new Array<Rectangle>();
 
 		      makeTrack();
-
-		      Gdx.input.setInputProcessor(this);
 		// TODO Auto-generated method stub
 	}
 	void printWaveFormVertices()

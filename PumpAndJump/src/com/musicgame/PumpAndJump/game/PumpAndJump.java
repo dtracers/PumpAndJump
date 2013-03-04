@@ -1,4 +1,4 @@
-package com.musicgame.Demo;
+package com.musicgame.PumpAndJump.game;
 
 /*import java.util.Iterator;
 
@@ -16,18 +16,25 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;*/
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.Game;
-import com.musicgame.Demo.GameScreen;
 
-public class PumpAndJump extends Game {
+public class PumpAndJump extends Game
+{
 	Screen gs;
-   
-   @Override
-   public void create() {
-	   gs= new GameScreen();
-	   setScreen(gs);
-	   
-   }
-  }
+	InputProcessor input;
+
+	@Override
+	public void create()
+	{
+		gs = new GameScreen();
+		input = new GameInput();
+		setScreen(gs);
+		Gdx.input.setInputProcessor(input);
+		Update up = new Update();
+		up.start();
+	}
+}
