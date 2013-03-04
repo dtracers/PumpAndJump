@@ -24,6 +24,7 @@ import ddf.minim.effects.IIRFilter;
 
 import net.bluecow.spectro.inputReader.InputDecoder;
 import net.bluecow.spectro.inputReader.MP3Decoder;
+import net.bluecow.spectro.inputReader.WavDecoder;
 import net.bluecow.spectro.math.AudioFileUtils;
 import net.bluecow.spectro.math.OverlapBuffer;
 import net.bluecow.spectro.painting.ClipDataChangeEvent;
