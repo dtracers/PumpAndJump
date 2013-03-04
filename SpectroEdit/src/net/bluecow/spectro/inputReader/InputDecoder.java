@@ -16,14 +16,14 @@ public abstract class InputDecoder
 	{
 		this.spectralScale = spectralScale;
 	}
-	
+
 	public void setFrameSize( float sampleRate )
 	{
 		int t = (int)(sampleRate/133.4031928D);
-		
+
 		if( t % 2 == 1)
 			t = t+1;
-		
+
 		frameSize = t*(int)(Math.pow(2.0, 7.0));
 	}
 
