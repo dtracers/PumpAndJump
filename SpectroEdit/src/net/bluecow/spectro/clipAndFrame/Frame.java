@@ -21,7 +21,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 			private static int binNumber[];
 			private double noteData[][];
 			private int timeLength;
-			private double mult[];
+			private static double preMult[] = { .5, .5, .5, .5, .25, .05, .25, .5, .5, .5, .5 };
 			//private final WindowFunction preWindowFunc;
 			//private final WindowFunction postWindowFunc;
 			
@@ -48,7 +48,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 							fs = (frameSize)/( 1<<i );// find the frame size for octave
 						else
 							fs = (frameSize)/( 1<<7 );
-						coef[i] = sampleRate/((double)fs);
+						coef[i] = sampleRate/((double)2*fs);
 						System.out.println( "Octave"+i+" frameSize"+fs+" Coeff"+coef[i] );
 						preFunc[i] = new VorbisWindowFunction( fs );
 					}
@@ -61,7 +61,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 					{
 						for( int j = 0; j < 12 && i*12+j < 128; j++ )
 						{
-							binNumber[i*12+j] = (int)( midiValues[i*12+j ] / coef[i] ); 
+							binNumber[i*12+j] = (int)( midiValues[i*12+j ] / coef[i] + 1 ); 
 							System.out.println( "Octave"+i+" Note"+j+" bin"+binNumber[i*12+j] );
 						}
 					}
@@ -116,8 +116,6 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 					}
 				}
 				
-				double SectionSums[] = new double[ numOfSections ];
-				double SectionAverage[] = new double[ numOfSections ];
 				for( int i = 0; i < numOfSections; i++ )// changing each section from time domain to frequency domain
 				{
 					//applies the function before the transform
@@ -128,17 +126,9 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 
 					//post transform window
 					//postWindowFunc.applyWindow( sectionData[i] );
-					for( int j = 0; j < frameSize; j++ )// Section average
-					{
-						SectionSums[i] += Math.abs( sectionData[ i ][ j ] );
-					}
-					SectionAverage[i] = SectionSums[i]/frameSize;
 				}
 				
 				noteData = new double[ 12 ][ numOfSections ];
-				
-				double noteSum[] = new double[numOfSections];
-				int noteCount = 0;
 				
 				for( int i = 0; i < 12 && octave*12+i < 128; i++ )//finding notes
 				{
@@ -146,40 +136,15 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 					for( int j = 0; j < numOfSections; j++ )
 					{
 						noteData[ i ][ j ] = sectionData[j][ bn ];
-						noteSum[j] += Math.abs( sectionData[j][bn] );
-						noteCount++;
 					}
-				}
-				
-				double averageNoteValue[] = new double[numOfSections];
-				for( int i = 0; i < numOfSections; i++ )// note average
-				{
-					averageNoteValue[i] = noteSum[i]/(noteCount);
-				}
-				
-				double noteSTDDeviations[] = new double[numOfSections];
-				for( int i = 0; i < numOfSections; i++ )// note deviation
-				{
-					for( int note = 0; note < 12 && octave*12+note < 128 ; note++ )
-					{
-						noteSTDDeviations[i] += (noteData[note][i] - averageNoteValue[i])*(noteData[note][i] - averageNoteValue[i]);
-					}
-					
-					noteSTDDeviations[i] = Math.sqrt( noteSTDDeviations[i] );
-				}
-				
-				
-				mult = new double[numOfSections];
-				for( int i = 0; i < numOfSections; i++ )// calculating signal to noise ratio and confidence
-				{
-					mult[i] = SectionAverage[i] / noteSTDDeviations[i]; // SNR
 				}
 				
 				for( int i = 0; i < noteData.length; i++ )
 				{
 					for( int j = 0; j < noteData[i].length; j++ )
 					{
-							noteData[i][j] *= mult[j];
+						noteData[i][j] *= preMult[octave];
+						noteData[i][j] = Math.abs( noteData[i][j] );
 					}
 				}
 				timeData = null;
@@ -229,10 +194,6 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 					int bn = binNumber[ octave*12+note ]; 
 					timeDataTemp[ bn ] += noteData[ note ][ i ]; 
 				}
-				/*for( int j = 0; j < frameSize; j++ )
-				{
-					timeDataTemp[ j ] = sectionData[ i ][ j ];
-				}*/
 				
 				dct[ octave ].inverse( timeDataTemp, true);//do inverse
 			
