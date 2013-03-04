@@ -1,0 +1,31 @@
+WORKING
+
+SampleRate: 44100.0
+
+FRAME SIZE 42240 time Lenght 42240 numSections 1
+FRAME SIZE 21120 time Lenght 42240 numSections 2
+FRAME SIZE 10560 time Lenght 42240 numSections 4
+FRAME SIZE 5280 time Lenght 42240 numSections 8
+FRAME SIZE 2640 time Lenght 42240 numSections 16
+FRAME SIZE 1320 time Lenght 42240 numSections 32
+FRAME SIZE 660 time Lenght 42240 numSections 64
+FRAME SIZE 330 time Lenght 42240 numSections 128
+FRAME SIZE 330 time Lenght 42240 numSections 128
+FRAME SIZE 330 time Lenght 42240 numSections 128
+FRAME SIZE 330 time Lenght 42240 numSections 128
+
+
+NOT WORKING
+
+SampleRate: 22050.0
+
+FRAME SIZE 21248 time Lenght 21248 numSections 1
+FRAME SIZE 10624 time Lenght 21248 numSections 2
+FRAME SIZE 5312 time Lenght 21248 numSections 4
+FRAME SIZE 2656 time Lenght 21248 numSections 8
+FRAME SIZE 1328 time Lenght 21248 numSections 16
+FRAME SIZE 664 time Lenght 21248 numSections 32
+FRAME SIZE 332 time Lenght 21248 numSections 64
+FRAME SIZE 166 time Lenght 21248 numSections 128
+FRAME SIZE 166 time Lenght 21248 numSections 128
+FRAME SIZE 166 time Lenght 21248 numSections 128
