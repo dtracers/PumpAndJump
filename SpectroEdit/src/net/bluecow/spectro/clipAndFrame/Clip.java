@@ -55,6 +55,11 @@ public class Clip
 	private boolean finishedReading = false;
 	private InputDecoder input;
 
+	//uses an array to add in the intensity
+	private ArrayList<float[]> pre_intensityarray;
+	private float[] post_intensityarray;
+	private int windowFrame = 0;//it starts at the bottom index
+
 	public Clip(File file) throws UnsupportedAudioFileException, IOException
 	{
 		input = new MP3Decoder(spectralScale,file);
@@ -93,13 +98,18 @@ public class Clip
 			k++;
 		}
 		System.out.println( "done"+k );
-		
+		postFilter();
+		System.out.println( "done post filter" );
+
 	}
 
 	public void readAndFilter() throws IOException
 	{
 		filteredPartials = new double[11][input.frameSize];
 		float[] partArray = input.readSeparately();
+
+		creatIntensityWindow(partArray);
+
 		if( partArray != null )
 		{
 			prefilter(partArray);
@@ -113,6 +123,26 @@ public class Clip
 			finishedReading = true;
 		}
 		filteredPartials = null;
+	}
+
+	/**
+	 * Attempts to create an intensity array based off of previous parts of the song
+	 * @param partArray
+	 */
+	public void creatIntensityWindow(float[] partArray)
+	{
+		for(int k=windowFrame - 2; k<windowFrame; k++)
+		{
+
+		}
+	}
+
+	public void postFilter()
+	{
+		for(int k = 0; k<frames.size();k++)
+		{
+
+		}
 	}
 
 
