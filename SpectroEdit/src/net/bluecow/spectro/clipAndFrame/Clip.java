@@ -164,7 +164,7 @@ public class Clip
 				temp[j] = a[j];
 			}
 
-			filters[i].process( temp );
+			//filters[i].process( temp );
 
 			for( int j = 0; j < input.frameSize; j++ )
 			{
