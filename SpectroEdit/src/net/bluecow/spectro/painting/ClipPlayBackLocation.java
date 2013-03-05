@@ -8,6 +8,7 @@ import javax.swing.Scrollable;
 
 public class ClipPlayBackLocation implements PlaybackPositionListener{
 
+	long samplePosition;
 	double clipPosition;
 	Point drawPosition,offset;
 	JScrollPane panel;
@@ -25,13 +26,13 @@ public class ClipPlayBackLocation implements PlaybackPositionListener{
 	@Override
 	public void playbackPositionUpdate(PlaybackPositionEvent e)
 	{
+		samplePosition = e.getSamplePos();
 		drawPosition.setLocation(e.getSamplePos(),drawPosition.getY());
 		clipPosition = ((double)drawPosition.getX())/numSamples*((double)bar.getMaximum())/2;
 		clipPosition +=offset.getX();
 	//	System.out.println(offset.getX()+" "+clipPosition);
 		if(clipPosition<0)
 		{
-
 			clipPosition = 0;
 		}
 		bar.setValue((int)clipPosition);
