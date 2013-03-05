@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 public class Update extends Thread
 {
+	boolean guyRunning = false;
 	 @Override
 	   public void run() {
 	      // do something important here, asynchronously to the rendering thread
