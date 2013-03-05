@@ -38,13 +38,11 @@ public class Clip
 {
 	//private static final Logger logger = Logger.getLogger(Clip.class.getName());
 
-	public static double volumeControl = 65535;
-
 	private static final AudioFormat AUDIO_FORMAT = new AudioFormat(44100.0F, 16, 1, true, true);
 
 	private ArrayList<ArrayList< Frame >> frames;
-
-	private double filteredPartials[][];
+	
+	private double filteredPartials[][]; 
 
 	private double spectralScale = 10000.0D;
 	private ClipDataEdit currentEdit;
@@ -53,7 +51,7 @@ public class Clip
 	private final List<ClipDataChangeListener> clipDataChangeListeners = new ArrayList<ClipDataChangeListener> ();
 	private IIRFilter filters[];
 
-	//private WindowFunction preWindowFunction;
+	//private WindowFunction preWindowFunction; 
 	//private WindowFunction postWindowFunction;
 	private boolean finishedReading = false;
 	private InputDecoder input;
@@ -72,7 +70,7 @@ public class Clip
 		{
 			frames.add( new ArrayList< Frame >() );
 		}
-
+		
 		filters[0] = new BandPass(16400.0F, 3600.0f, input.getSampleRate() );
 		filters[1] = new BandPass(9600.0F, 3200.0f, input.getSampleRate() );
 		filters[2] = new BandPass(4800.0F, 1600.0f, input.getSampleRate() );
@@ -86,9 +84,9 @@ public class Clip
 		filters[10] = new BandPass(18.75f, 6.25f, input.getSampleRate() );
 		//preWindowFunction = new VorbisWindowFunction(input.frameSize);
 		//postWindowFunction = new NullWindowFunction();
-
+		
 		Frame.SetUp( input.getSampleRate(), input.frameSize );
-
+		
 		int k = 0;
 		while( !finishedReading )
 		{
@@ -163,9 +161,9 @@ public class Clip
 			{
 				temp[j] = a[j];
 			}
-
+			
 			filters[i].process( temp );
-
+			
 			for( int j = 0; j < input.frameSize; j++ )
 			{
 				filteredPartials[i][j] = (double)temp[j];
@@ -205,11 +203,11 @@ public class Clip
 	    InputStream audioData = new InputStream()
 	    {
 	      int nextFrame = initialFrame;
-
+	      
 	      int currentSample;
-
+	      
 	      double currentTimeData[];
-
+	      
 	      boolean currentByteHigh = true;
 
 	      public int available() throws IOException
@@ -234,11 +232,11 @@ public class Clip
 	    		  for( int i = 0; i < 11; i++ )
 	    		  {
 	    			  ArrayList<Frame> frames = getFrame( i );
-
+	    			  
 	    			  Frame f = frames.get( nextFrame );
-
+	    			  
 	    			  double temp[] = f.asTimeData();
-
+	    			  
 	    			  for( int j = 0; j < currentTimeData.length; j++ )
 		    		  {
 		    			  currentTimeData[j] += temp[j];
@@ -254,16 +252,16 @@ public class Clip
 	    			  }*/
 	    		  }
 	    	  }
-
-	    	  int t = (int)( volumeControl*currentTimeData[currentSample] );
+	    	  
+	    	  int t = (int)( 65535*currentTimeData[currentSample] );
 	    	  //System.out.println( currentSample );
 	    	  //System.out.println( nextFrame );
 	    	 //System.out.println( t );
-	    	  if (currentByteHigh)
+	    	  if (currentByteHigh) 
 	    	  {
 	    		  //t *= spectralScale;
 	    		  currentByteHigh = false;
-
+	    		  
 	    		  return t >> 8 & 0xFF;
 	    	  }
 	    	  currentByteHigh = true;

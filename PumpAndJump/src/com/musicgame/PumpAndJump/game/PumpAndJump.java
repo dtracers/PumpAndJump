@@ -30,11 +30,11 @@ public class PumpAndJump extends Game
 	@Override
 	public void create()
 	{
-		gs = new com.musicgame.Demo.GameScreen();
+		gs = new GameScreen();
 		input = new GameInput();
 		setScreen(gs);
 		Gdx.input.setInputProcessor(input);
-		//Update up = new Update();
-		//up.start();
+		Update up = new Update();
+		up.start();
 	}
 }

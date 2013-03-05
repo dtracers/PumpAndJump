@@ -10,8 +10,6 @@
 /*     */ import javax.swing.JSlider;
 /*     */ import javax.swing.event.ChangeEvent;
 /*     */ import javax.swing.event.ChangeListener;
-
-import net.bluecow.spectro.clipAndFrame.Clip;
 /*     */ import net.bluecow.spectro.tool.CurvedSlider;
 /*     */
 /*     */ public class LogarithmicColorizer
@@ -34,15 +32,6 @@ import net.bluecow.spectro.clipAndFrame.Clip;
 /*  49 */         LogarithmicColorizer.this.setPreMult(preMultSlider.getCurvedValue());
 /*     */       }
 /*     */     });
-			  final JSlider volumeSlider = new JSlider();
-			  volumeSlider.setMaximum(65535*10);
-			  volumeSlider.setValue(65535);
-/*  47 */     volumeSlider.addChangeListener(new ChangeListener() {
-/*     */       public void stateChanged(ChangeEvent e) {
-					Clip.volumeControl = volumeSlider.getValue();
-/*  49 */         //LogarithmicColorizer.this.setPreMult(preMultSlider.getCurvedValue());
-/*     */       }
-/*     */     });
 /*  53 */     final JSlider brightnessSlider = new JSlider(-300, 300, 0);
 /*  54 */     brightnessSlider.addChangeListener(new ChangeListener() {
 /*     */       public void stateChanged(ChangeEvent e) {
@@ -63,8 +52,6 @@ import net.bluecow.spectro.clipAndFrame.Clip;
 /*     */       }
 /*     */     });
 /*  75 */     this.settingsPanel = Box.createVerticalBox();
-			  this.settingsPanel.add(new JLabel("Volume"));
-/*  77 */     this.settingsPanel.add(volumeSlider);
 /*  76 */     this.settingsPanel.add(new JLabel("Pre Multiplier"));
 /*  77 */     this.settingsPanel.add(preMultSlider);
 /*  78 */     this.settingsPanel.add(new JLabel("Brightness"));
