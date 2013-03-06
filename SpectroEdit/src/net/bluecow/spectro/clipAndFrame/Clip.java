@@ -65,7 +65,7 @@ public class Clip
 
 	public Clip(File file) throws UnsupportedAudioFileException, IOException
 	{
-		input = new MP3Decoder(spectralScale,file);
+		input = InputDecoder.createInputDecoder( spectralScale, file );
 		filters = new IIRFilter[11];
 		frames = new ArrayList< ArrayList< Frame > >();
 		for( int i = 0; i < 11; i++ )

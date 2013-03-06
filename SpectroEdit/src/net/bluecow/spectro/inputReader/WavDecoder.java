@@ -75,7 +75,7 @@ public class WavDecoder extends InputDecoder{
 			buffers.add(samples);
 			//this.frames.add(new Frame(samples, windowFunc));
 			in.reset();
-			long bytesToSkip = this.frameSize * 2 / this.overlap;
+			long bytesToSkip = this.frameSize * 2;
 			long bytesSkipped;
 			if ((bytesSkipped = in.skip(bytesToSkip)) != bytesToSkip)
 			{
@@ -144,7 +144,7 @@ public class WavDecoder extends InputDecoder{
 			}
 			//this.frames.add(new Frame(samples, windowFunc));
 			din.reset();
-			long bytesToSkip = this.frameSize * 2 / this.overlap;
+			long bytesToSkip = this.frameSize * 2;
 			long bytesSkipped;
 			if ((bytesSkipped = din.skip(bytesToSkip)) != bytesToSkip)
 			{

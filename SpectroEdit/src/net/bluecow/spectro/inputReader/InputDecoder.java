@@ -16,6 +16,20 @@ public abstract class InputDecoder
 	{
 		this.spectralScale = spectralScale;
 	}
+	
+	public static InputDecoder createInputDecoder( double spectralScale, File file )
+	{
+		if( file.getName().endsWith(".wav") || file.getName().endsWith(".aif") )
+		{
+			return new WavDecoder( spectralScale, file );
+		}
+		else if( file.getName().endsWith(".mp3") )
+		{
+			return new MP3Decoder( spectralScale, file );
+		}
+
+		return null;
+	}
 
 	public void setFrameSize( float sampleRate )
 	{

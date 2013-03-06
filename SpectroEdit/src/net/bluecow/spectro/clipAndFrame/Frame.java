@@ -219,6 +219,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 				sectionData = null;
 			}
 			
+			
 		public double[] getNoteDataFor( int note )
 		{
 			return noteData[ note ];
