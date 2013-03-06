@@ -120,7 +120,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 				
 				double SectionAverages[] = new double[ numOfSections];
 				double SectionAveragesWONotes[] = new double[ numOfSections ];
-				double SectionSD[] = new double[ numOfSections ];
+				//double SectionSD[] = new double[ numOfSections ];
 				double NoiseSD[] = new double[ numOfSections ];
 				mult = new double[ numOfSections ];
 				
@@ -153,23 +153,25 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 					
 					SectionAveragesWONotes[ i ] = SectionSum / (frameSize - noteCount);
 					
-					double SectionVariance = 0.0D;
-					for( int j = 0; j < frameSize; j++ )
-					{
-						SectionVariance += ( sectionData[i][j] - SectionAverages[i] ) * ( sectionData[i][j] - SectionAverages[i] ) ;
-					}
-					SectionSD[i] = Math.sqrt( SectionVariance );
+					//double SectionVariance = 0.0D;
+					//for( int j = 0; j < frameSize; j++ )
+					//{
+						//SectionVariance += ( Math.abs( sectionData[i][j] ) - SectionAverages[i] ) * ( Math.abs( sectionData[i][j] ) - SectionAverages[i] ) ;
+					//}
+					//SectionSD[i] = Math.sqrt( SectionVariance );
 					
 					double SectionVarianceWONotes = 0.0D;
 					for( int j = 0; j < frameSize; j++ )
 					{
-						SectionVarianceWONotes += ( sectionData[i][j] - SectionAveragesWONotes[i] ) * ( sectionData[i][j] - SectionAveragesWONotes[i] ) ;
+						double temp = ( Math.abs( sectionData[i][j] ) - SectionAveragesWONotes[i] );
+						SectionVarianceWONotes += temp * temp;
 					}
 					
 					for( int j = 0; j < 12 && octave*12+j < 128; j++ )//finding notes
 					{
 						int bn = binNumber[ octave*12 + j ];
-						SectionVarianceWONotes -= ( sectionData[i][bn] - SectionAveragesWONotes[i] ) * ( sectionData[i][bn] - SectionAveragesWONotes[i] );
+						double temp = ( Math.abs( sectionData[i][bn] ) - SectionAveragesWONotes[i] );
+						SectionVarianceWONotes -= temp*temp;
 					}
 					
 					NoiseSD[i] = Math.sqrt( SectionVarianceWONotes );
@@ -178,22 +180,43 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 				}
 				
 				noteData = new double[ 12 ][ numOfSections ];
+				double NoteAverages[] = new double[ numOfSections ];
+				double NoteSD[] = new double[ numOfSections ];
 				
-				for( int i = 0; i < 12 && octave*12+i < 128; i++ )//finding notes
+				for( int i = 0; i < numOfSections; i++ )
 				{
-					int bn = binNumber[ octave*12 + i ];
-					for( int j = 0; j < numOfSections; j++ )
+					double NoteSum = 0.0D;
+					int noteCount = 0;
+					double NoteVariance = 0.0D;
+					
+					for( int j = 0; j < 12 && octave*12+j < 128; j++ )//finding notes
 					{
-						noteData[ i ][ j ] = sectionData[j][ bn ];
+						int bn = binNumber[ octave*12 + j ];
+						noteData[ j ][ i ] = sectionData[ i ][ bn ];
+						NoteSum += Math.abs( noteData[j][i] );
+						noteCount++;
 					}
+					
+					NoteAverages[ i ] = NoteSum / noteCount;
+					
+					for( int j = 0; j < 12 && octave*12+j < 128; j++ )
+					{
+						double temp = ( Math.abs( noteData[j][i] ) - NoteAverages[i] );
+						NoteVariance += temp*temp;
+					}
+					
+					NoteSD[i] = Math.sqrt( NoteVariance );
 				}
 				
 				for( int i = 0; i < noteData.length; i++ )
 				{
 					for( int j = 0; j < noteData[i].length; j++ )
 					{
-						noteData[i][j] *= mult[octave];
-						noteData[i][j] = Math.abs( noteData[i][j] );
+						//if( noteData[i][j] >= NoteAverages[j] )
+							noteData[i][j] *= mult[octave];
+						//else
+							//noteData[i][j] = 0.0D;
+						//noteData[i][j] = Math.abs( noteData[i][j] );
 					}
 				}
 				timeData = null;
