@@ -212,11 +212,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 				{
 					for( int j = 0; j < noteData[i].length; j++ )
 					{
-						//if( noteData[i][j] >= NoteAverages[j] )
-							noteData[i][j] *= mult[octave];
-						//else
-							//noteData[i][j] = 0.0D;
-						//noteData[i][j] = Math.abs( noteData[i][j] );
+							noteData[i][j] *= mult[j];
 					}
 				}
 				timeData = null;
