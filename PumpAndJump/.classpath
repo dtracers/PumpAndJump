@@ -5,5 +5,13 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-audio.jar"/>
 	<classpathentry kind="lib" path="resources/spectro-edit_0.4.jar" sourcepath="/Users/gigemjt/workspace/PumpAndJump/PumpAndJump/resources/spectro-edit_0.4 .src.zip"/>
+	<classpathentry kind="lib" path="/System/Library/eclipse/sdk/platforms/android-17/android.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/System/Library/eclipse/sdk/docs/reference"/>
+		</attributes>
+		<accessrules>
+			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

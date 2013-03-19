@@ -12,34 +12,41 @@ public class GameScreen implements Screen{
 	@Override
 	public void show()
 	{
+		System.err.println("");
 	}
 
 	@Override
-	public void hide() {
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
-
-	@Override
-	public void dispose() {
-	}
-
-	/**
-	 * Draws the screen
-	 */
-	@Override
-	public void render(float delta)
+	public void hide()
 	{
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void pause()
+	{
+	}
+
+	@Override
+	public void resume()
+	{
+	}
+
+	@Override
+	public void dispose()
+	{
+	}
+
+	/**
+	 * Draws the screen delta is time since the last drawing
+	 */
+	@Override
+	public void render(float delta)
+	{
+
+	}
+
+	@Override
+	public void resize(int width, int height)
+	{
 	}
 
 }

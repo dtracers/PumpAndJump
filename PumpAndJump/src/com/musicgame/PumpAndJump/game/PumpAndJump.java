@@ -21,20 +21,24 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.Game;
+import com.musicgame.PumpAndJump.game.during.RunningGame;
+import com.musicgame.PumpAndJump.game.pre.PreGame;
 
 public class PumpAndJump extends Game
 {
 	Screen gs;
 	InputProcessor input;
+	PreGame preGameThread;
+	RunningGame runningGameThread;
 
 	@Override
 	public void create()
 	{
-		gs = new com.musicgame.Demo.GameScreen();
+		gs = new GameScreen();
 		input = new GameInput();
 		setScreen(gs);
 		Gdx.input.setInputProcessor(input);
-		//Update up = new Update();
-		//up.start();
+		PreGame up = new PreGame();
+		up.start();
 	}
 }
