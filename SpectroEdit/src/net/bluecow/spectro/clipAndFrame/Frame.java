@@ -62,7 +62,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 					{
 						for( int j = 0; j < 12 && i*12+j < 128; j++ )
 						{
-							binNumber[i*12+j] = (int)(( midiValues[i*12+j ] / coef[i] + 1.)*((double)frameSize)/sampleRate);
+							binNumber[i*12+j] = (int)(( midiValues[i*12+j ] / coef[i]+1.));
 							System.out.println( "Octave"+i+" Note"+j+" bin"+binNumber[i*12+j] );
 						}
 					}
