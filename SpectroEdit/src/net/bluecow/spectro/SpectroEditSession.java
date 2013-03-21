@@ -22,8 +22,11 @@ import javax.swing.JDialog;
 /*     */ import javax.swing.JSplitPane;
 /*     */ import javax.swing.JToolBar;
 /*     */ import javax.swing.SwingUtilities;
+
+import net.bluecow.spectro.action.FastForwardAction;
 /*     */ import net.bluecow.spectro.action.PlayPauseAction;
-/*     */ import net.bluecow.spectro.action.RewindAction;
+/*     */ import net.bluecow.spectro.action.RestartAction;
+import net.bluecow.spectro.action.RewindAction;
 /*     */ import net.bluecow.spectro.action.SaveAction;
 /*     */ import net.bluecow.spectro.action.UndoRedoAction;
 import net.bluecow.spectro.clipAndFrame.Clip;
@@ -75,7 +78,9 @@ public class SpectroEditSession
 		toolbar.addSeparator();
 
 		toolbar.add(new PlayPauseAction(this.playerThread));
+		toolbar.add(new RestartAction(this.playerThread));
 		toolbar.add(new RewindAction(this.playerThread));
+		toolbar.add(new FastForwardAction(this.playerThread));
 		f.add(toolbar, "North");
 
 		if (prefs.get("frameBounds", null) != null)
