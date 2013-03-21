@@ -1,0 +1,40 @@
+Jump: 	7.5 sec
+Jump: 	9.5 sec
+Jump:	11 sec
+Jump: 	12 sec
+Slide: 	12.5 sec- 15.5 sec
+Jump: 	17 sec 
+Jump: 	18.5 sec
+Slide: 	19.5 sec-23.5 sec
+Jump: 	24.5 sec
+Slide: 	25 sec- 27 sec
+Jump: 	28.5 sec
+Jump 	31 sec
+Jump 	32 sec
+Slide 	32.5 sec-33.5 sec
+Jump 	34 sec
+Jump 	35 sec
+Slide 	35.5 sec -38 sec
+Jump 	38.5 sec
+Jump 	39.5 sec
+Jump 	41.5
+Slide 	42 sec - 45.5 sec
+Jump	46.8 sec
+Slide 	47.5 sec-48.5 sec
+Jump: 	48.7 sec
+Jump	50 sec
+Slide: 	50.5 sec- 56.5sec
+Jump: 	57sec
+Slide: 	58 sec- 64sec
+Jump:	64.5 sec
+Slide: 	65 sec- 67sec
+Jump: 	68.5 sec
+Slide: 	69 sec- 70.5 sec
+Jump:	71 sec
+Jump:	72 sec
+Jump:	72.5 sec
+Slide:	73.2 sec - 75 sec
+Jump:	76 sec
+Jump:	77 sec
+Slide: 	78 sec - 79 sec
+Jump: 	79.5 sec
