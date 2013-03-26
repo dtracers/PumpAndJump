@@ -10,6 +10,8 @@ public abstract class GameThread extends Thread implements InputProcessor
 
 	public abstract void draw();
 
+	public abstract void stopThread();
+
 	public void myWait()
 	{
 		synchronized(this)

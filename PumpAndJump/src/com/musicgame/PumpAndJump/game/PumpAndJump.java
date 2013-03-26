@@ -30,11 +30,10 @@ public class PumpAndJump extends Game
 {
 	Screen gs;
 	InputProcessor input;
-	PreGame preGameThread;
-	PostGame PostGameThread;
-	RunningGame RunningGameThread;
-	PauseGame PauseGameThread;
-	RunningGame runningGameThread;
+	private static PreGame preGameThread;
+	private static PostGame PostGameThread;
+	private static RunningGame RunningGameThread;
+	private static PauseGame PauseGameThread;
 
 	@Override
 	public void create()
@@ -45,5 +44,49 @@ public class PumpAndJump extends Game
 		Gdx.input.setInputProcessor(input);
 		preGameThread = new PreGame();
 		preGameThread.start();
+	}
+
+	/**
+	 * Ends the previous thread and switches to the given thread
+	 *
+	 * preGame
+	 * PostGame
+	 * RunningGame
+	 * PauseGame
+	 *
+	 * Pause
+	 * @param switchTo
+	 */
+	static void switchThread(String switchTo,GameThread currentThread)
+	{
+		currentThread.myWait();
+	}
+
+	/**
+	 * Ends the given Thread
+	 * preGame
+	 * PostGame
+	 * RunningGame
+	 * PauseGame
+	 * @param switchTo
+	 */
+	static void endThread(String switchTo)
+	{
+
+	}
+
+	/**
+	 * adds the given thread to the running thread list
+	 *
+	 * preGame
+	 * PostGame
+	 * RunningGame
+	 * PauseGame
+	 *
+	 * @param switchTo
+	 */
+	static void addThread(String switchTo)
+	{
+
 	}
 }
