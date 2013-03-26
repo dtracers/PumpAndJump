@@ -21,14 +21,19 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.Game;
-import com.musicgame.PumpAndJump.game.during.RunningGame;
-import com.musicgame.PumpAndJump.game.pre.PreGame;
+import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
+import com.musicgame.PumpAndJump.game.gameStates.PostGame;
+import com.musicgame.PumpAndJump.game.gameStates.PreGame;
+import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class PumpAndJump extends Game
 {
 	Screen gs;
 	InputProcessor input;
 	PreGame preGameThread;
+	PostGame PostGameThread;
+	RunningGame RunningGameThread;
+	PauseGame PauseGameThread;
 	RunningGame runningGameThread;
 
 	@Override
@@ -38,7 +43,7 @@ public class PumpAndJump extends Game
 		input = new GameInput();
 		setScreen(gs);
 		Gdx.input.setInputProcessor(input);
-		PreGame up = new PreGame();
-		up.start();
+		preGameThread = new PreGame();
+		preGameThread.start();
 	}
 }
