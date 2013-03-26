@@ -57,4 +57,8 @@ public class PostGame extends GameThread
 	public void draw() {
 	}
 
+	@Override
+	public void stopThread() {
+	}
+
 }

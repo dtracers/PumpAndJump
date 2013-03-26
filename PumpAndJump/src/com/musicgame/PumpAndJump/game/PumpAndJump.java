@@ -31,9 +31,9 @@ public class PumpAndJump extends Game
 	Screen gs;
 	InputProcessor input;
 	private static PreGame preGameThread;
-	private static PostGame PostGameThread;
-	private static RunningGame RunningGameThread;
-	private static PauseGame PauseGameThread;
+	private static PostGame postGameThread;
+	private static RunningGame runningGameThread;
+	private static PauseGame pauseGameThread;
 
 	@Override
 	public void create()
@@ -49,7 +49,7 @@ public class PumpAndJump extends Game
 	/**
 	 * Ends the previous thread and switches to the given thread
 	 *
-	 * preGame
+	 * PreGame
 	 * PostGame
 	 * RunningGame
 	 * PauseGame
@@ -59,12 +59,13 @@ public class PumpAndJump extends Game
 	 */
 	static void switchThread(String switchTo,GameThread currentThread)
 	{
-		currentThread.myWait();
+		currentThread.stopThread();
+		addThread(switchTo);
 	}
 
 	/**
 	 * Ends the given Thread
-	 * preGame
+	 * PreGame
 	 * PostGame
 	 * RunningGame
 	 * PauseGame
@@ -72,13 +73,13 @@ public class PumpAndJump extends Game
 	 */
 	static void endThread(String switchTo)
 	{
-
+		getThread(switchTo).stopThread();
 	}
 
 	/**
 	 * adds the given thread to the running thread list
 	 *
-	 * preGame
+	 * PreGame
 	 * PostGame
 	 * RunningGame
 	 * PauseGame
@@ -87,6 +88,36 @@ public class PumpAndJump extends Game
 	 */
 	static void addThread(String switchTo)
 	{
-
+		getThread(switchTo).startUp();
 	}
+
+	/**
+	 *
+	 * PreGame
+	 * PostGame
+	 * RunningGame
+	 * PauseGame
+	 *
+	 * @param switchTo
+	 * @return
+	 */
+	static GameThread getThread(String switchTo)
+	{
+		if(switchTo.equalsIgnoreCase("PreGame"))
+		{
+			return preGameThread;
+		}else if(switchTo.equalsIgnoreCase("PostGame"))
+		{
+			return postGameThread;
+		}else if(switchTo.equalsIgnoreCase("RunningGame"))
+		{
+			return postGameThread;
+		}else if(switchTo.equalsIgnoreCase("PauseGame"))
+		{
+			return postGameThread;
+		}
+		return null;
+	}
+
+
 }

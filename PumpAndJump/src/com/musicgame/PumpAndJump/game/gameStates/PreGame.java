@@ -62,4 +62,8 @@ public class PreGame extends GameThread
 	public void draw() {
 	}
 
+	@Override
+	public void stopThread() {
+	}
+
 }
