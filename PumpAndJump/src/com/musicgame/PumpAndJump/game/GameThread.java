@@ -5,10 +5,14 @@ import com.badlogic.gdx.Screen;
 
 public abstract class GameThread extends Thread implements InputProcessor, Screen
 {
+	public int height,width;
 
-	public abstract void startUp();
-
-	public abstract void stopThread();
+	@Override
+	public void resize(int width, int height)
+	{
+		this.height = height;
+		this.width = width;
+	}
 
 	public void myWait()
 	{

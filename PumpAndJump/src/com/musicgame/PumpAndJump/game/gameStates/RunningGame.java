@@ -6,6 +6,9 @@ import com.musicgame.PumpAndJump.game.GameThread;
 public class RunningGame extends GameThread
 {
 	long time;
+	boolean toWait = false;
+	boolean jumping = false,ducking = false;
+	boolean paused = false;
 	public RunningGame()
 	{
 		time = 0;
@@ -26,24 +29,8 @@ public class RunningGame extends GameThread
 	 {
 		 time = System.currentTimeMillis();
 
-
-		 //when it wants to wait
-		 myWait();
-
-		 // do something important here, asynchronously to the rendering thread
-		 // final Result result = createResult();
-		 // post a Runnable to the rendering thread that processes the result
-		 /*
-		 Gdx.app.postRunnable(new Runnable()
-		 {
-			 @Override
-			 public void run()
-			 {
-				 // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
-				 // results.add(result);
-			 }
-		 });
-		 */
+		 if(toWait)
+			 myWait();
 	 }
 
 	@Override
@@ -82,37 +69,32 @@ public class RunningGame extends GameThread
 	}
 
 	@Override
-	public boolean scrolled(int amount) {
+	public boolean scrolled(int amount)
+	{
 		return false;
 	}
 
 	@Override
-	public void pause() {
+	public void pause()
+	{
+		toWait = true;
 	}
 
 	@Override
-	public void startUp() {
-	}
-
-
-	@Override
-	public void stopThread() {
+	public void render(float delta)
+	{
 	}
 
 	@Override
-	public void render(float delta) {
+	public void show()
+	{
+		toWait = false;
 	}
 
 	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void show() {
-	}
-
-	@Override
-	public void hide() {
+	public void hide()
+	{
+		toWait = true;
 	}
 
 	@Override
@@ -120,7 +102,12 @@ public class RunningGame extends GameThread
 	}
 
 	@Override
-	public void transferFrom(GameThread currentThread) {
+	public void transferFrom(GameThread currentThread)
+	{
+		if(currentThread instanceof PauseGame && paused)
+		{
+			paused = false;
+		}
 	}
 
 }

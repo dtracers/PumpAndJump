@@ -31,23 +31,15 @@ import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 public class PumpAndJump extends Game
 {
 	private static PumpAndJump instance;
-	Screen gs;
-	InputProcessor input;
-	private static PreGame preGameThread;
-	private static PostGame postGameThread;
-	private static RunningGame runningGameThread;
-	private static PauseGame pauseGameThread;
+	private static PreGame preGameThread = new PreGame();
+	private static PostGame postGameThread = new PostGame();
+	private static RunningGame runningGameThread = new RunningGame();
+	private static PauseGame pauseGameThread = new PauseGame();
 
 	@Override
 	public void create()
 	{
-		gs = new GameScreen(this);
-		input = new GameInput();
-		setScreen(gs);
-		Gdx.input.setInputProcessor(input);
-		preGameThread = new PreGame();
-		preGameThread.start();
-
+		switchThread("PreGame",null);
 	}
 
 	/**
@@ -65,6 +57,7 @@ public class PumpAndJump extends Game
 	{
 		GameThread temp = getThread(switchTo);
 		temp.transferFrom(currentThread);
+		Gdx.input.setInputProcessor(temp);
 		PumpAndJump.instance.setScreen(temp);
 	}
 
@@ -88,10 +81,10 @@ public class PumpAndJump extends Game
 			return postGameThread;
 		}else if(switchTo.equalsIgnoreCase("RunningGame"))
 		{
-			return postGameThread;
+			return runningGameThread;
 		}else if(switchTo.equalsIgnoreCase("PauseGame"))
 		{
-			return postGameThread;
+			return pauseGameThread;
 		}
 		return null;
 	}
