@@ -94,12 +94,33 @@ public class RunningGame extends GameThread
 	public void startUp() {
 	}
 
-	@Override
-	public void draw() {
-	}
 
 	@Override
 	public void stopThread() {
+	}
+
+	@Override
+	public void render(float delta) {
+	}
+
+	@Override
+	public void resize(int width, int height) {
+	}
+
+	@Override
+	public void show() {
+	}
+
+	@Override
+	public void hide() {
+	}
+
+	@Override
+	public void dispose() {
+	}
+
+	@Override
+	public void transferFrom(GameThread currentThread) {
 	}
 
 }

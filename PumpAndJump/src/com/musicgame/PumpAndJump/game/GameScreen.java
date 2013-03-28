@@ -6,6 +6,11 @@ import com.badlogic.gdx.Screen;
 public class GameScreen implements Screen{
 
 
+	public GameScreen(PumpAndJump pumpAndJump)
+	{
+
+	}
+
 	/**
 	 * This is called when the game screen is shown?
 	 */

@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;*/
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -28,6 +30,7 @@ import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class PumpAndJump extends Game
 {
+	private static PumpAndJump instance;
 	Screen gs;
 	InputProcessor input;
 	private static PreGame preGameThread;
@@ -38,12 +41,13 @@ public class PumpAndJump extends Game
 	@Override
 	public void create()
 	{
-		gs = new GameScreen();
+		gs = new GameScreen(this);
 		input = new GameInput();
 		setScreen(gs);
 		Gdx.input.setInputProcessor(input);
 		preGameThread = new PreGame();
 		preGameThread.start();
+
 	}
 
 	/**
@@ -59,36 +63,9 @@ public class PumpAndJump extends Game
 	 */
 	static void switchThread(String switchTo,GameThread currentThread)
 	{
-		currentThread.stopThread();
-		addThread(switchTo);
-	}
-
-	/**
-	 * Ends the given Thread
-	 * PreGame
-	 * PostGame
-	 * RunningGame
-	 * PauseGame
-	 * @param switchTo
-	 */
-	static void endThread(String switchTo)
-	{
-		getThread(switchTo).stopThread();
-	}
-
-	/**
-	 * adds the given thread to the running thread list
-	 *
-	 * PreGame
-	 * PostGame
-	 * RunningGame
-	 * PauseGame
-	 *
-	 * @param switchTo
-	 */
-	static void addThread(String switchTo)
-	{
-		getThread(switchTo).startUp();
+		GameThread temp = getThread(switchTo);
+		temp.transferFrom(currentThread);
+		PumpAndJump.instance.setScreen(temp);
 	}
 
 	/**

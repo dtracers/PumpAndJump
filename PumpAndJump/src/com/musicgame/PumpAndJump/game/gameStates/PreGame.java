@@ -59,11 +59,31 @@ public class PreGame extends GameThread
 	}
 
 	@Override
-	public void draw() {
+	public void stopThread() {
 	}
 
 	@Override
-	public void stopThread() {
+	public void render(float delta) {
+	}
+
+	@Override
+	public void resize(int width, int height) {
+	}
+
+	@Override
+	public void show() {
+	}
+
+	@Override
+	public void hide() {
+	}
+
+	@Override
+	public void dispose() {
+	}
+
+	@Override
+	public void transferFrom(GameThread currentThread) {
 	}
 
 }
