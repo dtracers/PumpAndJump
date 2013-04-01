@@ -53,7 +53,7 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	static void switchThread(String switchTo,GameThread currentThread)
+	public static void switchThread(String switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
 		temp.transferFrom(currentThread);
