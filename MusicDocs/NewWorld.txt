@@ -38,3 +38,22 @@ Jump:	76 sec
 Jump:	77 sec
 Slide: 	78 sec - 79 sec
 Jump: 	79.5 sec
+Jump:	80.5 sec
+Slide 81-82
+Jump: 82.5
+Jump: 83
+Slide 83.25-84
+Jump: 87.5
+Jump: 88
+jump: 88.5
+jump: 89
+slide: 89.5-91
+Jump: 91.5
+jump: 92
+Slide: 92.5-93
+Jump: 93.5
+Jump: 94
+Jump: 94.5
+Jump:95
+Slide:95.5-98
+
