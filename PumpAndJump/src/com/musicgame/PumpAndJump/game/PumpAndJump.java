@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
 import com.musicgame.PumpAndJump.game.gameStates.PreGame;
@@ -37,7 +38,7 @@ public class PumpAndJump extends Game
 	@Override
 	public void create()
 	{
-		switchThread("PreGame",null);
+		switchThread(ThreadName.PreGame,null);
 	}
 
 	/**
@@ -118,10 +119,5 @@ public class PumpAndJump extends Game
 			case  DemoGame:		return demoGameThread;
 		}
 		return null;
-	}
-
-	static enum ThreadName
-	{
-		PreGame,PostGame,RunningGame,PauseGame,DemoGame;
 	}
 }

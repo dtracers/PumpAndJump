@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
+import com.musicgame.PumpAndJump.game.ThreadName;
 
 /**
  * It happens before the game starts
@@ -82,7 +83,7 @@ public class PreGame extends GameThread
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
-					button.setText("Good job!"); PumpAndJump.switchThread("RunningGame", PreGame.this);//mygame.setScreen(mygame.gameScreen);
+					button.setText("Good job!"); PumpAndJump.switchThread(ThreadName.DemoGame, PreGame.this);//mygame.setScreen(mygame.gameScreen);
 				}
 			});
 
