@@ -22,6 +22,7 @@ public class PumpAndJump extends Game
 	private static PostGame postGameThread = new PostGame();
 	private static RunningGame runningGameThread = new RunningGame();
 	private static PauseGame pauseGameThread = new PauseGame();
+	private static DemoGame demoGameThread = new DemoGame();
 
 	/*
 	@Override
@@ -50,7 +51,7 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	public static void switchThread(String switchTo,GameThread currentThread)
+	public static void switchThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
 		temp.switchFrom(currentThread);
@@ -69,7 +70,7 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	public static void addThread(String switchTo,GameThread currentThread)
+	public static void addThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
 		temp.addFrom(currentThread);
@@ -88,7 +89,7 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	public static void removeThread(String switchTo,GameThread currentThread)
+	public static void removeThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
 		temp.removeFrom(currentThread);
@@ -106,23 +107,21 @@ public class PumpAndJump extends Game
 	 * @param switchTo
 	 * @return
 	 */
-	static GameThread getThread(String switchTo)
+	static GameThread getThread(ThreadName switchTo)
 	{
-		if(switchTo.equalsIgnoreCase("PreGame"))
+		switch(switchTo)
 		{
-			return preGameThread;
-		}else if(switchTo.equalsIgnoreCase("PostGame"))
-		{
-			return postGameThread;
-		}else if(switchTo.equalsIgnoreCase("RunningGame"))
-		{
-			return runningGameThread;
-		}else if(switchTo.equalsIgnoreCase("PauseGame"))
-		{
-			return pauseGameThread;
+			case  PreGame:		return preGameThread;
+			case  PostGame:		return postGameThread;
+			case  RunningGame:	return runningGameThread;
+			case  PauseGame:	return pauseGameThread;
+			case  DemoGame:		return demoGameThread;
 		}
 		return null;
 	}
 
-
+	static enum ThreadName
+	{
+		PreGame,PostGame,RunningGame,PauseGame,DemoGame;
+	}
 }
