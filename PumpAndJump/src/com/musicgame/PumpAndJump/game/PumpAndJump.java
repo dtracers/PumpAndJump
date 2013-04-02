@@ -22,7 +22,6 @@ public class PumpAndJump extends Game
 
 	static ArrayList<GameThread> runningThreads;
 
-	private static PumpAndJump instance;
 	private static PreGame preGameThread = new PreGame();
 	private static PostGame postGameThread = new PostGame();
 	private static RunningGame runningGameThread = new RunningGame();
@@ -43,8 +42,12 @@ public class PumpAndJump extends Game
 	public void create()
 	{
 		switchThread(ThreadName.PreGame,null);
+
 		gameScreen = new GameScreen();
 		this.setScreen(gameScreen);
+
+		input = new GameInput();
+		Gdx.input.setInputProcessor(input);
 	}
 
 	/**
@@ -62,7 +65,6 @@ public class PumpAndJump extends Game
 	{
 		GameThread temp = getThread(switchTo);
 		temp.switchFrom(currentThread);
-		Gdx.input.setInputProcessor(temp);
 		runningThreads.clear();
 	}
 
@@ -81,7 +83,6 @@ public class PumpAndJump extends Game
 	{
 		GameThread temp = getThread(switchTo);
 		temp.addFrom(currentThread);
-		Gdx.input.setInputProcessor(temp);
 		runningThreads.add(temp);
 	}
 
@@ -100,7 +101,6 @@ public class PumpAndJump extends Game
 	{
 		GameThread temp = getThread(switchTo);
 		temp.removeFrom(currentThread);
-		Gdx.input.setInputProcessor(temp);
 		runningThreads.remove(temp);
 	}
 
