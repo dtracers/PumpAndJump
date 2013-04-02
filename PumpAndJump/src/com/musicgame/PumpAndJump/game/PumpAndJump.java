@@ -30,17 +30,27 @@ import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class PumpAndJump extends Game
 {
-	private static PumpAndJump instance;
-	private static PreGame preGameThread = new PreGame();
+	Screen gameScreen;
+	MainMenuScreen menuScreen;
+	
+	//private static PumpAndJump instance;
+	/*private static PreGame preGameThread = new PreGame();
 	private static PostGame postGameThread = new PostGame();
 	private static RunningGame runningGameThread = new RunningGame();
-	private static PauseGame pauseGameThread = new PauseGame();
-
+	private static PauseGame pauseGameThread = new PauseGame();*/
 	@Override
 	public void create()
 	{
-		switchThread("PreGame",null);
+		gameScreen= new GameScreen();
+		menuScreen = new MainMenuScreen(this);
+		setScreen(menuScreen);
+		   
 	}
+	//@Override
+	/*public void create()
+	{
+		switchThread("PreGame",null);
+	}*/
 
 	/**
 	 * Ends the previous thread and switches to the given thread
@@ -53,13 +63,13 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	public static void switchThread(String switchTo,GameThread currentThread)
+	/*static void switchThread(String switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
 		temp.transferFrom(currentThread);
 		Gdx.input.setInputProcessor(temp);
 		PumpAndJump.instance.setScreen(temp);
-	}
+	}*/
 
 	/**
 	 *
@@ -71,7 +81,7 @@ public class PumpAndJump extends Game
 	 * @param switchTo
 	 * @return
 	 */
-	static GameThread getThread(String switchTo)
+	/*static GameThread getThread(String switchTo)
 	{
 		if(switchTo.equalsIgnoreCase("PreGame"))
 		{
@@ -87,7 +97,7 @@ public class PumpAndJump extends Game
 			return pauseGameThread;
 		}
 		return null;
-	}
+	}*/
 
 
 }
