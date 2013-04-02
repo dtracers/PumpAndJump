@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
@@ -13,7 +15,9 @@ import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class PumpAndJump extends Game
 {
-	//Screen gameScreen;
+	Screen gameScreen;
+	InputProcessor input;
+
 	//MainMenuScreen menuScreen;
 
 	static ArrayList<GameThread> runningThreads;
@@ -39,6 +43,8 @@ public class PumpAndJump extends Game
 	public void create()
 	{
 		switchThread(ThreadName.PreGame,null);
+		gameScreen = new GameScreen();
+		this.setScreen(gameScreen);
 	}
 
 	/**

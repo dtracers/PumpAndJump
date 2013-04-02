@@ -18,6 +18,10 @@ public class GameScreen implements Screen
 	@Override
 	public void resize(int width, int height)
 	{
+		for(GameThread thread:PumpAndJump.runningThreads)
+		{
+			thread.resize(width,height);
+		}
 	}
 
 	@Override
