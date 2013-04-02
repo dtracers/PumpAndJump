@@ -5,5 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-audio.jar"/>
 	<classpathentry kind="lib" path="resources/spectro-edit_0.4.jar" sourcepath="/Users/gigemjt/workspace/PumpAndJump/PumpAndJump/resources/spectro-edit_0.4 .src.zip"/>
+	<classpathentry kind="lib" path="libs/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="libs/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
