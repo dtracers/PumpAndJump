@@ -1,6 +1,8 @@
 package com.musicgame.PumpAndJump.game;
 
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
@@ -12,6 +14,8 @@ public class PumpAndJump extends Game
 {
 	//Screen gameScreen;
 	//MainMenuScreen menuScreen;
+
+	static ArrayList<GameThread> runningThreads;
 
 	private static PumpAndJump instance;
 	private static PreGame preGameThread = new PreGame();
@@ -49,9 +53,47 @@ public class PumpAndJump extends Game
 	public static void switchThread(String switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
-		temp.transferFrom(currentThread);
+		temp.switchFrom(currentThread);
 		Gdx.input.setInputProcessor(temp);
-	//	PumpAndJump.instance.setScreen(temp);
+		runningThreads.clear();
+	}
+
+	/**
+	 * add the thread to the existing set of threads
+	 *
+	 * PreGame
+	 * PostGame
+	 * RunningGame
+	 * PauseGame
+	 *
+	 * Pause
+	 * @param switchTo
+	 */
+	public static void addThread(String switchTo,GameThread currentThread)
+	{
+		GameThread temp = getThread(switchTo);
+		temp.addFrom(currentThread);
+		Gdx.input.setInputProcessor(temp);
+		runningThreads.add(temp);
+	}
+
+	/**
+	 * remove the thread from the existing set of threads
+	 *
+	 * PreGame
+	 * PostGame
+	 * RunningGame
+	 * PauseGame
+	 *
+	 * Pause
+	 * @param switchTo
+	 */
+	public static void removeThread(String switchTo,GameThread currentThread)
+	{
+		GameThread temp = getThread(switchTo);
+		temp.removeFrom(currentThread);
+		Gdx.input.setInputProcessor(temp);
+		runningThreads.remove(temp);
 	}
 
 	/**

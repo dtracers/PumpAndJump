@@ -31,7 +31,22 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 
 	/**
 	 * The calling object will get whatever ever needed information from the given object
+	 * called when switching threads
 	 * @param currentThread
 	 */
-	public abstract void transferFrom(GameThread currentThread);
+	public abstract void switchFrom(GameThread currentThread);
+
+	/**
+	 * The calling object will get whatever ever needed information from the given object
+	 * called when adding threads
+	 * @param currentThread
+	 */
+	public abstract void addFrom(GameThread currentThread);
+
+	/**
+	 * The calling object will get whatever ever needed information from the given object
+	 * called when removing threads
+	 * @param currentThread
+	 */
+	public abstract void removeFrom(GameThread currentThread);
 }

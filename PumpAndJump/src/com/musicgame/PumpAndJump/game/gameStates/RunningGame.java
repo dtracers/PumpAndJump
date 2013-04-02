@@ -105,12 +105,21 @@ public class RunningGame extends GameThread
 	}
 
 	@Override
-	public void transferFrom(GameThread currentThread)
+	public void switchFrom(GameThread currentThread)
 	{
 		if(currentThread instanceof PauseGame && paused)
 		{
 			paused = false;
 		}
+	}
+
+
+	@Override
+	public void addFrom(GameThread currentThread) {
+	}
+
+	@Override
+	public void removeFrom(GameThread currentThread) {
 	}
 
 }

@@ -70,8 +70,17 @@ public class PauseGame extends GameThread
 	public void dispose() {
 	}
 
+
 	@Override
-	public void transferFrom(GameThread currentThread) {
+	public void switchFrom(GameThread currentThread) {
+	}
+
+	@Override
+	public void addFrom(GameThread currentThread) {
+	}
+
+	@Override
+	public void removeFrom(GameThread currentThread) {
 	}
 
 }
