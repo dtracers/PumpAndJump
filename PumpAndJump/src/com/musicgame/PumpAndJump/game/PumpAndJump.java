@@ -108,7 +108,7 @@ public class PumpAndJump extends Game
 	 * @param switchTo
 	 * @return
 	 */
-	static GameThread getThread(ThreadName switchTo)
+	private static GameThread getThread(ThreadName switchTo)
 	{
 		switch(switchTo)
 		{
@@ -119,5 +119,13 @@ public class PumpAndJump extends Game
 			case  DemoGame:		return demoGameThread;
 		}
 		return null;
+	}
+
+	public void dispose()
+	{
+		for(ThreadName name: ThreadName.values())
+		{
+			getThread(name).dispose();
+		}
 	}
 }
