@@ -4,9 +4,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Intersector;
 
+
+
+
 public abstract class GameObject
 {
-	Polygon hull;// store points as Furlongs
+	Polygon hull;
 
 	public GameObject()
 	{
