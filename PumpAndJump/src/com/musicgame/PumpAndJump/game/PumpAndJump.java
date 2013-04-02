@@ -1,28 +1,8 @@
 package com.musicgame.PumpAndJump.game;
 
-/*import java.util.Iterator;
-
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;*/
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
 import com.musicgame.PumpAndJump.game.gameStates.PreGame;
@@ -30,27 +10,30 @@ import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class PumpAndJump extends Game
 {
-	Screen gameScreen;
-	MainMenuScreen menuScreen;
-	
-	//private static PumpAndJump instance;
-	/*private static PreGame preGameThread = new PreGame();
+	//Screen gameScreen;
+	//MainMenuScreen menuScreen;
+
+	private static PumpAndJump instance;
+	private static PreGame preGameThread = new PreGame();
 	private static PostGame postGameThread = new PostGame();
 	private static RunningGame runningGameThread = new RunningGame();
-	private static PauseGame pauseGameThread = new PauseGame();*/
+	private static PauseGame pauseGameThread = new PauseGame();
+
+	/*
 	@Override
 	public void create()
 	{
 		gameScreen= new GameScreen();
 		menuScreen = new MainMenuScreen(this);
 		setScreen(menuScreen);
-		   
+
 	}
-	//@Override
-	/*public void create()
+	*/
+	@Override
+	public void create()
 	{
 		switchThread("PreGame",null);
-	}*/
+	}
 
 	/**
 	 * Ends the previous thread and switches to the given thread
@@ -63,13 +46,13 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	/*static void switchThread(String switchTo,GameThread currentThread)
+	public static void switchThread(String switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
 		temp.transferFrom(currentThread);
 		Gdx.input.setInputProcessor(temp);
-		PumpAndJump.instance.setScreen(temp);
-	}*/
+	//	PumpAndJump.instance.setScreen(temp);
+	}
 
 	/**
 	 *
@@ -81,7 +64,7 @@ public class PumpAndJump extends Game
 	 * @param switchTo
 	 * @return
 	 */
-	/*static GameThread getThread(String switchTo)
+	static GameThread getThread(String switchTo)
 	{
 		if(switchTo.equalsIgnoreCase("PreGame"))
 		{
@@ -97,7 +80,7 @@ public class PumpAndJump extends Game
 			return pauseGameThread;
 		}
 		return null;
-	}*/
+	}
 
 
 }

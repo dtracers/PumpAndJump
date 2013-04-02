@@ -24,6 +24,9 @@ public class RunningGame extends GameThread
 		return time;
 	}
 
+	/**
+	 * Run method happens while the game is running
+	 */
 	 @Override
 	 public void run()
 	 {
