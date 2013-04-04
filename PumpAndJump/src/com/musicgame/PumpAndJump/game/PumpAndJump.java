@@ -23,12 +23,6 @@ public class PumpAndJump extends Game
 	static PumpAndJump instance;
 	static ArrayList<GameThread> runningThreads;
 
-	private static PreGame preGameThread;
-	private static PostGame postGameThread;
-	private static RunningGame runningGameThread;
-	private static PauseGame pauseGameThread;
-	private static DemoGame demoGameThread;
-
 	/*
 	@Override
 	public void create()
@@ -166,4 +160,11 @@ public class PumpAndJump extends Game
 			getThread(name).dispose();
 		}
 	}
+
+	//the game threads are at the bottom
+	private static PreGame preGameThread;
+	private static PostGame postGameThread;
+	private static RunningGame runningGameThread;
+	private static PauseGame pauseGameThread;
+	private static DemoGame demoGameThread;
 }
