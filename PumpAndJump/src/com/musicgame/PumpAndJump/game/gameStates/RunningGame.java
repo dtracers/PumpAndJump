@@ -148,6 +148,7 @@ public class RunningGame extends GameThread
 
 	@Override
 	public void unpause() {
+		toWait = false;
 	}
 
 }
