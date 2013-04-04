@@ -11,12 +11,13 @@ import com.badlogic.gdx.audio.io.WavDecoder;
  */
 public class MusicCompiler extends Thread
 {
-	String fileName;
-	Decoder mysounddecoder;
+	String fileName = "drop.wav";
+	Decoder decoder;
+	//do frame stuff here
 
 	public void loadSound()
 	{
-		mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
+		decoder = new WavDecoder(Gdx.files.internal(fileName));
 	}
 
 	/**
