@@ -113,6 +113,7 @@ public class PumpAndJump extends Game
 		GameThread temp = getThread(switchTo);
 		temp.addFrom(currentThread);
 		runningThreads.add(temp);
+		Gdx.input.setInputProcessor(temp);
 	}
 
 	/**
@@ -131,6 +132,8 @@ public class PumpAndJump extends Game
 		GameThread temp = getThread(switchTo);
 		temp.removeFrom(currentThread);
 		runningThreads.remove(temp);
+		if(runningThreads.size()>=1)
+			Gdx.input.setInputProcessor(runningThreads.get(runningThreads.size()-1));
 	}
 
 	/**
