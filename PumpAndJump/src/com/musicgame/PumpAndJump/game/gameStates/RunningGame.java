@@ -9,6 +9,7 @@ public class RunningGame extends GameThread
 {
 	MusicCompiler compiler;
 	long time;
+	long start = 0;
 	boolean toWait = false;
 	boolean jumping = false,ducking = false;
 	boolean paused = false;
@@ -34,13 +35,23 @@ public class RunningGame extends GameThread
 	 public void run()
 	 {
 		 time = System.currentTimeMillis();
-
-		 if(toWait)
-			 myWait();
+		 start = System.currentTimeMillis();
+		 while(true)
+		 {
+			 time = System.currentTimeMillis() - start;
+			 if(toWait)
+				 myWait();
+			 try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		 }
 	 }
 
 	@Override
 	public boolean keyDown(int keycode) {
+		myNotify();
 		return false;
 	}
 
@@ -56,6 +67,7 @@ public class RunningGame extends GameThread
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		toWait = true;
 		return false;
 	}
 
@@ -89,6 +101,7 @@ public class RunningGame extends GameThread
 	@Override
 	public void render(float delta)
 	{
+		System.out.println(time);
 	}
 
 	@Override
@@ -113,21 +126,28 @@ public class RunningGame extends GameThread
 		if(currentThread instanceof PauseGame && paused)
 		{
 			paused = false;
+			this.notify();
 		}
 		if(currentThread instanceof PreGame)
 		{
 			compiler = new MusicCompiler();
+			this.start();
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
 	}
 
 
 	@Override
-	public void addFrom(GameThread currentThread) {
+	public void addFrom(GameThread currentThread)
+	{
 	}
 
 	@Override
 	public void removeFrom(GameThread currentThread) {
+	}
+
+	@Override
+	public void unpause() {
 	}
 
 }

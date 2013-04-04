@@ -82,7 +82,7 @@ public class PreGame extends GameThread
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
-					button.setText("Good job!"); PumpAndJump.switchThread(ThreadName.DemoGame, PreGame.this);//mygame.setScreen(mygame.gameScreen);
+					button.setText("Good job!"); PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);//mygame.setScreen(mygame.gameScreen);
 				}
 			});
 
@@ -178,6 +178,10 @@ public class PreGame extends GameThread
 
 	@Override
 	public void removeFrom(GameThread currentThread) {
+	}
+
+	@Override
+	public void unpause() {
 	}
 
 }

@@ -308,4 +308,8 @@ public class DemoGame extends GameThread
 	public void removeFrom(GameThread currentThread) {
 	}
 
+	@Override
+	public void unpause() {
+	}
+
 }

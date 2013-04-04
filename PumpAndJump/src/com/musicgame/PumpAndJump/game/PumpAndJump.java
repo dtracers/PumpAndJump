@@ -161,7 +161,8 @@ public class PumpAndJump extends Game
 	{
 		for(ThreadName name: ThreadName.values())
 		{
-			getThread(name).dispose();
+			if(getThread(name)!=null)
+				getThread(name).dispose();
 		}
 	}
 

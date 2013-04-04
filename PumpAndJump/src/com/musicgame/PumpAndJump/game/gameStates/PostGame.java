@@ -77,4 +77,8 @@ public class PostGame extends GameThread
 	public void removeFrom(GameThread currentThread) {
 	}
 
+	@Override
+	public void unpause() {
+	}
+
 }

@@ -29,6 +29,17 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 		}
 	}
 
+	public void myNotify()
+	{
+		synchronized(this)
+		{
+			unpause();
+			this.notify();
+		}
+	}
+
+	public abstract void unpause();
+
 	/**
 	 * The calling object will get whatever ever needed information from the given object
 	 * called when switching threads
