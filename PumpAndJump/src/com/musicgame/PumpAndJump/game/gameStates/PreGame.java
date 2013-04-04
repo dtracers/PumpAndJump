@@ -41,7 +41,6 @@ public class PreGame extends GameThread
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
@@ -168,7 +167,9 @@ public class PreGame extends GameThread
 	}
 
 	@Override
-	public void switchFrom(GameThread currentThread) {
+	public void switchFrom(GameThread currentThread)
+	{
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override

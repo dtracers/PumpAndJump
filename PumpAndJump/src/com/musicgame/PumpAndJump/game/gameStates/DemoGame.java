@@ -281,15 +281,23 @@ public class DemoGame extends GameThread
 	public void dispose() {
 		// TODO Auto-generated method stub
 	      // dispose of all the native resources
+		if(dropImage!=null)
 	      dropImage.dispose();
+		if(bucketImage!=null)
 	      bucketImage.dispose();
+		if(dropSound!=null)
 	      dropSound.dispose();
+		if(rainMusic!=null)
 	      rainMusic.dispose();
+		if(batch!=null)
 	      batch.dispose();
 	}
 
 	@Override
-	public void switchFrom(GameThread currentThread) {
+	public void switchFrom(GameThread currentThread)
+	{
+		System.out.println("SWITCHING! THREAD");
+		show();
 	}
 
 	@Override

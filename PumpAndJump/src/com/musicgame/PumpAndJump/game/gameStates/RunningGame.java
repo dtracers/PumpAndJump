@@ -2,9 +2,11 @@ package com.musicgame.PumpAndJump.game.gameStates;
 
 import com.badlogic.gdx.Gdx;
 import com.musicgame.PumpAndJump.game.GameThread;
+import com.musicgame.musicCompiler.MusicCompiler;
 
 public class RunningGame extends GameThread
 {
+	MusicCompiler compiler;
 	long time;
 	boolean toWait = false;
 	boolean jumping = false,ducking = false;

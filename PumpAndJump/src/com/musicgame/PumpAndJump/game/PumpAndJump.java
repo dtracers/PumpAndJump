@@ -20,13 +20,14 @@ public class PumpAndJump extends Game
 
 	//MainMenuScreen menuScreen;
 
+	static PumpAndJump instance;
 	static ArrayList<GameThread> runningThreads;
 
-	private static PreGame preGameThread = new PreGame();
-	private static PostGame postGameThread = new PostGame();
-	private static RunningGame runningGameThread = new RunningGame();
-	private static PauseGame pauseGameThread = new PauseGame();
-	private static DemoGame demoGameThread = new DemoGame();
+	private static PreGame preGameThread;
+	private static PostGame postGameThread;
+	private static RunningGame runningGameThread;
+	private static PauseGame pauseGameThread;
+	private static DemoGame demoGameThread;
 
 	/*
 	@Override
@@ -41,13 +42,27 @@ public class PumpAndJump extends Game
 	@Override
 	public void create()
 	{
-		switchThread(ThreadName.PreGame,null);
-
+		instance = this;
+		runningThreads = new ArrayList<GameThread>();
 		gameScreen = new GameScreen();
 		this.setScreen(gameScreen);
 
 		input = new GameInput();
 		Gdx.input.setInputProcessor(input);
+
+		initialize();
+
+		switchThread(ThreadName.PreGame,null);
+
+	}
+
+	private void initialize()
+	{
+		preGameThread = new PreGame();
+		postGameThread = new PostGame();
+		runningGameThread = new RunningGame();
+		pauseGameThread = new PauseGame();
+		demoGameThread = new DemoGame();
 	}
 
 	/**
@@ -64,8 +79,22 @@ public class PumpAndJump extends Game
 	public static void switchThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
+		Gdx.input.setInputProcessor(temp);
+		instance.setScreen(temp);
 		temp.switchFrom(currentThread);
+		clearThreads(currentThread);
+		runningThreads.add(temp);
+
+	}
+
+	private static void clearThreads(GameThread currentThread)
+	{
+		for(GameThread running:runningThreads)
+		{
+			running.removeFrom(currentThread);
+		}
 		runningThreads.clear();
+		runningThreads = new ArrayList<GameThread>();
 	}
 
 	/**
