@@ -80,7 +80,7 @@ public class PumpAndJump extends Game
 	{
 		GameThread temp = getThread(switchTo);
 		Gdx.input.setInputProcessor(temp);
-		instance.setScreen(temp);
+	//	instance.setScreen(temp);
 		temp.switchFrom(currentThread);
 		clearThreads(currentThread);
 		runningThreads.add(temp);
