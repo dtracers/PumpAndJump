@@ -21,8 +21,8 @@ public class TestIntersectionUtil {
 		
 		float [] Result=IntersectionUtil.Vector2ToFloat(TestCase);
 		
+		assertNotNull(ErrorMessage+"Returning Null Array",Result);
 		assertEquals(ErrorMessage+"Invalid Array Return Length",ExpResult.length,Result.length);
-		assertNotNull(ErrorMessage+"Returning Null Array");
 		for(int i=0;i<ExpResult.length;i++){
 			assertEquals(ErrorMessage+"Values Improperly Set",ExpResult[i],Result[i],.00001);
 		}
@@ -33,7 +33,23 @@ public class TestIntersectionUtil {
 
 	@Test
 	public void testFloatToVector2() {
-		fail("Not yet implemented");
+		float [] OddTest={0};
+		float [] TestCase={1,2,3,4};
+		Vector2[] ExpResult={new Vector2(1,2),new Vector2(3,4)};
+		String ErrorMessage="IntersectionUtil::testFloatToVector2:";
+		
+		Vector2[] Result=IntersectionUtil.FloatToVector2(TestCase);
+		assertEquals(ErrorMessage+"Invalid return length",ExpResult.length,Result.length);
+		assertNotNull(ErrorMessage+"Returning Null Array",Result);
+		for(int i=0;i<Result.length;i++){
+			assertEquals(ErrorMessage+"Invalid x-Value in Array",ExpResult[i].x,Result[i].x,.00001);
+			assertEquals(ErrorMessage+"Invalid y-Value in Array",ExpResult[i].y,Result[i].y,.00001);
+		}
+		
+		assertNull(ErrorMessage+"Returning non-null values with odd length input arrays",IntersectionUtil.FloatToVector2(OddTest));
+		
+		exception.expect(RuntimeException.class);
+		IntersectionUtil.FloatToVector2(null);
 	}
 
 	@Test
