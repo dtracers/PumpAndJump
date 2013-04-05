@@ -184,7 +184,6 @@ public class DemoGame extends GameThread
 	      rainMusic.play();
 
 	      mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
-
 	      // create the camera and the SpriteBatch
 	      camera = new OrthographicCamera();
 	      camera.setToOrtho(false, 800, 480);

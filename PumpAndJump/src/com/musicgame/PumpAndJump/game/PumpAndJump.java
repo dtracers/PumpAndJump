@@ -12,9 +12,11 @@ import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
 import com.musicgame.PumpAndJump.game.gameStates.PreGame;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
+import com.musicgame.musicCompiler.MusicInputStream;
 
 public class PumpAndJump extends Game
 {
+	public static MusicInputStream inputStream;
 	Screen gameScreen;
 	InputProcessor input;
 
