@@ -1,12 +1,11 @@
 package com.musicgame.PumpAndJump.game;
 
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Array;
 import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
@@ -23,7 +22,7 @@ public class PumpAndJump extends Game
 	//MainMenuScreen menuScreen;
 
 	static PumpAndJump instance;
-	static ArrayList<GameThread> runningThreads;
+	static Array<GameThread> runningThreads;
 
 	/*
 	@Override
@@ -39,7 +38,7 @@ public class PumpAndJump extends Game
 	public void create()
 	{
 		instance = this;
-		runningThreads = new ArrayList<GameThread>();
+		runningThreads = new Array<GameThread>();
 		gameScreen = new GameScreen();
 		this.setScreen(gameScreen);
 
@@ -90,7 +89,7 @@ public class PumpAndJump extends Game
 			running.removeFrom(currentThread);
 		}
 		runningThreads.clear();
-		runningThreads = new ArrayList<GameThread>();
+		runningThreads = new Array<GameThread>();
 	}
 
 	/**
@@ -127,10 +126,10 @@ public class PumpAndJump extends Game
 	{
 		GameThread temp = getThread(switchTo);
 		temp.removeFrom(currentThread);
-		runningThreads.remove(temp);
-		if(runningThreads.size()>=1)
+		runningThreads.removeValue(temp, true);
+		if(runningThreads.size>=1)
 		{
-			GameThread newTopThread = runningThreads.get(runningThreads.size()-1);
+			GameThread newTopThread = runningThreads.get(runningThreads.size-1);
 			temp.switchFrom(newTopThread);
 			Gdx.input.setInputProcessor(newTopThread);
 		}

@@ -1,7 +1,5 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.io.WavDecoder;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.musicCompiler.MusicCompiler;
 
