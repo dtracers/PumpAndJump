@@ -1,4 +1,4 @@
-package com.musicgame.musicCompiler;
+package com.musicgame.PumpAndJump.Util;
 
 public abstract class MusicInputStream
 {

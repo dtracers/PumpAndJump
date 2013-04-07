@@ -1,6 +1,6 @@
 package com.musicgame.PumpAndJump.music;
 
-import com.musicgame.musicCompiler.MusicInputStream;
+import com.musicgame.PumpAndJump.Util.MusicInputStream;
 
 public class DesktopMusicInputStream extends MusicInputStream {
 
