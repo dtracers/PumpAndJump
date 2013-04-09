@@ -8,7 +8,7 @@ import java.io.InputStream;
 public abstract class InputDecoder
 {
 	protected int overlap = 2;
-	protected InputStream din;
+	public InputStream din;
 	protected double spectralScale;
 	public int frameSize = 42314;
 	protected float sampleRate;
@@ -16,7 +16,7 @@ public abstract class InputDecoder
 	{
 		this.spectralScale = spectralScale;
 	}
-	
+
 	public static InputDecoder createInputDecoder( double spectralScale, File file )
 	{
 		if( file.getName().endsWith(".wav") || file.getName().endsWith(".aif") )
@@ -28,7 +28,7 @@ public abstract class InputDecoder
 			return new MP3Decoder( spectralScale, file );
 		}
 
-		return null;
+		return new TestDecoder(spectralScale,file);
 	}
 
 	public void setFrameSize( float sampleRate )
@@ -45,7 +45,7 @@ public abstract class InputDecoder
 	 * Creates the AuddioStream from the given file
 	 * it will also set the sampleRate at this point
 	 */
-	protected abstract void createAudioStream(File file);
+	public abstract void createAudioStream(File file);
 
 	/**
 	 * uses the created audioStream to read and return the entire array

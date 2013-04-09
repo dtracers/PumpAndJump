@@ -25,7 +25,7 @@ public class WavDecoder extends InputDecoder{
 
 
 	@Override
-	protected void createAudioStream(File file)
+	public void createAudioStream(File file)
 	{
 		AudioFormat desiredFormat = AUDIO_FORMAT;
 		this.sampleRate = desiredFormat.getSampleRate();

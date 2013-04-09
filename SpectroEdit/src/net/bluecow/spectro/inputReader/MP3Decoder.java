@@ -24,7 +24,7 @@ public class MP3Decoder extends InputDecoder
 
 
 	@Override
-	protected void createAudioStream(File file)
+	public void createAudioStream(File file)
 	{	
 		AudioInputStream ain = null;
 		try{
