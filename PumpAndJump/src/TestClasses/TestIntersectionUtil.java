@@ -56,7 +56,7 @@ public class TestIntersectionUtil {
 	@Test
 	public void testCreateConvexHull() {
 		//need more info to create Valid test case
-		float [] TestArray={1.0f,2.0f,3.0f,4.0f};
+		float [] TestArray={1.0f,1.0f,3.0f,9.0f,5.0f,25.0f};
 		Polygon TestCase=new Polygon(TestArray);
 		String ErrorMessage="IntersectionUtil::CreateConvexHull-";
 		float [] Result=IntersectionUtil.createConvexHull(TestCase);

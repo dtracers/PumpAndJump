@@ -3,6 +3,8 @@ package com.musicgame.PumpAndJump.Util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.Assert;
+
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
@@ -13,7 +15,7 @@ public class IntersectionUtil {
 	 */
 	public static void main(String[] args) {
 		// TODO Testing algorithms
-		float[] fpoints = { 0.0f, 0.0f, 2.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 2.0f };
+		float[] fpoints = { 1.0f, 1.0f, 3.0f, 9.0f, 5.0f, 25.0f};
 		Vector2[] points = FloatToVector2( fpoints );
 		
 		Vector2[] ch= grahamScan( points );
@@ -66,7 +68,7 @@ public class IntersectionUtil {
 	public static float[] createConvexHull( Polygon p )
 	{
 		Vector2[] points = FloatToVector2( p.getVertices() );
-		
+		//Assert.assertTrue(points.length>2);
 		Vector2[] convexHullPoints = grahamScan( points );
 		
 		float[] convexHullFloats = Vector2ToFloat( convexHullPoints );
