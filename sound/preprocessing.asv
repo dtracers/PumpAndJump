@@ -1,0 +1,76 @@
+function samples = preprocessing(file)
+%       proproess input file.
+%       file : input file
+%       samples: new samples
+[x,fs] = wavread(file);
+output = SSBoll79(x,fs,0.5);
+figure
+plot(output)
+title([file]);
+%% locate the start and end position of signal
+threshold = 10;
+unit = fs/1000;
+frameSize = 50;
+advanced = 10;
+noiseFrame = 300;
+
+output1 = sort(abs(output),'descend');
+output2 = output1(11:numel(output1));
+clear output;
+output = output2;
+clear output2;
+
+% calculate the mean power of noise
+sum = 0;
+for i=1:noiseFrame*unit
+    sum = sum + output(i)*output(i);
+end
+
+m = sum/(noiseFrame*unit);
+
+% locate the start index
+startIndex = frameSize * unit;
+while startIndex < numel(output) - frameSize * unit
+    framePower1 = 0;
+    framePower2 = 0;
+    for i=startIndex:startIndex + round(frameSize*unit/2)
+        framePower1 = framePower1 + output(i)*output(i);
+    end
+    for i=startIndex + round(frameSize*unit/2):startIndex+frameSize*unit
+        framePower2 = framePower2 + output(i) * output(i);
+    end
+    if (framePower1/(frameSize*unit/2) > (10* m)) && (framePower2/(frameSize*unit/2) > (10* m))
+        break;
+    end 
+    startIndex = startIndex + round(advanced *unit);
+end
+
+% locate the end index
+endIndex = numel(output) - noiseFrame*unit;
+while endIndex > startIndex
+    framePower1 = 0;
+    framePower2 = 0;
+    for i = endIndex: endIndex + round(frameSize*unit/2)
+        framePower1 = framePower1 + output(i)*output(i);
+    end
+    for i= endIndex + round(frameSize*unit/2):endIndex + frameSize*unit
+        framePower2 = framePower2 + output(i) * output(i);
+    end
+    if (framePower1/(frameSize*unit/2) > (10* m))&&(framePower2/(frameSize*unit/2) > (10* m))
+        break;
+    end 
+    endIndex = endIndex - round(advanced *unit);
+end
+
+% normalization
+data = output(startIndex:endIndex+frameSize*unit);
+sortedData = sort(abs(data),'descend');
+maxAmplitude = mean(sortedData(1:20));
+maxThreshold = 1;
+clear sortedData;
+samples = data * maxThreshold/maxAmplitude;
+
+
+figure
+plot(samples);
+title([file]);

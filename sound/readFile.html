@@ -1,0 +1,132 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>readFile</title><meta name="generator" content="MATLAB 7.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2011-10-15"><meta name="DC.source" content="readFile.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">plot the sigmal in the time-domain</a></li><li><a href="#3">analyze the signal in the frequency domain</a></li></ul></div><pre class="codeinput">x = wavread(<span class="string">'training/gesture_0/sample_0.wav'</span>);
+x = SSBoll79(x,44100,0.5);
+length = size(x,1);
+fs = 44100;                <span class="comment">% sample rate</span>
+</pre><pre class="codeoutput">The shift length have to be an integer as it is the number of samples.
+shift length is fixed to 440
+</pre><h2>plot the sigmal in the time-domain<a name="2"></a></h2><pre class="codeinput">figure;
+t = (0:length-1)*(1/fs);   <span class="comment">% time range</span>
+plot(t,x);  grid <span class="string">on</span>
+xlabel(<span class="string">'time(second)'</span>);
+ylabel(<span class="string">'amplitude'</span>);
+title(<span class="string">'signal in time domain'</span>);
+</pre><img vspace="5" hspace="5" src="readFile_01.png" alt=""> <h2>analyze the signal in the frequency domain<a name="3"></a></h2><pre class="codeinput">m = 4096;                   <span class="comment">% frame size</span>
+num_frames = length/m;
+num_plot_rows = length/(m*3)+1;
+index = 1;
+
+<span class="keyword">for</span> i=1:num_frames
+    y = fft(x(index:index+m-1));
+    y = real(y);
+    index = index + m;
+    <span class="comment">% plot in the frequency domain</span>
+    f = (0:m-1)*(fs/m);     <span class="comment">% frequency range</span>
+    y = abs(y);
+
+    figure
+    plot(f(1,:),y(:,1)); grid <span class="string">on</span>
+    xlabel(<span class="string">'frequency'</span>);
+    ylabel(<span class="string">'power'</span>);
+    title(<span class="string">'frequency analysis'</span>);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="readFile_02.png" alt=""> <img vspace="5" hspace="5" src="readFile_03.png" alt=""> <img vspace="5" hspace="5" src="readFile_04.png" alt=""> <img vspace="5" hspace="5" src="readFile_05.png" alt=""> <img vspace="5" hspace="5" src="readFile_06.png" alt=""> <img vspace="5" hspace="5" src="readFile_07.png" alt=""> <img vspace="5" hspace="5" src="readFile_08.png" alt=""> <img vspace="5" hspace="5" src="readFile_09.png" alt=""> <img vspace="5" hspace="5" src="readFile_10.png" alt=""> <img vspace="5" hspace="5" src="readFile_11.png" alt=""> <img vspace="5" hspace="5" src="readFile_12.png" alt=""> <img vspace="5" hspace="5" src="readFile_13.png" alt=""> <img vspace="5" hspace="5" src="readFile_14.png" alt=""> <img vspace="5" hspace="5" src="readFile_15.png" alt=""> <img vspace="5" hspace="5" src="readFile_16.png" alt=""> <img vspace="5" hspace="5" src="readFile_17.png" alt=""> <img vspace="5" hspace="5" src="readFile_18.png" alt=""> <img vspace="5" hspace="5" src="readFile_19.png" alt=""> <img vspace="5" hspace="5" src="readFile_20.png" alt=""> <img vspace="5" hspace="5" src="readFile_21.png" alt=""> <img vspace="5" hspace="5" src="readFile_22.png" alt=""> <img vspace="5" hspace="5" src="readFile_23.png" alt=""> <img vspace="5" hspace="5" src="readFile_24.png" alt=""> <img vspace="5" hspace="5" src="readFile_25.png" alt=""> <img vspace="5" hspace="5" src="readFile_26.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.12<br></p></div><!--
+##### SOURCE BEGIN #####
+x = wavread('training/gesture_0/sample_0.wav');
+x = SSBoll79(x,44100,0.5);
+length = size(x,1);
+fs = 44100;                % sample rate
+%% plot the sigmal in the time-domain
+figure;
+t = (0:length-1)*(1/fs);   % time range
+plot(t,x);  grid on
+xlabel('time(second)');
+ylabel('amplitude');
+title('signal in time domain');
+
+%% analyze the signal in the frequency domain
+m = 4096;                   % frame size
+num_frames = length/m;
+num_plot_rows = length/(m*3)+1;
+index = 1;
+
+for i=1:num_frames
+    y = fft(x(index:index+m-1));
+    y = real(y);
+    index = index + m;
+    % plot in the frequency domain
+    f = (0:m-1)*(fs/m);     % frequency range
+    y = abs(y);
+    
+    figure
+    plot(f(1,:),y(:,1)); grid on
+    xlabel('frequency');
+    ylabel('power');
+    title('frequency analysis');
+end
+##### SOURCE END #####
+--></body></html>
