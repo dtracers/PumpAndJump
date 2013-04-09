@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class LevelInterpreter
 {
 	/**
-	 * Returns the gameobject specfied in the string inputline
+	 * Returns the GameObject specified in inputLine
 	 * Input line is supposed to begin with either the characters j or s
 	 * to indicate a jump or a slide obstacle respectively.
 	 * This is followed by a double to indicate
@@ -16,20 +16,24 @@ public class LevelInterpreter
 	 * If  slide obstacle then additional
 	 * double added to indicate when slide
 	 * should finish.
-	 * If inputline is an invalid string then returns null
+	 * If inputLine is an invalid string then returns null
+	 * If inputLine is null throws runtimeException
 	 * @param inputLine
 	 * @return
 	 */
 	public GameObject getNextObject(String inputLine){
-		String jumpPattern="j \\d+(\\.\\d+)? *";
-		String slidePattern="s \\d+(\\.\\d+)? \\d+(\\.\\d+)? *";
-		if(!inputLine.matches(jumpPattern)||!inputLine.matches(slidePattern))
-			return null;
-		if(inputLine.charAt(0)=='j'){
-			return null;
+		String jumpPattern="j \\d+(\\.\\d+)?\\s*";
+		String slidePattern="s \\d+(\\.\\d+)? \\d+(\\.\\d+)?\\s*";
+		if(inputLine.matches(jumpPattern)){
+			String[] input=inputLine.split(" ");
+			double startTime=Double.parseDouble(input[1]);
+			return new JumpObstacle(startTime);
 		}
-		else if(inputLine.charAt(0)=='s'){
-			return null;
+		if(inputLine.matches(slidePattern)){
+			String[] input=inputLine.split(" ");
+			double startTime=Double.parseDouble(input[1]);
+			double endTime=Double.parseDouble(input[2]);
+			return new DuckObstacle(startTime,endTime);
 		}
 		return null;
 	}
