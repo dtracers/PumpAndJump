@@ -14,7 +14,7 @@ public class LevelInterpreter
 	 * @param inputLine
 	 * @return
 	 */
-	public GameObject getNextObject(String inputLine){
+	public static GameObject getNextObject(String inputLine){
 		String jumpPattern="j \\d+(\\.\\d+)?\\s*";
 		String slidePattern="s \\d+(\\.\\d+)? \\d+(\\.\\d+)?\\s*";
 		if(inputLine.matches(jumpPattern)){
@@ -37,7 +37,7 @@ public class LevelInterpreter
 	 * @return
 	 * @throws FileNotFoundException 
 	 */
-	public ArrayList<GameObject> loadLevel() throws FileNotFoundException
+	public static ArrayList<GameObject> loadLevel() throws FileNotFoundException
 	{
 		ArrayList<GameObject> Level=new ArrayList <GameObject>();
 		File f= new File("resources");
