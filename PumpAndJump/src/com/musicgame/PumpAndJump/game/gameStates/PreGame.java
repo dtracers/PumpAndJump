@@ -30,10 +30,6 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 public class PreGame extends GameThread
 {
 
-	// setup the dimensions of the menu buttons
-    private static final float BUTTON_WIDTH = 300f;
-    private static final float BUTTON_HEIGHT = 60f;
-    private static final float BUTTON_SPACING = 10f;
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
@@ -50,6 +46,8 @@ public class PreGame extends GameThread
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
+		//table.debug(); // turn on all debug lines (table, cell, and widget)
+		//table.debugTable(); // turn on only table lines
 		table.setFillParent(true);
 		stage.addActor(table);
 
@@ -77,16 +75,41 @@ public class PreGame extends GameThread
 					}
 				});
 		final TextButton optionsButton = new TextButton("Options", uiSkin);
+		optionsButton.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						PumpAndJump.switchThread(ThreadName.OptionsGame, PreGame.this);
+					}
+				});
 		final TextButton instructionsButton = new TextButton("Instructions", uiSkin);
-		
-		table.add(startGameButton);
+		instructionsButton.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						PumpAndJump.switchThread(ThreadName.InstructionGame, PreGame.this);
+					}
+				});
+		final TextButton exitButton = new TextButton("Exit Game", uiSkin);
+		exitButton.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						System.exit(0);
+					}
+				});
+		table.add(startGameButton).size(250,50).pad(5);
 		table.row();
-		table.add(optionsButton);
+		table.add(optionsButton).size(250,50).pad(5);
 		table.row();
-		table.add(instructionsButton);
+		table.add(instructionsButton).size(250,50).pad(5);
 		table.row();
-		table.add(aboutButton);
-
+		table.add(aboutButton).size(250,50).pad(5);
+		table.row();
+		table.add(exitButton).size(250,50).pad(5);
 
 		//Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
 		//table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);

@@ -62,6 +62,8 @@ public class PumpAndJump extends Game
 		pauseGameThread = new PauseGame();
 		demoGameThread = new DemoGame();
 		aboutGameThread = new AboutGame();
+		inctructionsGameThread = new InstructionGame();
+		optionsGameThread = new OptionsGame();
 	}
 
 	/**
