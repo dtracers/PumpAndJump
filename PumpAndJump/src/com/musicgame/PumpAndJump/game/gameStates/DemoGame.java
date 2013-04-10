@@ -20,7 +20,7 @@ import com.musicgame.PumpAndJump.game.GameThread;
 public class DemoGame extends GameThread
 {
 	Texture dropImage;
-	Texture bucketImage;
+	Texture notedudeImage;
 	Sound dropSound;
 	Music rainMusic;
 	SpriteBatch batch;
@@ -113,7 +113,11 @@ public class DemoGame extends GameThread
 	    // begin a new batch and draw the bucket and
 	    // all drops
 	    batch.begin();
-	    batch.draw(bucketImage, bucket.x, bucket.y);
+	    int slidenum = (int)(bucket.x/8)%12;
+	    //if(slidenum<10)
+	    batch.draw(notedudeImage, bucket.x, bucket.y, 25*(slidenum), 0, 25, 50);
+	    //else
+	    	//batch.draw(notedudeImage, bucket.x, bucket.y, 25*(slidenum-10), 156, 25, 50);
 	    for(Rectangle raindrop: raindrops) {
 	       batch.draw(dropImage, raindrop.x, raindrop.y);
 	    }
@@ -172,8 +176,8 @@ public class DemoGame extends GameThread
 
 	      // load the images for the droplet and the bucket, 48x48 pixels each
 	      dropImage = new Texture(Gdx.files.internal("droplet.png"));
-	      bucketImage = new Texture(Gdx.files.internal("notedude.png"));
-
+	      
+	      notedudeImage = new Texture(Gdx.files.internal("notedude_walk_animation.png"));
 	      // load the drop sound effect and the rain background "music"
 	     //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
 	      dropSound = Gdx.audio.newSound(Gdx.files.internal("kendrum.mp3"));
@@ -282,8 +286,8 @@ public class DemoGame extends GameThread
 	      // dispose of all the native resources
 		if(dropImage!=null)
 	      dropImage.dispose();
-		if(bucketImage!=null)
-	      bucketImage.dispose();
+		if(notedudeImage!=null)
+	      notedudeImage.dispose();
 		if(dropSound!=null)
 	      dropSound.dispose();
 		if(rainMusic!=null)
