@@ -5,7 +5,7 @@
 #ifndef WAMS_PLAYER
 #define WAMS_PLAYER
 
-#define WAMS_PLAYER_DOF 15
+#define WAMS_PLAYER_DOF 16
 
 namespace WAMS
 { 
@@ -579,11 +579,12 @@ namespace WAMS
 			PlayerHip* hip;
 			bool changed;
 			float** pose;
+			float origY;
 
 			Player( point pos, point angle )
 			{
-
 				hip = new PlayerHip( pos, angle );
+				origY = pos.y;
 
 				hip->scale( 5.0, 5.0, 5.0 );
 
@@ -612,6 +613,8 @@ namespace WAMS
 				pose[ 13 ] = &hip->torso->rightArm->forearm->angle.z;
 
 				pose[ 14 ] = &hip->torso->head->angle.z;
+
+				pose[ 15 ] = &hip->p.y;
 			}
 
 			void setPose( float* a )
