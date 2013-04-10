@@ -12,11 +12,28 @@ public class AnimationUtil {
 
 	}
 	
+	//abs of a float
 	public static float fabs( float f )
 	{
 		if( f < 0 )
 			return -f;
 		return f;
+	}
+	
+	//Linear interpolation, t must be between 0 and 1( inclusive ).
+	public static float lerp( float t, float p1, float p2 )
+	{
+		return p1+(p2-p1)*t;
+	}
+	
+	//A Cubic Hermite spline, t is between p1's time and p2's time , t is  between 0 and 1
+	public static float catmullrom( float t, float p0, float p1, float p2, float p3 )
+	{
+		return ( 0.5f * (
+            (2 * p1 )  +
+            ( (-p0 + p2) * t ) +
+            ( (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t ) +
+            ( (-p0 + 3 * p1 - 3 * p2 + p3) * t * t * t ) ) );
 	}
 
 	public class Point
