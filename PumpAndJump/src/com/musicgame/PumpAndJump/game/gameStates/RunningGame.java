@@ -1,11 +1,15 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
+import java.util.ArrayList;
+
+import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.musicCompiler.MusicCompiler;
 
 public class RunningGame extends GameThread
 {
 	MusicCompiler compiler;
+	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	long time;
 	long start = 0;
 	boolean toWait = false;
