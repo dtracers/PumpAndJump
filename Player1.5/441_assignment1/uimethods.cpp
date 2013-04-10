@@ -44,7 +44,7 @@ using namespace WAMS;
 	float time;
 	int height = 600;
 	int width = 800;
-	float origPos[15];
+	float origPos[WAMS_PLAYER_DOF];
 	FixedPoint* pointer;
 	bool isDragging = false;
 	bool hasChanged = false;
@@ -76,7 +76,7 @@ using namespace WAMS;
 			xm[fp->size()] = ((double)cDistance.distance());//*(double)cDistance.x;
 		}
 
-		for( int i = 0; i < 15; i++ )
+		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
 			xm[ (fp->size()+1) + i ] = abs( (double)(LAMBDA*(origPos[i] - p[i]) ) + .0001 );
 		}
@@ -87,24 +87,6 @@ using namespace WAMS;
 	//	}
 
 		//naturalGod( p, &xm[ (fp->size()+2)*3 ]);
-	}
-
-	void RectMoveEvaluation(double* p, double* xm, int m, int n, void* data)
-	{
-		selectedRect->p = point( (float)p[0], (float)p[1], (float)p[2] );
-
-		if( pointer != NULL )
-		{
-			point cDistance = pointer->fpNow();
-			xm[0] = ((double)cDistance.x);
-			xm[1] = -((double)cDistance.y);
-			xm[2] = ((double)cDistance.z);
-		}
-
-		for( int i = 0; i < 3; i++ )
-		{
-			xm[ i+3 ] = abs( (double)(LAMBDA*(origRect[i] - p[i]) ) + .0001 );
-		}
 	}
 
 	point getIntersection( int* viewport, int x, int y, float* winZ )
@@ -163,8 +145,8 @@ using namespace WAMS;
 		//hl = new HumanLeg( point( 0.0f, 50.0f, 0.0f ), point( 0.0f, 0.0f, 0.0f ), point( 1.0f, 1.0f, 1.0f ) );
 		//hlc = new HumanLegController( hl );
 		pl = new Player( point( ((float)width)/2.0f, ((float)height)/2.0f, 0 ), point( 0.0f, 0.0f, 0.0f ) );
-		//selectedRect = new Rect( point( 0,0,0 ), point( 100, 100, 0 ) );
-		float pos[15];
+		selectedRect = new Rect( point( 0,0,0 ), point( 2000, 100, 0 ) );
+		float pos[WAMS_PLAYER_DOF];
 		pl->getPose( pos );
 		//hlc->getPose( pos );
 		keyframes.push_back( new Keyframe( pos, -1.0f ) );
@@ -241,9 +223,8 @@ using namespace WAMS;
 						{
 							pointer = new FixedPoint( p, &(m->p), &(m->angle) );
 							dragRectPlane = new Plane( p, Vert, Sideways );
-							origRect[0] = (double)( selectedRect->p.x );
-							origRect[1] = (double)( selectedRect->p.y );
-							origRect[2] = (double)( selectedRect->p.z );
+							origRect[0] = (double)( xx );
+							origRect[1] = (double)( yy );
 						}			
 					}
 				}
@@ -268,12 +249,12 @@ using namespace WAMS;
 
 			pointer->p = newInter;
 
-			double p[15];
+			double p[WAMS_PLAYER_DOF];
 			pl->getPose( p );
 			double* x;
-			x = new double[ (1+fp->size()+15) ];
+			x = new double[ (1+fp->size()+WAMS_PLAYER_DOF) ];
 
-			for(unsigned int i=0;i<(int)(1+fp->size()+15);i++)
+			for(unsigned int i=0;i<(int)(1+fp->size()+WAMS_PLAYER_DOF);i++)
 			{
 				x[i] = 0.0;
 			}
@@ -282,49 +263,26 @@ using namespace WAMS;
 			double opts[LM_OPTS_SZ];
 			opts[0] = LM_INIT_MU; opts[1] = 1E-15; opts[2] = 1E-15; opts[3] = 1E-20;
 			opts[4] = LM_DIFF_DELTA;
-			dlevmar_dif( costEvaluation, p, &(*x), 15, (int)(1+fp->size()+15), 100, opts, NULL, NULL, NULL, NULL);
+			dlevmar_dif( costEvaluation, p, &(*x), WAMS_PLAYER_DOF, (int)(1+fp->size()+WAMS_PLAYER_DOF), 100, opts, NULL, NULL, NULL, NULL);
 
 			//cerr<<"IKDone\n";
 			pl->setPose( p );
 
 			delete x;
 		}
+
 		if( dragRectPlane != NULL )
 		{
 			GLint vp[4];// get viewport
 			glGetIntegerv(GL_VIEWPORT, vp);
 
-			Ray r( point( (float)oldX, (float)(height-oldY), -50.0f ), point( 0.0f, 0.0f, -1.0f ) );
+			float x = (float)oldX;
+			float y = (float)(oldY);
 
-			float t = dragRectPlane->intersects( r );
-
-			point newInter =  r.dir.scale(t);
-			newInter = r.p.add( newInter );
-
-			pointer->p = newInter;
-
-			double p[3];
-			p[0] = (double)( selectedRect->p.x );
-			p[1] = (double)( selectedRect->p.y );
-			p[2] = (double)( selectedRect->p.z );
-			double* x;
-			x = new double[ 6 ];
-
-			for(unsigned int i = 0; i < 6 ;i++)
-			{
-				x[i] = 0.0;
-			}
-
-			//cerr<<"IKStart\n";
-			double opts[LM_OPTS_SZ];
-			opts[0] = LM_INIT_MU; opts[1] = 1E-15; opts[2] = 1E-15; opts[3] = 1E-20;
-			opts[4] = LM_DIFF_DELTA;
-			dlevmar_dif( RectMoveEvaluation, p, &(*x), 3,  6 , 100, opts, NULL, NULL, NULL, NULL);
-
-			//cerr<<"IKDone\n";
-			selectedRect->p = point( (float)p[0], (float)p[1], (float)p[2] );
-
-			delete x;
+			selectedRect->p = selectedRect->p.add(point( x - origRect[0], -(y - origRect[1]),  0.0f ));
+			pointer->p = pointer->p.add(point( x - origRect[0], -(y - origRect[1]),  0.0f ));
+			origRect[0] = (double)( x );
+			origRect[1] = (double)( y );
 		}
 	}
 
@@ -505,10 +463,22 @@ using namespace WAMS;
 		}
 	}
 
+	void moveHip( unsigned int changeInTime )
+	{
+		if( mode == MOVE )
+		{
+			if( isPressed('w') )
+				pl->hip->p.y++;
+			if( isPressed('s') )
+				pl->hip->p.y--;
+		}
+	}
+
 	void updateInit()
 	{
 		registerUpdateMethod( update );
 		registerUpdateMethod( animateUpdate );
+		registerUpdateMethod( moveHip );
 		//registerUpdateMethod( camForward );
 		//registerUpdateMethod( camBackward );
 		//registerUpdateMethod( camStrafeRight );
@@ -558,7 +528,7 @@ using namespace WAMS;
 	void reset( int x, int y, int modifiers )
 	{
 		clearFP( x, y, modifiers );
-		float a[ 15 ];
+		float a[ WAMS_PLAYER_DOF ];
 		a[0] = 0.0f;//hip
 		a[1] = -45.0f;//left leg
 			a[2] = -60.0f;
@@ -574,6 +544,7 @@ using namespace WAMS;
 			a[12] = -135.0f;//right arm
 				a[13] = 60.0f;
 			a[14] = 0.0f;//head
+			a[15] = pl->origY;
 		pl->setPose( a );
 	}
 
@@ -589,7 +560,7 @@ using namespace WAMS;
 		cout<<"\n";
 		cout<<"Time:\t";
 		cin>>t;
-		float pos[15];
+		float pos[WAMS_PLAYER_DOF];
 		pl->getPose( pos );
 		//hlc->getPose( pos );
 		keyframes.push_back( new Keyframe( pos, t ) );
@@ -614,19 +585,52 @@ using namespace WAMS;
 		keyframes.push_back( temp );
 
 		ifstream ifs( "ani.dat" );
-		int size = 0;
-		ifs>>size;
-		cout<<size<<"\n";
-		float pos[15];
-		for( int i = 0; i < 15; i++ )
+		int type;
+		ifs>>type;
+
+		int size;
+		float origY = pl->origY;
+
+		if( type >= 0 )
+		{
+			size = type;
+			type = 0;
+			cout<<"Type: "<<type<<endl;
+			cout<<size<<"\n";
+			cout<<"OrigY: "<<origY<<"\n";
+		}
+		else
+		{
+			size;
+			ifs>>size;
+			cout<<"Type: "<<type<<endl;
+			cout<<size<<"\n";
+
+			ifs>>origY;
+			pl->origY = origY;
+			cout<<"OrigY: "<<origY<<"\n";
+		}
+
+		float pos[ WAMS_PLAYER_DOF ];
+
+		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 			pos[i] = 0.0f;
+
 		float t = 0.0f;
+
 		for( int i = 0; i < size; i++ )
 		{
-			for( int j = 0; j < 15; j++ )
+			for( int j = 0; j < WAMS_PLAYER_DOF; j++ )
 			{
-				ifs>>pos[j];
-				cout<<pos[j]<<" ";
+				if( type == 0 && j == 15)
+				{
+					pos[j] = origY;
+				}
+				else
+				{
+					ifs>>pos[j];
+					cout<<pos[j]<<" ";
+				}
 			}
 			ifs>>t;
 			cout<<t<<"\n";
@@ -641,16 +645,19 @@ using namespace WAMS;
 	void printAni( int x, int y, int modifiers )
 	{
 		ofstream ofs( "ani.dat");
-		ofs<<keyframes.size()-1<<"\n";
+
+		ofs<<(-1)<<" "<<keyframes.size()-1<<" "<<pl->origY<<"\n";
+
 		for( int i = 1; i < keyframes.size(); i++ )
 		{
-			for( int j = 0; j < 15; j++ )
+			for( int j = 0; j < WAMS_PLAYER_DOF; j++ )
 			{
 				ofs<<keyframes[i]->p[j]<<" ";
 			}
 			ofs<<keyframes[i]->t;
 			ofs<<"\n";
 		}
+
 		ofs.close();
 	}
 

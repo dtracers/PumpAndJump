@@ -3,7 +3,7 @@ package com.musicgame.PumpAndJump;
 public class DuckObstacle extends GameObject {
 	private double StartTime;
 	private double EndTime;
-	DuckObstacle(double Start,double End){
+	public DuckObstacle(double Start,double End){
 		super();
 		StartTime=Start;
 		EndTime=End;

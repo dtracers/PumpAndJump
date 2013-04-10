@@ -38,7 +38,7 @@ namespace WAMS
 	};
 
 	Rect* selectedRect = NULL;
-	double origRect[3];
+	double origRect[2];
 }
 
 #endif
