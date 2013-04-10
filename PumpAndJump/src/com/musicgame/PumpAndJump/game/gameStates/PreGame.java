@@ -98,7 +98,7 @@ public class PreGame extends GameThread
 				{
 					public void changed(ChangeEvent event, Actor actor)
 					{
-						System.exit(0);
+						Gdx.app.exit();
 					}
 				});
 		table.add(startGameButton).size(250,50).pad(5);
