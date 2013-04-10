@@ -55,10 +55,6 @@ public class PreGame extends GameThread
 
 		// Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
 		final TextButton startGameButton = new TextButton("Start Game!", uiSkin);
-		table.add(startGameButton);
-		table.row();
-		final TextButton aboutButton = new TextButton("About", uiSkin);
-		table.add(aboutButton);
 		// Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
 		// Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
 		// ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
@@ -68,9 +64,29 @@ public class PreGame extends GameThread
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
-					startGameButton.setText("Good job!"); PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);//mygame.setScreen(mygame.gameScreen);
+					PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
 				}
 			});
+		final TextButton aboutButton = new TextButton("About", uiSkin);
+		aboutButton.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						PumpAndJump.switchThread(ThreadName.AboutGame, PreGame.this);
+					}
+				});
+		final TextButton optionsButton = new TextButton("Options", uiSkin);
+		final TextButton instructionsButton = new TextButton("Instructions", uiSkin);
+		
+		table.add(startGameButton);
+		table.row();
+		table.add(optionsButton);
+		table.row();
+		table.add(instructionsButton);
+		table.row();
+		table.add(aboutButton);
+
 
 		//Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
 		//table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
@@ -167,8 +183,4 @@ public class PreGame extends GameThread
 	public void unpause() {
 	}
 
-}
-
-class MyMenuButton extends Actor
-{
 }

@@ -2,6 +2,8 @@ package com.musicgame.PumpAndJump.game.gameStates;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.musicCompiler.MusicCompiler;
@@ -103,6 +105,8 @@ public class RunningGame extends GameThread
 	@Override
 	public void render(float delta)
 	{
+		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		System.out.println(time);
 	}
 
