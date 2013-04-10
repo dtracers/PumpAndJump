@@ -1,6 +1,7 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -33,7 +34,7 @@ public class PreGame extends GameThread
     private static final float BUTTON_WIDTH = 300f;
     private static final float BUTTON_HEIGHT = 60f;
     private static final float BUTTON_SPACING = 10f;
-	Skin skin;
+	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
 
@@ -44,25 +45,8 @@ public class PreGame extends GameThread
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-		skin = new Skin();
-
-		// Generate a 1x1 white texture and store it in the skin named "white".
-		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
-		pixmap.setColor(Color.WHITE);
-		pixmap.fill();
-		skin.add("white", new Texture(pixmap));
-
-		// Store the default libgdx font under the name "default".
-		skin.add("default", new BitmapFont());
-
-		// Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
-		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-		textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-		textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-		textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-		textButtonStyle.font = skin.getFont("default");
-		skin.add("default", textButtonStyle);
+        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+        uiSkin = new Skin( skinFile );
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
@@ -70,37 +54,36 @@ public class PreGame extends GameThread
 		stage.addActor(table);
 
 		// Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
-		final TextButton button = new TextButton("Start Game!", skin);
-		table.add(button);
-
+		final TextButton startGameButton = new TextButton("Start Game!", uiSkin);
+		table.add(startGameButton);
+		table.row();
+		final TextButton aboutButton = new TextButton("About", uiSkin);
+		table.add(aboutButton);
 		// Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
 		// Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
 		// ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
 		// revert the checked state.
-		button.addListener(
+		startGameButton.addListener(
 			new ChangeListener()
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
-					button.setText("Good job!"); PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);//mygame.setScreen(mygame.gameScreen);
+					startGameButton.setText("Good job!"); PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);//mygame.setScreen(mygame.gameScreen);
 				}
 			});
 
-		// Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
-		table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
+		//Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
+		//table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
 	}
 
 	@Override
     public void render(float delta)
 	{
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.act(Math.min(delta, 1 / 30f));
 		stage.draw();
 		Table.drawDebug(stage);
-    	//check for input
-         //if (Gdx.input.justTouched()) // use your own criterion here
-           //  game.setScreen(game.gameScreen);
     }
 
 	@Override
@@ -184,4 +167,8 @@ public class PreGame extends GameThread
 	public void unpause() {
 	}
 
+}
+
+class MyMenuButton extends Actor
+{
 }
