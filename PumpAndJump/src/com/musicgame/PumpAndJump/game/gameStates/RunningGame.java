@@ -1,6 +1,5 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -8,6 +7,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
+import com.musicgame.PumpAndJump.Util.MusicOutputStream;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
@@ -16,6 +16,7 @@ import com.musicgame.musicCompiler.MusicCompiler;
 public class RunningGame extends GameThread
 {
 	MusicCompiler streamer;
+	MusicOutputStream outStreamer;
 	//this is a list of the on screen objects
 	//(by on screen it does include some that are partially off the screen too)
 	//the objects are basically a queue added at the end and removed from the front
