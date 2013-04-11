@@ -35,22 +35,25 @@ public class LevelInterpreter
 	 * Will return an empty array list if no file is found.
 	 * Precondition: The first txt file in the resources folder is the level data
 	 * @return
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException
 	 */
 	public static ArrayList<GameObject> loadLevel() throws FileNotFoundException
 	{
 		ArrayList<GameObject> Level=new ArrayList <GameObject>();
 		File f= new File("resources");
-		for(File inside : f.listFiles()){
-			if(inside.getName().endsWith("txt")){
-				Scanner LevelIn = new Scanner(inside);
-				while(LevelIn.hasNextLine()){
-					GameObject obstacle=getNextObject(LevelIn.nextLine());
-					if(obstacle!=null)
-						Level.add(obstacle);
+		if(f.listFiles()!=null)
+		{
+			for(File inside : f.listFiles()){
+				if(inside.getName().endsWith("txt")){
+					Scanner LevelIn = new Scanner(inside);
+					while(LevelIn.hasNextLine()){
+						GameObject obstacle=getNextObject(LevelIn.nextLine());
+						if(obstacle!=null)
+							Level.add(obstacle);
+					}
+					LevelIn.close();
+					break;
 				}
-				LevelIn.close();
-				break;
 			}
 		}
 		return Level;

@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.musicgame.PumpAndJump.Util.InputDecoder;
 import com.musicgame.PumpAndJump.Util.MusicOutputStream;
 import com.musicgame.PumpAndJump.game.gameStates.AboutGame;
+import com.musicgame.PumpAndJump.game.gameStates.Buffering;
 import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
 import com.musicgame.PumpAndJump.game.gameStates.InstructionGame;
 import com.musicgame.PumpAndJump.game.gameStates.OptionsGame;
@@ -66,6 +67,7 @@ public class PumpAndJump extends Game
 		aboutGameThread = new AboutGame();
 		inctructionsGameThread = new InstructionGame();
 		optionsGameThread = new OptionsGame();
+		bufferingThread = new Buffering();
 	}
 
 	/**
@@ -165,7 +167,7 @@ public class PumpAndJump extends Game
 			case  AboutGame:		return aboutGameThread;
 			case  OptionsGame:		return optionsGameThread;
 			case  InstructionGame:		return inctructionsGameThread;
-
+			case  Buffering:		return bufferingThread;
 		}
 		return null;
 	}
@@ -188,5 +190,6 @@ public class PumpAndJump extends Game
 	private static AboutGame aboutGameThread;
 	private static OptionsGame optionsGameThread;
 	private static InstructionGame inctructionsGameThread;
+	private static Buffering bufferingThread;
 
 }

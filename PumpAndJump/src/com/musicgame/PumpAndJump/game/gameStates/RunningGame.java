@@ -24,7 +24,11 @@ public class RunningGame extends GameThread
 	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
 	long time;
 	long frame;
-	long sampleRate;
+	//the current frame that the sound player is at
+	long soundFrame = 0;
+	//the distance between the frame
+	int bufferDistance = 10;
+	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;
 	boolean jumping = false,ducking = false;
@@ -50,6 +54,10 @@ public class RunningGame extends GameThread
 	 @Override
 	 public void run()
 	 {
+		 if(compiler.currentFrame-soundFrame<bufferDistance)
+		 {
+
+		 }
 		 time = System.currentTimeMillis();
 		 start = System.currentTimeMillis();
 		 while(true)
@@ -147,12 +155,16 @@ public class RunningGame extends GameThread
 		if(currentThread instanceof PauseGame && paused)
 		{
 			this.myNotify();
-		}
+		}else
+		if(currentThread instanceof Buffering)
+		{
+			this.myNotify();
+		}else
 		if(currentThread instanceof PreGame)
 		{
 			try {
 				actualObjects = LevelInterpreter.loadLevel();
-			} catch (FileNotFoundException e) {
+			} catch (Exception e) {
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
@@ -182,10 +194,21 @@ public class RunningGame extends GameThread
 	}
 
 	/**
+	 * This method will pause the game and go buffer for a little big
+	 */
+	public void goBuffer()
+	{
+		compiler.buffering = true;
+		toWait = true;
+		PumpAndJump.addThread(ThreadName.Buffering, this);
+	}
+
+	/**
 	 * The method that is called to pause the game for the pause button
 	 */
 	public void pausingButton()
 	{
+		pause();
 		toWait = true;
 		PumpAndJump.addThread(ThreadName.PauseGame, this);
 	}

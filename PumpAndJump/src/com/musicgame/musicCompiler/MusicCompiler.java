@@ -16,9 +16,9 @@ public class MusicCompiler extends Thread
 	String fileName = "drop.wav";
 	Decoder decoder;
 	ArrayList<short[]> frames = new ArrayList<short[]>();
-	int currentFrame;
+	public int currentFrame;
 	int frameSize;
-	boolean buffering = true;
+	public boolean buffering = true;
 	//do frame stuff here
 
 	public void loadSound()
