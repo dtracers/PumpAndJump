@@ -1,5 +1,6 @@
 package com.musicgame.PumpAndJump;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Intersector;
@@ -36,7 +37,7 @@ public abstract class GameObject
 		return Intersector.overlapConvexPolygons( hull, gmObj.getHull() );
 	}
 
-	public void draw()
+	public void draw( SpriteBatch sb)
 	{
 
 	}
