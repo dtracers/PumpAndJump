@@ -11,7 +11,7 @@ import com.badlogic.gdx.audio.io.WavDecoder;
  * @author gigemjt
  *
  */
-public class MusicCompiler extends Thread
+public class MusicInputStreamer extends Thread
 {
 	String fileName = "Skrillex_Cinema.wav";
 	Decoder decoder;
@@ -31,12 +31,13 @@ public class MusicCompiler extends Thread
 	 */
 	public void run()
 	{
-		int readSong = 0;
-		while(readSong ==0)
+		int readSong = 1;
+		while(readSong != 0)
 		{
 			short[] frame = new short[frameSize];
 			//readSamples(short[] samples, int offset, int numSamples)
 			readSong = decoder.readSamples(frame,0, frameSize);
+			System.out.println("Reading the song" +readSong);
 			frames.add(frame);
 			currentFrame++;
 			decoder.skipSamples(frameSize);

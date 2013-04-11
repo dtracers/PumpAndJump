@@ -11,11 +11,11 @@ import com.musicgame.PumpAndJump.Util.MusicOutputStream;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
-import com.musicgame.musicCompiler.MusicCompiler;
+import com.musicgame.musicCompiler.MusicInputStreamer;
 
 public class RunningGame extends GameThread
 {
-	MusicCompiler streamer;
+	MusicInputStreamer streamer;
 	MusicOutputStream outStreamer;
 	//this is a list of the on screen objects
 	//(by on screen it does include some that are partially off the screen too)
@@ -28,7 +28,7 @@ public class RunningGame extends GameThread
 	//the current frame that the sound player is at
 	long soundFrame = 0;
 	//the distance between the frame
-	int bufferDistance = 1000;
+	int bufferDistance = 10;
 	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;
@@ -62,8 +62,10 @@ public class RunningGame extends GameThread
 			 if(bufferingNeeded())
 			 {
 				 goBuffer();
+			 }else
+			 {
+				 writeSound();
 			 }
-			 writeSound();
 			 time = System.currentTimeMillis() - start;
 			 frame = time/sampleRate;
 
@@ -174,7 +176,7 @@ public class RunningGame extends GameThread
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
-			streamer = new MusicCompiler();
+			streamer = new MusicInputStreamer();
 			streamer.loadSound();
 			streamer.start();
 			this.start();
