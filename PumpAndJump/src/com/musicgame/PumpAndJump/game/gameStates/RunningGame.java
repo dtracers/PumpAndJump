@@ -156,6 +156,7 @@ public class RunningGame extends GameThread
 				e.printStackTrace();
 			}
 			compiler = new MusicCompiler();
+			compiler.start();
 			this.start();
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
