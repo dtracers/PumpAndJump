@@ -16,14 +16,19 @@ public class MusicOutputStream
 	/**
 	 * Reads in numSamples at offset into the samples array
 	 * it also blocks so send it very short samples
-	 * @param samples
+	 * @param input
 	 * @param offset
 	 * @param numSamples
 	 * @see com.badlogic.gdx.audio.AudioDevice#writeSamples(float[], int, int)
 	 * @return
 	 */
-	public void writeData(float[] samples, int offset, int numSamples)
+	public void writeData(short[] input, int offset, int numSamples)
 	{
-		device.writeSamples(samples, offset, numSamples);
+		device.writeSamples(input, offset, numSamples);
+	}
+
+	public void write(short[] input)
+	{
+		writeData(input,0,input.length);
 	}
 }

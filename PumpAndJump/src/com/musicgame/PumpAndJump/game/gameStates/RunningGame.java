@@ -55,16 +55,21 @@ public class RunningGame extends GameThread
 	 @Override
 	 public void run()
 	 {
-		 if(bufferingNeeded())
-		 {
-			 goBuffer();
-		 }
 		 time = System.currentTimeMillis();
 		 start = System.currentTimeMillis();
 		 while(true)
 		 {
+			 if(bufferingNeeded())
+			 {
+				 goBuffer();
+			 }
+			 writeSound();
 			 time = System.currentTimeMillis() - start;
 			 frame = time/sampleRate;
+
+			 /*
+			  * do math here to make sure everything is in sync
+			 */
 			 if(toWait)
 				 myWait();
 			 try {
@@ -234,5 +239,11 @@ public class RunningGame extends GameThread
 	public long bufferingDistance()
 	{
 		return bufferDistance - (streamer.currentFrame-soundFrame);
+	}
+
+	public void writeSound()
+	{
+		outStreamer.write(streamer.frames.get((int)soundFrame));
+		soundFrame++;
 	}
 }

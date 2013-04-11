@@ -13,11 +13,11 @@ import com.badlogic.gdx.audio.io.WavDecoder;
  */
 public class MusicCompiler extends Thread
 {
-	String fileName = "Skrillex - Cinema.wav";
+	String fileName = "Skrillex_Cinema.wav";
 	Decoder decoder;
-	ArrayList<short[]> frames = new ArrayList<short[]>();
+	public ArrayList<short[]> frames = new ArrayList<short[]>();
 	public int currentFrame;
-	int frameSize;
+	int frameSize = 1024;
 	public boolean buffering = true;
 	//do frame stuff here
 
