@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
 import com.musicgame.PumpAndJump.game.GameThread;
@@ -117,7 +118,7 @@ public class RunningGame extends GameThread
 	{
 		for(int k = 0;k<levelObjects.size();k++)
 		{
-			levelObjects.get(k).draw(null);
+			levelObjects.get(k).draw((SpriteBatch)null);
 		}
 		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
