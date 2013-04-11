@@ -6,21 +6,28 @@
 
 using namespace std;
 
+#define WAMS_PLAYER_DOF 16
+
 namespace WAMS
 {
 	class Keyframe
 	{
 		public:
-			float p[15];
+			float p[WAMS_PLAYER_DOF];
 			float t;
 			Keyframe( float* _p, float _t ): t( _t )
 			{
-				for( int i = 0; i < 15; i++ )
+				for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 				{
 					p[i] = _p[i];
 				}
 			}
 	};
+
+	float lerp( float t, float p1, float p2 )
+	{
+		return p1+(p2-p1)*t;
+	}
 
 	float catmullrom( float t, float p0, float p1, float p2, float p3 )
 	{
@@ -54,7 +61,18 @@ namespace WAMS
 		}
 
 		if( keyframes.size() - lastIndex < 1 )
+		{
+			if( keyframes.size() >= 2 )
+			{
+				float* newpos = new float[ WAMS_PLAYER_DOF ];
+				for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
+				{
+					newpos[i] = keyframes[keyframes.size()-1]->p[i];
+				}
+				return newpos;
+			}
 			return NULL;
+		}
 
 		int currentIndex = lastIndex;
 		float currentTime = lastTime;
@@ -66,7 +84,18 @@ namespace WAMS
 		{
 			
 			if( keyframes.size() - currentIndex < 3 )
+			{
+				if( keyframes.size() >= 1 )
+				{
+					float* newpos = new float[ WAMS_PLAYER_DOF ];
+					for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
+					{
+						newpos[i] = keyframes[keyframes.size()-1]->p[i];
+					}
+					return newpos;
+				}
 				return NULL;
+			}
 			currentTime = keyframes[ currentIndex+2 ]->t;
 			currentIndex++;
 		}
@@ -83,11 +112,19 @@ namespace WAMS
 		else
 			kf3 = keyframes[ currentIndex + 2 ];
 
-		float* newpos = new float[ 15 ];
+		float* newpos = new float[ WAMS_PLAYER_DOF ];
 
-		for( int i = 0; i < 15; i++ )
+		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
-			float newP = catmullrom( (t - kf1->t)/( kf2->t - kf1->t ), kf0->p[i], kf1->p[i], kf2->p[i], kf3->p[i] );
+			float newP;
+			if( abs( kf3->p[i] - kf0->p[i] )*.05f > abs(kf2->p[i] - kf1->p[i])  )
+			{
+				newP = lerp( (t - kf1->t)/( kf2->t - kf1->t ), kf1->p[i], kf2->p[i] );
+			}
+			else
+			{
+				newP = catmullrom( (t - kf1->t)/( kf2->t - kf1->t ), kf0->p[i], kf1->p[i], kf2->p[i], kf3->p[i] );
+			}
 			newpos[i] = newP;
 		}
 

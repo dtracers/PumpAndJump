@@ -49,6 +49,7 @@ public class LevelInterpreter
 					if(obstacle!=null)
 						Level.add(obstacle);
 				}
+				LevelIn.close();
 				break;
 			}
 		}

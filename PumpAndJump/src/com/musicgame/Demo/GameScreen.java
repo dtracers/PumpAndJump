@@ -32,7 +32,7 @@ public class GameScreen implements Screen, InputProcessor {
 	//private World world;
 
 	Texture dropImage;
-	Texture bucketImage;
+	Texture notedudeImage;
 	Sound dropSound;
 	Music rainMusic;
 	SpriteBatch batch;
@@ -60,7 +60,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 		      // load the images for the droplet and the bucket, 48x48 pixels each
 		      dropImage = new Texture(Gdx.files.internal("droplet.png"));
-		      bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+		      notedudeImage = new Texture(Gdx.files.internal("notedude_walk_animation.png"));
 
 		      // load the drop sound effect and the rain background "music"
 		     //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
@@ -275,7 +275,7 @@ public class GameScreen implements Screen, InputProcessor {
 	      // begin a new batch and draw the bucket and
 	      // all drops
 	      batch.begin();
-	      batch.draw(bucketImage, bucket.x, bucket.y);
+	      batch.draw(notedudeImage, bucket.x, bucket.y);
 	      for(Rectangle raindrop: raindrops) {
 	         batch.draw(dropImage, raindrop.x, raindrop.y);
 	      }
@@ -361,7 +361,7 @@ public class GameScreen implements Screen, InputProcessor {
 		// TODO Auto-generated method stub
 	      // dispose of all the native resources
 	      dropImage.dispose();
-	      bucketImage.dispose();
+	      notedudeImage.dispose();
 	      dropSound.dispose();
 	      rainMusic.dispose();
 	      batch.dispose();
