@@ -10,10 +10,10 @@ import android.os.Build;
 import com.musicgame.PumpAndJump.Util.InputDecoder;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class AndroidMusicInputStream extends InputDecoder
+public class AndroidInputDecoder extends InputDecoder
 {
 	MediaExtractor extractor = new MediaExtractor();
-	public AndroidMusicInputStream(double spectralScale, String file)
+	public AndroidInputDecoder(double spectralScale, String file)
 	{
 		super(spectralScale, file);
 	}

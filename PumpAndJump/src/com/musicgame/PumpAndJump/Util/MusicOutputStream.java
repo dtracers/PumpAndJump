@@ -1,6 +1,6 @@
 package com.musicgame.PumpAndJump.Util;
 
-public abstract class MusicInputStream
+public abstract class MusicOutputStream
 {
 	String file;
 	FileType type;
@@ -13,13 +13,13 @@ public abstract class MusicInputStream
 	 * Will generate a new instance of the MusicInputStream
 	 * @return
 	 */
-	public abstract MusicInputStream generateInstance();
+	public abstract MusicOutputStream generateInstance();
 
 	/**
 	 * Will generate a new instance of the MusicInputStream with the given fileName
 	 * @return
 	 */
-	public abstract MusicInputStream generateInstance(String fileName);
+	public abstract MusicOutputStream generateInstance(String fileName);
 
 
 	/**

@@ -60,4 +60,5 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 	 * @param currentThread
 	 */
 	public abstract void removeFrom(GameThread currentThread);
+
 }

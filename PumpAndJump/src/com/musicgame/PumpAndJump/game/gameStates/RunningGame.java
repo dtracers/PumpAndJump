@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.game.GameThread;
+import com.musicgame.PumpAndJump.game.PumpAndJump;
+import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.musicCompiler.MusicCompiler;
 
 public class RunningGame extends GameThread
@@ -47,7 +49,6 @@ public class RunningGame extends GameThread
 		 while(true)
 		 {
 			 time = System.currentTimeMillis() - start;
-			 frame = (long) (time/44.1);
 			 if(toWait)
 				 myWait();
 			 try {
@@ -60,7 +61,6 @@ public class RunningGame extends GameThread
 
 	@Override
 	public boolean keyDown(int keycode) {
-		myNotify();
 		return false;
 	}
 
@@ -76,7 +76,6 @@ public class RunningGame extends GameThread
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		toWait = true;
 		return false;
 	}
 
@@ -140,8 +139,7 @@ public class RunningGame extends GameThread
 	{
 		if(currentThread instanceof PauseGame && paused)
 		{
-			paused = false;
-			this.notify();
+			this.myNotify();
 		}
 		if(currentThread instanceof PreGame)
 		{
@@ -161,9 +159,20 @@ public class RunningGame extends GameThread
 	public void removeFrom(GameThread currentThread) {
 	}
 
+	/**
+	 * Called after notify
+	 */
 	@Override
 	public void unpause() {
 		toWait = false;
 	}
 
+	/**
+	 * The method that is called to pause the game for the pause button
+	 */
+	public void pausingButton()
+	{
+		toWait = true;
+		PumpAndJump.addThread(ThreadName.PauseGame, this);
+	}
 }
