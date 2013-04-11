@@ -28,7 +28,7 @@ public class RunningGame extends GameThread
 	//the current frame that the sound player is at
 	long soundFrame = 0;
 	//the distance between the frame
-	int bufferDistance = 10;
+	int bufferDistance = 20;
 	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;

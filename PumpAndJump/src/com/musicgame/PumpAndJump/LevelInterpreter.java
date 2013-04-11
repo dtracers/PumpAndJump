@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+
 public class LevelInterpreter
 {
 	/**
@@ -39,6 +41,7 @@ public class LevelInterpreter
 	 */
 	public static ArrayList<GameObject> loadLevel() throws FileNotFoundException
 	{
+		//Gdx.files.internal("Something in assets");
 		ArrayList<GameObject> Level=new ArrayList <GameObject>();
 		File f= new File("resources");
 		if(f.listFiles()!=null)
