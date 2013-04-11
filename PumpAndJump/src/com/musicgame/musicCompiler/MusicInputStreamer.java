@@ -17,7 +17,7 @@ public class MusicInputStreamer extends Thread
 	Decoder decoder;
 	public ArrayList<short[]> frames = new ArrayList<short[]>();
 	public int currentFrame;
-	int frameSize = 1024;
+	public int frameSize = 1024/4;
 	public boolean buffering = true;
 	//do frame stuff here
 
@@ -34,13 +34,18 @@ public class MusicInputStreamer extends Thread
 		int readSong = 1;
 		while(readSong != 0)
 		{
-			short[] frame = new short[frameSize];
+			short[] frame = new short[frameSize*2];
+			short[] frame2 = new short[frameSize];
 			//readSamples(short[] samples, int offset, int numSamples)
-			readSong = decoder.readSamples(frame,0, frameSize);
-			System.out.println("Reading the song" +readSong);
-			frames.add(frame);
+			readSong = decoder.readSamples(frame,0, frameSize*2);
+			for(int k=0;k<frame2.length;k++)
+			{
+				frame2[k] = (short) ((frame[k*2]+frame[k*2+1])/2.0);//gets half of the song (maybe because it is stereo?)
+			}
+		//	System.out.println("Reading the song" +readSong+" "+currentFrame);
+			frames.add(frame2);
 			currentFrame++;
-			decoder.skipSamples(frameSize);
+		//	decoder.skipSamples(frameSize);
 			if(buffering)
 			{
 				try {

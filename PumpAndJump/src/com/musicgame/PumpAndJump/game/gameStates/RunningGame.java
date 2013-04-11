@@ -16,7 +16,7 @@ import com.musicgame.musicCompiler.MusicInputStreamer;
 public class RunningGame extends GameThread
 {
 	MusicInputStreamer streamer;
-	MusicOutputStream outStreamer;
+	MusicOutputStream outStreamer = new MusicOutputStream();
 	//this is a list of the on screen objects
 	//(by on screen it does include some that are partially off the screen too)
 	//the objects are basically a queue added at the end and removed from the front
@@ -24,7 +24,7 @@ public class RunningGame extends GameThread
 	//contains the list of all objects that are in the level
 	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
 	long time;
-	long frame;
+	double frame;
 	//the current frame that the sound player is at
 	long soundFrame = 0;
 	//the distance between the frame
@@ -64,10 +64,14 @@ public class RunningGame extends GameThread
 				 goBuffer();
 			 }else
 			 {
+				 long before = System.currentTimeMillis();
 				 writeSound();
+				 long after = System.currentTimeMillis();
+			//	 System.out.println(before-after);
 			 }
 			 time = System.currentTimeMillis() - start;
-			 frame = time/sampleRate;
+			 frame = time*1000.0/sampleRate;
+			 frame/=streamer.frameSize;
 
 			 /*
 			  * do math here to make sure everything is in sync
@@ -75,7 +79,7 @@ public class RunningGame extends GameThread
 			 if(toWait)
 				 myWait();
 			 try {
-				Thread.sleep(10);
+				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -138,7 +142,7 @@ public class RunningGame extends GameThread
 		}
 		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		System.out.println(time);
+	//	System.out.println(frame);
 	}
 
 	@Override
@@ -166,6 +170,7 @@ public class RunningGame extends GameThread
 		}else
 		if(currentThread instanceof Buffering)
 		{
+			System.out.println("NOTIFYING");
 			this.myNotify();
 		}else
 		if(currentThread instanceof PreGame)
@@ -245,6 +250,7 @@ public class RunningGame extends GameThread
 
 	public void writeSound()
 	{
+	//	System.out.println("Output Sound "+soundFrame);
 		outStreamer.write(streamer.frames.get((int)soundFrame));
 		soundFrame++;
 	}
