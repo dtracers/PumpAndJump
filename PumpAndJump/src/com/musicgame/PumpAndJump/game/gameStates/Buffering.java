@@ -1,8 +1,8 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.musicgame.PumpAndJump.game.GameThread;
@@ -13,34 +13,32 @@ public class Buffering extends GameThread
 {
 	Texture dropImage = new Texture(Gdx.files.internal("droplet.png"));
 	SpriteBatch batch = new SpriteBatch();
-	OrthographicCamera camera = new OrthographicCamera();
+	BitmapFont  font = new BitmapFont();
 	float x,y;
 	long position;
 	Thread runMethod;
 	long startTime;
 	long delay = 5000;
 	boolean threadStarted;
-
+	long counter = 0;
 	public Buffering()
 	{
-		camera.setToOrtho(false, 800, 480);
 	}
 
 	@Override
 	public void render(float delta)
 	{
-		x = 20*com.badlogic.gdx.math.MathUtils.cos((float) (position*MathUtils.PI*2.0));
-		y = 20*com.badlogic.gdx.math.MathUtils.sin((float) (position*MathUtils.PI*2.0));
-		 camera.update();
+		x = 500.0f+20.0f*com.badlogic.gdx.math.MathUtils.cos(position/(MathUtils.PI*2.0f));
+		y = 500.0f+20.0f*com.badlogic.gdx.math.MathUtils.sin(position/(MathUtils.PI*2.0f));
 
-	    // tell the SpriteBatch to render in the
-	    // coordinate system specified by the camera.
-	    batch.setProjectionMatrix(camera.combined);
+
+
 		batch.begin();
+		font.draw(batch,"Counting "+counter,500, 500);
 		batch.draw(dropImage, x,y);
 		batch.end();
 		position++;
-		System.out.println("Buffering!");
+	//	System.out.println("Buffering! " +x+" "+y);
 	}
 
 	@Override
@@ -102,16 +100,20 @@ public class Buffering extends GameThread
 	@Override
 	public void addFrom(GameThread currentThread)
 	{
+
 		if(currentThread instanceof RunningGame)
 		{
-
+			final RunningGame game = (RunningGame)currentThread;
+		//	System.out.println("ADDING THE BUFFER THREAD!!!! YAYYYY");
 			runMethod = new Thread()
 			{
 				public void run()
 				{
+					counter = 0;
 					startTime = System.currentTimeMillis();
-					while(System.currentTimeMillis()-delay>startTime)
+					while(game.bufferingNeeded())
 					{
+						counter = game.bufferingDistance();
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {

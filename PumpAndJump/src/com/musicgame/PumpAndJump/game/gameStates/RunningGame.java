@@ -15,7 +15,7 @@ import com.musicgame.musicCompiler.MusicCompiler;
 
 public class RunningGame extends GameThread
 {
-	MusicCompiler compiler;
+	MusicCompiler streamer;
 	//this is a list of the on screen objects
 	//(by on screen it does include some that are partially off the screen too)
 	//the objects are basically a queue added at the end and removed from the front
@@ -27,7 +27,7 @@ public class RunningGame extends GameThread
 	//the current frame that the sound player is at
 	long soundFrame = 0;
 	//the distance between the frame
-	int bufferDistance = 10;
+	int bufferDistance = 1000;
 	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;
@@ -54,9 +54,9 @@ public class RunningGame extends GameThread
 	 @Override
 	 public void run()
 	 {
-		 if(compiler.currentFrame-soundFrame<bufferDistance)
+		 if(bufferingNeeded())
 		 {
-
+			 goBuffer();
 		 }
 		 time = System.currentTimeMillis();
 		 start = System.currentTimeMillis();
@@ -168,8 +168,9 @@ public class RunningGame extends GameThread
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
-			compiler = new MusicCompiler();
-			compiler.start();
+			streamer = new MusicCompiler();
+			streamer.loadSound();
+			streamer.start();
 			this.start();
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
@@ -198,7 +199,8 @@ public class RunningGame extends GameThread
 	 */
 	public void goBuffer()
 	{
-		compiler.buffering = true;
+		System.out.println("GO BUFFER!");
+		streamer.buffering = true;
 		toWait = true;
 		PumpAndJump.addThread(ThreadName.Buffering, this);
 	}
@@ -211,5 +213,25 @@ public class RunningGame extends GameThread
 		pause();
 		toWait = true;
 		PumpAndJump.addThread(ThreadName.PauseGame, this);
+	}
+
+	/**
+	 * Returns true if the bufferingDistance is less than the bufferDistance value
+	 * it is calculated by: MusicInputStream.currentFrame - OuputStream.currentFrame
+	 * @return
+	 */
+	public boolean bufferingNeeded()
+	{
+		return streamer.currentFrame-soundFrame<bufferDistance;
+	}
+
+	/**
+	 * Returns true if the bufferingDistance is less than the bufferDistance value
+	 * it is calculated by: MusicInputStream.currentFrame - OuputStream.currentFrame
+	 * @return
+	 */
+	public long bufferingDistance()
+	{
+		return bufferDistance - (streamer.currentFrame-soundFrame);
 	}
 }
