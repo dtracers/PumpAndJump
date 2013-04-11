@@ -117,7 +117,7 @@ public class RunningGame extends GameThread
 	{
 		for(int k = 0;k<levelObjects.size();k++)
 		{
-			levelObjects.get(k).draw();
+			levelObjects.get(k).draw(null);
 		}
 		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
