@@ -16,6 +16,9 @@ public class MusicCompiler extends Thread
 	String fileName = "drop.wav";
 	Decoder decoder;
 	ArrayList<short[]> frames = new ArrayList<short[]>();
+	int currentFrame;
+	int frameSize;
+	boolean buffering = true;
 	//do frame stuff here
 
 	public void loadSound()
@@ -28,6 +31,30 @@ public class MusicCompiler extends Thread
 	 */
 	public void run()
 	{
-		decoder.readSamples(arg0, arg1, arg2);
+		int readSong = 0;
+		while(readSong ==0)
+		{
+			short[] frame = new short[frameSize];
+			//readSamples(short[] samples, int offset, int numSamples)
+			readSong = decoder.readSamples(frame,0, frameSize);
+			frames.add(frame);
+			currentFrame++;
+			decoder.skipSamples(frameSize);
+			if(buffering)
+			{
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}else
+			{
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
