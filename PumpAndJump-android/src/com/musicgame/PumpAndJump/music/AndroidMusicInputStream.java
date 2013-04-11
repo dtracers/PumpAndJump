@@ -1,23 +1,44 @@
 package com.musicgame.PumpAndJump.music;
 
-import com.musicgame.PumpAndJump.Util.MusicInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
-public class AndroidMusicInputStream extends MusicInputStream
+import android.annotation.TargetApi;
+import android.media.MediaExtractor;
+import android.os.Build;
+
+import com.musicgame.PumpAndJump.Util.InputDecoder;
+
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+public class AndroidMusicInputStream extends InputDecoder
 {
-
-	@Override
-	public MusicInputStream generateInstance() {
-		return null;
+	MediaExtractor extractor = new MediaExtractor();
+	public AndroidMusicInputStream(double spectralScale, String file)
+	{
+		super(spectralScale, file);
 	}
 
 	@Override
-	public MusicInputStream generateInstance(String fileName) {
-		return null;
+	protected void createAudioStream(String file)
+	{
+		extractor.setDataSource(file);
+		buf = ByteBuffer.allocate(frameSize);
 	}
 
 	@Override
-	public int readData(short[] samples, int offset, int numSamples) {
-		return 0;
+	public float[] readSeparately() throws IOException
+	{
+		extractor.readSampleData(buf, 0);//not sure how bytebuffers work... need to figure this out
+		return null;
+	}
+
+	/**
+	 * this will read the entire array
+	 */
+	@Override
+	public float[] readEntireArray()
+	{
+		return null;
 	}
 
 }

@@ -9,8 +9,12 @@ import com.musicgame.musicCompiler.MusicCompiler;
 public class RunningGame extends GameThread
 {
 	MusicCompiler compiler;
+	//this is a list of the on screen objects
+	//(by on screen it does include some that are partially off the screen too)
+	//the objects are basically a queue added at the end and removed from the front
 	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	long time;
+	long frame;
 	long start = 0;
 	boolean toWait = false;
 	boolean jumping = false,ducking = false;
@@ -41,6 +45,7 @@ public class RunningGame extends GameThread
 		 while(true)
 		 {
 			 time = System.currentTimeMillis() - start;
+			 frame = (long) (time/44.1);
 			 if(toWait)
 				 myWait();
 			 try {
@@ -103,7 +108,10 @@ public class RunningGame extends GameThread
 	@Override
 	public void render(float delta)
 	{
-		System.out.println(time);
+		for(int k = 0;k<levelObjects.size();k++)
+		{
+			levelObjects.get(k).draw();
+		}
 	}
 
 	@Override
