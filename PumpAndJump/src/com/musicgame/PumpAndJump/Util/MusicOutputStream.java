@@ -1,26 +1,17 @@
 package com.musicgame.PumpAndJump.Util;
 
-public abstract class MusicOutputStream
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.AudioDevice;
+
+public class MusicOutputStream
 {
-	String file;
-	FileType type;
-	public void setFile(String fileName)
+	int latency;
+	AudioDevice device;
+	public MusicOutputStream()
 	{
-		file = fileName;
+		device = Gdx.audio.newAudioDevice(44100, true);
+		latency = device.getLatency();
 	}
-
-	/**
-	 * Will generate a new instance of the MusicInputStream
-	 * @return
-	 */
-	public abstract MusicOutputStream generateInstance();
-
-	/**
-	 * Will generate a new instance of the MusicInputStream with the given fileName
-	 * @return
-	 */
-	public abstract MusicOutputStream generateInstance(String fileName);
-
 
 	/**
 	 * Reads in numSamples at offset into the samples array
@@ -30,16 +21,8 @@ public abstract class MusicOutputStream
 	 * @param numSamples
 	 * @return
 	 */
-	public abstract int readData(short[] samples, int offset, int numSamples);
-
-	private enum FileType
+	public void writeData(short[] samples, int offset, int numSamples)
 	{
-		MP3,WAVE;
-	}
 
-	public String testWorking()
-	{
-		System.out.println("WORKING!");
-		return "working";
 	}
 }

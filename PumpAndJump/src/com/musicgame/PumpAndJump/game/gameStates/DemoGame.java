@@ -96,8 +96,8 @@ public class DemoGame extends GameThread
 	    // blue and alpha component in the range [0,1]
 	    // of the color to be used to clear the screen.
 	    //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-	    Gdx.gl.glClearColor(1, 1, 1, 1);
-	    Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+	//    Gdx.gl.glClearColor(1, 1, 1, 1);
+	 //   Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 	    // tell the camera to update its matrices.
 	    if(bucket.x > camera.position.x)
@@ -117,7 +117,7 @@ public class DemoGame extends GameThread
 	    int slidewidth = 36;
 	    int slideheight = 60;
 	    int slidenum = (int)(bucket.x/8)%slidecount;
-	    
+
 	    batch.draw(notedudeImage, bucket.x, bucket.y, slidewidth*(slidenum), 0, slidewidth, slideheight);
 
 	    for(Rectangle raindrop: raindrops) {
@@ -178,7 +178,7 @@ public class DemoGame extends GameThread
 
 	      // load the images for the droplet and the bucket, 48x48 pixels each
 	      dropImage = new Texture(Gdx.files.internal("droplet.png"));
-	      
+
 	      notedudeImage = new Texture(Gdx.files.internal("notedude_walk_animation.png"));
 	      // load the drop sound effect and the rain background "music"
 	     //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));

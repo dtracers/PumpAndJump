@@ -1,10 +1,12 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.musicgame.PumpAndJump.GameObject;
+import com.musicgame.PumpAndJump.LevelInterpreter;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
@@ -17,8 +19,11 @@ public class RunningGame extends GameThread
 	//(by on screen it does include some that are partially off the screen too)
 	//the objects are basically a queue added at the end and removed from the front
 	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
+	//contains the list of all objects that are in the level
+	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
 	long time;
 	long frame;
+	long sampleRate;
 	long start = 0;
 	boolean toWait = false;
 	boolean jumping = false,ducking = false;
@@ -49,6 +54,7 @@ public class RunningGame extends GameThread
 		 while(true)
 		 {
 			 time = System.currentTimeMillis() - start;
+			 frame = time/sampleRate;
 			 if(toWait)
 				 myWait();
 			 try {
@@ -143,6 +149,12 @@ public class RunningGame extends GameThread
 		}
 		if(currentThread instanceof PreGame)
 		{
+			try {
+				actualObjects = LevelInterpreter.loadLevel();
+			} catch (FileNotFoundException e) {
+				actualObjects = new ArrayList<GameObject>();
+				e.printStackTrace();
+			}
 			compiler = new MusicCompiler();
 			this.start();
 		}
