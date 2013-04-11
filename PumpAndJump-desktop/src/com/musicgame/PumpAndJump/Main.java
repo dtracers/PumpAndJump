@@ -3,7 +3,7 @@ package com.musicgame.PumpAndJump;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
-import com.musicgame.PumpAndJump.music.DesktopMusicInputStream;
+import com.musicgame.PumpAndJump.music.DesktopInputDecoder;
 
 public class Main {
 	public static void main(String[] args) {
@@ -15,6 +15,7 @@ public class Main {
 
 		new LwjglApplication(new PumpAndJump(), cfg);
 
-		PumpAndJump.inputStream = new DesktopMusicInputStream();
+		PumpAndJump.inputStream = new DesktopInputDecoder(0, null);
+	//	PumpAndJump.outputStream = new DesktopInputDecoder(0, null);
 	}
 }

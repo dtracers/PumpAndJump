@@ -55,7 +55,9 @@ public class PauseGame extends GameThread
 	}
 
 	@Override
-	public void render(float delta) {
+	public void render(float delta)
+	{
+
 	}
 
 	@Override

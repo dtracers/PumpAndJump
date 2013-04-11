@@ -2,6 +2,7 @@ package com.musicgame.PumpAndJump.Util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import com.badlogic.gdx.Files.FileType;
 
@@ -11,6 +12,7 @@ public abstract class InputDecoder
 	protected int overlap = 2;
 	protected double spectralScale;
 	protected InputStream din;
+	protected ByteBuffer buf;
 	public int frameSize = 42314;
 	protected float sampleRate;
 	String file;
@@ -56,10 +58,7 @@ public abstract class InputDecoder
 	 * @return
 	 * @throws IOException
 	 */
-	public final float[] readEntireArray() throws IOException
-	{
-		return readEntireArray(din);
-	}
+	public abstract float[] readEntireArray();
 
 	/**
 	 * Creates the AuddioStream from the given file and then reads the entire array putting the music into a float array
@@ -72,18 +71,11 @@ public abstract class InputDecoder
 
 	/**
 	 * It reads then separately and returns them in the order it is read
+	 * It will also only ready one frame size per a call
 	 * @return
 	 * @throws IOException
 	 */
 	public abstract float[] readSeparately() throws IOException;
-
-	/**
-	 * Reads the entire array from the given input stream
-	 * @param in
-	 * @return
-	 * @throws IOException
-	 */
-	protected abstract float[] readEntireArray(InputStream in) throws IOException;
 
 	public float getSampleRate()
 	{
