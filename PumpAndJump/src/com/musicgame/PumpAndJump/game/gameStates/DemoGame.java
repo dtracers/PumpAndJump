@@ -113,11 +113,13 @@ public class DemoGame extends GameThread
 	    // begin a new batch and draw the bucket and
 	    // all drops
 	    batch.begin();
-	    int slidenum = (int)(bucket.x/8)%12;
-	    //if(slidenum<10)
-	    batch.draw(notedudeImage, bucket.x, bucket.y, 25*(slidenum), 0, 25, 50);
-	    //else
-	    	//batch.draw(notedudeImage, bucket.x, bucket.y, 25*(slidenum-10), 156, 25, 50);
+	    int slidecount = 12;
+	    int slidewidth = 36;
+	    int slideheight = 60;
+	    int slidenum = (int)(bucket.x/8)%slidecount;
+	    
+	    batch.draw(notedudeImage, bucket.x, bucket.y, slidewidth*(slidenum), 0, slidewidth, slideheight);
+
 	    for(Rectangle raindrop: raindrops) {
 	       batch.draw(dropImage, raindrop.x, raindrop.y);
 	    }
