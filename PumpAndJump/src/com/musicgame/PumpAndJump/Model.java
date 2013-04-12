@@ -57,5 +57,5 @@ public abstract class Model
 		sb.setTransformMatrix( before ); 
 	}
 
-	public abstract void display();
+	public abstract void display( SpriteBatch sb );
 }
