@@ -31,4 +31,9 @@ public class MusicOutputStream
 	{
 		writeData(input,0,input.length);
 	}
+
+	public int getLatancy()
+	{
+		return device.getLatency();
+	}
 }
