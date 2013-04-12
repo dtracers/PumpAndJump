@@ -1,11 +1,11 @@
 package com.musicgame.PumpAndJump;
 
 import com.musicgame.PumpAndJump.Animation.Animated;
-import com.musicgame.PumpAndJump.Util.AnimationUtil;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 
 public class Player extends GameObject implements Animated{
@@ -97,13 +97,17 @@ public class Player extends GameObject implements Animated{
 		display( sb );
 	}
 	
-	
+	@Override
 	public void UpdatePose(float[] pose) {
-		// TODO Auto-generated method stub
 		setPose( pose );
+		hip.update( new Matrix4() );
 	}
 	
-	
+	@Override
+	public boolean intersects( Polygon p )
+	{
+		return hip.intersects( p );
+	}
 }
 
 enum Side{ LEFT, RIGHT }; 
@@ -504,7 +508,7 @@ class PlayerThigh extends Model
 		popTransforms( sb );
 	}
 
-};
+}
 
 class PlayerHip extends Model
 {
@@ -534,4 +538,4 @@ class PlayerHip extends Model
 
 		popTransforms( sb );
 	}
-};
+}
