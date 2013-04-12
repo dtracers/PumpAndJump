@@ -19,7 +19,7 @@ public class MusicOutputStream
 	 * @param input
 	 * @param offset
 	 * @param numSamples
-	 * @see com.badlogic.gdx.audio.AudioDevice#writeSamples(float[], int, int)
+	 * @see com.badlogic.gdx.audio.AudioDevice#writeSamples(short[], int, int)
 	 * @return
 	 */
 	public void writeData(short[] input, int offset, int numSamples)

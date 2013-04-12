@@ -64,9 +64,7 @@ public class RunningGame extends GameThread
 				 goBuffer();
 			 }else
 			 {
-				 long before = System.currentTimeMillis();
 				 writeSound();
-				 long after = System.currentTimeMillis();
 			//	 System.out.println(before-after);
 			 }
 			 time = System.currentTimeMillis() - start;
