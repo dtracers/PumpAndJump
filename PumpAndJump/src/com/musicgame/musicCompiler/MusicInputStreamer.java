@@ -13,6 +13,7 @@ import com.badlogic.gdx.audio.io.WavDecoder;
  */
 public class MusicInputStreamer extends Thread
 {
+
 	String fileName = "Skrillex_Cinema.wav";
 	Decoder decoder;
 	public ArrayList<short[]> frames = new ArrayList<short[]>();
