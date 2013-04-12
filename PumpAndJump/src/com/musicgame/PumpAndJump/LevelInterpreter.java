@@ -47,7 +47,7 @@ public class LevelInterpreter
 	{
 		//Gdx.files.internal("Something in assets");
 		ArrayList<GameObject> Level=new ArrayList <GameObject>();
-		FileHandle dir= Gdx.files.internal("Skrillex_Cinema.wav");
+		FileHandle dir= Gdx.files.internal("Level1.txt");
 		Scanner LevelIn = new Scanner(dir.reader());
 		while(LevelIn.hasNextLine()){
 			GameObject obstacle=getNextObject(LevelIn.nextLine());

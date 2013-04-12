@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
@@ -107,5 +108,19 @@ public abstract class Model
 			m.update( new Matrix4( mv ) );
 		}
 		
+	}
+	
+	public boolean intersects( Polygon otherHull )
+	{
+		if( Intersector.overlapConvexPolygons( hull, poly ) )
+			return true;
+		
+		for( Model m: children )
+		{
+			if( m.intersects(otherHull) )
+				return true;
+		}
+		
+		return false;
 	}
 }
