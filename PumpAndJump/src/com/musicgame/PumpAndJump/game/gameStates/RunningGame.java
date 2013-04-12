@@ -3,8 +3,15 @@ package com.musicgame.PumpAndJump.game.gameStates;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
 import com.musicgame.PumpAndJump.Util.MusicOutputStream;
@@ -15,6 +22,9 @@ import com.musicgame.musicCompiler.MusicInputStreamer;
 
 public class RunningGame extends GameThread
 {
+	Skin uiSkin;
+	Stage stage;
+	SpriteBatch batch;
 	MusicInputStreamer streamer;
 	MusicOutputStream outStreamer = new MusicOutputStream();
 	//this is a list of the on screen objects
@@ -36,6 +46,32 @@ public class RunningGame extends GameThread
 	boolean paused = false;
 	public RunningGame()
 	{
+		batch = new SpriteBatch();
+		stage = new Stage();
+
+		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
+		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
+        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+        uiSkin = new Skin( skinFile );
+
+		// Create a table that fills the screen. Everything else will go inside this table.
+		Table table = new Table();
+		//table.debug(); // turn on all debug lines (table, cell, and widget)
+		//table.debugTable(); // turn on only table lines
+		table.setFillParent(true);
+		stage.addActor(table);
+		final TextButton aboutButton = new TextButton("||", uiSkin);
+		aboutButton.addListener(
+				new ChangeListener()
+				{
+					@Override
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						System.out.println("pause");
+						pausingButton();
+					}
+				});
+		table.add(aboutButton).size(50,50).pad(5);
 		time = 0;
 	}
 
@@ -140,6 +176,9 @@ public class RunningGame extends GameThread
 		}
 		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		stage.act(Math.min(delta, 1 / 30f));
+		stage.draw();
+		Table.drawDebug(stage);
 	//	System.out.println(frame);
 	}
 
@@ -162,7 +201,9 @@ public class RunningGame extends GameThread
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
-		if(currentThread instanceof PauseGame && paused)
+		Gdx.input.setInputProcessor(stage);
+		//Pause button won't work without this commented out
+		/*if(currentThread instanceof PauseGame && paused)
 		{
 			this.myNotify();
 		}else
@@ -183,7 +224,7 @@ public class RunningGame extends GameThread
 			streamer.loadSound();
 			streamer.start();
 			this.start();
-		}
+		}*/
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
 	}
 
