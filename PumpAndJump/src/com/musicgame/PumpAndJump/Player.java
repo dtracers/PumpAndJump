@@ -121,6 +121,14 @@ class PlayerForearm extends Model
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
+		
 		switch( a )
 		{
 			case LEFT:
@@ -163,7 +171,17 @@ class PlayerShoulder extends Model
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
+		
 		forearm = new PlayerForearm( a );
+		
+		children.add( forearm );
 		
 		switch( a )
 		{
@@ -204,6 +222,14 @@ class PlayerHead extends Model
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
+		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
 	}
 
 	public void display( SpriteBatch sb )
@@ -241,10 +267,21 @@ class PlayerTorso extends Model
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
+		
 		leftArm = new PlayerShoulder( Side.LEFT );
 		rightArm = new PlayerShoulder( Side.RIGHT );
 		head = new PlayerHead();
 		
+		children.add( leftArm );
+		children.add( rightArm );
+		children.add( head );
 	}
 
 	public void display( SpriteBatch sb )
@@ -281,6 +318,13 @@ class PlayerTuckles extends Model
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
+		
+		float[] points = new float[6];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = -height/2.0f;
+		
+		poly = new Polygon( points );
 	}
 
 	public void display( SpriteBatch sb )
@@ -312,7 +356,17 @@ class PlayerFoot extends Model
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
+		
 		tuckles = new PlayerTuckles( a );
+		
+		children.add( tuckles );
 		
 		switch( a )
 		{
@@ -354,8 +408,18 @@ class PlayerShin extends Model
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
+		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
 
 		foot = new PlayerFoot( a );
+		
+		children.add( foot );
 
 		switch( a )
 		{
@@ -400,7 +464,17 @@ class PlayerThigh extends Model
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2 );
 		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
+		
 		shin = new PlayerShin( a ); 
+		
+		children.add( shin );
 
 		side = a;
 
@@ -444,6 +518,10 @@ class PlayerHip extends Model
 		torso = new PlayerTorso();
 		leftThigh = new PlayerThigh( Side.LEFT );
 		rightThigh = new PlayerThigh( Side.RIGHT );
+		
+		children.add( torso );
+		children.add( leftThigh );
+		children.add( rightThigh );
 	}
 
 	public void display( SpriteBatch sb )
