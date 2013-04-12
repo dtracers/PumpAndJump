@@ -21,17 +21,32 @@ public class TextureMapping
 		textures = new TextureMapping();
 	}
 	
-	public boolean addTexture( String textureStr )
+	public int addTexture( String textureStr )
 	{
 		Texture tex = new Texture( Gdx.files.internal( textureStr ) );
 		
 		if( nameToTexture.get( textureStr ) == null )
 		{
 			nameToTexture.put( textureStr, tex  );
-			return true;
+			return 1;
 		}
 		
-		return false;
+		return 0;
+	}
+	
+	public static int staticAddTexture( String textureStr )
+	{
+		if( textures != null )
+			return textures.addTexture( textureStr );
+		return -1;
+	}
+	
+	public static Texture staticGet( String textureStr )
+	{
+		if( textures != null )
+			return textures.get( textureStr );
+		
+		return null;
 	}
 	
 	public Texture get( String textureStr )

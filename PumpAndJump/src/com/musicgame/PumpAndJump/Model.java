@@ -1,7 +1,10 @@
 package com.musicgame.PumpAndJump;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 
 public abstract class Model
@@ -12,6 +15,7 @@ public abstract class Model
 	public Point gp;
 	public Point ga;
 	Matrix4 before;
+	Sprite image;
 
 	public Model( Point _p, Point _angle, Point _scale ) { p = _p; angle =  _angle; scalar = _scale;  }
 
@@ -55,6 +59,12 @@ public abstract class Model
 	public void popTransforms( SpriteBatch sb )
 	{
 		sb.setTransformMatrix( before ); 
+	}
+	
+	public void drawSprite( SpriteBatch sb )
+	{
+		if( image != null )
+			image.draw( sb );
 	}
 
 	public abstract void display( SpriteBatch sb );
