@@ -3,7 +3,9 @@ package com.musicgame.PumpAndJump;
 import com.musicgame.PumpAndJump.Animation.Animated;
 import com.musicgame.PumpAndJump.Util.AnimationUtil;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
+import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 
 public class Player extends GameObject implements Animated{
@@ -14,12 +16,12 @@ public class Player extends GameObject implements Animated{
 	public float origY;
 	public final int WAMS_PLAYER_DOF = 16;
 
-	Player( Point pos, Point angle )
+	public Player( Point pos, Point angle )
 	{
 		hip = new PlayerHip( pos, angle );
 		origY = pos.y;
 
-		hip.scale( 5.0f, 5.0f, 5.0f );
+		hip.scale( 1.0f, 1.0f, 1.0f );
 
 		changed = true;
 
@@ -50,7 +52,7 @@ public class Player extends GameObject implements Animated{
 		pose[ 15 ] = Float.valueOf(hip.p.y );
 	}
 
-	void setPose( float[] a )
+	public void setPose( float[] a )
 	{
 		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
@@ -59,7 +61,7 @@ public class Player extends GameObject implements Animated{
 		changed = true;
 	}
 
-	void setPose( double[] a )
+	public void setPose( double[] a )
 	{
 		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
@@ -68,7 +70,7 @@ public class Player extends GameObject implements Animated{
 		changed = true;
 	}
 
-	void getPose( float[] a )
+	public void getPose( float[] a )
 	{
 		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
@@ -76,7 +78,7 @@ public class Player extends GameObject implements Animated{
 		}
 	}
 
-	void getPose( double[] a )
+	public void getPose( double[] a )
 	{
 		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
@@ -84,22 +86,18 @@ public class Player extends GameObject implements Animated{
 		}
 	}
 
-	void update( )
-	{
-		if( changed )
-		{
-			if( hip != null )
-				hip.update( hip.p, new Point( 0.0f, 0.0f, 1.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
-			changed = false;
-		}
-	}
-
-	void display( SpriteBatch sb )
+	public void display( SpriteBatch sb )
 	{
 		hip.display( sb );
 	}
 	
 	@Override
+	public void draw( SpriteBatch sb )
+	{
+		display( sb );
+	}
+	
+	
 	public void UpdatePose(float[] pose) {
 		// TODO Auto-generated method stub
 		setPose( pose );
@@ -112,10 +110,17 @@ enum Side{ LEFT, RIGHT };
 
 class PlayerForearm extends Model
 {
+	public final float width = 20.0f;
+	public final float height = 4.0f;
+	
 	public PlayerForearm( Side a ) 
 	{
 		super(  new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2.0f );
+		
 		switch( a )
 		{
 			case LEFT:
@@ -135,24 +140,9 @@ class PlayerForearm extends Model
 			glVertex3f( 20.0f, 2.0f,  0.0f);
 			glVertex3f( 20.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 
 		popTransforms( sb );
-	}
-
-	public void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-
-		Point local = new Point( 20.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
 	}
 
 }
@@ -161,11 +151,17 @@ class PlayerShoulder extends Model
 {
 	public PlayerForearm forearm;
 	public Side side;
+	public final float width = 20.0f;
+	public final float height = 4.0f;
 
 	PlayerShoulder( Side a )
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 		side = a;
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2.0f );
 		
 		forearm = new PlayerForearm( a );
 		
@@ -190,38 +186,24 @@ class PlayerShoulder extends Model
 			glVertex3f( 20.0f, 2.0f,  0.0f);
 			glVertex3f( 20.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 
 		popTransforms( sb );
-	}
-
-	public void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-
-		Point local = new Point( 20.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		//gp = globalPos.add( p );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
-		Point newGlobal = globalPos.add( local );
-
-		forearm.update( newGlobal, globalCylinderDir, globalRotation );
 	}
 }
 
 class PlayerHead extends Model
 {
+	public final float width = 25.0f;
+	public final float height = 25.0f;
+	
 	public PlayerHead() 
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2.0f );
 	}
 
 	public void display( SpriteBatch sb )
@@ -234,28 +216,11 @@ class PlayerHead extends Model
 			glVertex3f( 15.0f, 2.0f,  0.0f);
 			glVertex3f( 15.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 
 		//DrawCircle( 15.0f, 0.0f, 10.0f, 100 );
 
 		popTransforms( sb );
-	}
-
-	void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		ga = globalRotation;
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-
-
-		Point local = new Point( 15.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
 	}
 
 };
@@ -265,10 +230,16 @@ class PlayerTorso extends Model
 	public PlayerShoulder leftArm;
 	public PlayerShoulder rightArm;
 	public PlayerHead head;
+	public final float width = 35.0f;
+	public final float height = 4.0f;
 
 	public PlayerTorso() 
 	{ 
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 90.0f ),new Point( 1.0f, 1.0f, 1.0f ) );
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2.0f );
 		
 		leftArm = new PlayerShoulder( Side.LEFT );
 		rightArm = new PlayerShoulder( Side.RIGHT );
@@ -290,41 +261,26 @@ class PlayerTorso extends Model
 			glVertex3f( 35.0f, 2.0f,  0.0f);
 			glVertex3f( 35.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 		
 		rightArm.display( sb );
 		
 		popTransforms( sb );
 	}
-
-	public void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		ga = globalRotation;
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-		Point local = new Point( 35.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		//gp = globalPos.add( p );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
-		Point newGlobal = globalPos.add( local );
-
-		head.update( newGlobal, globalCylinderDir, globalRotation );
-		leftArm.update( newGlobal, globalCylinderDir, globalRotation );
-		rightArm.update( newGlobal, globalCylinderDir, globalRotation );
-	}
 }
 
 class PlayerTuckles extends Model
 {
+	public final float width = 3.0f;
+	public final float height = 4.0f;
+	
 	public PlayerTuckles( Side a )
 	{
 		super( new Point( 9.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2.0f );
 	}
 
 	public void display( SpriteBatch sb )
@@ -336,38 +292,25 @@ class PlayerTuckles extends Model
 			glVertex3f(	0.0f, 2.0f, 0.0f);
 			glVertex3f( 3.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 
 		popTransforms( sb );
-	}
-
-	public void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		ga = globalRotation;
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-
-
-		Point local = new Point( 3.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		//gp = globalPos.add( p );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
 	}
 };
 
 class PlayerFoot extends Model
 {
 	public PlayerTuckles tuckles;
+	public final float width = 9.0f;
+	public final float height = 4.0f;
 
 	public PlayerFoot( Side a )
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f ,1.0f ) );
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2.0f );
 		
 		tuckles = new PlayerTuckles( a );
 		
@@ -390,43 +333,27 @@ class PlayerFoot extends Model
 			glVertex3f( 9.0f, 2.0f,  0.0f);
 			glVertex3f( 9.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 
 		tuckles.display( sb );
 
 		popTransforms( sb );
-	}
-
-	public void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		ga = globalRotation;
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-
-
-		Point local = new Point( 9.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		//gp = globalPos.add( p );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
-		Point newGlobal = globalPos.add( local );
-
-		tuckles.update( newGlobal, globalCylinderDir, globalRotation );
 	}
 }
 
 class PlayerShin extends Model
 {
 	public PlayerFoot foot;
+	public final float width = 20.0f;
+	public final float height = 4.0f;
 
 	PlayerShin( Side a ) 
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2.0f );
 
 		foot = new PlayerFoot( a );
 
@@ -449,33 +376,11 @@ class PlayerShin extends Model
 			glVertex3f( 20.0f, 2.0f,  0.0f);
 			glVertex3f( 20.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 
 		foot.display( sb );
 
 		popTransforms( sb );
-	}
-
-	void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		ga = globalRotation;
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-		
-
-		Point local = new Point( 20.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		//gp = globalPos.add( p );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
-		Point newGlobal = globalPos.add( local );
-
-		foot.update( newGlobal, globalCylinderDir, globalRotation );
 	}
 
 }
@@ -484,10 +389,17 @@ class PlayerThigh extends Model
 {
 	public PlayerShin shin;
 	public Side side;
+	public final float width = 20.0f;
+	public final float height = 4.0f;
 
 	public PlayerThigh( Side a )
 	{ 
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
+		
+		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image.setBounds( 0.0f, 0.0f, width, height );
+		image.setPosition( 0.0f, -height/2 );
+		
 		shin = new PlayerShin( a ); 
 
 		side = a;
@@ -511,33 +423,11 @@ class PlayerThigh extends Model
 			glVertex3f( 20.0f, 2.0f,  0.0f);
 			glVertex3f( 20.0f, -2.0f, 0.0f);
 		glEnd();*/
+		drawSprite( sb );
 
 		shin.display( sb );
 
 		popTransforms( sb );
-	}
-
-	void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		ga = globalRotation;
-		globalRotation = globalRotation.add( angle );
-		ga = globalRotation;
-		
-
-		Point local = new Point( 20.0f, 0.0f, 0.0f );
-
-		local = local.scale( 5.0f );
-
-		//gp = globalPos.add( p );
-		
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
-		Point newGlobal = globalPos.add( local );
-
-		shin.update( newGlobal, globalCylinderDir, globalRotation );
 	}
 
 };
@@ -565,28 +455,5 @@ class PlayerHip extends Model
 		rightThigh.display( sb );
 
 		popTransforms( sb );
-	}
-
-	public void update( Point globalPos, Point globalCylinderDir, Point globalRotation  )
-	{
-		gp = globalPos;
-		
-		ga = globalRotation;
-		
-		globalRotation = globalRotation.add( angle );
-
-		ga = globalRotation;
-		
-		Point local = new Point( 0.0f, 0.0f, 0.0f );
-
-		local = AnimationUtil.RotateAroundXAxis( local, globalRotation.x );
-		local = AnimationUtil.RotateAroundYAxis( local, globalRotation.y );
-		local = AnimationUtil.RotateAroundZAxis( local, globalRotation.z );
-
-		Point newGlobal = globalPos;
-
-		leftThigh.update( newGlobal, globalCylinderDir, globalRotation );
-		rightThigh.update( newGlobal, globalCylinderDir, globalRotation );
-		torso.update( newGlobal, globalCylinderDir, globalRotation );
 	}
 };

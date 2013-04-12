@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
+import com.musicgame.PumpAndJump.Player;
+import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.MusicOutputStream;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
@@ -33,6 +35,8 @@ public class RunningGame extends GameThread
 	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	//contains the list of all objects that are in the level
 	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
+	//Player object
+	Player player;
 	long time;
 	double frame;
 	//the current frame that the sound player is at
@@ -53,7 +57,8 @@ public class RunningGame extends GameThread
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
-
+        
+        player = new Player( new Point( 400.0f, 300.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 		// Create a table that fills the screen. Everything else will go inside this table.
 		//Table table = new Table();
 		//table.debug(); // turn on all debug lines (table, cell, and widget)
@@ -180,6 +185,11 @@ public class RunningGame extends GameThread
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		stage.act(Math.min(delta, 1 / 30f));
 		stage.draw();
+		
+		batch.begin();
+		player.draw( batch );
+		batch.end();
+		
 		Table.drawDebug(stage);
 	//	System.out.println(frame);
 	}

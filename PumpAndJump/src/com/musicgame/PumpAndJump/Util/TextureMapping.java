@@ -44,8 +44,17 @@ public class TextureMapping
 	public static Texture staticGet( String textureStr )
 	{
 		if( textures != null )
+		{
+			Texture t = textures.get( textureStr );
+			if( t != null )
+			{
+				return t;
+			}
+			
+			staticAddTexture( textureStr );
+			
 			return textures.get( textureStr );
-		
+		}
 		return null;
 	}
 	
