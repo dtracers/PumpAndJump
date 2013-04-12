@@ -6,7 +6,8 @@ import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.music.DesktopInputDecoder;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "PumpAndJump";
 		cfg.useGL20 = false;

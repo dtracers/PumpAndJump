@@ -14,25 +14,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
+import com.musicgame.PumpAndJump.Player;
+import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.MusicOutputStream;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
+import com.musicgame.PumpAndJump.game.physics.PersonPhysics;
 import com.musicgame.musicCompiler.MusicInputStreamer;
 
 public class RunningGame extends GameThread
 {
-	Skin uiSkin;
+
 	Stage stage;
 	SpriteBatch batch;
+	Player player;
+	PersonPhysics physics;
+
 	MusicInputStreamer streamer;
 	MusicOutputStream outStreamer = new MusicOutputStream();
+
 	//this is a list of the on screen objects
 	//(by on screen it does include some that are partially off the screen too)
 	//the objects are basically a queue added at the end and removed from the front
 	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	//contains the list of all objects that are in the level
 	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
+
 	long time;
 	double frame;
 	//the current frame that the sound player is at
@@ -42,7 +50,7 @@ public class RunningGame extends GameThread
 	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;
-	boolean jumping = false,ducking = false;
+
 	boolean paused = false;
 	public RunningGame()
 	{
@@ -52,16 +60,12 @@ public class RunningGame extends GameThread
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        uiSkin = new Skin( skinFile );
+        Skin uiSkin = new Skin( skinFile );
 
 		// Create a table that fills the screen. Everything else will go inside this table.
-		//Table table = new Table();
-		//table.debug(); // turn on all debug lines (table, cell, and widget)
-		//table.debugTable(); // turn on only table lines
-		//table.setFillParent(true);
-		//stage.addActor(table);
+
+        //seting up the buttons
 		final TextButton pauseButton = new TextButton("||", uiSkin);
-		stage.addActor(pauseButton);
 		pauseButton.setBounds(500, 500, 50, 50);
 		pauseButton.addListener(
 				new ChangeListener()
@@ -73,7 +77,39 @@ public class RunningGame extends GameThread
 						pausingButton();
 					}
 				});
+		stage.addActor(pauseButton);
+
+		final TextButton jumpButton = new TextButton("Jump", uiSkin);
+		stage.addActor(jumpButton);
+		jumpButton.setBounds(10,10, 50, 50);
+		jumpButton.addListener(
+				new ChangeListener()
+				{
+					@Override
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						physics.jump();
+					}
+				});
+
+		final TextButton duckButton = new TextButton("Duck", uiSkin);
+		stage.addActor(duckButton);
+		duckButton.setBounds(400,10, 50, 50);
+		duckButton.addListener(
+				new ChangeListener()
+				{
+					@Override
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						physics.duck();
+					}
+				});
 	//	table.add(aboutButton).size(50,50).pad(5);
+
+
+
+		//setting up people and time and location
+		physics = new PersonPhysics();
 		time = 0;
 	}
 
@@ -174,7 +210,7 @@ public class RunningGame extends GameThread
 	{
 		for(int k = 0;k<levelObjects.size();k++)
 		{
-			levelObjects.get(k).draw((SpriteBatch)null);
+			levelObjects.get(k).draw((SpriteBatch)batch);
 		}
 		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
