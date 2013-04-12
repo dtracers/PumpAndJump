@@ -29,7 +29,9 @@ public class MusicOutputStream
 
 	public void write(short[] input)
 	{
+	//	System.out.println(getLatancy());
 		writeData(input,0,input.length);
+	//	System.out.println(getLatancy());
 	}
 
 	public int getLatancy()

@@ -55,13 +55,15 @@ public class RunningGame extends GameThread
         uiSkin = new Skin( skinFile );
 
 		// Create a table that fills the screen. Everything else will go inside this table.
-		Table table = new Table();
+		//Table table = new Table();
 		//table.debug(); // turn on all debug lines (table, cell, and widget)
 		//table.debugTable(); // turn on only table lines
-		table.setFillParent(true);
-		stage.addActor(table);
-		final TextButton aboutButton = new TextButton("||", uiSkin);
-		aboutButton.addListener(
+		//table.setFillParent(true);
+		//stage.addActor(table);
+		final TextButton pauseButton = new TextButton("||", uiSkin);
+		stage.addActor(pauseButton);
+		pauseButton.setBounds(500, 500, 50, 50);
+		pauseButton.addListener(
 				new ChangeListener()
 				{
 					@Override
@@ -71,7 +73,7 @@ public class RunningGame extends GameThread
 						pausingButton();
 					}
 				});
-		table.add(aboutButton).size(50,50).pad(5);
+	//	table.add(aboutButton).size(50,50).pad(5);
 		time = 0;
 	}
 
@@ -201,19 +203,22 @@ public class RunningGame extends GameThread
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
-		Gdx.input.setInputProcessor(stage);
+		System.out.println("Switching!");
 		//Pause button won't work without this commented out
-		/*if(currentThread instanceof PauseGame && paused)
+		if(currentThread instanceof PauseGame && paused)
 		{
+
 			this.myNotify();
 		}else
 		if(currentThread instanceof Buffering)
 		{
+			Gdx.input.setInputProcessor(stage);
 			System.out.println("NOTIFYING");
 			this.myNotify();
 		}else
 		if(currentThread instanceof PreGame)
 		{
+			Gdx.input.setInputProcessor(stage);
 			try {
 				actualObjects = LevelInterpreter.loadLevel();
 			} catch (Exception e) {
@@ -224,7 +229,7 @@ public class RunningGame extends GameThread
 			streamer.loadSound();
 			streamer.start();
 			this.start();
-		}*/
+		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
 	}
 

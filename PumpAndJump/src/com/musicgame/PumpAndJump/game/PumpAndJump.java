@@ -140,8 +140,8 @@ public class PumpAndJump extends Game
 		if(runningThreads.size>=1)
 		{
 			GameThread newTopThread = runningThreads.get(runningThreads.size-1);
-			newTopThread.switchFrom(temp);
 			Gdx.input.setInputProcessor(newTopThread);
+			newTopThread.switchFrom(temp);
 		}
 	}
 
