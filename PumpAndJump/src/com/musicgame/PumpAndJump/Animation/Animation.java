@@ -5,6 +5,6 @@ package com.musicgame.PumpAndJump.Animation;
  * Different animations will extends this class
  * @author gigemjt
  */
-public abstract class Animation {
+public class Animation {
 
 }
