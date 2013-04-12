@@ -5,7 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.*;
 
 public class LevelInterpreter
 {
@@ -43,22 +47,14 @@ public class LevelInterpreter
 	{
 		//Gdx.files.internal("Something in assets");
 		ArrayList<GameObject> Level=new ArrayList <GameObject>();
-		File f= new File("resources");
-		if(f.listFiles()!=null)
-		{
-			for(File inside : f.listFiles()){
-				if(inside.getName().endsWith("txt")){
-					Scanner LevelIn = new Scanner(inside);
-					while(LevelIn.hasNextLine()){
-						GameObject obstacle=getNextObject(LevelIn.nextLine());
-						if(obstacle!=null)
-							Level.add(obstacle);
-					}
-					LevelIn.close();
-					break;
-				}
-			}
+		FileHandle dir= Gdx.files.internal("Skrillex_Cinema.wav");
+		Scanner LevelIn = new Scanner(dir.reader());
+		while(LevelIn.hasNextLine()){
+			GameObject obstacle=getNextObject(LevelIn.nextLine());
+			if(obstacle!=null)
+				Level.add(obstacle);
 		}
+		LevelIn.close();
 		return Level;
 	}
 }

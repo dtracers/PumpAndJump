@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import com.musicgame.PumpAndJump.Util.InputDecoder;
 import com.musicgame.PumpAndJump.Util.MusicOutputStream;
+import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.gameStates.AboutGame;
 import com.musicgame.PumpAndJump.game.gameStates.Buffering;
 import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
@@ -45,6 +46,9 @@ public class PumpAndJump extends Game
 	{
 		instance = this;
 		runningThreads = new Array<GameThread>();
+		
+		TextureMapping.constructStaticMapping();
+		
 		gameScreen = new GameScreen();
 		this.setScreen(gameScreen);
 
