@@ -38,14 +38,9 @@ public class MusicInputStreamer extends Thread
 		{
 			short[] buf = new short[frameSize*2];
 			short[] frame2 = new short[frameSize];
-			//readSamples(short[] samples, int offset, int numSamples)
 			readSong = decoder.readSamples(buf,0, frameSize*2);
 			for(int k=0;k<frame2.length;k++)
 			{
-			//	int hi = buf[(2 * k)];
-			//	int low = buf[(2 * k + 1)] & 0xFF;
-			//	int sampVal = hi << 8 | low;
-			//	frame2[k] = (short)sampVal;
 				if(decoder.getChannels()==2)
 				{
 					frame2[k] = (short) ((buf[k*2]+buf[k*2+1])/2.0);//gets half of the song (maybe because it is stereo?)
