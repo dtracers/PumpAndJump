@@ -114,49 +114,6 @@ public class RunningGame extends GameThread
 		table.add(jumpButton).expand().fill();
 		table.add(pauseButton).expand().size(250,100).pad(5);
 		table.add(duckButton).expand().fill();
-		
-		/*final TextButton pauseButton = new TextButton("||", uiSkin);
-		pauseButton.setBounds(300, 300, 50, 50);
-		pauseButton.addListener(
-				new ChangeListener()
-				{
-					@Override
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						System.out.println("pause");
-						pausingButton();
-					}
-				});
-		stage.addActor(pauseButton);
-
-		final TextButton jumpButton = new TextButton("Jump", uiSkin);
-		stage.addActor(jumpButton);
-		jumpButton.setBounds(10,10, 50, 50);
-		jumpButton.addListener(
-				new ChangeListener()
-				{
-					@Override
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						physics.jump();
-					}
-				});
-
-		final TextButton duckButton = new TextButton("Duck", uiSkin);
-		stage.addActor(duckButton);
-		duckButton.setBounds(400,10, 50, 50);
-		duckButton.addListener(
-				new ChangeListener()
-				{
-					@Override
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						physics.duck();
-					}
-				});
-	//	table.add(aboutButton).size(50,50).pad(5);
-*/
-
 
 		//setting up people and time and location
 		physics = new PersonPhysics();
