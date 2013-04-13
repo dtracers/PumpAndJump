@@ -40,12 +40,12 @@ public class OptionsGame extends GameThread
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
-	
+
 	public OptionsGame()
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
-		
+
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
 
@@ -115,7 +115,7 @@ public class OptionsGame extends GameThread
 				scroll.setScrollbarsOnTop(onTopButton.isChecked());
 			}
 		});
-		
+
 		final TextButton backButton = new TextButton("Back", uiSkin);
 		backButton.addListener(
 					new ChangeListener()
@@ -223,6 +223,11 @@ public class OptionsGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.OptionsGame;
 	}
 
 }

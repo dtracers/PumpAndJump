@@ -36,7 +36,7 @@ public class AboutGame extends GameThread
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
-	
+
 	public AboutGame()
 	{
 		batch = new SpriteBatch();
@@ -159,6 +159,11 @@ public class AboutGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.AboutGame;
 	}
 
 }

@@ -44,10 +44,10 @@ public class InstructionGame extends GameThread
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
-		
+
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
-        
+
         Table table = new Table();
 		stage.addActor(table);
 		table.setFillParent(true);
@@ -164,6 +164,11 @@ public class InstructionGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.InstructionGame;
 	}
 
 }

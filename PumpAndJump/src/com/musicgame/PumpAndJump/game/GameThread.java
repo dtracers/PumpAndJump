@@ -38,6 +38,11 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 		}
 	}
 
+	/**
+	 * Returns the name that is accosiated with this thread object
+	 */
+	public abstract ThreadName getThreadName();
+
 	public abstract void unpause();
 
 	/**

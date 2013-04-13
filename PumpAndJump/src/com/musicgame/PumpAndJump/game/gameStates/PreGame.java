@@ -29,7 +29,7 @@ import com.musicgame.PumpAndJump.game.ThreadName;
  */
 public class PreGame extends GameThread
 {
-	
+
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
@@ -205,6 +205,11 @@ public class PreGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.PreGame;
 	}
 
 }

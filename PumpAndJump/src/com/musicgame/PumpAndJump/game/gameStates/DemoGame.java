@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.musicgame.PumpAndJump.game.GameThread;
+import com.musicgame.PumpAndJump.game.ThreadName;
 
 public class DemoGame extends GameThread
 {
@@ -315,6 +316,11 @@ public class DemoGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.DemoGame;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
 import com.musicgame.PumpAndJump.game.GameThread;
+import com.musicgame.PumpAndJump.game.ThreadName;
 
 public class PostGame extends GameThread
 {
@@ -79,6 +80,12 @@ public class PostGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName()
+	{
+		return ThreadName.PostGame;
 	}
 
 }
