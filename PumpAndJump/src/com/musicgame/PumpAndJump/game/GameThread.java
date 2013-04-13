@@ -1,5 +1,6 @@
 package com.musicgame.PumpAndJump.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 
@@ -44,6 +45,15 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 	public abstract ThreadName getThreadName();
 
 	public abstract void unpause();
+
+	/**
+	 * This is called before any of the addition abstract methods are called
+	 */
+	protected void updateSelf()
+	{
+		Gdx.input.setInputProcessor(this);
+		resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+	}
 
 	/**
 	 * The calling object will get whatever ever needed information from the given object

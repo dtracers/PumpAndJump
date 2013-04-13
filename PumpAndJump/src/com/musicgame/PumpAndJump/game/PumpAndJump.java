@@ -23,12 +23,12 @@ public class PumpAndJump extends Game
 {
 	public static InputDecoder inputStream;
 	public static MusicOutputStream outputStream;
-	Screen gameScreen;
+	GameScreen gameScreen;
 	InputProcessor input;
 
 	//MainMenuScreen menuScreen;
 
-	static PumpAndJump instance;
+	//static PumpAndJump instance;
 	static Array<GameThread> runningThreads;
 
 	/*
@@ -44,11 +44,11 @@ public class PumpAndJump extends Game
 	@Override
 	public void create()
 	{
-		instance = this;
+	//	instance = this;
 		runningThreads = new Array<GameThread>();
-		
+
 		TextureMapping.constructStaticMapping();
-		
+
 		gameScreen = new GameScreen();
 		this.setScreen(gameScreen);
 
@@ -88,8 +88,8 @@ public class PumpAndJump extends Game
 	public static void switchThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
-		Gdx.input.setInputProcessor(temp);
-	//	instance.setScreen(temp);
+
+		temp.updateSelf();
 		temp.switchFrom(currentThread);
 		clearThreads(currentThread);
 		runningThreads.add(temp);
@@ -120,7 +120,7 @@ public class PumpAndJump extends Game
 	public static void addThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
-		Gdx.input.setInputProcessor(temp);
+		temp.updateSelf();
 		temp.addFrom(currentThread);
 		runningThreads.add(temp);
 	}

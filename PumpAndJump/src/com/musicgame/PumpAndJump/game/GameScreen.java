@@ -29,6 +29,7 @@ public class GameScreen implements Screen
 	@Override
 	public void show()
 	{
+		resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 	}
 
 	@Override
