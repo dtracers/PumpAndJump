@@ -40,7 +40,7 @@ public class OptionsGame extends GameThread
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
-
+	ThreadName reverseThread;
 	public OptionsGame()
 	{
 		batch = new SpriteBatch();
@@ -122,7 +122,7 @@ public class OptionsGame extends GameThread
 					{
 						public void changed(ChangeEvent event, Actor actor)
 						{
-							PumpAndJump.switchThread(ThreadName.PreGame, OptionsGame.this);
+							goBack();
 						}
 					});
 		container.add(scroll).size(450,200);
@@ -150,6 +150,42 @@ public class OptionsGame extends GameThread
 		super.resize(width, height);
         stage.setViewport(width, height, false);
     }
+
+	public void goBack()
+	{
+		switch(reverseThread)
+		{
+			case PreGame:
+				PumpAndJump.switchThread(ThreadName.PreGame, this);break;
+			case PauseGame:
+				PumpAndJump.removeThread(ThreadName.OptionsGame, this);break;
+		}
+	}
+
+	@Override
+	public void switchFrom(GameThread currentThread)
+	{
+		reverseThread = currentThread.getThreadName();
+		Gdx.input.setInputProcessor(stage);
+
+	}
+
+	@Override
+	public void addFrom(GameThread currentThread) {
+	}
+
+	@Override
+	public void removeFrom(GameThread currentThread) {
+	}
+
+	@Override
+	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.OptionsGame;
+	}
 
 	@Override
 	public boolean keyDown(int keycode) {
@@ -205,29 +241,6 @@ public class OptionsGame extends GameThread
 
 	@Override
 	public void dispose() {
-	}
-
-	@Override
-	public void switchFrom(GameThread currentThread)
-	{
-		Gdx.input.setInputProcessor(stage);
-	}
-
-	@Override
-	public void addFrom(GameThread currentThread) {
-	}
-
-	@Override
-	public void removeFrom(GameThread currentThread) {
-	}
-
-	@Override
-	public void unpause() {
-	}
-
-	@Override
-	public ThreadName getThreadName() {
-		return ThreadName.OptionsGame;
 	}
 
 }
