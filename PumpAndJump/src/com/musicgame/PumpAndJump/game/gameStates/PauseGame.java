@@ -27,12 +27,12 @@ public class PauseGame extends GameThread
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
-	
+
 	public PauseGame()
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
-		
+
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
@@ -41,37 +41,53 @@ public class PauseGame extends GameThread
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
 		table.setFillParent(true);
-		
+
 		//table.debug(); // turn on all debug lines (table, cell, and widget)
 		//table.debugTable(); // turn on only table lines
-		
-		
+
+
 		stage.addActor(table);
-		
-		final TextButton unpauseGameButton = new TextButton("Pause", uiSkin);
+
+		final TextButton unpauseGameButton = new TextButton("Resume", uiSkin);
 		unpauseGameButton.addListener(
 				new ChangeListener()
 				{
 					public void changed(ChangeEvent event, Actor actor)
 					{
-						PumpAndJump.switchThread(ThreadName.RunningGame, PauseGame.this);
-						//PumpAndJump.removeThread(ThreadName.RunningGame, PauseGame.this);
+					//	PumpAndJump.switchThread(ThreadName.RunningGame, PauseGame.this);
+						PumpAndJump.removeThread(ThreadName.PauseGame, PauseGame.this);
 						System.out.println("pressed!");
 						unpause();
 					}
 				});
-		final TextButton jumpGameButton = new TextButton("Jump", uiSkin);
+
+		final TextButton optionGameButton = new TextButton("Options", uiSkin);
+		optionGameButton.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						PumpAndJump.addThread(ThreadName.OptionsGame, PauseGame.this);
+						//PumpAndJump.removeThread(ThreadName.RunningGame, PauseGame.this);
+						System.out.println("pressed!");
+					}
+				});
+
+		final TextButton jumpGameButton = new TextButton("Jump Button", uiSkin);
 		jumpGameButton.setColor(.4f,.4f,.4f,.6f);
 		jumpGameButton.setDisabled(true);
-		final TextButton duckGameButton = new TextButton("Duck", uiSkin);
+		final TextButton duckGameButton = new TextButton("Duck Button", uiSkin);
 		duckGameButton.setDisabled(true);
 		duckGameButton.setColor(.4f,.4f,.4f,.6f);
-
 		table.add(jumpGameButton).expand().fill();
+
+		table.add(optionGameButton).expand().size(250,100).pad(5);
 		table.add(unpauseGameButton).expand().size(250,100).pad(5);
+
 		table.add(duckGameButton).expand().fill();
+
 	}
-	
+
 	@Override
 	public boolean keyDown(int keycode) {
 		return false;
@@ -157,6 +173,12 @@ public class PauseGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName()
+	{
+		return ThreadName.PauseGame;
 	}
 
 }
