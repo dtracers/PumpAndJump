@@ -39,7 +39,7 @@ public class TestLevelInterpreter {
 		exception.expect(RuntimeException.class);
 		LevelInterpreter.getNextObject(null);
 	}
-	
+	/*
 	@Test
 	public void testLoadLevel(){
 		String jumpTest="j 1.2",slideTest="s 1.2 3.4",garbageTest="garbage";
@@ -65,4 +65,5 @@ public class TestLevelInterpreter {
 			e.printStackTrace();
 		}
 	}
+	*/
 }
