@@ -5,6 +5,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -27,6 +29,7 @@ public class PauseGame extends GameThread
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
+	private ShapeRenderer shapeRenderer;
 
 	public PauseGame()
 	{
@@ -37,6 +40,8 @@ public class PauseGame extends GameThread
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
+
+        shapeRenderer = new ShapeRenderer();
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
@@ -89,48 +94,9 @@ public class PauseGame extends GameThread
 	}
 
 	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		System.out.println("mouseMoved");
+	//	System.out.println("mouseMoved");
 		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
-	}
-
-	@Override
-	public void pause() {
 	}
 
 	@Override
@@ -138,6 +104,15 @@ public class PauseGame extends GameThread
 	{
 		//Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 0.1f);
 		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glEnable(GL10.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+		shapeRenderer.begin(ShapeType.FilledRectangle);
+		shapeRenderer.filledRect(0f, 0f, width,height, Color.RED, Color.CLEAR, Color.CLEAR, Color.RED);
+		shapeRenderer.end();
+
+		Gdx.gl.glDisable(GL10.GL_BLEND);
+
 		stage.act(Math.min(delta, 1 / 30f));
 		stage.draw();
 		//Table.drawDebug(stage);
