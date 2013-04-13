@@ -61,21 +61,42 @@ public class RunningGame extends GameThread
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        Skin uiSkin = new Skin( skinFile );
+		 FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	     Skin uiSkin = new Skin( skinFile );
+	     addButtonsInvisible(stage,uiSkin);
 		// Create a table that fills the screen. Everything else will go inside this table.
-		Table table = new Table();
-		table.setFillParent(true);
+
 		//table.debug(); // turn on all debug lines (table, cell, and widget)
 		//table.debugTable(); // turn on only table lines
-		stage.addActor(table);
-		
+
+
         player = new Player( new Point( 400.0f, 300.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
-        //seting up the buttons
+
+		//setting up people and time and location
+		physics = new PersonPhysics();
+		time = 0;
+	}
+
+	/**
+	 *
+	 * @param stage
+	 */
+	public void addButtonsVisible(Stage stage,Skin uiSkin)
+	{
+
+	}
+
+	public void addButtonsInvisible(Stage stage,Skin uiSkin)
+	{
+		Table table = new Table();
+		table.setFillParent(true);
+
+		stage.addActor(table);
+		 //seting up the buttons
 		final TextButton pauseButton = new TextButton("Pause", uiSkin);
-		pauseButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
+	//	pauseButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen (pause should be visible though)
 		pauseButton.addListener(
 				new ChangeListener()
 				{
@@ -96,7 +117,7 @@ public class RunningGame extends GameThread
 						physics.jump();
 					}
 				});
-		
+
 		final TextButton duckButton = new TextButton("Duck", uiSkin);
 		duckButton.setDisabled(true);
 		duckButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
@@ -113,9 +134,6 @@ public class RunningGame extends GameThread
 		table.add(pauseButton).expand().size(250,100).pad(5);
 		table.add(duckButton).expand().fill();
 
-		//setting up people and time and location
-		physics = new PersonPhysics();
-		time = 0;
 	}
 
 	public synchronized void resetTime()
@@ -213,20 +231,23 @@ public class RunningGame extends GameThread
 	@Override
 	public void render(float delta)
 	{
+		batch.begin();
 		for(int k = 0;k<levelObjects.size();k++)
 		{
 			levelObjects.get(k).draw((SpriteBatch)batch);
 		}
-		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		stage.act(Math.min(delta, 1 / 30f));
-		stage.draw();
-
-		batch.begin();
 		player.draw( batch );
 		batch.end();
+	//	Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
+	//	Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		if(!toWait)
+		{
+			stage.act(Math.min(delta, 1 / 30f));
+			stage.draw();
+		}
 
-		Table.drawDebug(stage);
+
+	//	Table.drawDebug(stage);
 	//	System.out.println(frame);
 	}
 
@@ -344,5 +365,11 @@ public class RunningGame extends GameThread
 	//	System.out.println("Output Sound "+soundFrame);
 		outStreamer.write(streamer.frames.get((int)soundFrame));
 		soundFrame++;
+	}
+
+	@Override
+	public ThreadName getThreadName()
+	{
+		return ThreadName.RunningGame;
 	}
 }
