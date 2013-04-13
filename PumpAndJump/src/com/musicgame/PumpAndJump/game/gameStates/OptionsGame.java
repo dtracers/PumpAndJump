@@ -165,17 +165,22 @@ public class OptionsGame extends GameThread
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
-		reverseThread = currentThread.getThreadName();
+
 		Gdx.input.setInputProcessor(stage);
+		reverseThread = currentThread.getThreadName();
 
 	}
 
 	@Override
-	public void addFrom(GameThread currentThread) {
+	public void addFrom(GameThread currentThread)
+	{
+		Gdx.input.setInputProcessor(stage);
+		reverseThread = currentThread.getThreadName();
 	}
 
 	@Override
-	public void removeFrom(GameThread currentThread) {
+	public void removeFrom(GameThread currentThread)
+	{
 	}
 
 	@Override

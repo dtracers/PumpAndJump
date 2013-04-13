@@ -132,4 +132,10 @@ public class Buffering extends GameThread
 	{
 	}
 
+	@Override
+	public ThreadName getThreadName()
+	{
+		return ThreadName.Buffering;
+	}
+
 }
