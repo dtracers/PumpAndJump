@@ -17,12 +17,12 @@ import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
 import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
-import com.musicgame.PumpAndJump.Util.MusicOutputStream;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.physics.PersonPhysics;
-import com.musicgame.musicCompiler.MusicInputStreamer;
+import com.musicgame.PumpAndJump.game.sound.MusicInputStreamer;
+import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
 public class RunningGame extends GameThread
 {

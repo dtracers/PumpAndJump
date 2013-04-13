@@ -1,4 +1,4 @@
-package com.musicgame.PumpAndJump.Util;
+package com.musicgame.PumpAndJump.game.sound;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -6,8 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
-import com.musicgame.PumpAndJump.Util.InputDecoder;
-import com.musicgame.PumpAndJump.Util.MusicOutputStream;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.gameStates.AboutGame;
 import com.musicgame.PumpAndJump.game.gameStates.Buffering;
@@ -18,6 +16,8 @@ import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
 import com.musicgame.PumpAndJump.game.gameStates.PreGame;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
+import com.musicgame.PumpAndJump.game.sound.InputDecoder;
+import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
 public class PumpAndJump extends Game
 {
