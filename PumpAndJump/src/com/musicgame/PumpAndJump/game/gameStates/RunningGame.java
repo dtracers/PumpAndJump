@@ -81,8 +81,6 @@ public class RunningGame extends GameThread
 				{
 					public void changed(ChangeEvent event, Actor actor)
 					{
-						PumpAndJump.switchThread(ThreadName.RunningGame, RunningGame.this);
-						System.out.println("pause");
 						pausingButton();
 					}
 				});
