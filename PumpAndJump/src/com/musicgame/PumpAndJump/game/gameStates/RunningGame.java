@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
 import com.musicgame.PumpAndJump.Player;
@@ -61,15 +62,61 @@ public class RunningGame extends GameThread
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-
         Skin uiSkin = new Skin( skinFile );
-
+		// Create a table that fills the screen. Everything else will go inside this table.
+		Table table = new Table();
+		table.setFillParent(true);
+		//table.debug(); // turn on all debug lines (table, cell, and widget)
+		//table.debugTable(); // turn on only table lines
+		stage.addActor(table);
+		
         player = new Player( new Point( 400.0f, 300.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
         //seting up the buttons
-		final TextButton pauseButton = new TextButton("||", uiSkin);
-		pauseButton.setBounds(500, 500, 50, 50);
+		final TextButton pauseButton = new TextButton("Pause", uiSkin);
+		pauseButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
+		pauseButton.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						PumpAndJump.switchThread(ThreadName.RunningGame, RunningGame.this);
+						System.out.println("pause");
+						pausingButton();
+					}
+				});
+		final TextButton jumpButton = new TextButton("Jump", uiSkin);
+		jumpButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
+		jumpButton.setDisabled(true);
+		jumpButton.addListener(
+				new ChangeListener()
+				{
+					@Override
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						physics.jump();
+					}
+				});
+		
+		final TextButton duckButton = new TextButton("Duck", uiSkin);
+		duckButton.setDisabled(true);
+		duckButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
+		duckButton.addListener(
+				new ChangeListener()
+				{
+					@Override
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						physics.duck();
+					}
+				});
+		table.add(jumpButton).expand().fill();
+		table.add(pauseButton).expand().size(250,100).pad(5);
+		table.add(duckButton).expand().fill();
+		
+		/*final TextButton pauseButton = new TextButton("||", uiSkin);
+		pauseButton.setBounds(300, 300, 50, 50);
 		pauseButton.addListener(
 				new ChangeListener()
 				{
@@ -108,7 +155,7 @@ public class RunningGame extends GameThread
 					}
 				});
 	//	table.add(aboutButton).size(50,50).pad(5);
-
+*/
 
 
 		//setting up people and time and location
@@ -249,10 +296,11 @@ public class RunningGame extends GameThread
 	{
 		System.out.println("Switching!");
 		//Pause button won't work without this commented out
-		if(currentThread instanceof PauseGame && paused)
+		if(currentThread instanceof PauseGame)
 		{
-
+			Gdx.input.setInputProcessor(stage);
 			this.myNotify();
+			System.out.println("unpause");
 		}else
 		if(currentThread instanceof Buffering)
 		{

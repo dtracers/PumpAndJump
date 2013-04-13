@@ -120,9 +120,9 @@ public class PumpAndJump extends Game
 	public static void addThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
+		Gdx.input.setInputProcessor(temp);
 		temp.addFrom(currentThread);
 		runningThreads.add(temp);
-		Gdx.input.setInputProcessor(temp);
 	}
 
 	/**
@@ -136,16 +136,21 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	public static void removeThread(ThreadName switchTo,GameThread currentThread)
+	public static void removeThread(ThreadName switchTo, GameThread currentThread)
 	{
+		System.out.println("num threads before: ");
+		System.out.println(runningThreads.size);
 		GameThread temp = getThread(switchTo);
 		temp.removeFrom(currentThread);
+
 		runningThreads.removeValue(temp, true);
 		if(runningThreads.size>=1)
 		{
 			GameThread newTopThread = runningThreads.get(runningThreads.size-1);
 			Gdx.input.setInputProcessor(newTopThread);
 			newTopThread.switchFrom(temp);
+			System.out.println("num threads now: ");
+			System.out.println(runningThreads.size);
 		}
 	}
 

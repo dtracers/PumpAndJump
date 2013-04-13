@@ -80,8 +80,8 @@ public class PreGame extends GameThread
 				{
 					public void changed(ChangeEvent event, Actor actor)
 					{
-						//PumpAndJump.switchThread(ThreadName.OptionsGame, PreGame.this);
-						PumpAndJump.switchThread(ThreadName.DemoGame, PreGame.this);
+						PumpAndJump.switchThread(ThreadName.OptionsGame, PreGame.this);
+						//PumpAndJump.switchThread(ThreadName.DemoGame, PreGame.this);
 					}
 				});
 		final TextButton instructionsButton = new TextButton("Instructions", uiSkin);

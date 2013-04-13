@@ -66,7 +66,7 @@ public class OptionsGame extends GameThread
 		};
 
 		table.pad(10).defaults().expandX().space(4);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			table.row();
 			table.add(new Label(i + "uno", uiSkin)).expandX().fillX();
 
@@ -82,7 +82,7 @@ public class OptionsGame extends GameThread
 			slider.addListener(stopTouchDown); // Stops touchDown events from propagating to the FlickScrollPane.
 			table.add(slider);
 
-			table.add(new Label(i + "tres long0 long1 long2 long3 long4 long5 long6 long7 long8 long9 long10 long11 long12", uiSkin));
+			table.add(new Label(i + "tres long0 long1 long2 long3 long4 long5", uiSkin));
 		}
 
 		final TextButton flickButton = new TextButton("Flick Scroll", uiSkin.get("toggle", TextButtonStyle.class));
@@ -125,7 +125,7 @@ public class OptionsGame extends GameThread
 							PumpAndJump.switchThread(ThreadName.PreGame, OptionsGame.this);
 						}
 					});
-		container.add(scroll).expand().fill().colspan(4);
+		container.add(scroll).size(450,200);
 		container.row().space(10).padBottom(10);
 		container.add(backButton).size(250,50).pad(5);
 		//container.add(flickButton).right().expandX();
