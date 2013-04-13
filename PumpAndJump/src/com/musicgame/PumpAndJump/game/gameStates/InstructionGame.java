@@ -107,11 +107,15 @@ public class InstructionGame extends GameThread
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
+		reverseThread = currentThread.getThreadName();
 		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
-	public void addFrom(GameThread currentThread) {
+	public void addFrom(GameThread currentThread)
+	{
+		reverseThread = currentThread.getThreadName();
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -125,62 +129,6 @@ public class InstructionGame extends GameThread
 	@Override
 	public ThreadName getThreadName() {
 		return ThreadName.InstructionGame;
-	}
-
-	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void show() {
-	}
-
-	@Override
-	public void hide() {
-	}
-
-	@Override
-	public void dispose() {
 	}
 
 }

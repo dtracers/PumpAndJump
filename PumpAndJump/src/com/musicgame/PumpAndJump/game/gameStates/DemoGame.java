@@ -43,47 +43,11 @@ public class DemoGame extends GameThread
 	private float[] waveFormVertices;
 
 	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
    	 	if(!this.isjumping && bucket.y <= this.bucket_initialY)
    	 		this.isjumping=true;
 
-		return false;
-	}
-
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
 		return false;
 	}
 
@@ -274,14 +238,6 @@ public class DemoGame extends GameThread
 	   	      raindrops.add(raindrop);
 	   	      lastDropTime = TimeUtils.nanoTime();
 	   	   }
-
-	@Override
-	public void hide() {
-	}
-
-	@Override
-	public void pause() {
-	}
 
 	@Override
 	public void dispose() {
