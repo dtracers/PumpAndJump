@@ -328,6 +328,10 @@ public class RunningGame extends GameThread
 		currentTime = System.currentTimeMillis();
 	}
 
+	@Override
+	public void repause() {
+	}
+
 	/**
 	 * This method will pause the game and go buffer for a little big
 	 */
@@ -387,7 +391,7 @@ public class RunningGame extends GameThread
 	 */
 	public void jump()
 	{
-
+		player.jump();
 	}
 
 	/**
@@ -395,10 +399,7 @@ public class RunningGame extends GameThread
 	 */
 	public void duck()
 	{
-
+		player.duck();
 	}
 
-	@Override
-	public void repause() {
-	}
 }

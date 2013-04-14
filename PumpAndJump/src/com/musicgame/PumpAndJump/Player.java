@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 
 public class Player extends GameObject implements Animated{
-	
+
 	public PlayerHip hip;
 	Point pos;
 	Matrix4 before;
@@ -36,20 +36,20 @@ public class Player extends GameObject implements Animated{
 		changed = true;
 
 		pose = new Float[ WAMS_PLAYER_DOF ];
-		
+
 		float[] fpose = new float[ pose.length ];
 		getPose( fpose );
-		
+
 		ani = new Animation[2];
 		ani[ 0 ] = new Animation( "HandsTrans.txt" );
 		ani[ 1 ] = new Animation( "HandsAnim.txt" );
 		ani[1].isLooping=true;
-		
+
 		done = (float) Math.random()*5.0f + 1.0f;
-		
+
 		aniQ = new AnimationQueue( ani[0], fpose );
 	}
-	
+
 	//This method has to exist because java is bad
 	void actuallySetPose( Float[] a )
 	{
@@ -66,7 +66,7 @@ public class Player extends GameObject implements Animated{
 		hip.rightThigh.shin.foot.tuckles.angle.z = pose[ 8 ];
 
 		hip.torso.angle.z = pose[ 9 ];
-			
+
 		hip.torso.leftArm.angle.z = pose[ 10 ];
 		hip.torso.leftArm.forearm.angle.z = pose[ 11 ] ;
 
@@ -77,7 +77,7 @@ public class Player extends GameObject implements Animated{
 
 		hip.p.y = pose[ 15 ];
 	}
-	
+
 	//Same
 	void actuallyGetPose()
 	{
@@ -94,7 +94,7 @@ public class Player extends GameObject implements Animated{
 		pose[ 8 ] = Float.valueOf( hip.rightThigh.shin.foot.tuckles.angle.z );
 
 		pose[ 9 ] = Float.valueOf( hip.torso.angle.z );
-			
+
 		pose[ 10 ] = Float.valueOf( hip.torso.leftArm.angle.z );
 		pose[ 11 ] = Float.valueOf( hip.torso.leftArm.forearm.angle.z );
 
@@ -149,21 +149,21 @@ public class Player extends GameObject implements Animated{
 	{
 		Matrix4 mv = sb.getTransformMatrix();
 		before = new Matrix4( mv );
-		
+
 		mv.translate( pos.x, pos.y, pos.z );
 		sb.setTransformMatrix( mv );
-		
+
 		hip.display( sb );
-		
+
 		sb.setTransformMatrix( before );
 	}
-	
+
 	@Override
 	public void draw( SpriteBatch sb )
 	{
 		display( sb );
 	}
-	
+
 	@Override
 	public void update( float delta )
 	{
@@ -182,43 +182,53 @@ public class Player extends GameObject implements Animated{
 		}
 		UpdatePose( aniQ.getPose( delta ) );
 	}
-	
+
 	@Override
 	public void UpdatePose(float[] pose) {
 		setPose( pose );
 		hip.update( new Matrix4() );
 	}
-	
+
 	@Override
 	public boolean intersects( Polygon p )
 	{
 		return hip.intersects( p );
 	}
+
+	public void jump()
+	{
+
+	}
+
+	public void duck()
+	{
+
+	}
 }
 
-enum Side{ LEFT, RIGHT }; 
+enum Side{ LEFT, RIGHT };
 
 class PlayerForearm extends Model
 {
 	public final float width = 20.0f;
 	public final float height = 4.0f;
-	
-	public PlayerForearm( Side a ) 
+
+	public PlayerForearm( Side a )
 	{
 		super(  new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
-		
+
 		switch( a )
 		{
 			case LEFT:
@@ -256,23 +266,23 @@ class PlayerShoulder extends Model
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 		side = a;
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
-		
+
 		forearm = new PlayerForearm( a );
-		
+
 		children.add( forearm );
-		
+
 		switch( a )
 		{
 			case LEFT:
@@ -285,7 +295,7 @@ class PlayerShoulder extends Model
 	public void display( SpriteBatch sb )
 	{
 		pushTransforms( sb );
-		
+
 		forearm.display( sb );
 
 		/*glBegin(GL_POLYGON);
@@ -304,21 +314,21 @@ class PlayerHead extends Model
 {
 	public final float width = 25.0f;
 	public final float height = 25.0f;
-	
-	public PlayerHead() 
+
+	public PlayerHead()
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 	}
 
@@ -349,26 +359,26 @@ class PlayerTorso extends Model
 	public final float width = 35.0f;
 	public final float height = 4.0f;
 
-	public PlayerTorso() 
-	{ 
+	public PlayerTorso()
+	{
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 90.0f ),new Point( 1.0f, 1.0f, 1.0f ) );
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
-		
+
 		leftArm = new PlayerShoulder( Side.LEFT );
 		rightArm = new PlayerShoulder( Side.RIGHT );
 		head = new PlayerHead();
-		
+
 		children.add( leftArm );
 		children.add( rightArm );
 		children.add( head );
@@ -381,7 +391,7 @@ class PlayerTorso extends Model
 		leftArm.display( sb );
 
 		head.display( sb );
-		
+
 		/*glBegin(GL_POLYGON);
 			glVertex3f( 0.0f, -2.0f, 0.0f);
 			glVertex3f(	0.0f, 2.0f, 0.0f);
@@ -389,9 +399,9 @@ class PlayerTorso extends Model
 			glVertex3f( 35.0f, -2.0f, 0.0f);
 		glEnd();*/
 		drawSprite( sb );
-		
+
 		rightArm.display( sb );
-		
+
 		popTransforms( sb );
 	}
 }
@@ -400,20 +410,20 @@ class PlayerTuckles extends Model
 {
 	public final float width = 3.0f;
 	public final float height = 4.0f;
-	
+
 	public PlayerTuckles( Side a )
 	{
 		super( new Point( 9.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[6];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 	}
 
@@ -441,23 +451,23 @@ class PlayerFoot extends Model
 	public PlayerFoot( Side a )
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f ,1.0f ) );
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
-		
+
 		tuckles = new PlayerTuckles( a );
-		
+
 		children.add( tuckles );
-		
+
 		switch( a )
 		{
 			case LEFT:
@@ -491,24 +501,24 @@ class PlayerShin extends Model
 	public final float width = 20.0f;
 	public final float height = 4.0f;
 
-	PlayerShin( Side a ) 
+	PlayerShin( Side a )
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 
 		foot = new PlayerFoot( a );
-		
+
 		children.add( foot );
 
 		switch( a )
@@ -547,23 +557,23 @@ class PlayerThigh extends Model
 	public final float height = 4.0f;
 
 	public PlayerThigh( Side a )
-	{ 
+	{
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-		
+
 		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2 );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
-		
-		shin = new PlayerShin( a ); 
-		
+
+		shin = new PlayerShin( a );
+
 		children.add( shin );
 
 		side = a;
@@ -602,13 +612,13 @@ class PlayerHip extends Model
 	public PlayerThigh leftThigh;
 	public PlayerThigh rightThigh;
 
-	public PlayerHip( Point pos, Point angle ) 
+	public PlayerHip( Point pos, Point angle )
 	{
 		super( pos, angle, new Point( 1.0f, 1.0f, 1.0f ) );
 		torso = new PlayerTorso();
 		leftThigh = new PlayerThigh( Side.LEFT );
 		rightThigh = new PlayerThigh( Side.RIGHT );
-		
+
 		children.add( torso );
 		children.add( leftThigh );
 		children.add( rightThigh );
