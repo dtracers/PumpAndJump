@@ -181,21 +181,21 @@ public class RunningGame extends GameThread
 	/**
 	 * Run method happens while the game is running
 	 */
-	 @Override
-	 public void run()
-	 {
-		 previousTime = currentTime = System.currentTimeMillis();
-		 float delta = 0;
-		 while(true)
-		 {
-			 if(bufferingNeeded())
-			 {
-				 goBuffer();
-			 }else
-			 {
-				 writeSound();
-			 }
-		//	 System.out.println(soundFrame);
+	@Override
+	public void run()
+	{
+		previousTime = currentTime = System.currentTimeMillis();
+		float delta = 0;
+		while(true)
+		{
+			if(bufferingNeeded())
+			{
+				goBuffer();
+			}else
+			{
+				writeSound();
+			}
+		//	System.out.println(actualObjects.size());
 			previousTime = currentTime;
 			currentTime = System.currentTimeMillis();
 			delta = (currentTime-previousTime)/divide;
@@ -212,8 +212,8 @@ public class RunningGame extends GameThread
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		 }
-	 }
+		}
+	}
 
 	@Override
 	public void pause()

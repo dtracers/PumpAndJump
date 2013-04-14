@@ -24,9 +24,9 @@ public class TestLevelInterpreter {
 	public void testGetNextObject() {
 		String jumpTestCase="j 1.2";
 		String slideTestCase="s 1.2 3.4";
-		JumpObstacle expectedJumpOutput=new JumpObstacle(1.2);
+		JumpObstacle expectedJumpOutput=new JumpObstacle(1.2,3.4);
 		DuckObstacle expectedSlideOutput=new DuckObstacle(1.2,3.4);
-		
+
 		GameObject jumpResult=LevelInterpreter.getNextObject(jumpTestCase);
 		assertTrue("Didn't return a jump obstacle for jump input",jumpResult instanceof JumpObstacle);
 		assertEquals("Didn't read in the right jump start time",((JumpObstacle)jumpResult).getStartTime(),expectedJumpOutput.getStartTime(),.00001);
@@ -35,7 +35,7 @@ public class TestLevelInterpreter {
 		assertTrue(slideResult instanceof DuckObstacle);
 		assertEquals("Didn't read in the right slide start time",((DuckObstacle)slideResult).getStartTime(),expectedSlideOutput.getStartTime(),.00001);
 		assertEquals("Didn't read in the right slide end time",((DuckObstacle)slideResult).getEndTime(),expectedSlideOutput.getEndTime(),.00001);
-		
+
 		assertNull("Returned non null value for invalid input",LevelInterpreter.getNextObject(""));
 		exception.expect(RuntimeException.class);
 		LevelInterpreter.getNextObject(null);
@@ -46,13 +46,13 @@ public class TestLevelInterpreter {
 		try{
 			File temp= File.createTempFile("TempLevel", "txt");
 			FileWriter writer=new FileWriter(temp);
-			
+
 			writer.write(jumpTest+"\n");
 			writer.append(slideTest+"\n");
 			writer.append(garbageTest);
 			writer.flush();
 			Scanner input=new Scanner(temp);
-			
+
 			ArrayList <GameObject> result =	LevelInterpreter.loadFromScanner(input);
 			System.out.println(result.size());
 			assertEquals("Invalid Return Size",result.size(),2);

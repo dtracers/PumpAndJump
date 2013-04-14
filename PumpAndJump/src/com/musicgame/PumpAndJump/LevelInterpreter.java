@@ -20,13 +20,13 @@ public class LevelInterpreter
 	 * @param inputLine
 	 * @return
 	 */
-	public static GameObject getNextObject(String inputLine){
+	public static GameObject getNextObjectPattern(String inputLine){
 		String jumpPattern="j \\d+(\\.\\d+)?\\s*";
 		String slidePattern="s \\d+(\\.\\d+)? \\d+(\\.\\d+)?\\s*";
 		if(inputLine.matches(jumpPattern)){
 			String[] input=inputLine.split(" ");
 			double startTime=Double.parseDouble(input[1]);
-			return new JumpObstacle(startTime);
+			return new JumpObstacle(startTime,0);
 		}
 		if(inputLine.matches(slidePattern)){
 			String[] input=inputLine.split(" ");
@@ -34,8 +34,27 @@ public class LevelInterpreter
 			double endTime=Double.parseDouble(input[2]);
 			return new DuckObstacle(startTime,endTime);
 		}
+		System.out.println(inputLine);
 		return null;
 	}
+
+	public static GameObject getNextObject(String inputLine)
+	{
+		Scanner s = new Scanner(inputLine);
+		String type = s.next();
+		double start = s.nextDouble();
+		double end = s.nextDouble();
+		GameObject obj;
+		if(type.equalsIgnoreCase("j"))
+		{
+			return new JumpObstacle(start,end);
+		}else if(type.equalsIgnoreCase("d"))
+		{
+			return new DuckObstacle(start,end);
+		}
+		return null;
+	}
+
 	/**
 	 * Returns the list of the GameObjects that were loaded from the level
 	 * Will return an empty array list if no file is found.
@@ -48,10 +67,12 @@ public class LevelInterpreter
 		//Gdx.files.internal("Something in assets");
 		ArrayList<GameObject> Level;
 		FileHandle dir= Gdx.files.internal("Level1.txt");
-		
+
 		if(!dir.exists())
+		{
 			return null;
-		
+		}
+
 		Scanner LevelIn = new Scanner(dir.reader());
 		Level=loadFromScanner(LevelIn);
 		LevelIn.close();
@@ -66,6 +87,7 @@ public class LevelInterpreter
 		ArrayList<GameObject> Level=new ArrayList<GameObject>();
 		while(scan.hasNextLine()){
 			GameObject obstacle=getNextObject(scan.nextLine());
+
 			if(obstacle!=null)
 				Level.add(obstacle);
 		}
