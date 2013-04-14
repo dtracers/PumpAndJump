@@ -150,7 +150,6 @@ public class RunningGame extends GameThread
 				});
 		final TextButton jumpButton = new TextButton("Jump", uiSkin);
 		jumpButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
-		jumpButton.setDisabled(true);
 		jumpButton.addListener(
 				new ChangeListener()
 				{
@@ -162,7 +161,6 @@ public class RunningGame extends GameThread
 				});
 
 		final TextButton duckButton = new TextButton("Duck", uiSkin);
-		duckButton.setDisabled(true);
 		duckButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
 		duckButton.addListener(
 				new ChangeListener()
@@ -391,6 +389,7 @@ public class RunningGame extends GameThread
 	 */
 	public void jump()
 	{
+		System.out.println("Jumping");
 		player.jump();
 	}
 
@@ -399,6 +398,7 @@ public class RunningGame extends GameThread
 	 */
 	public void duck()
 	{
+		System.out.println("Ducking");
 		player.duck();
 	}
 
