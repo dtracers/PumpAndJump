@@ -54,11 +54,13 @@ public class MusicInputStreamer extends Thread
 			currentFrame++;
 			if(buffering)
 			{
+				/*
 				try {
 					Thread.sleep(5);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				*/
 			}else
 			{
 				try {
