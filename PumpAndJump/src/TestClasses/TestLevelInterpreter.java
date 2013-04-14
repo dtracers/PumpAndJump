@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TestLevelInterpreter {
 	@Rule
@@ -39,19 +40,20 @@ public class TestLevelInterpreter {
 		exception.expect(RuntimeException.class);
 		LevelInterpreter.getNextObject(null);
 	}
-	/*
 	@Test
-	public void testLoadLevel(){
+	public void testLoadFromScanner(){
 		String jumpTest="j 1.2",slideTest="s 1.2 3.4",garbageTest="garbage";
 		try{
-			FileWriter writer=new FileWriter("resources/11111.txt");
+			File temp= File.createTempFile("TempLevel", "txt");
+			FileWriter writer=new FileWriter(temp);
 			
 			writer.write(jumpTest+"\n");
 			writer.append(slideTest+"\n");
 			writer.append(garbageTest);
 			writer.flush();
-	
-			ArrayList <GameObject> result =	LevelInterpreter.loadLevel();
+			Scanner input=new Scanner(temp);
+			
+			ArrayList <GameObject> result =	LevelInterpreter.loadFromScanner(input);
 			System.out.println(result.size());
 			assertEquals("Invalid Return Size",result.size(),2);
 			assertTrue("Incorrect gameObject type",result.get(0) instanceof JumpObstacle);
@@ -64,6 +66,7 @@ public class TestLevelInterpreter {
 		catch(IOException e){
 			e.printStackTrace();
 		}
+		exception.expect(RuntimeException.class);
+		LevelInterpreter.loadFromScanner(null);
 	}
-	*/
 }

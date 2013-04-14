@@ -39,22 +39,36 @@ public class LevelInterpreter
 	/**
 	 * Returns the list of the GameObjects that were loaded from the level
 	 * Will return an empty array list if no file is found.
-	 * Precondition: The first txt file in the resources folder is the level data
+	 * If the file Level1.txt doesn't exist returns null
 	 * @return
 	 * @throws FileNotFoundException
 	 */
 	public static ArrayList<GameObject> loadLevel() throws FileNotFoundException
 	{
 		//Gdx.files.internal("Something in assets");
-		ArrayList<GameObject> Level=new ArrayList <GameObject>();
+		ArrayList<GameObject> Level;
 		FileHandle dir= Gdx.files.internal("Level1.txt");
+		
+		if(!dir.exists())
+			return null;
+		
 		Scanner LevelIn = new Scanner(dir.reader());
-		while(LevelIn.hasNextLine()){
-			GameObject obstacle=getNextObject(LevelIn.nextLine());
+		Level=loadFromScanner(LevelIn);
+		LevelIn.close();
+		return Level;
+	}
+	/**
+	 * Returns the array for the given scanner
+	 * Will throw runtime error if scan is null
+	 * @return
+	 */
+	public static ArrayList<GameObject> loadFromScanner(Scanner scan){
+		ArrayList<GameObject> Level=new ArrayList<GameObject>();
+		while(scan.hasNextLine()){
+			GameObject obstacle=getNextObject(scan.nextLine());
 			if(obstacle!=null)
 				Level.add(obstacle);
 		}
-		LevelIn.close();
 		return Level;
 	}
 }
