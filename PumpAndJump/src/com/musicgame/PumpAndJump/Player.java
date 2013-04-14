@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Polygon;
 public class Player extends GameObject implements Animated{
 	
 	public PlayerHip hip;
+	Point pos;
+	Matrix4 before;
 	public boolean changed;
 	public Float[] pose;
 	public float origY;
@@ -25,7 +27,8 @@ public class Player extends GameObject implements Animated{
 
 	public Player( Point pos, Point angle )
 	{
-		hip = new PlayerHip( pos, angle );
+		hip = new PlayerHip( new Point( 0.0f, 0.0f, 0.0f ), angle );
+		this.pos = pos;
 		origY = pos.y;
 
 		hip.scale( 1.0f, 1.0f, 1.0f );
@@ -71,7 +74,7 @@ public class Player extends GameObject implements Animated{
 
 		hip.torso.head.angle.z = pose[ 14 ];
 
-		//hip.p.y = pose[ 15 ];
+		hip.p.y = pose[ 15 ];
 	}
 	
 	//Same
@@ -143,7 +146,15 @@ public class Player extends GameObject implements Animated{
 
 	public void display( SpriteBatch sb )
 	{
+		Matrix4 mv = sb.getTransformMatrix();
+		before = new Matrix4( mv );
+		
+		mv.translate( pos.x, pos.y, pos.z );
+		sb.setTransformMatrix( mv );
+		
 		hip.display( sb );
+		
+		sb.setTransformMatrix( before );
 	}
 	
 	@Override
