@@ -41,8 +41,9 @@ public class Player extends GameObject implements Animated{
 		getPose( fpose );
 		
 		ani = new Animation[2];
-		ani[ 0 ] = new Animation( "TestAnimationType1.txt" );
-		ani[ 1 ] = new Animation( "TestAnimationType2.txt" );
+		ani[ 0 ] = new Animation( "HandsTrans.txt" );
+		ani[ 1 ] = new Animation( "HandsAnim.txt" );
+		ani[1].isLooping=true;
 		
 		done = (float) Math.random()*5.0f + 1.0f;
 		
@@ -167,16 +168,17 @@ public class Player extends GameObject implements Animated{
 	public void update( float delta )
 	{
 		time += delta;
-		if( time > done )
+		if( aniQ.stop )
 		{
-			System.out.println( "ATTACK" );
+			/*System.out.println( "ATTACK" );
 			time = 0.0f;
 			count++;
 			done = (float) Math.random()*5.0f + 1.0f;
+			*/
 			float[] f = new float[ pose.length ];
 			getPose( f );
 			count = (int)(Math.random()*48735);
-			aniQ.switchAnimation( ani[ count%2 ], f );
+			aniQ.switchAnimation( ani[1] , f );
 		}
 		UpdatePose( aniQ.getPose( delta ) );
 	}
