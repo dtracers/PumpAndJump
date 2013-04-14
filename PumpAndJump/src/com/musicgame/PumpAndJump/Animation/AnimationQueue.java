@@ -86,7 +86,7 @@ public class AnimationQueue {
 		float highTime = queue[2].t;
 		float currentTime = lastTime + changeInTime;
 		
-		System.out.println( )
+		//System.out.println( chang)
 			
 		
 		while( highTime <  currentTime )
