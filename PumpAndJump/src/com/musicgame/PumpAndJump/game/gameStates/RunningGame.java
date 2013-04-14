@@ -48,8 +48,9 @@ public class RunningGame extends GameThread
 	boolean toWait = false;
 	private boolean started = false;
 
-	 long previousTime;
-	 long currentTime;
+	long previousTime;
+	long currentTime;
+	float divide = 700;
 
 	public RunningGame()
 	{
@@ -187,6 +188,8 @@ public class RunningGame extends GameThread
 	 @Override
 	 public void run()
 	 {
+		 previousTime = currentTime = System.currentTimeMillis();
+		 float delta = 0;
 		 while(true)
 		 {
 			 if(bufferingNeeded())
@@ -196,7 +199,12 @@ public class RunningGame extends GameThread
 			 {
 				 writeSound();
 			 }
-			 System.out.println(soundFrame);
+		//	 System.out.println(soundFrame);
+			 previousTime = currentTime;
+			 currentTime = System.currentTimeMillis();
+			 delta = currentTime-previousTime;
+			 player.update(delta/divide);
+		//	 System.out.println(delta);
 			 /*
 			  * do math here to make sure everything is in sync
 			 */
@@ -224,8 +232,8 @@ public class RunningGame extends GameThread
 		{
 			levelObjects.get(k).draw((SpriteBatch)batch);
 		}
-		if(!toWait)
-			player.update( delta );
+	//	if(!toWait)
+	//		player.update( delta );
 		player.draw( batch );
 		batch.end();
 	//	Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
@@ -317,6 +325,8 @@ public class RunningGame extends GameThread
 	@Override
 	public void unpause() {
 		toWait = false;
+		previousTime = System.currentTimeMillis();
+		currentTime = System.currentTimeMillis();
 	}
 
 	/**

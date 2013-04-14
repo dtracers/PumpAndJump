@@ -12,40 +12,40 @@ public class AnimationQueue {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	Keyframe[] queue;
 	public boolean isLooping;
 	public boolean stop = false;
 	int lastKeyFrame;
 	float lastTime;
 	Animation ani;
-	
+
 	public AnimationQueue( Animation startAnimation, float[] intialPosition )
 	{
 		queue = new Keyframe[4];
-		
+
 		lastKeyFrame = 0;
-		
+
 		ani = startAnimation;
-		
+
 		isLooping = startAnimation.isLooping;
-		
+
 		lastTime = 0.0f;
-		
+
 		queue[0] = new Keyframe( intialPosition, -1.0f, 0 );
 		queue[1] = ani.keyframes.get( 0 ).copy();
 		queue[2] = ani.keyframes.get( 1 ).copy();
 		queue[3] = ani.keyframes.get( 2 ).copy();
 	}
-	
+
 	private void pushKeyFrame()
 	{
 		queue[0] = queue[1];
 		queue[1] = queue[2];
 		queue[2] = queue[3];
-		
+
 		lastKeyFrame++;
-		
+
 		if( lastKeyFrame < ani.keyframes.size() )
 		{
 			queue[3] = ani.keyframes.get( lastKeyFrame ).copy();
@@ -62,20 +62,20 @@ public class AnimationQueue {
 					queue[0].normalize();
 					queue[1].t = queue[1].t - queue[2].t;
 					queue[1].normalize();
-					queue[2].t = 0.0f; 
+					queue[2].t = 0.0f;
 					queue[2].normalize();
-					
-					lastKeyFrame = 1;	
+
+					lastKeyFrame = 1;
 				}
 				queue[3] = ani.keyframes.get( 1 ).copy();
 			}
 			else
 			{
 				stop = true;
-			}	
+			}
 		}
 	}
-	
+
 	public void switchAnimation( Animation a, float[] pose )
 	{
 		ani = a;
@@ -90,22 +90,21 @@ public class AnimationQueue {
 		lastTime = 0.0f;
 		isLooping = ani.isLooping;
 	}
-	
+
 	public float[] getPose( float changeInTime )
 	{
 		float highTime = queue[2].t;
 		lastTime = lastTime + changeInTime;
-		
+
 		//for( int i = 0; i < )
-		
+
 		while( highTime <  lastTime )
 		{
 			pushKeyFrame();
-			//queue[2].print(); 
+			//queue[2].print();
 			//currentTime = lastTime + changeInTime;
 			highTime = queue[2].t;
 		}
-		System.out.println( "George" );
 
 		//currentTime += changeInTime;
 
@@ -119,7 +118,7 @@ public class AnimationQueue {
 				newpos[i] = kf.pose[ i ];
 			}
 		}
-		else 
+		else
 		{
 			for( int i = 0; i < ani.dof; i++ )
 			{
@@ -133,7 +132,7 @@ public class AnimationQueue {
 					newP = AnimationUtil.catmullrom( (lastTime - queue[1].t)/( queue[2].t - queue[1].t ), queue[0].pose[i], queue[1].pose[i], queue[2].pose[i], queue[3].pose[i] );
 				}
 				newpos[i] = ( newP%360.0f );
-				
+
 				//System.out.print( newpos[i]+"," );
 			}
 		}
