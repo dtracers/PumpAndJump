@@ -30,7 +30,45 @@ public class Player extends GameObject implements Animated{
 		changed = true;
 
 		pose = new Float[ WAMS_PLAYER_DOF ];
+		
+		float[] fpose = new float[ pose.length ];
+		getPose( fpose );
+		
+		ani = new Animation( "TestAnimationType2.txt" );
+		aniQ = new AnimationQueue( ani, fpose );
+	}
+	
+	//This method has to exist because java is bad
+	void actuallySetPose( Float[] a )
+	{
+		hip.angle.z = pose[ 0 ];
 
+		hip.leftThigh.angle.z = pose[ 1 ];
+		hip.leftThigh.shin.angle.z = pose[ 2 ];
+		hip.leftThigh.shin.foot.angle.z = pose[ 3 ];
+		hip.leftThigh.shin.foot.tuckles.angle.z = pose[ 4 ];
+
+		hip.rightThigh.angle.z = pose[ 5 ] ;
+		hip.rightThigh.shin.angle.z = pose[ 6 ];
+		hip.rightThigh.shin.foot.angle.z = pose[ 7 ];
+		hip.rightThigh.shin.foot.tuckles.angle.z = pose[ 8 ];
+
+		hip.torso.angle.z = pose[ 9 ];
+			
+		hip.torso.leftArm.angle.z = pose[ 10 ];
+		hip.torso.leftArm.forearm.angle.z = pose[ 11 ] ;
+
+		hip.torso.rightArm.angle.z = pose[ 12 ];
+		hip.torso.rightArm.forearm.angle.z = pose[ 13 ];
+
+		hip.torso.head.angle.z = pose[ 14 ];
+
+		//hip.p.y = pose[ 15 ];
+	}
+	
+	//Same
+	void actuallyGetPose()
+	{
 		pose[ 0 ] = Float.valueOf( hip.angle.z );
 
 		pose[ 1 ] = Float.valueOf( hip.leftThigh.angle.z );
@@ -38,28 +76,22 @@ public class Player extends GameObject implements Animated{
 		pose[ 3 ] = Float.valueOf( hip.leftThigh.shin.foot.angle.z );
 		pose[ 4 ] = Float.valueOf( hip.leftThigh.shin.foot.tuckles.angle.z );
 
-		pose[ 5 ] = Float.valueOf(hip.rightThigh.angle.z );
-		pose[ 6 ] = Float.valueOf(hip.rightThigh.shin.angle.z );
-		pose[ 7 ] = Float.valueOf(hip.rightThigh.shin.foot.angle.z );
-		pose[ 8 ] = Float.valueOf(hip.rightThigh.shin.foot.tuckles.angle.z );
+		pose[ 5 ] = Float.valueOf( hip.rightThigh.angle.z );
+		pose[ 6 ] = Float.valueOf( hip.rightThigh.shin.angle.z );
+		pose[ 7 ] = Float.valueOf( hip.rightThigh.shin.foot.angle.z );
+		pose[ 8 ] = Float.valueOf( hip.rightThigh.shin.foot.tuckles.angle.z );
 
-		pose[ 9 ] = Float.valueOf(hip.torso.angle.z );
+		pose[ 9 ] = Float.valueOf( hip.torso.angle.z );
 			
-		pose[ 10 ] = Float.valueOf(hip.torso.leftArm.angle.z );
-		pose[ 11 ] = Float.valueOf(hip.torso.leftArm.forearm.angle.z );
+		pose[ 10 ] = Float.valueOf( hip.torso.leftArm.angle.z );
+		pose[ 11 ] = Float.valueOf( hip.torso.leftArm.forearm.angle.z );
 
-		pose[ 12 ] = Float.valueOf(hip.torso.rightArm.angle.z );
-		pose[ 13 ] = Float.valueOf(hip.torso.rightArm.forearm.angle.z );
+		pose[ 12 ] = Float.valueOf( hip.torso.rightArm.angle.z );
+		pose[ 13 ] = Float.valueOf( hip.torso.rightArm.forearm.angle.z );
 
-		pose[ 14 ] = Float.valueOf(hip.torso.head.angle.z );
+		pose[ 14 ] = Float.valueOf( hip.torso.head.angle.z );
 
-		pose[ 15 ] = Float.valueOf(hip.p.y );
-		
-		float[] fpose = new float[ pose.length ];
-		getPose( fpose );
-		
-		ani = new Animation( "TestAnimationType0.txt" );
-		aniQ = new AnimationQueue( ani, fpose );
+		pose[ 15 ] = Float.valueOf( hip.p.y );
 	}
 
 	void setPose( float[] a )
@@ -67,7 +99,9 @@ public class Player extends GameObject implements Animated{
 		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
 			pose[ i ] = a[i];//temp;
+			//System.out.print( pose[i] );
 		}
+		actuallySetPose( pose );
 		changed = true;
 	}
 
@@ -77,11 +111,13 @@ public class Player extends GameObject implements Animated{
 		{
 			pose[ i ] = (float)a[i];
 		}
+		actuallySetPose( pose );
 		changed = true;
 	}
 
 	public void getPose( float[] a )
 	{
+		actuallyGetPose();
 		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
 			a[ i ] = pose[ i ];
@@ -90,6 +126,7 @@ public class Player extends GameObject implements Animated{
 
 	public void getPose( double[] a )
 	{
+		actuallyGetPose();
 		for( int i = 0; i < WAMS_PLAYER_DOF; i++ )
 		{
 			a[ i ] = ( double ) ( pose[ i ] );

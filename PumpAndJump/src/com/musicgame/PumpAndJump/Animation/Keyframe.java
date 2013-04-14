@@ -11,9 +11,10 @@ public class Keyframe {
 	}
 	
 	public float[] pose;
+	public int index;
 	public float t;
 	
-	public Keyframe( float[] _pose, float _t ){ pose = _pose; t = _t; }
+	public Keyframe( float[] _pose, float _t, int _index ){ pose = _pose; t = _t; index = _index; }
 	
 	public Keyframe copy( )
 	{
@@ -22,7 +23,7 @@ public class Keyframe {
 		{
 			p[ i ] = pose[ i ];
 		}
-		return new Keyframe( p, t );
+		return new Keyframe( p, t, index );
 	}
 	
 	public void normalize()
@@ -31,6 +32,17 @@ public class Keyframe {
 		{
 			pose[i] %= 360.0f;
 		}
+	}
+	
+	public void print()
+	{
+		System.out.print( "Index:"+index+"\t" );
+		System.out.print( "Time:"+t+"\t" );
+		for( int i = 0; i < pose.length; i++ )
+		{
+			System.out.print( pose[i]+"," );
+		}
+		System.out.println();
 	}
 
 }

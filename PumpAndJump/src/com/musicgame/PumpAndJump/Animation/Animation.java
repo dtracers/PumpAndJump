@@ -51,6 +51,11 @@ public class Animation {
 		}
 		
 		normalize();
+		
+		for( Keyframe kf: keyframes )
+		{
+			kf.print();
+		}
 	}
 	
 	public void scaleTimes( float scalar )
@@ -108,19 +113,20 @@ public class Animation {
 		
 		float origY = s.nextFloat();
 
-		float[] pose = new float[ dof ];
-
 		float t = 0.0f;
 
 		for( int i = 0; i < size; i++ )
 		{
+
+			float[] pose = new float[ dof ];
+			
 			for( int j = 0; j < dof; j++ )
 			{
 				pose[j] = s.nextFloat();
 			}
 			pose[ 15 ] = origY - pose[15];
 			t = s.nextFloat();
-			keyframes.add( new Keyframe( pose, t ) );
+			keyframes.add( new Keyframe( pose, t, i ) );
 		}
 
 		s.close();
@@ -129,6 +135,7 @@ public class Animation {
 	private void readType2( Scanner s )
 	{
 		int size = s.nextInt();
+		System.out.println( size );
 		
 		float origY = s.nextFloat();
 		
@@ -138,12 +145,12 @@ public class Animation {
 		
 		isLooping = s.nextBoolean();
 
-		float[] pose = new float[ dof ];
-
 		float t = 0.0f;
 
 		for( int i = 0; i < size; i++ )
 		{
+			float[] pose = new float[ dof ];
+			
 			for( int j = 0; j < dof; j++ )
 			{
 				pose[j] = s.nextFloat();
@@ -151,7 +158,7 @@ public class Animation {
 			if( actor == 1 )
 				pose[ 15 ] = origY - pose[15];
 			t = s.nextFloat();
-			keyframes.add( new Keyframe( pose, t ) );
+			keyframes.add( new Keyframe( pose, t, i ) );
 		}
 
 		s.close();
@@ -173,7 +180,7 @@ public class Animation {
 					pose[j] = s.nextFloat();
 			}
 			t = s.nextFloat();
-			keyframes.add( new Keyframe( pose, t ) );
+			keyframes.add( new Keyframe( pose, t, i ) );
 		}
 	}
 	
