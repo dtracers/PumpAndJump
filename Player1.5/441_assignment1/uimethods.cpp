@@ -599,9 +599,8 @@ using namespace WAMS;
 			cout<<size<<"\n";
 			cout<<"OrigY: "<<origY<<"\n";
 		}
-		else
+		else if( type == -1 )
 		{
-			size;
 			ifs>>size;
 			cout<<"Type: "<<type<<endl;
 			cout<<size<<"\n";
@@ -609,6 +608,15 @@ using namespace WAMS;
 			ifs>>origY;
 			pl->origY = origY;
 			cout<<"OrigY: "<<origY<<"\n";
+		}
+		else if( type == -2 )
+		{
+			ifs>>size;
+			ifs>>origY;
+			pl->origY = origY;
+
+			char s[256];
+			ifs.getline( s, 256 );
 		}
 
 		float pos[ WAMS_PLAYER_DOF ];

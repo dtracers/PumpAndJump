@@ -124,7 +124,7 @@ public class Animation {
 			{
 				pose[j] = s.nextFloat();
 			}
-			pose[ 15 ] = Math.abs( pose[15] - origY ) / 5.0f;
+			pose[ 15 ] = (pose[15] - origY) / 5.0f;
 			t = s.nextFloat();
 			keyframes.add( new Keyframe( pose, t, i ) );
 		}
@@ -135,7 +135,6 @@ public class Animation {
 	private void readType2( Scanner s )
 	{
 		int size = s.nextInt();
-		System.out.println( size );
 		
 		float origY = s.nextFloat();
 		
@@ -156,7 +155,7 @@ public class Animation {
 				pose[j] = s.nextFloat();
 			}
 			if( actor == 1 )
-				pose[ 15 ] = Math.abs( pose[15] - origY ) / 5.0f;
+				pose[ 15 ] = (pose[15] - origY) / 5.0f;
 			t = s.nextFloat();
 			keyframes.add( new Keyframe( pose, t, i ) );
 		}
