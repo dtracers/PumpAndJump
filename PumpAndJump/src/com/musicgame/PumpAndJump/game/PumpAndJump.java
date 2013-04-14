@@ -155,12 +155,7 @@ public class PumpAndJump extends Game
 	}
 
 	/**
-	 *
-	 * PreGame
-	 * PostGame
-	 * RunningGame
-	 * PauseGame
-	 *
+	 * gets the thread
 	 * @param switchTo
 	 * @return
 	 */

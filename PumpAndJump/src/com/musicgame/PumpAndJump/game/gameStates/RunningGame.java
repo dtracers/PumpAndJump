@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
 import com.musicgame.PumpAndJump.Player;
@@ -20,7 +18,6 @@ import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
-import com.musicgame.PumpAndJump.game.physics.PersonPhysics;
 import com.musicgame.PumpAndJump.game.sound.MusicInputStreamer;
 import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
@@ -28,54 +25,61 @@ public class RunningGame extends GameThread
 {
 	Stage stage;
 	SpriteBatch batch;
-	PersonPhysics physics;
 
 	MusicInputStreamer streamer;
 	MusicOutputStream outStreamer = new MusicOutputStream();
 
-	//this is a list of the on screen objects
-	//(by on screen it does include some that are partially off the screen too)
-	//the objects are basically a queue added at the end and removed from the front
+	/**
+	this is a list of the on screen objects
+	(by on screen it does include some that are partially off the screen too)
+	the objects are basically a queue added at the end and removed from the front
+	*/
 	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	//contains the list of all objects that are in the level
 	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
 
 	//Player object
 	Player player;
-	long time;
-	double frame;
 	//the current frame that the sound player is at
 	long soundFrame = 0;
-	//the distance between the frame
 	int bufferDistance = 20;
 	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;
+	private boolean started = false;
 
-//	boolean paused = false;
+	 long previousTime;
+	 long currentTime;
+
 	public RunningGame()
+	{
+		reset();
+	}
+
+	/**
+	 * Sets up the game for running
+	 */
+	public void reset()
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
 
-		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
-		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-		 FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-	     Skin uiSkin = new Skin( skinFile );
-	     addButtonsInvisible(stage,uiSkin);
+		/**
+		A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
+		recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
+		*/
+		FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	    Skin uiSkin = new Skin( skinFile );
+	    addButtonsInvisible(stage,uiSkin);
 		// Create a table that fills the screen. Everything else will go inside this table.
 
 		//table.debug(); // turn on all debug lines (table, cell, and widget)
 		//table.debugTable(); // turn on only table lines
 
-
         player = new Player( new Point( 400.0f, 500.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
-
-		//setting up people and time and location
-		physics = new PersonPhysics();
-		time = 0;
+        soundFrame = 0;
 	}
 
 	/**
@@ -84,6 +88,47 @@ public class RunningGame extends GameThread
 	 */
 	public void addButtonsVisible(Stage stage,Skin uiSkin)
 	{
+		final TextButton pauseButton = new TextButton("||", uiSkin);
+				pauseButton.setBounds(300, 300, 50, 50);
+				pauseButton.addListener(
+						new ChangeListener()
+						{
+							@Override
+							public void changed(ChangeEvent event, Actor actor)
+							{
+								System.out.println("pause");
+								pausingButton();
+							}
+						});
+				stage.addActor(pauseButton);
+
+				final TextButton jumpButton = new TextButton("Jump", uiSkin);
+				stage.addActor(jumpButton);
+				jumpButton.setBounds(10,10, 50, 50);
+				jumpButton.addListener(
+						new ChangeListener()
+						{
+							@Override
+							public void changed(ChangeEvent event, Actor actor)
+							{
+								jump();
+							}
+						});
+
+				final TextButton duckButton = new TextButton("Duck", uiSkin);
+				stage.addActor(duckButton);
+				duckButton.setBounds(400,10, 50, 50);
+				duckButton.addListener(
+						new ChangeListener()
+						{
+							@Override
+							public void changed(ChangeEvent event, Actor actor)
+							{
+								duck();
+							}
+						});
+			//	table.add(aboutButton).size(50,50).pad(5);
+
 
 	}
 
@@ -113,7 +158,7 @@ public class RunningGame extends GameThread
 					@Override
 					public void changed(ChangeEvent event, Actor actor)
 					{
-						physics.jump();
+						jump();
 					}
 				});
 
@@ -126,7 +171,7 @@ public class RunningGame extends GameThread
 					@Override
 					public void changed(ChangeEvent event, Actor actor)
 					{
-						physics.duck();
+						duck();
 					}
 				});
 		table.add(jumpButton).expand().fill();
@@ -135,15 +180,6 @@ public class RunningGame extends GameThread
 
 	}
 
-	public synchronized void resetTime()
-	{
-		time = 0;
-	}
-
-	public synchronized long getTimeLocation()
-	{
-		return time;
-	}
 
 	/**
 	 * Run method happens while the game is running
@@ -151,9 +187,6 @@ public class RunningGame extends GameThread
 	 @Override
 	 public void run()
 	 {
-
-		 time = System.currentTimeMillis();
-		 start = System.currentTimeMillis();
 		 while(true)
 		 {
 			 if(bufferingNeeded())
@@ -162,12 +195,8 @@ public class RunningGame extends GameThread
 			 }else
 			 {
 				 writeSound();
-			//	 System.out.println(before-after);
 			 }
-			 time = System.currentTimeMillis() - start;
-			 frame = time*1000.0/sampleRate;
-			 frame/=streamer.frameSize;
-
+			 System.out.println(soundFrame);
 			 /*
 			  * do math here to make sure everything is in sync
 			 */
@@ -257,7 +286,14 @@ public class RunningGame extends GameThread
 			streamer = new MusicInputStreamer();
 			streamer.loadSound();
 			streamer.start();
-			this.start();
+			if(!started)
+			{
+				started = true;
+				this.start();
+			}else
+			{
+				this.myNotify();
+			}
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
 	}
@@ -269,7 +305,10 @@ public class RunningGame extends GameThread
 	}
 
 	@Override
-	public void removeFrom(GameThread currentThread) {
+	public void removeFrom(GameThread currentThread)
+	{
+		reset();
+		System.out.println("BEING REMOBED");
 	}
 
 	/**
@@ -332,5 +371,21 @@ public class RunningGame extends GameThread
 	public ThreadName getThreadName()
 	{
 		return ThreadName.RunningGame;
+	}
+
+	/**
+	 * Called when the player presses the jump button
+	 */
+	public void jump()
+	{
+
+	}
+
+	/**
+	 * Called when the player presses the duck button
+	 */
+	public void duck()
+	{
+
 	}
 }

@@ -78,6 +78,19 @@ public class PauseGame extends GameThread
 					}
 				});
 
+		final TextButton quitGameButton = new TextButton("Quit", uiSkin);
+		quitGameButton.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						PumpAndJump.switchThread(ThreadName.PreGame, PauseGame.this);
+						//PumpAndJump.removeThread(ThreadName.RunningGame, PauseGame.this);
+						System.out.println("pressed!");
+					}
+				});
+
+
 		final TextButton jumpGameButton = new TextButton("Jump Button", uiSkin);
 		jumpGameButton.setColor(.4f,.4f,.4f,.6f);
 		jumpGameButton.setDisabled(true);
@@ -87,6 +100,7 @@ public class PauseGame extends GameThread
 		table.add(jumpGameButton).expand().fill();
 
 		table.add(optionGameButton).expand().size(250,100).pad(5);
+		table.add(quitGameButton).expand().size(250,100).pad(5);
 		table.add(unpauseGameButton).expand().size(250,100).pad(5);
 
 		table.add(duckGameButton).expand().fill();
