@@ -129,4 +129,8 @@ public class InstructionGame extends GameThread
 		return ThreadName.InstructionGame;
 	}
 
+	@Override
+	public void repause() {
+	}
+
 }

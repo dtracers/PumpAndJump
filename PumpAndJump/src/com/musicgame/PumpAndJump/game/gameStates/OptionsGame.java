@@ -189,4 +189,8 @@ public class OptionsGame extends GameThread
 	public ThreadName getThreadName() {
 		return ThreadName.OptionsGame;
 	}
+
+	@Override
+	public void repause() {
+	}
 }

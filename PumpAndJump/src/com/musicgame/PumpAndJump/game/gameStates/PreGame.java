@@ -156,4 +156,8 @@ public class PreGame extends GameThread
 		return ThreadName.PreGame;
 	}
 
+	@Override
+	public void repause() {
+	}
+
 }

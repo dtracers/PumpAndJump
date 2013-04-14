@@ -397,4 +397,8 @@ public class RunningGame extends GameThread
 	{
 
 	}
+
+	@Override
+	public void repause() {
+	}
 }

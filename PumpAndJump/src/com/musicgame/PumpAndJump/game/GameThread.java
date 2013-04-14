@@ -19,7 +19,7 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 	{
 		synchronized(this)
 		{
-			pause();
+			repause();
 			try
 			{
 				this.wait();
@@ -45,6 +45,7 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 	public abstract ThreadName getThreadName();
 
 	public abstract void unpause();
+	public abstract void repause();
 
 	/**
 	 * This is called before any of the addition abstract methods are called

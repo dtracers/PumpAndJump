@@ -92,4 +92,8 @@ public class Buffering extends GameThread
 		return ThreadName.Buffering;
 	}
 
+	@Override
+	public void repause() {
+	}
+
 }

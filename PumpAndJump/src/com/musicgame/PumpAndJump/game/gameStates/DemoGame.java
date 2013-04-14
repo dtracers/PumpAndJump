@@ -278,4 +278,8 @@ public class DemoGame extends GameThread
 		return ThreadName.DemoGame;
 	}
 
+	@Override
+	public void repause() {
+	}
+
 }

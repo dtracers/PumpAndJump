@@ -169,4 +169,8 @@ public class PauseGame extends GameThread
 		return ThreadName.PauseGame;
 	}
 
+	@Override
+	public void repause() {
+	}
+
 }

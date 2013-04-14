@@ -32,4 +32,8 @@ public class PostGame extends GameThread
 	public void render(float delta) {
 	}
 
+	@Override
+	public void repause() {
+	}
+
 }
