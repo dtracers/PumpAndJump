@@ -38,12 +38,10 @@ public class InstructionGame extends GameThread
 {
 	Skin uiSkin;
 	Stage stage;
-	SpriteBatch batch;
 	ThreadName reverseThread;
 	//private Table table;
 	public InstructionGame()
 	{
-		batch = new SpriteBatch();
 		stage = new Stage();
 
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );

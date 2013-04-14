@@ -35,7 +35,6 @@ public class AboutGame extends GameThread
 
 	Skin uiSkin;
 	Stage stage;
-	SpriteBatch batch;
 
 	public AboutGame()
 	{

@@ -28,13 +28,12 @@ public class PauseGame extends GameThread
 {
 	Skin uiSkin;
 	Stage stage;
-	SpriteBatch batch;
 	private ShapeRenderer shapeRenderer;
 
 	public PauseGame()
 	{
-		batch = new SpriteBatch();
 		stage = new Stage();
+		width = Gdx.graphics.getWidth();height = Gdx.graphics.getHeight();
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
@@ -122,12 +121,12 @@ public class PauseGame extends GameThread
 		Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		shapeRenderer.begin(ShapeType.FilledRectangle);
-		shapeRenderer.filledRect(0f, 0f, width,height, new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(0f, 0f, 1f, 0.75f));
+		shapeRenderer.filledRect(0f, 0f, width,height , new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(0f, 0f, 1f, 0.75f));
 		shapeRenderer.end();
 
 		Gdx.gl.glDisable(GL10.GL_BLEND);
 
-		stage.act(Math.min(delta, 1 / 30f));
+		//stage.act(Math.min(delta, 1 / 30f));
 		stage.draw();
 		//Table.drawDebug(stage);
 		//System.out.println("going");

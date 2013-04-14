@@ -24,7 +24,6 @@ import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 public class RunningGame extends GameThread
 {
 	Stage stage;
-	SpriteBatch batch;
 
 	MusicInputStreamer streamer;
 	MusicOutputStream outStreamer = new MusicOutputStream();
@@ -42,7 +41,7 @@ public class RunningGame extends GameThread
 	Player player;
 	//the current frame that the sound player is at
 	long soundFrame = 0;
-	int bufferDistance = 20;
+	int bufferDistance = 200;
 	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;
@@ -62,7 +61,6 @@ public class RunningGame extends GameThread
 	 */
 	public void reset()
 	{
-		batch = new SpriteBatch();
 		stage = new Stage();
 
 		/**

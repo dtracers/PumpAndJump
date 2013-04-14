@@ -3,16 +3,16 @@ package com.musicgame.PumpAndJump.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class GameThread extends Thread implements InputProcessor, Screen
 {
-	public int height,width;
+	public static SpriteBatch batch = new SpriteBatch();
+	public int height, width;
 
 	@Override
 	public void resize(int width, int height)
 	{
-		this.height = height;
-		this.width = width;
 	}
 
 	public void myWait()

@@ -24,7 +24,6 @@ public class DemoGame extends GameThread
 	Texture notedudeImage;
 	Sound dropSound;
 	Music rainMusic;
-	SpriteBatch batch;
 	OrthographicCamera camera;
 	Rectangle bucket;
 	Array<Rectangle> raindrops;

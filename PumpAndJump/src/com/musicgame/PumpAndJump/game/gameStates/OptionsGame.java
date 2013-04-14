@@ -39,11 +39,9 @@ public class OptionsGame extends GameThread
 
 	Skin uiSkin;
 	Stage stage;
-	SpriteBatch batch;
 	ThreadName reverseThread;
 	public OptionsGame()
 	{
-		batch = new SpriteBatch();
 		stage = new Stage();
 
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );

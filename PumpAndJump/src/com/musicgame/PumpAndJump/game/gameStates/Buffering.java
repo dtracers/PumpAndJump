@@ -12,7 +12,6 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 public class Buffering extends GameThread
 {
 	Texture dropImage = new Texture(Gdx.files.internal("droplet.png"));
-	SpriteBatch batch = new SpriteBatch();
 	BitmapFont  font = new BitmapFont();
 	float x,y;
 	long position;
