@@ -56,13 +56,15 @@ public class AnimationQueue {
 			{
 				if( lastKeyFrame % ani.keyframes.size() == 0 )
 				{
-					queue[0].t -= lastTime;
+					//System.out.println( lastTime+","+queue[2].t);
+					queue[0].t =  queue[0].t - queue[2].t;
+					lastTime = lastTime - queue[2].t;
 					queue[0].normalize();
-					queue[1].t -= lastTime;
+					queue[1].t = queue[1].t - queue[2].t;
 					queue[1].normalize();
-					queue[2].t -= lastTime; 
+					queue[2].t = 0.0f; 
 					queue[2].normalize();
-					lastTime = 0.0f;
+					
 					lastKeyFrame = 1;	
 				}
 				queue[3] = ani.keyframes.get( 1 ).copy();
@@ -92,19 +94,20 @@ public class AnimationQueue {
 	public float[] getPose( float changeInTime )
 	{
 		float highTime = queue[2].t;
-		float currentTime = lastTime + changeInTime;
+		lastTime = lastTime + changeInTime;
 		
 		//for( int i = 0; i < )
 		
-		while( highTime <  currentTime && !stop )
+		while( highTime <  lastTime )
 		{
 			pushKeyFrame();
 			//queue[2].print(); 
-			currentTime = lastTime + changeInTime;
+			//currentTime = lastTime + changeInTime;
 			highTime = queue[2].t;
 		}
+		System.out.println( "George" );
 
-		lastTime += changeInTime;
+		//currentTime += changeInTime;
 
 		float[] newpos = new float[ ani.dof];
 
@@ -123,11 +126,11 @@ public class AnimationQueue {
 				float newP;
 				if( Math.abs( queue[3].pose[i] - queue[0].pose[i] )*.05f > Math.abs(queue[2].pose[i] - queue[1].pose[i])  )
 				{
-					newP = AnimationUtil.lerp( (currentTime - queue[1].t)/( queue[2].t - queue[1].t ), queue[1].pose[i], queue[2].pose[i] );
+					newP = AnimationUtil.lerp( (lastTime - queue[1].t)/( queue[2].t - queue[1].t ), queue[1].pose[i], queue[2].pose[i] );
 				}
 				else
 				{
-					newP = AnimationUtil.catmullrom( (currentTime - queue[1].t)/( queue[2].t - queue[1].t ), queue[0].pose[i], queue[1].pose[i], queue[2].pose[i], queue[3].pose[i] );
+					newP = AnimationUtil.catmullrom( (lastTime - queue[1].t)/( queue[2].t - queue[1].t ), queue[0].pose[i], queue[1].pose[i], queue[2].pose[i], queue[3].pose[i] );
 				}
 				newpos[i] = ( newP%360.0f );
 				
