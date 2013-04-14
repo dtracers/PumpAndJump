@@ -200,17 +200,18 @@ public class RunningGame extends GameThread
 				 writeSound();
 			 }
 		//	 System.out.println(soundFrame);
-			 previousTime = currentTime;
-			 currentTime = System.currentTimeMillis();
-			 delta = currentTime-previousTime;
-			 player.update(delta/divide);
-		//	 System.out.println(delta);
-			 /*
-			  * do math here to make sure everything is in sync
-			 */
-			 if(toWait)
-				 myWait();
-			 try {
+			previousTime = currentTime;
+			currentTime = System.currentTimeMillis();
+			delta = (currentTime-previousTime)/divide;
+			player.update(delta);
+			for(int k = 0;k<levelObjects.size();k++)
+			{
+				levelObjects.get(k).update(delta);
+			}
+
+			if(toWait)
+				myWait();
+			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -230,7 +231,7 @@ public class RunningGame extends GameThread
 		batch.begin();
 		for(int k = 0;k<levelObjects.size();k++)
 		{
-			levelObjects.get(k).draw((SpriteBatch)batch);
+			levelObjects.get(k).draw(batch);
 		}
 	//	if(!toWait)
 	//		player.update( delta );
