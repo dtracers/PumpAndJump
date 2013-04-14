@@ -58,7 +58,7 @@ public class Player extends GameObject implements Animated{
 		float[] fpose = new float[ pose.length ];
 		getPose( fpose );
 		
-		ani = new Animation( "TempTestAnimation0.txt" );
+		ani = new Animation( "TestAnimationType0.txt" );
 		aniQ = new AnimationQueue( ani, fpose );
 	}
 
@@ -108,9 +108,9 @@ public class Player extends GameObject implements Animated{
 	}
 	
 	@Override
-	public void update( double sec )
+	public void update( float delta )
 	{
-		UpdatePose( aniQ.getPose( (float)sec ) );
+		UpdatePose( aniQ.getPose( delta ) );
 	}
 	
 	@Override

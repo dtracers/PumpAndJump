@@ -69,7 +69,7 @@ public abstract class GameObject
 		 sr.end();
 	}
 
-	public void update( double sec )
+	public void update( float delta )
 	{
 
 	}

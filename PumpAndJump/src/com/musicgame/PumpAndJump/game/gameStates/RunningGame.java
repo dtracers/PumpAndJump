@@ -26,7 +26,6 @@ import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
 public class RunningGame extends GameThread
 {
-
 	Stage stage;
 	SpriteBatch batch;
 	PersonPhysics physics;
@@ -70,7 +69,7 @@ public class RunningGame extends GameThread
 		//table.debugTable(); // turn on only table lines
 
 
-        player = new Player( new Point( 400.0f, 300.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+        player = new Player( new Point( 400.0f, 500.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
 
@@ -152,6 +151,7 @@ public class RunningGame extends GameThread
 	 @Override
 	 public void run()
 	 {
+		 
 		 time = System.currentTimeMillis();
 		 start = System.currentTimeMillis();
 		 while(true)
@@ -195,6 +195,7 @@ public class RunningGame extends GameThread
 		{
 			levelObjects.get(k).draw((SpriteBatch)batch);
 		}
+		player.update( delta );
 		player.draw( batch );
 		batch.end();
 	//	Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);

@@ -27,7 +27,11 @@ public abstract class Model
 	Sprite image;
 	ArrayList< Model > children;
 
-	public Model( Point _p, Point _angle, Point _scale ) { p = _p; angle =  _angle; scalar = _scale; children = new ArrayList< Model >(); }
+	public Model( Point _p, Point _angle, Point _scale ) 
+	{ 
+		p = _p; angle =  _angle; scalar = _scale; 
+		children = new ArrayList< Model >(); 
+	}
 
 	public void pushTransforms( SpriteBatch sb )
 	{
@@ -88,26 +92,28 @@ public abstract class Model
 	{
 		mv = getModelView( mv );
 		
-		Vector2[] points = IntersectionUtil.FloatToVector2( poly.getVertices() );
-		
-		for( Vector2 p : points )
+		if( poly != null )
 		{
-			Vector3 point= new Vector3( p.x, p.y, 0 );
+			Vector2[] points = IntersectionUtil.FloatToVector2( poly.getVertices() );
 			
-			point = point.mul( mv );
+			for( Vector2 p : points )
+			{
+				Vector3 point= new Vector3( p.x, p.y, 0 );
+				
+				point = point.mul( mv );
+				
+				p.x = point.x;
+				p.y = point.y;
+			}
 			
-			p.x = point.x;
-			p.y = point.y;
+			float[] fpoints = IntersectionUtil.Vector2ToFloat( points );
+			hull = new Polygon( fpoints );
+			
+			for( Model m : children )
+			{
+				m.update( new Matrix4( mv ) );
+			}
 		}
-		
-		float[] fpoints = IntersectionUtil.Vector2ToFloat( points );
-		hull = new Polygon( fpoints );
-		
-		for( Model m : children )
-		{
-			m.update( new Matrix4( mv ) );
-		}
-		
 	}
 	
 	public boolean intersects( Polygon otherHull )
