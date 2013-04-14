@@ -58,8 +58,11 @@ public class AnimationQueue {
 				if( lastKeyFrame % ani.keyframes.size() == 0 )
 				{
 					queue[0].t -= lastTime;
+					queue[0].normalize();
 					queue[1].t -= lastTime;
+					queue[1].normalize();
 					queue[2].t -= lastTime; 
+					queue[2].normalize();
 					lastTime = 0.0f;
 					lastKeyFrame = 1;	
 				}
