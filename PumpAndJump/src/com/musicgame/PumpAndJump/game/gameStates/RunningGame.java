@@ -52,7 +52,7 @@ public class RunningGame extends GameThread
 	long start = 0;
 	boolean toWait = false;
 
-	boolean paused = false;
+//	boolean paused = false;
 	public RunningGame()
 	{
 		batch = new SpriteBatch();
@@ -151,7 +151,7 @@ public class RunningGame extends GameThread
 	 @Override
 	 public void run()
 	 {
-		 
+
 		 time = System.currentTimeMillis();
 		 start = System.currentTimeMillis();
 		 while(true)
@@ -195,7 +195,8 @@ public class RunningGame extends GameThread
 		{
 			levelObjects.get(k).draw((SpriteBatch)batch);
 		}
-		player.update( delta );
+		if(!toWait)
+			player.update( delta );
 		player.draw( batch );
 		batch.end();
 	//	Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
