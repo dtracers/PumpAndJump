@@ -15,7 +15,6 @@ public class AnimationQueue {
 	
 	Keyframe[] queue;
 	public boolean isLooping;
-	public boolean startOfLoop = false;
 	public boolean stop = false;
 	int lastKeyFrame;
 	float lastTime;
@@ -78,13 +77,16 @@ public class AnimationQueue {
 	public void switchAnimation( Animation a, float[] pose )
 	{
 		ani = a;
-		lastKeyFrame = 0;
+		lastKeyFrame = 1;
+		stop = false;
 		queue[ 0 ] = queue[ 1 ];
 		queue[ 0 ].normalize();
-		queue[ 1 ] = new Keyframe( pose, -.3f, 0);
-		queue[ 0 ].t = queue[1].t - (lastTime - queue[ 0 ].t);
-		queue[ 2 ] = a.keyframes.get( 0 ).copy();
-		queue[ 3 ] = a.keyframes.get( 1 ).copy();
+		queue[ 1 ] = new Keyframe( pose, 0.0f, 0);
+		queue[ 2 ] = a.keyframes.get( 1 ).copy();
+		queue[ 3 ] = a.keyframes.get( 2 ).copy();
+		queue[ 0 ].t = queue[0].t - lastTime;
+		lastTime = 0.0f;
+		isLooping = ani.isLooping;
 	}
 	
 	public float[] getPose( float changeInTime )

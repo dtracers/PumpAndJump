@@ -16,8 +16,11 @@ public class Player extends GameObject implements Animated{
 	public boolean changed;
 	public Float[] pose;
 	public float origY;
+	float time = 0;
+	float done = 0;
+	int count = 0;
 	public final int WAMS_PLAYER_DOF = 16;
-	Animation ani;
+	Animation ani[];
 	AnimationQueue aniQ;
 
 	public Player( Point pos, Point angle )
@@ -34,8 +37,13 @@ public class Player extends GameObject implements Animated{
 		float[] fpose = new float[ pose.length ];
 		getPose( fpose );
 		
-		ani = new Animation( "TestAnimationType2.txt" );
-		aniQ = new AnimationQueue( ani, fpose );
+		ani = new Animation[2];
+		ani[ 0 ] = new Animation( "TestAnimationType1.txt" );
+		ani[ 1 ] = new Animation( "TestAnimationType2.txt" );
+		
+		done = (float) Math.random()*5.0f + 1.0f;
+		
+		aniQ = new AnimationQueue( ani[0], fpose );
 	}
 	
 	//This method has to exist because java is bad
@@ -147,6 +155,18 @@ public class Player extends GameObject implements Animated{
 	@Override
 	public void update( float delta )
 	{
+		time += delta;
+		if( time > done )
+		{
+			System.out.println( "ATTACK" );
+			time = 0.0f;
+			count++;
+			done = (float) Math.random()*5.0f + 1.0f;
+			float[] f = new float[ pose.length ];
+			getPose( f );
+			count = (int)(Math.random()*48735);
+			aniQ.switchAnimation( ani[ count%2 ], f );
+		}
 		UpdatePose( aniQ.getPose( delta ) );
 	}
 	

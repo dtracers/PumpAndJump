@@ -44,5 +44,15 @@ public class Keyframe {
 		}
 		System.out.println();
 	}
+	
+	public float dist( Keyframe kf )
+	{
+		float sum = 0.0f;
+		for( int i = 0; i < pose.length; i++ )
+		{
+			sum += Math.abs(pose[i] - kf.pose[i]);
+		}
+		return sum/((float)pose.length);
+	}
 
 }
