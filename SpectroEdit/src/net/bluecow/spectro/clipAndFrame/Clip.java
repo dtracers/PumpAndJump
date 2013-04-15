@@ -59,9 +59,14 @@ public class Clip
 	private InputDecoder input;
 
 	//uses an array to add in the intensity
-	private ArrayList<float[]> pre_intensityarray;
-	private float[] post_intensityarray;
-	private int windowFrame = 0;//it starts at the bottom index
+
+
+	private ArrayList<float[][]> VEdata = new ArrayList<float[][]>();
+
+	private static double[] EnergyHistory = new double[43];
+	private static long sampleIndex;
+	static ArrayList<Beat> detectedBeats;
+
 
 	public Clip(File file) throws UnsupportedAudioFileException, IOException
 	{
@@ -111,10 +116,10 @@ public class Clip
 		filteredPartials = new double[11][input.frameSize];
 		float[] partArray = input.readSeparately();
 
-		creatIntensityWindow(partArray);
-
 		if( partArray != null )
 		{
+			VEdata.add(calculateVE(partArray));
+
 			prefilter(partArray);
 			for( int i = 0; i < 11; i++ )
 			{
@@ -134,10 +139,6 @@ public class Clip
 	 */
 	public void creatIntensityWindow(float[] partArray)
 	{
-		for(int k=windowFrame - 2; k<windowFrame; k++)
-		{
-
-		}
 	}
 
 	public void postFilter()
@@ -345,4 +346,37 @@ public class Clip
 	  public double getSamplingRate() {
 	    return AUDIO_FORMAT.getSampleRate();
 	  }
+
+
+	  /**
+	   	 * David methods below
+	   	 * in array [0] it is the volume
+	   	 * in array [1] it is the energy
+	   	 * the length of the array is the size of the given array/1320
+	   	 */
+	   	public float[][] calculateVE(float[] timeData)
+	   	{
+	   		//the size of bits that the array is taken over
+	   		int averageSize = Beat.FRAME_SIZE;
+	   		//number of values
+	   		int length = timeData.length/averageSize;
+	   		float[][] result = new float[2][length];
+	   		int index = 0;
+	   		for(int k = 0;k<length;k++)
+	   		{
+	   			float volume = 0;
+	   			float energy = 0;
+	   			for(int q = 0; q<averageSize;q++)
+	   			{
+	   				float data = timeData[index];
+	   				volume+=data;
+	   				energy+=data*data;
+	   				index++;
+	   			}
+	   			result[0][k] = volume/averageSize;
+	   			result[1][k] = energy;
+	   		}
+	   		return result;
+	   	}
+
 	}

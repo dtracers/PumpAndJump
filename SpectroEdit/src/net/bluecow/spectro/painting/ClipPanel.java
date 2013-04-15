@@ -133,6 +133,10 @@ implements Scrollable
 			int rowIndex = (region.height - (row - region.y) - 1);///2;
 			int noteNumber = rowIndex%12;
 			int octave = (rowIndex)/12;
+			if(octave == 5)
+			{
+				System.out.println("");
+			}
 			ArrayList< Frame > frames = clip.getFrame( octave );
 			for( int col = region.x; col < endCol; col++ )
 			{

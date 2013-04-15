@@ -24,10 +24,6 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 			private double mult[];
 			private static double preMult[] = { .5, .5, .5, .5, .25, .05, .25, .5, .5, .5, .5 };
 
-			private double[][] VEdata;
-
-			private static double[] EnergyHistory = new double[43];
-			private static long sampleIndex;
 			//private final WindowFunction preWindowFunc;
 			//private final WindowFunction postWindowFunc;
 
@@ -112,7 +108,6 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 
 			//	System.out.println(timeLength);
 				//put volume here
-				VEdata = calculateVE(timeData);
 				//WindowFunction preWindowFunc = preFunc[ octave ];
 				//WindowFunction postWindowFunc = new NullWindowFunction();
 
@@ -286,41 +281,6 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 	  	}
 
 
-	   	/**
-	   	 * David methods below
-	   	 * in array [0] it is the volume
-	   	 * in array [1] it is the energy
-	   	 * the length of the array is the size of the given array/1024
-	   	 */
-	   	public double[][] calculateVE(double[] timeData)
-	   	{
 
-	   		//the size of bits that the array is taken over
-	   		int averageSize = 1024;
-	   		//number of values
-	   		int length = timeData.length/averageSize+1;
-	   		int leftOver = timeData.length%1024;
-	   		double[][] result = new double[2][length];
-	   		int index = 0;
-	   		for(int k = 0;k<length;k++)
-	   		{
-	   			if(leftOver!=0&&k==length-1)
-	   			{
-	   				averageSize = leftOver;
-	   			}
-	   			double volume = 0;
-	   			double energy = 0;
-	   			for(int q = 0; q<averageSize;q++)
-	   			{
-	   				double data = timeData[index];
-	   				volume+=data;
-	   				energy+=data*data;
-	   				index++;
-	   			}
-	   			result[0][k] = volume/averageSize;
-	   			result[1][k] = energy;
-	   		}
-	   		return result;
-	   	}
 
 }
