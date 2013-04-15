@@ -163,13 +163,13 @@ public class Player extends GameObject implements Animated{
 	}
 
 	@Override
-	public void draw( SpriteBatch sb )
+	public synchronized void draw( SpriteBatch sb )
 	{
 		display( sb );
 	}
 
 	@Override
-	public void update( float delta )
+	public synchronized void update( float delta )
 	{
 		time += delta;
 		if( aniQ.stop )
@@ -178,7 +178,7 @@ public class Player extends GameObject implements Animated{
 			getPose( f );
 			aniQ.switchAnimation( aniFSM.getAni(), f );
 		}
-		UpdatePose( aniQ.getPose( delta/10.0f ) );
+		UpdatePose( aniQ.getPose( delta ) );
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class Player extends GameObject implements Animated{
 	}
 
 	@Override
-	public boolean intersects( Polygon p )
+	public synchronized boolean intersects( Polygon p )
 	{
 		return hip.intersects( p );
 	}
