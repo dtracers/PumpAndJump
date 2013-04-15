@@ -51,6 +51,8 @@ public class RunningGame extends GameThread
 	long currentTime;
 	float divide = 700;
 
+	private boolean songFinished = false;
+
 	public RunningGame()
 	{
 		reset();
@@ -374,8 +376,15 @@ public class RunningGame extends GameThread
 	public void writeSound()
 	{
 	//	System.out.println("Output Sound "+soundFrame);
-		outStreamer.write(streamer.frames.get((int)soundFrame));
-		soundFrame++;
+		if(!songFinished)
+		{
+			outStreamer.write(streamer.frames.get((int)soundFrame));
+			soundFrame++;
+			if(streamer.frames.size()<=soundFrame)
+			{
+				songFinished = true;
+			}
+		}
 	}
 
 	@Override
