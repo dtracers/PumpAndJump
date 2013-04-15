@@ -30,7 +30,13 @@ public class Keyframe {
 	{
 		for( int i = 0; i < pose.length; i++ )
 		{
-			pose[i] %= 360.0f;
+			if( i != 15)
+			{
+				if( pose[i] >= 0.0f )
+					pose[i] %= 360.0f;
+				else
+					pose[i] = 360.0f + (pose[i]%360.0f );
+			}
 		}
 	}
 	

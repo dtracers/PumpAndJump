@@ -49,7 +49,7 @@ public class Player extends GameObject implements Animated{
 
 		done = (float) Math.random()*5.0f + 1.0f;
 		
-		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt", "sjtl" );
+		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt", "r" );
 		
 		aniQ = new AnimationQueue( aniFSM.getAni(), fpose );
 	}
@@ -178,7 +178,7 @@ public class Player extends GameObject implements Animated{
 			getPose( f );
 			aniQ.switchAnimation( aniFSM.getAni(), f );
 		}
-		UpdatePose( aniQ.getPose( delta ) );
+		UpdatePose( aniQ.getPose( delta/10.0f ) );
 	}
 
 	@Override

@@ -59,11 +59,11 @@ public class AnimationQueue {
 					//System.out.println( lastTime+","+queue[2].t);
 					queue[0].t =  queue[0].t - queue[2].t;
 					lastTime = lastTime - queue[2].t;
-					queue[0].normalize();
+					//queue[0].normalize();
 					queue[1].t = queue[1].t - queue[2].t;
-					queue[1].normalize();
+					//queue[1].normalize();
 					queue[2].t = 0.0f;
-					queue[2].normalize();
+					//queue[2].normalize();
 
 					lastKeyFrame = 1;
 				}
@@ -82,11 +82,14 @@ public class AnimationQueue {
 		lastKeyFrame = 1;
 		stop = false;
 		queue[ 0 ] = queue[ 1 ];
-		queue[ 0 ].normalize();
+		//queue[ 0 ].normalize();
 		queue[ 1 ] = new Keyframe( pose, 0.0f, 0);
 		queue[ 1 ].t =  -queue[1].dist( a.keyframes.get(0) );
+		//queue[ 1 ].normalize();
 		queue[ 2 ] = a.keyframes.get( 0 ).copy();
+		//queue[ 2 ].normalize();
 		queue[ 3 ] = a.keyframes.get( 1 ).copy();
+		//queue[ 2 ].normalize();
 		queue[ 0 ].t = queue[0].t - lastTime;
 		lastTime = queue[1].t;
 		isLooping = a.isLooping;
@@ -133,7 +136,14 @@ public class AnimationQueue {
 				{
 					newP = AnimationUtil.catmullrom( (lastTime - queue[1].t)/( queue[2].t - queue[1].t ), queue[0].pose[i], queue[1].pose[i], queue[2].pose[i], queue[3].pose[i] );
 				}
-				newpos[i] = ( newP%360.0f );
+				if( ani.actor != 1 && i != 15 )
+				{
+					newpos[i] = ( newP%360.0f );
+				}
+				else
+				{
+					newpos[i] = newP;
+				}
 
 				//System.out.print( newpos[i]+"," );
 			}
