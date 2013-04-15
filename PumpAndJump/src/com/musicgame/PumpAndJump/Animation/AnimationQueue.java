@@ -84,11 +84,13 @@ public class AnimationQueue {
 		queue[ 0 ] = queue[ 1 ];
 		queue[ 0 ].normalize();
 		queue[ 1 ] = new Keyframe( pose, 0.0f, 0);
-		queue[ 2 ] = a.keyframes.get( 1 ).copy();
-		queue[ 3 ] = a.keyframes.get( 2 ).copy();
+		queue[ 1 ].t =  -queue[1].dist( a.keyframes.get(0) );
+		queue[ 2 ] = a.keyframes.get( 0 ).copy();
+		queue[ 3 ] = a.keyframes.get( 1 ).copy();
 		queue[ 0 ].t = queue[0].t - lastTime;
 		lastTime = 0.0f;
-		isLooping = ani.isLooping;
+		isLooping = a.isLooping;
+		System.out.println( a.isLooping );
 	}
 
 	public float[] getPose( float changeInTime )

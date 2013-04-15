@@ -1,10 +1,9 @@
-9
-w 4 r sh sj sd
-r 4 w sh sj sd
-h 3 eh sj sd
-sh 3 h sj sd
-sj 2 ej sd
-sd 2 sj ed
-ed 3 r w sh
-ej 3 r w sh
-eh 3 r w sh
+7
+w 5 r sh sjtl sdbf sdss
+r 5 w sh sjtl sdbf sdss
+h 5 w r sjtl sdbf sdss
+sh 1 h
+sjtl 4 w r sdbf sdss
+sdbf 3 w r sh
+sdss 3 w r sh
+

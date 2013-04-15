@@ -42,16 +42,16 @@ public class Player extends GameObject implements Animated{
 		float[] fpose = new float[ pose.length ];
 		getPose( fpose );
 
-		ani = new Animation[2];
-		ani[ 0 ] = new Animation( "HandsTrans.txt" );
-		ani[ 1 ] = new Animation( "HandsAnim.txt" );
-		ani[1].isLooping=true;
+		//ani = new Animation[2];
+		//ani[ 0 ] = new Animation( "HandsTrans.txt" );
+		//ani[ 1 ] = new Animation( "HandsAnim.txt" );
+		//ani[1].isLooping=true;
 
 		done = (float) Math.random()*5.0f + 1.0f;
-
-		aniQ = new AnimationQueue( ani[0], fpose );
 		
-		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt", "h" );
+		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt", "sjtl" );
+		
+		aniQ = new AnimationQueue( aniFSM.getAni(), fpose );
 	}
 
 	//This method has to exist because java is bad
@@ -174,15 +174,9 @@ public class Player extends GameObject implements Animated{
 		time += delta;
 		if( aniQ.stop )
 		{
-			/*System.out.println( "ATTACK" );
-			time = 0.0f;
-			count++;
-			done = (float) Math.random()*5.0f + 1.0f;
-			*/
 			float[] f = new float[ pose.length ];
 			getPose( f );
-			count = (int)(Math.random()*48735);
-			aniQ.switchAnimation( ani[1] , f );
+			aniQ.switchAnimation( aniFSM.getAni(), f );
 		}
 		UpdatePose( aniQ.getPose( delta ) );
 	}
@@ -203,12 +197,20 @@ public class Player extends GameObject implements Animated{
 
 	public void jump()
 	{
-
+		float[] f = new float[ pose.length ];
+		getPose( f ); 
+		Animation ta = aniFSM.startJump();
+		if( ta != null )
+			aniQ.switchAnimation( ta, f );
 	}
 
 	public void duck()
 	{
-
+		float[] f = new float[ pose.length ];
+		getPose( f );
+		Animation ta = aniFSM.startDuck();
+		if( ta != null )
+		aniQ.switchAnimation( ta, f );
 	}
 }
 

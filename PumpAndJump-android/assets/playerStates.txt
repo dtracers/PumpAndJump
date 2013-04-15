@@ -1,17 +1,9 @@
-11
+7
 w walk.txt
 r run.txt
-h handstandWalk.txt
-sh startHandstandWalk.txt
-eh endHandstandWalk.txt
+h handstand.txt
+sh startHandstand.txt
 sjtl startTuckLegs.txt
-ejtl endTuckLegs.txt
-sdbf startBellyFlop.txt
-edbf endBellyFlop.txt
+sdbf startBellySlide.txt
 sdss startSpySlide.txt
-edss endSpySlide.txt
-4
-sj 1 sjtl
-ej 1 ejtl
-sd 2 sdbf sdss
-ed 2 edbf edss
+0

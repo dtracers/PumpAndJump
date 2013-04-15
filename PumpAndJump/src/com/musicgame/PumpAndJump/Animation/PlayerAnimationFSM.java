@@ -21,6 +21,7 @@ public class PlayerAnimationFSM {
 	Map< String, Animation > Animations;
 	Map< String, ArrayList< Animation > > States;
 	Map< String, ArrayList< String > > Relations;
+	String lastAni;
 	String currentAni;
 	
 	public PlayerAnimationFSM( String StatesFile, String FSMFile, String ani )
@@ -30,11 +31,12 @@ public class PlayerAnimationFSM {
 		Relations = new HashMap< String, ArrayList< String > >();
 		LoadStates( StatesFile );
 		LoadRelations( FSMFile );
+		lastAni = ani;
 		currentAni = ani;
 		/*for( String s: States.keySet() )
 		{
 			System.out.println( s );
-		}
+		}*/
 		
 		for( String s: Relations.keySet() )
 		{
@@ -44,10 +46,10 @@ public class PlayerAnimationFSM {
 				System.out.print( cs+" " );
 			}
 			System.out.println();
-		}*/
+		}
 	}
 	
-	public Animation getAni()
+	public synchronized Animation getAni( )
 	{
 		ArrayList< Animation > a = States.get( currentAni );
 		int r = (int)( Math.random()*a.size() );
@@ -55,53 +57,54 @@ public class PlayerAnimationFSM {
 		
 		ArrayList< String > c = Relations.get( currentAni );
 		r = (int)( Math.random()*c.size() );
+		lastAni = currentAni;
 		currentAni = c.get( r );
 		
 		return ani;
 	}
 	
-	public Animation startJumped()
+	public synchronized Animation startJump()
 	{
-		ArrayList< String > c = Relations.get( currentAni );
+		ArrayList< String > c = Relations.get( lastAni );
 		ArrayList< String > temp = new ArrayList< String >();
 		
 		for( String s: c )
 		{
-			if( s.startsWith( "sj" ) )
-				temp.add( s );
+			if( s.length() >= 2)
+				if( s.charAt(1) == 'j' )
+					temp.add( s );
 		}
 		
 		int r = (int)( Math.random()*temp.size() );
 		
-		ArrayList< Animation > anis= States.get( r );
+		if( temp.size() == 0 )
+			return null;
 		
-		r = (int)( Math.random()*anis.size() );
+		currentAni = "sjtl";
 		
-		currentAni = "ej";
-		
-		return anis.get( r );
+		return Animations.get( temp.get( r ) );
 	}
 	
-	public Animation startDucked()
+	public synchronized Animation startDuck()
 	{
-		ArrayList< String > c = Relations.get( currentAni );
+		ArrayList< String > c = Relations.get( lastAni );
 		ArrayList< String > temp = new ArrayList< String >();
 		
 		for( String s: c )
 		{
-			if( s.contains( "sd" ) )
-				temp.add( s );
+			if( s.length() >= 2)
+				if( s.charAt(1) == 'd' )
+					temp.add( s );
 		}
 		
 		int r = (int)( Math.random()*temp.size() );
 		
-		ArrayList< Animation > anis= States.get( r );
+		if( temp.size() == 0 )
+			return null;
 		
-		r = (int)( Math.random()*anis.size() );
+		currentAni = "sdss";
 		
-		currentAni = "ed";
-		
-		return anis.get( r );
+		return Animations.get( temp.get( r ) );
 	}
 	
 	void LoadStates( String StatesFile )
@@ -122,8 +125,8 @@ public class PlayerAnimationFSM {
 			String animationFileName;
 			animationFileName = s.next();
 		
-			//Animation ani = new Animation( animationFileName );
-			Animation ani = null;
+			Animation ani = new Animation( animationFileName );
+			//Animation ani = null;
 		
 			Animations.put( state, ani );
 			

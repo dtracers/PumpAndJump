@@ -37,6 +37,8 @@ public class Animation {
 	{
 		FileHandle dir =  Gdx.files.internal( fileName );
 		Scanner s = new Scanner( dir.reader() );
+		
+		System.out.println( fileName );
 
 		keyframes = new ArrayList< Keyframe >();
 		
