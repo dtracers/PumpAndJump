@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,6 +23,7 @@ import javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream;
 import ddf.minim.effects.BandPass;
 import ddf.minim.effects.IIRFilter;
 
+import net.bluecow.spectro.detection.BeatDetector;
 import net.bluecow.spectro.inputReader.InputDecoder;
 import net.bluecow.spectro.inputReader.MP3Decoder;
 import net.bluecow.spectro.inputReader.WavDecoder;
@@ -60,12 +62,7 @@ public class Clip
 
 	//uses an array to add in the intensity
 
-
-	public ArrayList<float[]> VEdata = new ArrayList<float[]>();
-
-	private static double[] EnergyHistory = new double[43];
-	private static long sampleIndex;
-	static ArrayList<Beat> detectedBeats;
+	public BeatDetector[] detectors = new BeatDetector[4];//one for the total then the three parts
 
 
 	public Clip(File file) throws UnsupportedAudioFileException, IOException
@@ -89,6 +86,11 @@ public class Clip
 		filters[8] = new BandPass(75.0f, 25.0f, input.getSampleRate() );
 		filters[9] = new BandPass(37.5f, 12.5f, input.getSampleRate() );
 		filters[10] = new BandPass(18.75f, 6.25f, input.getSampleRate() );
+
+		detectors[0] = new BeatDetector(null);
+		detectors[1] = new BeatDetector(new BandPass(150.0f, 6.25f, input.getSampleRate() ));//lower register
+		detectors[2] = new BeatDetector(new BandPass(800.0f, 200f, input.getSampleRate() ));//middle register
+		detectors[3] = new BeatDetector(new BandPass(16400.0f,900f, input.getSampleRate() ));//high register
 		//preWindowFunction = new VorbisWindowFunction(input.frameSize);
 		//postWindowFunction = new NullWindowFunction();
 
@@ -356,27 +358,10 @@ public class Clip
 	   	 */
 	   	public void calculateVE(float[] timeData)
 	   	{
-	   		//the size of bits that the array is taken over
-	   		int averageSize = Beat.FRAME_SIZE;
-	   		//number of values
-	   		int length = timeData.length/averageSize;
-	   		int index = 0;
-	   		for(int k = 0;k<length;k++)
+	   		int timeLength = timeData.length;
+	   		for(int k=0;k<detectors.length;k++)
 	   		{
-	   			float[] result = new float[2];
-	   			float volume = 0;
-	   			float energy = 0;
-	   			for(int q = 0; q<averageSize;q++)
-	   			{
-	   				float data = timeData[index];
-	   				volume+=data;
-	   				energy+=data*data;
-	   				index++;
-	   			}
-
-	   			result[0] = (float) (volume/(100.0));
-	   			result[1] = energy;
-	   			VEdata.add(result);
+	   			detectors[k].calculateVE(Arrays.copyOf(timeData,timeLength));
 	   		}
 	   	}
 

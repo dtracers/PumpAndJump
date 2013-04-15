@@ -31,6 +31,7 @@ import javax.swing.undo.UndoableEditSupport;
 import net.bluecow.spectro.PlayerThread;
 import net.bluecow.spectro.clipAndFrame.Clip;
 import net.bluecow.spectro.clipAndFrame.Frame;
+import net.bluecow.spectro.detection.BeatDetector;
 
 public class ClipPanel extends JPanel
 implements Scrollable
@@ -174,25 +175,13 @@ implements Scrollable
 
 		g2.setTransform(backupTransform);
 
-		g2.setColor(Color.black);
-		ArrayList<float[]> data = clip.VEdata;
-		int length = data.size();
-		float[] old = data.get(0);
-		float[] current = data.get(0);
-		g.setColor(Color.black);
-		for(int k = 0; k<length;k++)
-		{
-			old = current;
-			current = data.get(k);
+		int startY = this.img.getHeight()+100;
 
-	//		System.out.println(old[0]+"\n"+old[1]);
-			g2.drawLine((k-1)*4, (int)(200-old[0]*10.0), k*4, (int)(200-current[0]*10.0));
-			g2.drawLine((k-1)*4, (int)(600-old[1]/10.0), k*4, (int)(600-current[1]/10.0));
+		for(BeatDetector beat:clip.detectors)
+		{
+			beat.draw(g2, startY, 200);
+			startY+=100;
 		}
-		g2.setColor(Color.green);
-		g2.drawLine(0, 200, length*4, 200);
-		g2.setColor(Color.red);
-		g2.drawLine(0, 600, length*4, 600);
 	//	g2.setColor(Color.red);
 	//	g2.fillRect(0, 0, length, 1000);
 
