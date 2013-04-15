@@ -358,7 +358,7 @@ public class RunningGame extends GameThread
 	 */
 	public boolean bufferingNeeded()
 	{
-		return streamer.currentFrame-soundFrame<bufferDistance;
+		return streamer.currentFrame-soundFrame<bufferDistance&&!streamer.doneReading;
 	}
 
 	/**

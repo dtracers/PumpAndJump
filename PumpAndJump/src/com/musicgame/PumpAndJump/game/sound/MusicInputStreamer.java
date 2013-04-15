@@ -20,6 +20,7 @@ public class MusicInputStreamer extends Thread
 	public int currentFrame;
 	public int frameSize = 1024/4;
 	public boolean buffering = true;
+	public boolean doneReading = false;
 	//do frame stuff here
 
 	public void loadSound()
@@ -70,5 +71,6 @@ public class MusicInputStreamer extends Thread
 				}
 			}
 		}
+		doneReading = true;
 	}
 }
