@@ -25,6 +25,9 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 			private static double preMult[] = { .5, .5, .5, .5, .25, .05, .25, .5, .5, .5, .5 };
 
 			private double[][] VEdata;
+
+			private static double[] EnergyHistory = new double[43];
+			private static long sampleIndex;
 			//private final WindowFunction preWindowFunc;
 			//private final WindowFunction postWindowFunc;
 
@@ -314,8 +317,8 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 	   				energy+=data*data;
 	   				index++;
 	   			}
-	   			result[0][k]=volume;
-	   			result[1][k]=energy;
+	   			result[0][k] = volume/averageSize;
+	   			result[1][k] = energy;
 	   		}
 	   		return result;
 	   	}
