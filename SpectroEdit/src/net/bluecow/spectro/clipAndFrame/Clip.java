@@ -61,7 +61,7 @@ public class Clip
 	//uses an array to add in the intensity
 
 
-	private ArrayList<float[][]> VEdata = new ArrayList<float[][]>();
+	public ArrayList<float[]> VEdata = new ArrayList<float[]>();
 
 	private static double[] EnergyHistory = new double[43];
 	private static long sampleIndex;
@@ -118,7 +118,7 @@ public class Clip
 
 		if( partArray != null )
 		{
-			VEdata.add(calculateVE(partArray));
+			calculateVE(partArray);
 
 			prefilter(partArray);
 			for( int i = 0; i < 11; i++ )
@@ -354,16 +354,16 @@ public class Clip
 	   	 * in array [1] it is the energy
 	   	 * the length of the array is the size of the given array/1320
 	   	 */
-	   	public float[][] calculateVE(float[] timeData)
+	   	public void calculateVE(float[] timeData)
 	   	{
 	   		//the size of bits that the array is taken over
 	   		int averageSize = Beat.FRAME_SIZE;
 	   		//number of values
 	   		int length = timeData.length/averageSize;
-	   		float[][] result = new float[2][length];
 	   		int index = 0;
 	   		for(int k = 0;k<length;k++)
 	   		{
+	   			float[] result = new float[2];
 	   			float volume = 0;
 	   			float energy = 0;
 	   			for(int q = 0; q<averageSize;q++)
@@ -373,10 +373,11 @@ public class Clip
 	   				energy+=data*data;
 	   				index++;
 	   			}
-	   			result[0][k] = volume/averageSize;
-	   			result[1][k] = energy;
+
+	   			result[0] = (float) (volume/((double)averageSize));
+	   			result[1] = energy;
+	   			VEdata.add(result);
 	   		}
-	   		return result;
 	   	}
 
 	}

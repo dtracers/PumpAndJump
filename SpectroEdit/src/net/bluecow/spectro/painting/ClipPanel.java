@@ -78,11 +78,11 @@ implements Scrollable
 		this.clip = clip;
 		System.out.println("frame count "+clip.getFrameCount());
 		int width = clip.getFrameCount()*( (int)Math.pow( 2.0, 7 ) );
-		setPreferredSize(new Dimension( width, 128));
+		setPreferredSize(new Dimension( width, 128+600));
 		this.img = new BufferedImage( width, 128, 1);
 		this.imgPixels = ((DataBufferInt)this.img.getRaster().getDataBuffer()).getData();
 		updateImage(null);
-		setBackground(Color.BLACK);
+		setBackground(Color.white);
 	}
 	public Point toClipCoords(Point p)
 	{
@@ -133,10 +133,6 @@ implements Scrollable
 			int rowIndex = (region.height - (row - region.y) - 1);///2;
 			int noteNumber = rowIndex%12;
 			int octave = (rowIndex)/12;
-			if(octave == 5)
-			{
-				System.out.println("");
-			}
 			ArrayList< Frame > frames = clip.getFrame( octave );
 			for( int col = region.x; col < endCol; col++ )
 			{
@@ -166,6 +162,7 @@ implements Scrollable
 		{
 			clipBounds.width = (this.img.getWidth() - clipBounds.x);
 		}
+
 		if (clipBounds != null)
 		{
 			g2.drawImage(this.img, clipBounds.x, clipBounds.y, clipBounds.x + clipBounds.width, clipBounds.y + clipBounds.height, clipBounds.x, clipBounds.y, clipBounds.x + clipBounds.width, clipBounds.y + clipBounds.height, Color.BLACK, null);
@@ -177,6 +174,28 @@ implements Scrollable
 
 		g2.setTransform(backupTransform);
 
+		g2.setColor(Color.black);
+		ArrayList<float[]> data = clip.VEdata;
+		int length = data.size();
+		float[] old = data.get(0);
+		float[] current = data.get(0);
+		g.setColor(Color.black);
+		for(int k = 0; k<length;k++)
+		{
+			old = current;
+			current = data.get(k);
+
+	//		System.out.println(old[0]+"\n"+old[1]);
+			g2.drawLine((k-1)*4, (int)(200-old[0]*10.0), k*4, (int)(200-current[0]*10.0));
+			g2.drawLine((k-1)*4, (int)(600-old[1]/10.0), k*4, (int)(600-current[1]/10.0));
+		}
+		g2.setColor(Color.green);
+		g2.drawLine(0, 300, length*4, 300);
+		g2.setColor(Color.red);
+		g2.drawLine(0, 600, length*4, 600);
+	//	g2.setColor(Color.red);
+	//	g2.fillRect(0, 0, length, 1000);
+
 		if(clipPlayLoc!=null)
 		{
 			g2.setColor(Color.red);
@@ -187,7 +206,7 @@ implements Scrollable
 				myX = position;
 			}
 			int x = position-(int)offsetPoint.getX();
-			g2.drawLine(x, 0, x, img.getHeight());
+			g2.drawLine(x, 0, x, clipBounds.height);
 			g2.setColor(Color.white);
 			double loc = clipPlayLoc.samplePosition;
 			loc /= 44100.0*2.;
