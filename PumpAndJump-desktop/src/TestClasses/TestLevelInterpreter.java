@@ -22,8 +22,8 @@ public class TestLevelInterpreter {
 	public ExpectedException exception = ExpectedException.none();
 	@Test
 	public void testGetNextObject() {
-		String jumpTestCase="j 1.2 1.3";
-		String slideTestCase="s 1.2 3.4";
+		String jumpTestCase="j 1.2 3.4";
+		String duckTestCase="d 1.2 3.4";
 		JumpObstacle expectedJumpOutput=new JumpObstacle(1.2,3.4);
 		DuckObstacle expectedSlideOutput=new DuckObstacle(1.2,3.4);
 
@@ -31,7 +31,7 @@ public class TestLevelInterpreter {
 		assertTrue("Didn't return a jump obstacle for jump input",jumpResult instanceof JumpObstacle);
 		assertEquals("Didn't read in the right jump start time",((JumpObstacle)jumpResult).getStartTime(),expectedJumpOutput.getStartTime(),.00001);
 
-		GameObject slideResult=LevelInterpreter.getNextObject(slideTestCase);
+		GameObject slideResult=LevelInterpreter.getNextObject(duckTestCase);
 		assertTrue(slideResult instanceof DuckObstacle);
 		assertEquals("Didn't read in the right slide start time",((DuckObstacle)slideResult).getStartTime(),expectedSlideOutput.getStartTime(),.00001);
 		assertEquals("Didn't read in the right slide end time",((DuckObstacle)slideResult).getEndTime(),expectedSlideOutput.getEndTime(),.00001);
@@ -42,7 +42,7 @@ public class TestLevelInterpreter {
 	}
 	@Test
 	public void testLoadFromScanner(){
-		String jumpTest="j 1.2 1.3",slideTest="s 1.2 3.4",garbageTest="garbage";
+		String jumpTest="j 1.2 3.4",slideTest="d 1.2 3.4",garbageTest="garbage";
 		try{
 			File temp= File.createTempFile("TempLevel", "txt");
 			FileWriter writer=new FileWriter(temp);
@@ -55,7 +55,7 @@ public class TestLevelInterpreter {
 
 			ArrayList <GameObject> result =	LevelInterpreter.loadFromScanner(input);
 			System.out.println(result.size());
-			assertEquals("Invalid Return Size",result.size(),2);
+			assertEquals("Invalid Return Size",2,result.size());
 			assertTrue("Incorrect gameObject type",result.get(0) instanceof JumpObstacle);
 			assertTrue("Incorrect gameObject type",result.get(1) instanceof DuckObstacle);
 			assertEquals("Invalid Time(Jump)",((JumpObstacle)result.get(0)).getStartTime(),1.2,0);

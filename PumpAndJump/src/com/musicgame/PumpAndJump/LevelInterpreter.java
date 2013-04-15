@@ -22,7 +22,7 @@ public class LevelInterpreter
 	 */
 	public static GameObject getNextObjectPattern(String inputLine){
 		String jumpPattern="j \\d+(\\.\\d+)?\\s*";
-		String slidePattern="s \\d+(\\.\\d+)? \\d+(\\.\\d+)?\\s*";
+		String slidePattern="d \\d+(\\.\\d+)? \\d+(\\.\\d+)?\\s*";
 		if(inputLine.matches(jumpPattern)){
 			String[] input=inputLine.split(" ");
 			double startTime=Double.parseDouble(input[1]);
@@ -41,8 +41,14 @@ public class LevelInterpreter
 	public static GameObject getNextObject(String inputLine)
 	{
 		Scanner s = new Scanner(inputLine);
+		if(!s.hasNext())
+			return null;
 		String type = s.next();
+		if(!s.hasNextDouble())
+			return null;
 		double start = s.nextDouble();
+		if(!s.hasNextDouble())
+			return null;
 		double end = s.nextDouble();
 		GameObject obj;
 		if(type.equalsIgnoreCase("j"))
