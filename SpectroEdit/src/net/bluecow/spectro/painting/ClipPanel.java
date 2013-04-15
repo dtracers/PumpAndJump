@@ -190,7 +190,7 @@ implements Scrollable
 			g2.drawLine((k-1)*4, (int)(600-old[1]/10.0), k*4, (int)(600-current[1]/10.0));
 		}
 		g2.setColor(Color.green);
-		g2.drawLine(0, 300, length*4, 300);
+		g2.drawLine(0, 200, length*4, 200);
 		g2.setColor(Color.red);
 		g2.drawLine(0, 600, length*4, 600);
 	//	g2.setColor(Color.red);

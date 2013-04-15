@@ -374,7 +374,7 @@ public class Clip
 	   				index++;
 	   			}
 
-	   			result[0] = (float) (volume/((double)averageSize));
+	   			result[0] = (float) (volume/(100.0));
 	   			result[1] = energy;
 	   			VEdata.add(result);
 	   		}

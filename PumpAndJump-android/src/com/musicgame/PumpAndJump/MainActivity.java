@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
-import com.musicgame.PumpAndJump.music.AndroidInputDecoder;
+//import com.musicgame.PumpAndJump.music.AndroidInputDecoder;
 
 public class MainActivity extends AndroidApplication {
     @Override
@@ -19,6 +19,6 @@ public class MainActivity extends AndroidApplication {
 
         initialize(new PumpAndJump(), cfg);
 
-        PumpAndJump.inputStream = new AndroidInputDecoder(0, null);
+     //   PumpAndJump.inputStream = new AndroidInputDecoder(0, null);
     }
 }
