@@ -16,7 +16,7 @@ public class BeatDetector
 	//this is the average VEdata (over 43 Energy histories
 	public ArrayList<Double> AveragedEnergydata = new ArrayList<Double>();
 
-	int historyLength = 20;//43;
+	int historyLength = 43;//43;
 
 	private double[] EnergyHistory = new double[historyLength];
 	int currentHistoryIndex = 0;
