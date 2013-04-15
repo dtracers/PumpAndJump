@@ -88,7 +88,7 @@ public class AnimationQueue {
 		queue[ 2 ] = a.keyframes.get( 0 ).copy();
 		queue[ 3 ] = a.keyframes.get( 1 ).copy();
 		queue[ 0 ].t = queue[0].t - lastTime;
-		lastTime = 0.0f;
+		lastTime = queue[1].t;
 		isLooping = a.isLooping;
 		System.out.println( a.isLooping );
 	}
