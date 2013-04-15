@@ -21,15 +21,16 @@ public class PlayerAnimationFSM {
 	Map< String, Animation > Animations;
 	Map< String, ArrayList< Animation > > States;
 	Map< String, ArrayList< String > > Relations;
+	String currentAni;
 	
-	public PlayerAnimationFSM( String StatesFile, String FSMFile )
+	public PlayerAnimationFSM( String StatesFile, String FSMFile, String ani )
 	{
 		Animations = new HashMap< String, Animation >();
 		States = new HashMap< String, ArrayList< Animation > >();
 		Relations = new HashMap< String, ArrayList< String > >();
 		LoadStates( StatesFile );
 		LoadRelations( FSMFile );
-		
+		currentAni = ani;
 		/*for( String s: States.keySet() )
 		{
 			System.out.println( s );
@@ -44,6 +45,63 @@ public class PlayerAnimationFSM {
 			}
 			System.out.println();
 		}*/
+	}
+	
+	public Animation getAni()
+	{
+		ArrayList< Animation > a = States.get( currentAni );
+		int r = (int)( Math.random()*a.size() );
+		Animation ani = a.get( r );
+		
+		ArrayList< String > c = Relations.get( currentAni );
+		r = (int)( Math.random()*c.size() );
+		currentAni = c.get( r );
+		
+		return ani;
+	}
+	
+	public Animation startJumped()
+	{
+		ArrayList< String > c = Relations.get( currentAni );
+		ArrayList< String > temp = new ArrayList< String >();
+		
+		for( String s: c )
+		{
+			if( s.startsWith( "sj" ) )
+				temp.add( s );
+		}
+		
+		int r = (int)( Math.random()*temp.size() );
+		
+		ArrayList< Animation > anis= States.get( r );
+		
+		r = (int)( Math.random()*anis.size() );
+		
+		currentAni = "ej";
+		
+		return anis.get( r );
+	}
+	
+	public Animation startDucked()
+	{
+		ArrayList< String > c = Relations.get( currentAni );
+		ArrayList< String > temp = new ArrayList< String >();
+		
+		for( String s: c )
+		{
+			if( s.contains( "sd" ) )
+				temp.add( s );
+		}
+		
+		int r = (int)( Math.random()*temp.size() );
+		
+		ArrayList< Animation > anis= States.get( r );
+		
+		r = (int)( Math.random()*anis.size() );
+		
+		currentAni = "ed";
+		
+		return anis.get( r );
 	}
 	
 	void LoadStates( String StatesFile )

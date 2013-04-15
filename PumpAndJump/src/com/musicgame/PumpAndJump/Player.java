@@ -51,7 +51,7 @@ public class Player extends GameObject implements Animated{
 
 		aniQ = new AnimationQueue( ani[0], fpose );
 		
-		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt" );
+		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt", "h" );
 	}
 
 	//This method has to exist because java is bad
@@ -190,7 +190,9 @@ public class Player extends GameObject implements Animated{
 	@Override
 	public void UpdatePose(float[] pose) {
 		setPose( pose );
-		hip.update( new Matrix4() );
+		Matrix4 m = new Matrix4();
+		m = m.translate( pos.x,  pos.y, pos.z );
+		hip.update( m );
 	}
 
 	@Override
