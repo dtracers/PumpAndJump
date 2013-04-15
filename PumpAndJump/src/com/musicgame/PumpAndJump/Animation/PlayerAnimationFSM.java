@@ -81,6 +81,7 @@ public class PlayerAnimationFSM {
 			return null;
 		
 		currentAni = "sjtl";
+		getAni();
 		
 		return Animations.get( temp.get( r ) );
 	}
@@ -103,6 +104,7 @@ public class PlayerAnimationFSM {
 			return null;
 		
 		currentAni = "sdss";
+		getAni();
 		
 		return Animations.get( temp.get( r ) );
 	}

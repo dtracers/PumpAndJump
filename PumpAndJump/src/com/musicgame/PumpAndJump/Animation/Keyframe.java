@@ -50,7 +50,7 @@ public class Keyframe {
 		float sum = 0.0f;
 		for( int i = 0; i < pose.length; i++ )
 		{
-			sum += Math.abs(pose[i] - kf.pose[i]);
+			sum += Math.abs( pose[i] - kf.pose[i] )/( 360.0f );
 		}
 		return sum/((float)pose.length);
 	}
