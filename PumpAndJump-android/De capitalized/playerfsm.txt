@@ -1,9 +1,0 @@
-8
-w 5 r sh sjtl sdbf sdss
-r 5 w sh sjtl sdbf sdss
-h 5 w r sjbf sdbf sdss
-sh 1 h
-sjtl 5 w r h sdbf sdss
-sdbf 4 w r h sjtl 
-sdss 4 w r sh sjtl
-sjbf 4 w r sdbf sdss
