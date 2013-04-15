@@ -3,6 +3,7 @@ package com.musicgame.PumpAndJump;
 import com.musicgame.PumpAndJump.Animation.Animated;
 import com.musicgame.PumpAndJump.Animation.Animation;
 import com.musicgame.PumpAndJump.Animation.AnimationQueue;
+import com.musicgame.PumpAndJump.Animation.PlayerAnimationFSM;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,6 +25,7 @@ public class Player extends GameObject implements Animated{
 	public final int WAMS_PLAYER_DOF = 16;
 	Animation ani[];
 	AnimationQueue aniQ;
+	PlayerAnimationFSM aniFSM;
 
 	public Player( Point pos, Point angle )
 	{
@@ -48,6 +50,8 @@ public class Player extends GameObject implements Animated{
 		done = (float) Math.random()*5.0f + 1.0f;
 
 		aniQ = new AnimationQueue( ani[0], fpose );
+		
+		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt" );
 	}
 
 	//This method has to exist because java is bad
