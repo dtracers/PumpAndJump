@@ -14,7 +14,7 @@ public class BeatDetector
 	//this is the average VEdata (over 43 Energy histories
 	public ArrayList<Double> AveragedEnergydata = new ArrayList<Double>();
 
-	int historyLength = 43;//43;
+	int historyLength = 20;//43;
 
 	private double[] EnergyHistory = new double[historyLength];
 	int currentHistoryIndex = 0;
@@ -34,6 +34,11 @@ public class BeatDetector
 	long highestIndex = 0;//the index of the highest point when it is above the beat
 	float highestPoint;
 	double senstitivity = 0.5;
+
+	//valous used for the tempo detection
+	double tempoStrength;
+	double timeBetweenBeats;
+	double locationOfNextBeat;
 
 	public BeatDetector(IIRFilter bandPass)
 	{
@@ -135,6 +140,10 @@ public class BeatDetector
 		filter.process(timeData);
 	}
 
+	/**
+	 * Goes through each point once and sees if it is large enough away from the average to be considered a beat
+	 * Need to make this static and go through all beats to detirmine Major beats
+	 */
 	public void beatDetectionAlgorithm()
 	{
 		if(currentIndex<shiftAvg)
@@ -162,6 +171,7 @@ public class BeatDetector
 			if(division<senstitivity)
 			{
 				detectedBeats.add(new Beat(highestIndex,highestPoint));
+		//		detectTempo();
 			}
 			highestPoint = 0;
 			highestIndex = -1;
@@ -176,5 +186,62 @@ public class BeatDetector
 		 */
 
 		currentIndex++;
+	}
+
+	/**
+	 * Attempts to detect the tempo of the piece
+	 */
+	private void detectTempo()
+	{
+		if(detectedBeats.size()<30)
+		{
+			return;
+		}
+		if(tempoStrength <.5)
+		{
+			int start = detectedBeats.size()-30;
+			int end = detectedBeats.size();
+			int beatDistance = 6;
+			ArrayList<Distance> distances;
+			//we go through 30 beats in the list
+			//we attempt to find beats differences that strengthen and remove those that weaken
+			//it is an attempt at a genetic algorithm
+			for(int k=start;k<end-beatDistance;k++)
+			{
+				Beat startingBeat = detectedBeats.get(k);
+				ArrayList<Distance> tempDistances = new ArrayList<Distance>();
+				for(int q = 1; q<beatDistance;q++)
+				{
+					Beat other = detectedBeats.get(k+q);
+					tempDistances.add(new Distance(other.sampleLocation-startingBeat.sampleLocation,0,startingBeat,other));
+				}
+
+				//moves the first set over because they all have zero strength
+				if(k==start)
+				{
+					distances = tempDistances;
+				}
+			}
+		}
+	}
+
+	class Distance implements Comparable
+	{
+		double distance;
+		double strength;
+		Beat starting;
+		Beat other;
+		public Distance(long l, double i, Beat startingBeat, Beat other)
+		{
+			distance = l;
+			strength = i;
+			starting = startingBeat;
+			this.other = other;
+		}
+		@Override
+		public int compareTo(Object arg0)
+		{
+			return (int) Math.signum(distance-((Distance)arg0).distance);
+		}
 	}
 }
