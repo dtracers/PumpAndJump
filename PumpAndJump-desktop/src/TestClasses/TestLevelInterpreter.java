@@ -2,14 +2,19 @@ package TestClasses;
 
 import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.musicgame.PumpAndJump.DuckObstacle;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.JumpObstacle;
 import com.musicgame.PumpAndJump.LevelInterpreter;
+import com.musicgame.PumpAndJump.game.PumpAndJump;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,6 +25,8 @@ import java.util.Scanner;
 public class TestLevelInterpreter {
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
+
+	
 	@Test
 	public void testGetNextObject() {
 		String jumpTestCase="j 1.2 3.4";
@@ -46,7 +53,7 @@ public class TestLevelInterpreter {
 		try{
 			File temp= File.createTempFile("TempLevel", "txt");
 			FileWriter writer=new FileWriter(temp);
-
+			
 			writer.write(jumpTest+"\n");
 			writer.append(slideTest+"\n");
 			writer.append(garbageTest);

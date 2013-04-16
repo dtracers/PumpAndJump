@@ -14,6 +14,7 @@ import com.musicgame.PumpAndJump.Util.IntersectionUtil;
 public class TestIntersectionUtil {
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
+	
 	@Test
 	public void testVector2ToFloat() {
 		Vector2[] TestCase={new Vector2(1.0f,2.0f),new Vector2(3.0f,4.0f)};
