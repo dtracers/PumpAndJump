@@ -1,5 +1,7 @@
 package net.bluecow.spectro.detection;
 
+import java.awt.Color;
+
 public class Beat
 {
 	public Beat(long highestIndex, float highestPoint)
@@ -11,4 +13,5 @@ public class Beat
 	double soundIntensity;
 	long sampleLocation;
 	boolean predictedBeat;
+	Color col;
 }
