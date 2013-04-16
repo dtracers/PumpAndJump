@@ -2,19 +2,14 @@ package TestClasses;
 
 import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.musicgame.PumpAndJump.DuckObstacle;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.JumpObstacle;
 import com.musicgame.PumpAndJump.LevelInterpreter;
-import com.musicgame.PumpAndJump.game.PumpAndJump;
 
 import java.io.File;
 import java.io.FileWriter;
