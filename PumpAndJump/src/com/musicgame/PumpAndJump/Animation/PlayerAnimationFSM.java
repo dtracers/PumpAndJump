@@ -21,8 +21,8 @@ public class PlayerAnimationFSM {
 	Map< String, Animation > Animations;
 	Map< String, ArrayList< Animation > > States;
 	Map< String, ArrayList< String > > Relations;
-	String lastAni;
 	String currentAni;
+	String nextAni;
 
 	public PlayerAnimationFSM( String StatesFile, String FSMFile, String ani )
 	{
@@ -31,8 +31,8 @@ public class PlayerAnimationFSM {
 		Relations = new HashMap< String, ArrayList< String > >();
 		LoadStates( StatesFile );
 		LoadRelations( FSMFile );
-		lastAni = ani;
 		currentAni = ani;
+		nextAni = ani;
 		/*for( String s: States.keySet() )
 		{
 			System.out.println( s );
@@ -51,21 +51,21 @@ public class PlayerAnimationFSM {
 
 	public synchronized Animation getAni( )
 	{
-		ArrayList< Animation > a = States.get( currentAni );
+		ArrayList< Animation > a = States.get( nextAni );
 		int r = (int)( Math.random()*a.size() );
 		Animation ani = a.get( r );
 
-		ArrayList< String > c = Relations.get( currentAni );
+		ArrayList< String > c = Relations.get( nextAni );
 		r = (int)( Math.random()*c.size() );
-		lastAni = currentAni;
-		currentAni = c.get( r );
+		currentAni = nextAni;
+		nextAni = c.get( r );
 
 		return ani;
 	}
 
 	public synchronized Animation startJump()
 	{
-		ArrayList< String > c = Relations.get( lastAni );
+		ArrayList< String > c = Relations.get( currentAni );
 		ArrayList< String > temp = new ArrayList< String >();
 
 		for( String s: c )
@@ -80,7 +80,7 @@ public class PlayerAnimationFSM {
 		if( temp.size() == 0 )
 			return null;
 
-		currentAni = "sjtl";
+		nextAni = "sjtl";
 		getAni();
 
 		return Animations.get( temp.get( r ) );
@@ -88,7 +88,7 @@ public class PlayerAnimationFSM {
 
 	public synchronized Animation startDuck()
 	{
-		ArrayList< String > c = Relations.get( lastAni );
+		ArrayList< String > c = Relations.get( currentAni );
 		ArrayList< String > temp = new ArrayList< String >();
 
 		for( String s: c )
@@ -103,7 +103,7 @@ public class PlayerAnimationFSM {
 		if( temp.size() == 0 )
 			return null;
 
-		currentAni = "sdss";
+		nextAni = "sdss";
 		getAni();
 
 		return Animations.get( temp.get( r ) );
