@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import ddf.minim.effects.BandPass;
 import ddf.minim.effects.IIRFilter;
 
 import net.bluecow.spectro.clipAndFrame.Beat;
