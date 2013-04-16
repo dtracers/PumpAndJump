@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import ddf.minim.effects.IIRFilter;
 
-import net.bluecow.spectro.clipAndFrame.Beat;
 
 public class BeatDetector
 {
@@ -20,13 +19,21 @@ public class BeatDetector
 	private double[] EnergyHistory = new double[historyLength];
 	int currentHistoryIndex = 0;
 //	private long sampleIndex;
-	static ArrayList<Beat> detectedBeats;
+	ArrayList<Beat> detectedBeats = new ArrayList<Beat>();
 
 	double maxEnergy = 0;
 
 	private IIRFilter filter;
 
+
 	int shiftAvg = 10;//this is used so that some of the future values are computed in the average of the current value
+
+	//values used for the actual beat detection
+	boolean aboveAverage = false;
+	long currentIndex = 0;
+	long highestIndex = 0;//the index of the highest point when it is above the beat
+	float highestPoint;
+	double senstitivity = 0.5;
 
 	public BeatDetector(IIRFilter bandPass)
 	{
@@ -74,6 +81,8 @@ public class BeatDetector
 
    			currentHistoryIndex++;
    			currentHistoryIndex%=historyLength;
+
+   			beatDetectionAlgorithm();
    		}
 
    	}
@@ -109,6 +118,13 @@ public class BeatDetector
 			g2.setColor(Color.green);
 			g2.drawLine((k-1)*4, (int)(startY - oldAvg*ratio), k*4, (int)(startY- currentAvg*ratio));
 		}
+		int beatLength = detectedBeats.size();
+		for(int k=0; k<beatLength;k++)
+		{
+			Beat b = detectedBeats.get(k);
+			g2.setColor(Color.GRAY);
+			g2.drawLine((int)b.sampleLocation*4, startY, (int) b.sampleLocation*4,(int)( startY-75));
+		}
 		g2.setColor(Color.black);
 		g2.drawLine(0, startY, length*4, startY);
 
@@ -121,6 +137,35 @@ public class BeatDetector
 
 	public void beatDetectionAlgorithm()
 	{
+		if(currentIndex<shiftAvg)
+		{
+			currentIndex++;
+			return;
+		}
+
+		float instantEnergy = VEdata.get((int) (currentIndex))[1];
+		double averageEnergy = AveragedEnergydata.get((int) (currentIndex-shiftAvg));
+		if(instantEnergy>=averageEnergy)
+		{
+			if(instantEnergy>highestPoint)
+			{
+				highestPoint = instantEnergy;
+				highestIndex = currentIndex;
+			}
+			aboveAverage = true;
+		}else if(aboveAverage)
+		{
+			double avgEnergy = AveragedEnergydata.get((int) (highestIndex-shiftAvg));
+			double division = avgEnergy/highestPoint;
+		//	System.out.println(division);
+			aboveAverage = false;
+			if(division<senstitivity)
+			{
+				detectedBeats.add(new Beat(highestIndex,highestPoint));
+			}
+			highestPoint = 0;
+			highestIndex = -1;
+		}
 		/**
 		 * Will look for spikes that are above the average...
 		 * Every spike above the average is a minor beat
@@ -129,5 +174,7 @@ public class BeatDetector
 		 *
 		 * (maybe take two averages?)
 		 */
+
+		currentIndex++;
 	}
 }
