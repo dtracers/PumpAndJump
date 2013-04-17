@@ -141,6 +141,10 @@ public class BeatDetector
 			else
 				g2.setColor(b.col);
 			g2.drawLine((int)b.sampleLocation*2, startY, (int) b.sampleLocation*2,(int)( startY-75));
+			/*
+			g2.drawString(""+b.sampleLocation, (int)b.sampleLocation*4, (int)( startY-75));
+			g2.drawLine((int)b.sampleLocation*4, startY, (int) b.sampleLocation*4,(int)( startY-75));
+			*/
 		}
 		g2.setColor(Color.black);
 		g2.drawLine(0, startY, length*4, startY);
@@ -196,6 +200,7 @@ public class BeatDetector
 				detectedBeats.add(new Beat(highestIndex,highestPoint,detectedBeats.size()));
 		//		detectTempo2();
 		//		detectTempo();
+		//		System.out.println(""+ detectedBeats.get(detectedBeats.size()-1).sampleLocation);
 				tempoDetection.detectTempo3();
 			}
 			highestPoint = 0;

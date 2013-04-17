@@ -25,7 +25,7 @@ class Distance implements Comparable,Averageable
 
 	public String toString()
 	{
-		return "d: "+distance+" s: "+strength;
+		return "starting "+starting.sampleLocation+" ending "+other.sampleLocation+"d: "+distance+" s: "+strength;
 	}
 	@Override
 	public double averageValue() {
@@ -60,10 +60,16 @@ class DistanceSet implements Averageable,Comparable
 				{
 					double dividedDistance = totalDistance/averageValue;
 					double decimal = Math.abs(dividedDistance-Math.rint(dividedDistance));
-					if(decimal<.1)
+					if(d.starting.sampleLocation>770&&d.starting.sampleLocation<790&&previous.other.sampleLocation<800&&previous.other.sampleLocation>760)
 					{
-				//		System.out.println("The Beats do not match! "+" "+averageValue);
+						System.out.println("the starting location "+previous);
+						System.out.println("the starting location "+d);
 						System.out.println(totalDistance+" "+dividedDistance+" "+decimal);
+						if(decimal<.1)
+						{
+							System.out.println("The Beats do not match! "+" "+averageValue);
+							System.out.println(totalDistance+" "+dividedDistance+" "+decimal);
+						}
 					}
 					//then I need to combine it into one thing? and then attach that result chain hopefully (which will result in a tree?)
 					if(totalDistance<1)
@@ -106,6 +112,7 @@ class DistanceSet implements Averageable,Comparable
 			return (int) Math.signum(((DistanceSet)arg0).distancesInSet.size()-distancesInSet.size());
 		return 0;
 	}
+
 }
 
 interface Averageable

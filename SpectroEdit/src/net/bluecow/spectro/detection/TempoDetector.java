@@ -12,7 +12,7 @@ public class TempoDetector
 
 	public static boolean compareTestPrintout = false;
 	public static boolean cullingPrintout = true;
-	public static boolean anyPrintout = true;
+	public static boolean anyPrintout = false;
 	public static boolean cullingPrintoutDetailed = false;
 
 
@@ -36,7 +36,7 @@ public class TempoDetector
 			detector.detectTempo3(k);
 		//	detector.printDistanceSets();
 		}
-	//	detector.printDistanceSets();
+		detector.printDistanceSets();
 		System.out.println("\t"+maxDistanceAllowed);
 
 	}
@@ -354,7 +354,7 @@ public class TempoDetector
 		}else //if(false)
 		{
 			double avg = Statistics.averageSize(distanceSets);
-			avg = 14;
+		//	avg = 14;
 			if(anyPrintout)
 				System.out.println("READY TO CULL THE HERD "+avg);
 			if(cullingPrintout&&anyPrintout)
@@ -408,10 +408,12 @@ public class TempoDetector
 		DistanceSet.sortSize = true;
 		DistanceSet.sortAvg = false;
 		Collections.sort(distanceSets);
-		for(Distance d:distanceSets.get(0).distancesInSet)
-		{
-			d.starting.predictedBeat = true;
-		}
+
+		for(int k = 0;k<Math.min(distanceSets.size(),5);k++)
+			for(Distance d:distanceSets.get(k).distancesInSet)
+			{
+				d.starting.predictedBeat = true;
+			}
 	}
 
 }
