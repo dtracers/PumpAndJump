@@ -8,7 +8,7 @@ import java.util.Scanner;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-public class PlayerAnimationFSM {
+public class PlayerAnimationFSM extends FSM{
 
 	/**
 	 * @param args
@@ -18,188 +18,88 @@ public class PlayerAnimationFSM {
 
 	}
 
-	Map< String, Animation > Animations;
-	Map< String, ArrayList< Animation > > States;
-	Map< String, ArrayList< String > > Relations;
-	String currentAni;
-	String nextAni;
-
 	public PlayerAnimationFSM( String StatesFile, String FSMFile, String ani )
 	{
-		Animations = new HashMap< String, Animation >();
-		States = new HashMap< String, ArrayList< Animation > >();
-		Relations = new HashMap< String, ArrayList< String > >();
-		LoadStates( StatesFile );
-		LoadRelations( FSMFile );
-		currentAni = ani;
-		nextAni = ani;
-		/*for( String s: States.keySet() )
-		{
-			System.out.println( s );
-		}*/
-
-		for( String s: Relations.keySet() )
-		{
-			System.out.print( s );
-			for( String cs: Relations.get( s ) )
-			{
-				System.out.print( cs+" " );
-			}
-			System.out.println();
-		}
+		super( StatesFile, FSMFile, ani );
 	}
-
+	
 	public synchronized Animation getAni( )
-	{
-		ArrayList< Animation > a = States.get( nextAni );
-		int r = (int)( Math.random()*a.size() );
-		Animation ani = a.get( r );
-
-		ArrayList< String > c = Relations.get( nextAni );
-		r = (int)( Math.random()*c.size() );
+	{		
+		ArrayList< String > stateChoices = Relations.get( nextAni );
+		stateChoices = removeJumpsAndDucks( stateChoices );
+		
 		currentAni = nextAni;
-		nextAni = c.get( r );
+		nextAni = getRandom( stateChoices );
+		
+		ArrayList< Animation > possibleAnimations = States.get( currentAni );
+		Animation ani = getRandom( possibleAnimations );
 
 		return ani;
 	}
-
+	
 	public synchronized Animation startJump()
 	{
-		ArrayList< String > c = Relations.get( currentAni );
-		ArrayList< String > temp = new ArrayList< String >();
-
-		for( String s: c )
-		{
-			if( s.length() >= 2)
-				if( s.charAt(1) == 'j' )
-					temp.add( s );
-		}
-
-		int r = (int)( Math.random()*temp.size() );
-
-		if( temp.size() == 0 )
-			return null;
-
-		nextAni = "sjtl";
-		getAni();
-
-		return Animations.get( temp.get( r ) );
+		return startSpecial( 'j' );
 	}
 
 	public synchronized Animation startDuck()
 	{
-		ArrayList< String > c = Relations.get( currentAni );
-		ArrayList< String > temp = new ArrayList< String >();
-
-		for( String s: c )
+		return startSpecial( 'd' );
+	}
+	
+	ArrayList< String > removeJumpsAndDucks( ArrayList< String > stateChoices )
+	{
+		ArrayList< String > stateChoicesWithoutJD = new ArrayList< String >();
+		for( String s: stateChoices )
 		{
 			if( s.length() >= 2)
-				if( s.charAt(1) == 'd' )
-					temp.add( s );
-		}
-
-		int r = (int)( Math.random()*temp.size() );
-
-		if( temp.size() == 0 )
-			return null;
-
-		nextAni = "sdss";
-		getAni();
-
-		return Animations.get( temp.get( r ) );
-	}
-
-	void LoadStates( String StatesFile )
-	{
-		StatesFile = StatesFile.toLowerCase();
-		FileHandle dir =  Gdx.files.internal( StatesFile );
-		Scanner s = new Scanner( dir.reader() );
-
-		int size;
-		size = s.nextInt();
-
-		s.nextLine();
-
-		for( int i = 0; i < size; i++ )
-		{
-			String state;
-			state = s.next();
-
-			String animationFileName;
-			animationFileName = s.next();
-
-			Animation ani = new Animation( animationFileName );
-			//Animation ani = null;
-
-			Animations.put( state, ani );
-
-			ArrayList< Animation > aniArray = new ArrayList< Animation >();
-			aniArray.add( ani );
-
-			States.put( state, aniArray );
-		}
-
-		size = s.nextInt();
-		s.nextLine();
-		for( int i = 0; i < size; i++ )
-		{
-			String state;
-			state = s.next();
-
-			int stateCount = s.nextInt();
-
-			ArrayList< Animation > aniArray = new ArrayList< Animation >();
-
-			for( int j = 0; j < stateCount; j++ )
 			{
-				String childState;
-				childState = s.next();
-
-				ArrayList< Animation > childAniArray = States.get( childState );
-
-				for( Animation ani: childAniArray )
+				if( s.charAt(1) != 'j' && s.charAt(1) != 'd' )
 				{
-					aniArray.add( ani );
+					stateChoicesWithoutJD.add( s );
 				}
 			}
-
-			States.put( state, aniArray );
-		}
-
-		s.close();
-	}
-
-	void LoadRelations( String FSMFile )
-	{
-		FSMFile = FSMFile.toLowerCase();
-		FileHandle dir =  Gdx.files.internal( FSMFile );
-		Scanner s = new Scanner( dir.reader() );
-
-		int size;
-		size = s.nextInt();
-
-		s.nextLine();
-		for( int i = 0; i < size; i++ )
-		{
-			String state;
-			state = s.next();
-
-			int stateCount = s.nextInt();
-
-			ArrayList< String > childStates = new ArrayList< String >();
-
-			for( int j = 0; j < stateCount; j++ )
+			else
 			{
-				String childState;
-				childState = s.next();
-
-				childStates.add( childState );
+				stateChoicesWithoutJD.add( s );
 			}
-
-			Relations.put( state, childStates );
+					
 		}
+		
+		return stateChoicesWithoutJD;
+	}
+	
+	ArrayList< String > getSpecialStates( ArrayList< String > stateChoices, char c )
+	{
+		ArrayList< String > onlySpecialStates = new ArrayList< String >();
+		
+		for( String s:  stateChoices)
+		{
+			if( s.length() >= 2)
+				if( s.charAt(1) == c )
+					onlySpecialStates.add( s );
+		}
+		
+		return onlySpecialStates;
+	}
+	
+	Animation startSpecial( char c )
+	{
+		//get the possible next states from the current animation
+		ArrayList< String > stateChoices = Relations.get( currentAni );
+		//get only the possible special states from the current animation
+		stateChoices = getSpecialStates( stateChoices, c );
 
-		s.close();
+		//Choose a random Animation from the possible animations
+		ArrayList< Animation > possibleAnimations = States.get( getRandom( stateChoices ) );
+	
+		Animation ani = getRandom( possibleAnimations );
+
+		currentAni = AnimationToName.get( ani );
+		nextAni = AnimationToName.get( ani );
+		getAni();
+
+		return ani;
 	}
 
 }

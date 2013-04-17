@@ -1,7 +1,9 @@
 package com.musicgame.PumpAndJump.Animation;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -12,6 +14,8 @@ import com.badlogic.gdx.files.FileHandle;
  * @author gigemjt
  */
 public class Animation {
+	
+	static Map< String, Animation > FileToAnimation = new TreeMap< String, Animation >();
 	
 	public ArrayList< Keyframe > keyframes;
 	public int dof = 16;
@@ -35,12 +39,44 @@ public class Animation {
 	
 	public Animation( String fileName )
 	{
+		keyframes = new ArrayList< Keyframe >();
+		System.out.println( fileName );
+		loadAnimation( fileName );
+	}
+	
+	public Animation( Animation ani )
+	{
+		copy( ani );
+	}
+	
+	void copy( Animation ani )
+	{
+		keyframes = new ArrayList< Keyframe >();
+		for( Keyframe kf: ani.keyframes )
+		{
+			keyframes.add( kf.copy() );
+		}
+	}
+	
+	void loadAnimation( String fileName )
+	{
+		fileName = fileName.toLowerCase();
+		Animation ani = FileToAnimation.get( fileName );
+		if( ani != null )
+		{
+			copy( ani );
+		}
+		else
+		{
+			ReadAnimation( fileName );
+			FileToAnimation.put( fileName, new Animation( this ) );
+		}
+	}
+	
+	void ReadAnimation( String fileName )
+	{
 		FileHandle dir =  Gdx.files.internal( fileName );
 		Scanner s = new Scanner( dir.reader() );
-		
-		System.out.println( fileName );
-
-		keyframes = new ArrayList< Keyframe >();
 		
 		int type;
 		type = s.nextInt();
@@ -53,11 +89,6 @@ public class Animation {
 		}
 		
 		normalize();
-		
-		for( Keyframe kf: keyframes )
-		{
-			kf.print();
-		}
 	}
 	
 	public void scaleTimes( float scalar )

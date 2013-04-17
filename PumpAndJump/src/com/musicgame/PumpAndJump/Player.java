@@ -22,8 +22,8 @@ public class Player extends GameObject implements Animated{
 	float time = 0;
 	float done = 0;
 	int count = 0;
+	public final int actor = 1;
 	public final int WAMS_PLAYER_DOF = 16;
-	Animation ani[];
 	AnimationQueue aniQ;
 	PlayerAnimationFSM aniFSM;
 
@@ -41,11 +41,6 @@ public class Player extends GameObject implements Animated{
 
 		float[] fpose = new float[ pose.length ];
 		getPose( fpose );
-
-		//ani = new Animation[2];
-		//ani[ 0 ] = new Animation( "HandsTrans.txt" );
-		//ani[ 1 ] = new Animation( "HandsAnim.txt" );
-		//ani[1].isLooping=true;
 
 		done = (float) Math.random()*5.0f + 1.0f;
 		
