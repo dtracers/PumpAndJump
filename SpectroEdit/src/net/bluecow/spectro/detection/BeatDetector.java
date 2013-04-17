@@ -5,6 +5,9 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import net.bluecow.spectro.detection.tempo.PermutationDetection;
+import net.bluecow.spectro.detection.tempo.TempoDetector;
+
 import ddf.minim.effects.IIRFilter;
 
 
@@ -102,7 +105,7 @@ public class BeatDetector
 
 	public void draw(Graphics2D g2,int startY,int scale)
 	{
-		this.tempoDetection.setSignificanceBeats();
+		this.tempoDetection.setTempoBeats();
 		double ratio = scale/maxEnergy;
 		g2.setColor(Color.black);
 		int length = VEdata.size();
@@ -151,7 +154,7 @@ public class BeatDetector
 
 		if(doOnce)
 		{
-			tempoDetection.printDistanceSets();
+			//tempoDetection.printDistanceSets();
 			doOnce = false;
 			Beat.writeBeatsToFile(detectedBeats);
 		}
@@ -195,13 +198,13 @@ public class BeatDetector
 			{
 				if(detectedBeats.size() == 0)
 				{
-					tempoDetection = new TempoDetector(detectedBeats);
+					tempoDetection = new PermutationDetection(detectedBeats);
 				}
 				detectedBeats.add(new Beat(highestIndex,highestPoint,detectedBeats.size()));
 		//		detectTempo2();
 		//		detectTempo();
 		//		System.out.println(""+ detectedBeats.get(detectedBeats.size()-1).sampleLocation);
-				tempoDetection.detectTempo3();
+				tempoDetection.detectTempo();
 			}
 			highestPoint = 0;
 			highestIndex = -1;

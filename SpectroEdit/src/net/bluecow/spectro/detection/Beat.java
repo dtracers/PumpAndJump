@@ -21,10 +21,10 @@ public class Beat
 	}
 	public static final int FRAME_SIZE = 1320;
 	double soundIntensity;
-	long sampleLocation;
-	boolean predictedBeat;
+	public long sampleLocation;
+	public boolean predictedBeat;
 	Color col = Color.green;
-	int indexInList;
+	public int indexInList;
 	public String toString()
 	{
 		return ""+sampleLocation;
