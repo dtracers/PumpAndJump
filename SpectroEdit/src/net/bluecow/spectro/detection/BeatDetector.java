@@ -128,7 +128,7 @@ public class BeatDetector
 	//		g2.setColor(Color.blue);
 	//		g2.drawLine((k-1)*4, (int)(startY - old[0]*ratio), k*4, (int)(startY - current[0]*ratio));
 			g2.setColor(Color.red);
-			g2.drawLine((k-1)*2, (int)(startY - old[1]*ratio), k*2, (int)(startY- current[1]*ratio));
+			g2.drawLine((k-1)*4, (int)(startY - old[1]*ratio), k*4, (int)(startY- current[1]*ratio));
 	//		g2.setColor(Color.green);
 	//		g2.drawLine((k-1)*4, (int)(startY - oldAvg*ratio), k*4, (int)(startY- currentAvg*ratio));
 		}
@@ -140,7 +140,7 @@ public class BeatDetector
 			g2.setColor(Color.GRAY);
 			else
 				g2.setColor(b.col);
-			g2.drawLine((int)b.sampleLocation*2, startY, (int) b.sampleLocation*2,(int)( startY-75));
+			g2.drawLine((int)b.sampleLocation*4, startY, (int) b.sampleLocation*4,(int)( startY-75));
 			/*
 			g2.drawString(""+b.sampleLocation, (int)b.sampleLocation*4, (int)( startY-75));
 			g2.drawLine((int)b.sampleLocation*4, startY, (int) b.sampleLocation*4,(int)( startY-75));

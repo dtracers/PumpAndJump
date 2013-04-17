@@ -177,14 +177,14 @@ implements Scrollable
 
 		int startY = this.img.getHeight()+100;
 
-		clip.detectors[0].draw(g2, startY+300, 400);
-		/*
+		//clip.detectors[0].draw(g2, startY+300, 400);
+
 		for(BeatDetector beat:clip.detectors)
 		{
 			beat.draw(g2, startY, 200);
 			startY+=100;
 		}
-		*/
+
 	//	g2.setColor(Color.red);
 	//	g2.fillRect(0, 0, length, 1000);
 
