@@ -129,8 +129,8 @@ public class BeatDetector
 	//		g2.drawLine((k-1)*4, (int)(startY - old[0]*ratio), k*4, (int)(startY - current[0]*ratio));
 			g2.setColor(Color.red);
 			g2.drawLine((k-1)*4, (int)(startY - old[1]*ratio), k*4, (int)(startY- current[1]*ratio));
-	//		g2.setColor(Color.green);
-	//		g2.drawLine((k-1)*4, (int)(startY - oldAvg*ratio), k*4, (int)(startY- currentAvg*ratio));
+			g2.setColor(Color.green);
+			g2.drawLine((k-1)*4, (int)(startY - oldAvg*ratio), k*4, (int)(startY- currentAvg*ratio));
 		}
 		int beatLength = detectedBeats.size();
 		for(int k=0; k<beatLength;k++)

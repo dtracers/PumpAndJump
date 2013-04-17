@@ -398,6 +398,7 @@ public class Statistics
 	 * @param thingsToAverage
 	 * @return
 	 */
+	/*
 	public static double averageR2(ArrayList<DistanceSet> thingsToAverage)
 	{
 		int length = thingsToAverage.size();
@@ -410,6 +411,7 @@ public class Statistics
 		}
 		return total/length;
 	}
+	*/
 
 	/**
 	 * Computes the average from the things to Average

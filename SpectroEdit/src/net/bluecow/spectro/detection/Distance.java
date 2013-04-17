@@ -33,14 +33,12 @@ class Distance implements Comparable,Averageable
 	}
 }
 
-class DistanceSet implements Averageable,Comparable
+class DistanceSet implements Comparable
 {
 	public static boolean sortSize;
 	public static boolean sortAvg;
 	ArrayList<Distance> distancesInSet = new ArrayList<Distance>();
 	int size = 0;
-	double a,b;
-	double R2 = 1;//R^2 value
 	double averageValue = 0;
 	int createdBeatIndex;
 
@@ -81,13 +79,6 @@ class DistanceSet implements Averageable,Comparable
 			}
 		//	System.out.println("The Beats do match! "+averageValue);
 			distancesInSet.add(d);
-			if(distancesInSet.size()>1)
-			{
-				double[] result = Statistics.leastSquares(distancesInSet);
-				a = result[0];
-				b = result[1];
-				R2 = result[2];
-			}
 			averageValue = Statistics.average(distancesInSet);
 		}else
 		{
@@ -99,18 +90,9 @@ class DistanceSet implements Averageable,Comparable
 	}
 
 	@Override
-	public double averageValue() {
-		return R2;
-	}
-
-	@Override
 	public int compareTo(Object arg0)
 	{
-		if(sortAvg)
-			return (int) Math.signum(averageValue-((DistanceSet)arg0).averageValue);
-		if(sortSize)
-			return (int) Math.signum(((DistanceSet)arg0).distancesInSet.size()-distancesInSet.size());
-		return 0;
+		return (int) Math.signum(((DistanceSet)arg0).distancesInSet.size()-distancesInSet.size());
 	}
 
 }

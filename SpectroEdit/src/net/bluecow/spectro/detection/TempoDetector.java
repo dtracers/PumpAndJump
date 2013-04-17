@@ -71,97 +71,6 @@ public class TempoDetector
 
 	/**
 	 * Attempts to detect the tempo of the piece
-	 */
-	public void detectTempo()
-	{
-		if(detectedBeats.size()<numberOfBeats)
-		{
-			return;
-		}
-		if(tempoStrength <.5)
-		{
-			int start = detectedBeats.size()-numberOfBeats;
-			int end = detectedBeats.size();
-			int beatDistance = 6;
-
-			//we go through 30 beats in the list
-			//we attempt to find beats differences that strengthen and remove those that weaken
-			//it is an attempt at a genetic algorithm
-			for(int k=start;k<end-beatDistance;k++)
-			{
-				Beat startingBeat = detectedBeats.get(k);
-				ArrayList<Distance> tempDistances = new ArrayList<Distance>();
-				for(int q = 1; q<beatDistance;q++)
-				{
-					Beat other = detectedBeats.get(k+q);
-					tempDistances.add(new Distance(other.sampleLocation-startingBeat.sampleLocation,.5,startingBeat,other));
-				}
-
-				//moves the first set over because they all have zero strength
-				if(k==start)
-				{
-					distances = tempDistances;
-				}else
-				{
-					//goes through and tries to match distances
-					//both should be sorted by distance
-					//it will remove some if the strength is below a certain value
-					//also it will use a sorted merge list style
-					int distanceIndex = 0;//the index for the distance
-					int length = distances.size();
-					int tempLength = tempDistances.size();
-					for(int q = 0; q<tempLength; q++)
-					{
-						Distance dist = tempDistances.get(q);
-						if(distanceIndex< distances.size())
-						{
-							Distance dist2 = distances.get(distanceIndex);
-							//it is close to what we want so we need to make it stronger or weaker
-							if(Math.abs(dist2.distance-dist.distance)<distancesenstitivity)
-							{
-								dist2.strength+=.05;
-								if(dist2.strength>1)
-								{
-									dist.other.predictedBeat = true;
-									dist.other.col = dist2.col;
-								}
-								distanceIndex++;
-							}else if(dist2.distance>dist.distance)//it means we havent reached one yet
-							{
-								continue;
-							}else// it means we passed it and it did not have a matching beat
-							{
-								dist2.strength-=.05;
-								if(dist2.strength<.1)
-								{
-									distances.remove(dist2);
-									distanceIndex-=1;
-								}
-								distanceIndex++;
-							}
-
-						}else
-						{
-							//maybe add them on?
-							//find a way to remove distances that are too long?
-							distances.add(dist);
-						}
-
-					}
-					Collections.sort(distances);
-
-					//go through distances and combine beats that are doubles of other beats
-
-				//	for(Distance distance:distances)
-				//		System.out.println(distance);
-				}
-
-			}
-		}
-	}
-
-	/**
-	 * Attempts to detect the tempo of the piece
 	 * it uses a regression over 30 *items of significance*
 	 */
 	public void detectTempo2()
@@ -331,48 +240,25 @@ public class TempoDetector
 		/**
 		 * Removing the weak sets here
 		 */
-
-		boolean R2Average = false;
-		if(R2Average)
+		double avg = Statistics.averageSize(distanceSets);
+	//	avg = 14;
+		if(anyPrintout)
+			System.out.println("READY TO CULL THE HERD "+avg);
+		if(cullingPrintout&&anyPrintout)
+			System.out.println("Size before "+distanceSets.size());
+		for(int k = 0; k<distanceSets.size();k++)
 		{
-			double avg = Statistics.averageR2(distanceSets);
-			if(anyPrintout)
-				System.out.println("READY TO CULL THE HERD "+avg);
-			if(anyPrintout)
-				System.out.println("Size before "+distanceSets.size());
-			for(int k = 0; k<distanceSets.size();k++)
+			DistanceSet set = distanceSets.get(k);
+			if(set.distancesInSet.size()<avg&&startIndex-set.createdBeatIndex>numberOfBeats/4)
 			{
-				if(distanceSets.get(k).R2<avg)
-				{
-					if(cullingPrintoutDetailed&&anyPrintout)
-						System.out.println("TOO WEAK " + distanceSets.get(k).R2);
-					distanceSets.remove(k);
-					k-=1;
-				}
+				if(cullingPrintoutDetailed&&anyPrintout)
+					System.out.println("TOO WEAK " + set.distancesInSet.size()+" "+startIndex+" "+set.createdBeatIndex);
+				distanceSets.remove(k);
+				k-=1;
 			}
-			System.out.println("Size after "+distanceSets.size());
-		}else //if(false)
-		{
-			double avg = Statistics.averageSize(distanceSets);
-		//	avg = 14;
-			if(anyPrintout)
-				System.out.println("READY TO CULL THE HERD "+avg);
-			if(cullingPrintout&&anyPrintout)
-				System.out.println("Size before "+distanceSets.size());
-			for(int k = 0; k<distanceSets.size();k++)
-			{
-				DistanceSet set = distanceSets.get(k);
-				if(set.distancesInSet.size()<avg&&startIndex-set.createdBeatIndex>numberOfBeats/4)
-				{
-					if(cullingPrintoutDetailed&&anyPrintout)
-						System.out.println("TOO WEAK " + set.distancesInSet.size()+" "+startIndex+" "+set.createdBeatIndex);
-					distanceSets.remove(k);
-					k-=1;
-				}
-			}
-			if(cullingPrintout&&anyPrintout)
-				System.out.println("Size after "+distanceSets.size());
 		}
+		if(cullingPrintout&&anyPrintout)
+			System.out.println("Size after "+distanceSets.size());
 		//adding the leftOver distances here
 		for(int k = 0; k<firstRoundDistances.size(); k++)
 		{
@@ -399,7 +285,7 @@ public class TempoDetector
 		for(int q = 0;q<distanceSets.size();q++)
 		{
 			DistanceSet set = distanceSets.get(q);
-			System.out.println("average Distance "+set.averageValue+" size "+set.distancesInSet.size()+" R2 "+set.R2);
+			System.out.println("average Distance "+set.averageValue+" size "+set.distancesInSet.size());
 		}
 	}
 
