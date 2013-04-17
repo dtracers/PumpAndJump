@@ -148,7 +148,7 @@ public class BeatDetector
 		if(doOnce)
 		{
 			doOnce = false;
-			//Beat.writeBeatsToFile(detectedBeats);
+			Beat.writeBeatsToFile(detectedBeats);
 		}
 
 	}

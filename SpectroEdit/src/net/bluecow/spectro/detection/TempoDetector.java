@@ -274,7 +274,7 @@ public class TempoDetector
 			System.out.println("comparing distances");
 		for(int k = 0;k<distanceSets.size();k++)
 		{
-			if(tempDistanceIndex>= firstRoundDistances.size())
+			if(tempDistanceIndex>= firstRoundDistances.size()||tempDistanceIndex<0)
 				break;
 			DistanceSet dSet = distanceSets.get(k);
 			double avgDistance = dSet.averageValue;
@@ -289,10 +289,11 @@ public class TempoDetector
 				{
 					if(compareTestPrintout&&anyPrintout)
 						System.out.println("We have a winner in this set!");
-					dSet.addDistance(distances);
-
-					firstRoundDistances.remove(tempDistanceIndex);
-					tempDistanceIndex-=1;
+					if(dSet.addDistance(distances))
+					{
+						firstRoundDistances.remove(tempDistanceIndex);
+						tempDistanceIndex-=1;
+					}
 				}
 				tempDistanceIndex++;
 				if(tempDistanceIndex>= firstRoundDistances.size())
@@ -306,7 +307,13 @@ public class TempoDetector
 			{
 				if(compareTestPrintout&&anyPrintout)
 					System.out.println("We have a winner in this set!");
-				dSet.addDistance(distances);
+				if(dSet.addDistance(distances))
+				{
+					if(tempDistanceIndex>= firstRoundDistances.size())
+						tempDistanceIndex-=1;
+					firstRoundDistances.remove(tempDistanceIndex);
+					tempDistanceIndex-=1;
+				}
 			}
 		}
 

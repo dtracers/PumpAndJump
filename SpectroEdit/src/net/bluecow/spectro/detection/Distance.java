@@ -38,12 +38,24 @@ class DistanceSet implements Averageable,Comparable
 	public static boolean sortSize;
 	public static boolean sortAvg;
 	ArrayList<Distance> distancesInSet = new ArrayList<Distance>();
+	int size = 0;
 	double a,b;
 	double R2 = 1;//R^2 value
 	double averageValue = 0;
 
-	public void addDistance(Distance d)
+	public boolean addDistance(Distance d)
 	{
+		if(distancesInSet.size()>=1)
+		{
+			Distance previous = distancesInSet.get(size-1);
+			if(previous.other!=d.starting)
+			{
+				System.out.println("The Beats do not match! "+previous.other.sampleLocation+" "+d.starting.sampleLocation);
+			}else
+			{
+				System.out.println("The Beats do match! ");
+			}
+		}
 		distancesInSet.add(d);
 		if(distancesInSet.size()>1)
 		{
@@ -55,7 +67,7 @@ class DistanceSet implements Averageable,Comparable
 			R2 = result[2];
 		}
 		averageValue = Statistics.average(distancesInSet);
-
+		return true;
 	}
 
 	@Override

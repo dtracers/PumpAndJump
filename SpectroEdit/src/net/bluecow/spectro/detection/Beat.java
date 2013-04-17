@@ -33,6 +33,8 @@ public class Beat
 	{
 		System.out.println("Writing beats to file");
 		try {
+			String fileName = SpectroEditSession.fileName;
+			fileName.substring(0,fileName.indexOf("."));
 			File f = new File(SpectroEditSession.fileName);
 			/*
 			int counter = 0;
