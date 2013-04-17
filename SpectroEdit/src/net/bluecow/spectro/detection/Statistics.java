@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class Statistics
 {
-	public static boolean debug = true;
+	public static boolean debug = false;
+	public static boolean debugDetailed = false;
 
 	/**
 	 * a is at 0
@@ -186,8 +187,9 @@ public class Statistics
 		double svar0 = svar/n + xbar*xbar*svar1;
 
 		if(debug)
-		{
 			System.out.println("R^2                 = " + R2);
+		if(debugDetailed)
+		{
 			System.out.println("std error of beta_1 = " + Math.sqrt(svar1));
 			System.out.println("std error of beta_0 = " + Math.sqrt(svar0));
 			svar0 = svar * sumx2 / (n * xxbar);
@@ -198,7 +200,7 @@ public class Statistics
 			System.out.println("SSR  = " + ssr);
 		}
 
-		return new double[]{beta1,beta0,R2,Math.sqrt(svar1),Math.sqrt(svar1),Math.sqrt(svar1),yybar,rss,ssr};
+		return new double[]{beta1,beta0,R2};//,Math.sqrt(svar1),Math.sqrt(svar1),Math.sqrt(svar1),yybar,rss,ssr};
 	}
 
 	/**
@@ -390,6 +392,43 @@ public class Statistics
 		}
 		return total/length;
 	}
+
+	/**
+	 * Computes the average from the things to Average
+	 * @param thingsToAverage
+	 * @return
+	 */
+	public static double averageR2(ArrayList<DistanceSet> thingsToAverage)
+	{
+		int length = thingsToAverage.size();
+		if(length<1)
+			return -1;
+		double total = 0;
+		for(int k=0; k<length;k++)
+		{
+			total+=thingsToAverage.get(k).R2;
+		}
+		return total/length;
+	}
+
+	/**
+	 * Computes the average from the things to Average
+	 * @param thingsToAverage
+	 * @return
+	 */
+	public static double averageSize(ArrayList<DistanceSet> thingsToAverage)
+	{
+		int length = thingsToAverage.size();
+		if(length<1)
+			return -1;
+		double total = 0;
+		for(int k=0; k<length;k++)
+		{
+			total+=thingsToAverage.get(k).distancesInSet.size();
+		}
+		return total/length;
+	}
+
 
 	public static void copy(int start,int numberOf,ArrayList from,ArrayList to)
 	{

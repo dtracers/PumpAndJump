@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import net.bluecow.spectro.SpectroEditSession;
+
 public class Beat
 {
 	public Beat(long highestIndex, float highestPoint)
@@ -20,7 +22,7 @@ public class Beat
 	double soundIntensity;
 	long sampleLocation;
 	boolean predictedBeat;
-	Color col;
+	Color col = Color.red;
 	public String toString()
 	{
 		return ""+sampleLocation;
@@ -31,14 +33,17 @@ public class Beat
 	{
 		System.out.println("Writing beats to file");
 		try {
-			File f = new File("test.txt");
+			File f = new File(SpectroEditSession.fileName);
+			/*
 			int counter = 0;
 			while(f.exists())
 			{
 				f = new File("test"+counter+".txt");
 				counter++;
 			}
+			*/
 			f.createNewFile();
+
 			FileOutputStream output = new FileOutputStream(f);
 			PrintStream print = new PrintStream(output);
 			for(Beat b:beats)

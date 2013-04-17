@@ -11,10 +11,15 @@ public class TempoDetector
 {
 
 	public static boolean compareTestPrintout = false;
+	public static boolean cullingPrintout = false;
+	public static boolean anyPrintout = false;
+	public static boolean cullingPrintoutDetailed = false;
+
+
 	public static void main(String args[]) throws FileNotFoundException
 	{
 		ArrayList<Beat> beats = new ArrayList<Beat>();
-		Scanner s = new Scanner(new File("test0.txt"));
+		Scanner s = new Scanner(new File("test.txt"));
 		System.out.println("Reading");
 		while(s.hasNext())
 		{
@@ -24,10 +29,11 @@ public class TempoDetector
 		System.out.println("Done Reading "+beats.size());
 		TempoDetector detector = new TempoDetector(beats);
 
-		for(int k = 0; k<2;k++)
+		for(int k = 0; k<50;k++)
 		{
 			System.out.println("TEMPO RUN THROUGH TIME: "+k);
 			detector.detectTempo3(k);
+			detector.printDistanceSets();
 		}
 
 	}
@@ -46,6 +52,9 @@ public class TempoDetector
 	int numberOfBeats = 60;
 
 	ArrayList<Beat> detectedBeats;
+
+	int counter = 0;
+
 
 	public TempoDetector(ArrayList<Beat> beats)
 	{
@@ -215,6 +224,10 @@ public class TempoDetector
 	//	System.out.println("data "+result[0]+" "+result[1]);
 	}
 
+	public void detectTempo3()
+	{
+		detectTempo3(detectedBeats.size()-numberOfBeats);
+	}
 
 	/**
 	 * Attempts to detect the tempo of the music
@@ -236,7 +249,8 @@ public class TempoDetector
 		/**
 		 * Creates a bunch distances that will then be compared
 		 */
-		System.out.println("Creating new distances");
+		if(anyPrintout)
+			System.out.println("Creating new distances");
 		for(int k = startIndex+1;k<endIndex;k++)
 		{
 			Beat b = detectedBeats.get(k);
@@ -256,22 +270,24 @@ public class TempoDetector
 		//removes it from the list - the left overs
 		int tempDistanceIndex = 0;//it starts off trying to compare distances
 
-		if(compareTestPrintout)
+		if(compareTestPrintout&&anyPrintout)
 			System.out.println("comparing distances");
 		for(int k = 0;k<distanceSets.size();k++)
 		{
+			if(tempDistanceIndex>= firstRoundDistances.size())
+				break;
 			DistanceSet dSet = distanceSets.get(k);
 			double avgDistance = dSet.averageValue;
 			Distance distances = firstRoundDistances.get(tempDistanceIndex);
 			//while the distances in the new list is less than the current distance count up (kinda like insertion sort)
 			while(distances.distance<=avgDistance)
 			{
-				if(compareTestPrintout)
+				if(compareTestPrintout&&anyPrintout)
 					System.out.println(tempDistanceIndex+" during: "+(avgDistance-distances.distance)+" "+distances.distance+" "+avgDistance);
 				//if it is close enough add it to the list of distance sets
-				if(Math.abs(avgDistance-distances.distance)<=distancesenstitivity)
+				if(Math.abs(avgDistance-distances.distance)<distancesenstitivity)
 				{
-					if(compareTestPrintout)
+					if(compareTestPrintout&&anyPrintout)
 						System.out.println("We have a winner in this set!");
 					dSet.addDistance(distances);
 
@@ -279,14 +295,16 @@ public class TempoDetector
 					tempDistanceIndex-=1;
 				}
 				tempDistanceIndex++;
+				if(tempDistanceIndex>= firstRoundDistances.size())
+					break;
 				distances = firstRoundDistances.get(tempDistanceIndex);
 			}
-			if(compareTestPrintout)
+			if(compareTestPrintout&&anyPrintout)
 				System.out.println(tempDistanceIndex+" after: "+(avgDistance-distances.distance)+" "+distances.distance+" "+avgDistance);
 			//do it for the one that is one above the distance too
-			if(Math.abs(distances.distance-avgDistance)<=distancesenstitivity)
+			if(Math.abs(distances.distance-avgDistance)<distancesenstitivity)
 			{
-				if(compareTestPrintout)
+				if(compareTestPrintout&&anyPrintout)
 					System.out.println("We have a winner in this set!");
 				dSet.addDistance(distances);
 			}
@@ -296,6 +314,46 @@ public class TempoDetector
 		 * Removing the weak sets here
 		 */
 
+		boolean R2Average = false;
+		if(R2Average)
+		{
+			double avg = Statistics.averageR2(distanceSets);
+			if(anyPrintout)
+				System.out.println("READY TO CULL THE HERD "+avg);
+			if(anyPrintout)
+				System.out.println("Size before "+distanceSets.size());
+			for(int k = 0; k<distanceSets.size();k++)
+			{
+				if(distanceSets.get(k).R2<avg)
+				{
+					if(cullingPrintoutDetailed&&anyPrintout)
+						System.out.println("TOO WEAK " + distanceSets.get(k).R2);
+					distanceSets.remove(k);
+					k-=1;
+				}
+			}
+			System.out.println("Size after "+distanceSets.size());
+		}else
+		{
+			double avg = Statistics.averageSize(distanceSets);
+
+			if(anyPrintout)
+				System.out.println("READY TO CULL THE HERD "+avg);
+			if(cullingPrintout&&anyPrintout)
+				System.out.println("Size before "+distanceSets.size());
+			for(int k = 0; k<distanceSets.size();k++)
+			{
+				if(distanceSets.get(k).distancesInSet.size()<avg)
+				{
+					if(cullingPrintoutDetailed&&anyPrintout)
+						System.out.println("TOO WEAK " + distanceSets.get(k).distancesInSet.size());
+					distanceSets.remove(k);
+					k-=1;
+				}
+			}
+			if(cullingPrintout&&anyPrintout)
+				System.out.println("Size after "+distanceSets.size());
+		}
 		//adding the leftOver distances here
 		for(int k = 0; k<firstRoundDistances.size(); k++)
 		{
@@ -303,5 +361,37 @@ public class TempoDetector
 			set.addDistance(firstRoundDistances.get(k));
 			distanceSets.add(set);
 		}
+		DistanceSet.sortSize = true;
+		DistanceSet.sortAvg = false;
+		Collections.sort(distanceSets);
+
+//		System.out.println("Max Size"+distanceSets.get(0).distancesInSet.size());
+
+		DistanceSet.sortSize = false;
+		DistanceSet.sortAvg = true;
+		Collections.sort(distanceSets);
+
+
 	}
+
+	public void printDistanceSets()
+	{
+		for(int q = 0;q<distanceSets.size();q++)
+		{
+			DistanceSet set = distanceSets.get(q);
+			System.out.println("average Distance "+set.averageValue+" size "+set.distancesInSet.size()+" R2 "+set.R2);
+		}
+	}
+
+	public void setSignificanceBeats()
+	{
+		DistanceSet.sortSize = true;
+		DistanceSet.sortAvg = false;
+		Collections.sort(distanceSets);
+		for(Distance d:distanceSets.get(0).distancesInSet)
+		{
+			d.starting.predictedBeat = true;
+		}
+	}
+
 }

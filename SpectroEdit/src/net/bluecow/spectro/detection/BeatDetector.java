@@ -102,6 +102,7 @@ public class BeatDetector
 
 	public void draw(Graphics2D g2,int startY,int scale)
 	{
+		this.tempoDetection.setSignificanceBeats();
 		double ratio = scale/maxEnergy;
 		g2.setColor(Color.black);
 		int length = VEdata.size();
@@ -147,7 +148,7 @@ public class BeatDetector
 		if(doOnce)
 		{
 			doOnce = false;
-			Beat.writeBeatsToFile(detectedBeats);
+			//Beat.writeBeatsToFile(detectedBeats);
 		}
 
 	}
@@ -194,7 +195,7 @@ public class BeatDetector
 				detectedBeats.add(new Beat(highestIndex,highestPoint));
 		//		detectTempo2();
 		//		detectTempo();
-		//		tempoDetection.detectTempo3();
+				tempoDetection.detectTempo3();
 			}
 			highestPoint = 0;
 			highestIndex = -1;

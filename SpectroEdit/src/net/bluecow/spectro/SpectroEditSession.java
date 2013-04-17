@@ -44,6 +44,9 @@ public class SpectroEditSession
 	private final PlayerThread playerThread;
 	private final ClipPanel clipPanel;
 
+	//the fileName that is used throughout the program
+	public static String fileName;
+
 	protected SpectroEditSession(Clip c) throws LineUnavailableException
 	{
 		this.playerThread = new PlayerThread(c);
@@ -144,6 +147,7 @@ public class SpectroEditSession
 						JOptionPane.showMessageDialog(null, "Ok, maybe next time");
 						System.exit(0);
 					}
+					fileName = file;
 					File wavFile = new File(dir, file);
 					SpectroEditSession.createSession(wavFile);
 				}
