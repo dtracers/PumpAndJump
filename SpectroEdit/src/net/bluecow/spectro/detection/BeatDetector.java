@@ -3,6 +3,7 @@ package net.bluecow.spectro.detection;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import ddf.minim.effects.IIRFilter;
 
@@ -33,16 +34,30 @@ public class BeatDetector
 	long currentIndex = 0;
 	long highestIndex = 0;//the index of the highest point when it is above the beat
 	float highestPoint;
-	double senstitivity = 0.5;
+	//the senstitivity of the beat detector:  smaller numbers remove more beats and is more strict
+	double senstitivity = 0.8;
+
 
 	//valous used for the tempo detection
 	double tempoStrength;
 	double timeBetweenBeats;
 	double locationOfNextBeat;
+	double distancesenstitivity = 4;
+	ArrayList<Distance> distances = null;
+
+	int timeSince = 0;
+
+
+	int type = 0;
+	static int counter = 0;
+
+	int numberOfBeats = 60;
 
 	public BeatDetector(IIRFilter bandPass)
 	{
 		filter = bandPass;
+		type = counter;
+		counter++;
 	}
 
 	public void calculateVE(float[] timeData)
@@ -116,18 +131,21 @@ public class BeatDetector
 				currentAvg = AveragedEnergydata.get(k-shiftAvg);
 
 	//		System.out.println(old[0]+"\n"+old[1]);
-			g2.setColor(Color.blue);
-			g2.drawLine((k-1)*4, (int)(startY - old[0]*ratio), k*4, (int)(startY - current[0]*ratio));
+	//		g2.setColor(Color.blue);
+	//		g2.drawLine((k-1)*4, (int)(startY - old[0]*ratio), k*4, (int)(startY - current[0]*ratio));
 			g2.setColor(Color.red);
 			g2.drawLine((k-1)*4, (int)(startY - old[1]*ratio), k*4, (int)(startY- current[1]*ratio));
-			g2.setColor(Color.green);
-			g2.drawLine((k-1)*4, (int)(startY - oldAvg*ratio), k*4, (int)(startY- currentAvg*ratio));
+	//		g2.setColor(Color.green);
+	//		g2.drawLine((k-1)*4, (int)(startY - oldAvg*ratio), k*4, (int)(startY- currentAvg*ratio));
 		}
 		int beatLength = detectedBeats.size();
 		for(int k=0; k<beatLength;k++)
 		{
 			Beat b = detectedBeats.get(k);
+			if(!b.predictedBeat)
 			g2.setColor(Color.GRAY);
+			else
+				g2.setColor(b.col);
 			g2.drawLine((int)b.sampleLocation*4, startY, (int) b.sampleLocation*4,(int)( startY-75));
 		}
 		g2.setColor(Color.black);
@@ -171,6 +189,7 @@ public class BeatDetector
 			if(division<senstitivity)
 			{
 				detectedBeats.add(new Beat(highestIndex,highestPoint));
+				detectTempo2();
 		//		detectTempo();
 			}
 			highestPoint = 0;
@@ -202,7 +221,7 @@ public class BeatDetector
 			int start = detectedBeats.size()-30;
 			int end = detectedBeats.size();
 			int beatDistance = 6;
-			ArrayList<Distance> distances;
+
 			//we go through 30 beats in the list
 			//we attempt to find beats differences that strengthen and remove those that weaken
 			//it is an attempt at a genetic algorithm
@@ -213,35 +232,143 @@ public class BeatDetector
 				for(int q = 1; q<beatDistance;q++)
 				{
 					Beat other = detectedBeats.get(k+q);
-					tempDistances.add(new Distance(other.sampleLocation-startingBeat.sampleLocation,0,startingBeat,other));
+					tempDistances.add(new Distance(other.sampleLocation-startingBeat.sampleLocation,.5,startingBeat,other));
 				}
 
 				//moves the first set over because they all have zero strength
 				if(k==start)
 				{
 					distances = tempDistances;
+				}else
+				{
+					//goes through and tries to match distances
+					//both should be sorted by distance
+					//it will remove some if the strength is below a certain value
+					//also it will use a sorted merge list style
+					int distanceIndex = 0;//the index for the distance
+					int length = distances.size();
+					int tempLength = tempDistances.size();
+					for(int q = 0; q<tempLength; q++)
+					{
+						Distance dist = tempDistances.get(q);
+						if(distanceIndex< distances.size())
+						{
+							Distance dist2 = distances.get(distanceIndex);
+							//it is close to what we want so we need to make it stronger or weaker
+							if(Math.abs(dist2.distance-dist.distance)<distancesenstitivity)
+							{
+								dist2.strength+=.05;
+								if(dist2.strength>1)
+								{
+									dist.other.predictedBeat = true;
+									dist.other.col = dist2.col;
+								}
+								distanceIndex++;
+							}else if(dist2.distance>dist.distance)//it means we havent reached one yet
+							{
+								continue;
+							}else// it means we passed it and it did not have a matching beat
+							{
+								dist2.strength-=.05;
+								if(dist2.strength<.1)
+								{
+									distances.remove(dist2);
+									distanceIndex-=1;
+								}
+								distanceIndex++;
+							}
+
+						}else
+						{
+							//maybe add them on?
+							//find a way to remove distances that are too long?
+							distances.add(dist);
+						}
+
+					}
+					Collections.sort(distances);
+
+					//go through distances and combine beats that are doubles of other beats
+
+				//	for(Distance distance:distances)
+				//		System.out.println(distance);
 				}
+
 			}
 		}
 	}
 
-	class Distance implements Comparable
+	/**
+	 * Attempts to detect the tempo of the piece
+	 * it uses a regression over 30 *items of significance*
+	 */
+	private void detectTempo2()
 	{
-		double distance;
-		double strength;
-		Beat starting;
-		Beat other;
-		public Distance(long l, double i, Beat startingBeat, Beat other)
+		if(detectedBeats.size()<numberOfBeats)
 		{
-			distance = l;
-			strength = i;
-			starting = startingBeat;
-			this.other = other;
+			timeSince++;
+			return;
 		}
-		@Override
-		public int compareTo(Object arg0)
+
+		if(timeSince<numberOfBeats/2)
 		{
-			return (int) Math.signum(distance-((Distance)arg0).distance);
+			timeSince++;
+			return;
 		}
+		timeSince = 0;
+
+
+		int start = detectedBeats.size()-numberOfBeats;
+
+		ArrayList<Beat> temp = new ArrayList<Beat> ();
+		ArrayList<Distance> distances = new ArrayList<Distance>();
+
+		Statistics.copy(start, numberOfBeats, detectedBeats, temp);
+
+		double finalAverage = 0;
+
+		double average = 0;
+		for(int k = 0;k<4;k++)
+		{
+
+			double ratio = numberOfBeats;
+			ratio = ratio/temp.size();
+			if(ratio <1.3)
+			{
+				ratio = 1.3;
+			}
+			double[] result=null;
+			System.out.println(distances.size());
+			if(k==0)
+				result = Statistics.leastSquares(temp.size(),temp,distances);
+
+			else
+				result = Statistics.weightedLeastSquares( distances.size(), distances,average);
+			System.out.println(distances.size());
+		//	double Rvalue = Statistics.getPearsonCorrelation(distances);
+
+			finalAverage = average = Statistics.distances(0, distances.size(), distances, result);
+
+			ArrayList<Beat> removedItems = Statistics.removeItemsAboveAverage(distances,temp, average*ratio);
+
+			if(k==0&&false)
+				for(int q = 0;q<removedItems.size();q++)
+				{
+					detectedBeats.remove(removedItems.get(q));
+				}
+
+
+			System.out.println("k "+ k+" size: "+temp.size()+"\t "+result[0]+ "\t "+ratio);
+		}
+	//	System.out.println(type+" "+finalAverage);
+
+		for(int k=0;k<temp.size();k++)
+		{
+			temp.get(k).col = Color.CYAN;
+			temp.get(k).predictedBeat = true;
+		}
+
+	//	System.out.println("data "+result[0]+" "+result[1]);
 	}
+
 }
