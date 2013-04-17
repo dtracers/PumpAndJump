@@ -13,16 +13,18 @@ import net.bluecow.spectro.SpectroEditSession;
 
 public class Beat
 {
-	public Beat(long highestIndex, float highestPoint)
+	public Beat(long highestIndex, float highestPoint,int indexInList)
 	{
 		soundIntensity = highestPoint;
 		sampleLocation = highestIndex;
+		this.indexInList = indexInList;
 	}
 	public static final int FRAME_SIZE = 1320;
 	double soundIntensity;
 	long sampleLocation;
 	boolean predictedBeat;
 	Color col = Color.red;
+	int indexInList;
 	public String toString()
 	{
 		return ""+sampleLocation;

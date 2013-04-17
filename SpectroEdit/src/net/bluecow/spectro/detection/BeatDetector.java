@@ -147,6 +147,7 @@ public class BeatDetector
 
 		if(doOnce)
 		{
+			tempoDetection.printDistanceSets();
 			doOnce = false;
 			Beat.writeBeatsToFile(detectedBeats);
 		}
@@ -192,7 +193,7 @@ public class BeatDetector
 				{
 					tempoDetection = new TempoDetector(detectedBeats);
 				}
-				detectedBeats.add(new Beat(highestIndex,highestPoint));
+				detectedBeats.add(new Beat(highestIndex,highestPoint,detectedBeats.size()));
 		//		detectTempo2();
 		//		detectTempo();
 				tempoDetection.detectTempo3();

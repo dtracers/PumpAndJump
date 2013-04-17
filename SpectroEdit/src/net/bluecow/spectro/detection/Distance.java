@@ -42,31 +42,53 @@ class DistanceSet implements Averageable,Comparable
 	double a,b;
 	double R2 = 1;//R^2 value
 	double averageValue = 0;
+	int createdBeatIndex;
 
+	public DistanceSet(int createdIndex)
+	{
+		this.createdBeatIndex = createdIndex;
+	}
 	public boolean addDistance(Distance d)
 	{
 		if(distancesInSet.size()>=1)
 		{
-			Distance previous = distancesInSet.get(size-1);
+			Distance previous = distancesInSet.get(distancesInSet.size()-1);
 			if(previous.other!=d.starting)
 			{
-				System.out.println("The Beats do not match! "+previous.other.sampleLocation+" "+d.starting.sampleLocation);
-			}else
-			{
-				System.out.println("The Beats do match! ");
+				double totalDistance = d.starting.sampleLocation - previous.other.sampleLocation;
+				if(totalDistance>0)
+				{
+					double dividedDistance = totalDistance/averageValue;
+					double decimal = Math.abs(dividedDistance-Math.rint(dividedDistance));
+					if(decimal<.1)
+					{
+				//		System.out.println("The Beats do not match! "+" "+averageValue);
+						System.out.println(totalDistance+" "+dividedDistance+" "+decimal);
+					}
+					//then I need to combine it into one thing? and then attach that result chain hopefully (which will result in a tree?)
+					if(totalDistance<1)
+					{
+
+					}
+				}
+				return false;
 			}
-		}
-		distancesInSet.add(d);
-		if(distancesInSet.size()>1)
+		//	System.out.println("The Beats do match! "+averageValue);
+			distancesInSet.add(d);
+			if(distancesInSet.size()>1)
+			{
+				double[] result = Statistics.leastSquares(distancesInSet);
+				a = result[0];
+				b = result[1];
+				R2 = result[2];
+			}
+			averageValue = Statistics.average(distancesInSet);
+		}else
 		{
-		//	System.out.println("AVERAGE DISTANCE IS "+averageValue);
-		//	System.out.println("Number in set is  "+distancesInSet.size());
-			double[] result = Statistics.leastSquares(distancesInSet);
-			a = result[0];
-			b = result[1];
-			R2 = result[2];
+			distancesInSet.add(d);
+			averageValue = Statistics.average(distancesInSet);
 		}
-		averageValue = Statistics.average(distancesInSet);
+
 		return true;
 	}
 

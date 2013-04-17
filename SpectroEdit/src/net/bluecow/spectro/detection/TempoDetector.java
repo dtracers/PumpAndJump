@@ -11,30 +11,33 @@ public class TempoDetector
 {
 
 	public static boolean compareTestPrintout = false;
-	public static boolean cullingPrintout = false;
-	public static boolean anyPrintout = false;
+	public static boolean cullingPrintout = true;
+	public static boolean anyPrintout = true;
 	public static boolean cullingPrintoutDetailed = false;
 
 
 	public static void main(String args[]) throws FileNotFoundException
 	{
 		ArrayList<Beat> beats = new ArrayList<Beat>();
-		Scanner s = new Scanner(new File("test.txt"));
+	//	Scanner s = new Scanner(new File("myTest.txt"));
+		Scanner s = new Scanner(new File("The Hand That Feeds - Nine Inch Nails.txt"));
 		System.out.println("Reading");
 		while(s.hasNext())
 		{
-			int s2 =s.nextInt();
-			beats.add(new Beat(s2,0));
+			long s2 =s.nextLong();
+			beats.add(new Beat(s2,0,beats.size()));
 		}
 		System.out.println("Done Reading "+beats.size());
 		TempoDetector detector = new TempoDetector(beats);
 
-		for(int k = 0; k<50;k++)
+		for(int k = 0; k<beats.size()-detector.numberOfBeats;k++)
 		{
 			System.out.println("TEMPO RUN THROUGH TIME: "+k);
 			detector.detectTempo3(k);
-			detector.printDistanceSets();
+		//	detector.printDistanceSets();
 		}
+	//	detector.printDistanceSets();
+		System.out.println("\t"+maxDistanceAllowed);
 
 	}
 
@@ -49,11 +52,16 @@ public class TempoDetector
 	ArrayList<DistanceSet> distanceSets = new ArrayList<DistanceSet>();
 
 	int timeSince = 0;
-	int numberOfBeats = 60;
+	int numberOfBeats = 30;
 
 	ArrayList<Beat> detectedBeats;
 
 	int counter = 0;
+	public static double samplingRate = 44100;
+	public static double frameSize = 1320;
+	public static double BPMtoFrameRatio = (60.0*samplingRate/frameSize);//the ratio from an BPM to actual frame distances
+	public static double SlowestBPM = 20;
+	public static double maxDistanceAllowed = BPMtoFrameRatio/SlowestBPM;
 
 
 	public TempoDetector(ArrayList<Beat> beats)
@@ -255,8 +263,11 @@ public class TempoDetector
 		{
 			Beat b = detectedBeats.get(k);
 			Distance d = new Distance(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b);
-		//	System.out.println(d.distance);
-			firstRoundDistances.add(d);
+			if(d.distance<maxDistanceAllowed)
+			{
+			//	System.out.println(d.distance);
+				firstRoundDistances.add(d);
+			}
 		}
 
 		/**
@@ -340,20 +351,21 @@ public class TempoDetector
 				}
 			}
 			System.out.println("Size after "+distanceSets.size());
-		}else
+		}else //if(false)
 		{
 			double avg = Statistics.averageSize(distanceSets);
-
+			avg = 14;
 			if(anyPrintout)
 				System.out.println("READY TO CULL THE HERD "+avg);
 			if(cullingPrintout&&anyPrintout)
 				System.out.println("Size before "+distanceSets.size());
 			for(int k = 0; k<distanceSets.size();k++)
 			{
-				if(distanceSets.get(k).distancesInSet.size()<avg)
+				DistanceSet set = distanceSets.get(k);
+				if(set.distancesInSet.size()<avg&&startIndex-set.createdBeatIndex>numberOfBeats/4)
 				{
 					if(cullingPrintoutDetailed&&anyPrintout)
-						System.out.println("TOO WEAK " + distanceSets.get(k).distancesInSet.size());
+						System.out.println("TOO WEAK " + set.distancesInSet.size()+" "+startIndex+" "+set.createdBeatIndex);
 					distanceSets.remove(k);
 					k-=1;
 				}
@@ -364,8 +376,9 @@ public class TempoDetector
 		//adding the leftOver distances here
 		for(int k = 0; k<firstRoundDistances.size(); k++)
 		{
-			DistanceSet set = new DistanceSet();
-			set.addDistance(firstRoundDistances.get(k));
+			Distance d = firstRoundDistances.get(k);
+			DistanceSet set = new DistanceSet(d.starting.indexInList);
+			set.addDistance(d);
 			distanceSets.add(set);
 		}
 		DistanceSet.sortSize = true;
