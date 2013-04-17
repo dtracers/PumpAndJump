@@ -359,6 +359,7 @@ public class Clip
 	   	public void calculateVE(float[] timeData)
 	   	{
 	   		int timeLength = timeData.length;
+	   		detectors[0].calculateVE(Arrays.copyOf(timeData,timeLength));
 	   		for(int k=0;k<detectors.length;k++)
 	   		{
 	   			detectors[k].calculateVE(Arrays.copyOf(timeData,timeLength));
