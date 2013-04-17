@@ -23,7 +23,7 @@ public class Beat
 	double soundIntensity;
 	long sampleLocation;
 	boolean predictedBeat;
-	Color col = Color.red;
+	Color col = Color.green;
 	int indexInList;
 	public String toString()
 	{
