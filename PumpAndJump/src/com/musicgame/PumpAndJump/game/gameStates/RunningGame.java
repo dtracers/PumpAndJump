@@ -11,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.LevelInterpreter;
 import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
+import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
@@ -52,7 +54,28 @@ public class RunningGame extends GameThread
 	float divide = 700;
 
 	private boolean songFinished = false;
-
+	GameControls controls;
+	//define my listeners
+	public ChangeListener jumpListener = new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+			jump();
+		}
+	};
+	public ChangeListener duckListener = new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+			duck();
+		}
+	};
+	public ChangeListener pauseListener = new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+			pausingButton();
+		}
+	};
+	
+	
 	public RunningGame()
 	{
 		reset();
@@ -64,121 +87,16 @@ public class RunningGame extends GameThread
 	public void reset()
 	{
 		stage = new Stage();
-
-		/**
-		A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
-		recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-		*/
-		FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-	    Skin uiSkin = new Skin( skinFile );
-	    addButtonsInvisible(stage,uiSkin);
-		// Create a table that fills the screen. Everything else will go inside this table.
-
-		//table.debug(); // turn on all debug lines (table, cell, and widget)
-		//table.debugTable(); // turn on only table lines
+		
+		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
+		
+		stage.addActor(this.controls.controlsTable);
 
         player = new Player( new Point( 400.0f, 500.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
         soundFrame = 0;
 	}
-
-	/**
-	 *
-	 * @param stage
-	 */
-	public void addButtonsVisible(Stage stage,Skin uiSkin)
-	{
-		final TextButton pauseButton = new TextButton("||", uiSkin);
-				pauseButton.setBounds(300, 300, 50, 50);
-				pauseButton.addListener(
-						new ChangeListener()
-						{
-							@Override
-							public void changed(ChangeEvent event, Actor actor)
-							{
-								System.out.println("pause");
-								pausingButton();
-							}
-						});
-				stage.addActor(pauseButton);
-
-				final TextButton jumpButton = new TextButton("Jump", uiSkin);
-				stage.addActor(jumpButton);
-				jumpButton.setBounds(10,10, 50, 50);
-				jumpButton.addListener(
-						new ChangeListener()
-						{
-							@Override
-							public void changed(ChangeEvent event, Actor actor)
-							{
-								jump();
-							}
-						});
-
-				final TextButton duckButton = new TextButton("Duck", uiSkin);
-				stage.addActor(duckButton);
-				duckButton.setBounds(400,10, 50, 50);
-				duckButton.addListener(
-						new ChangeListener()
-						{
-							@Override
-							public void changed(ChangeEvent event, Actor actor)
-							{
-								duck();
-							}
-						});
-			//	table.add(aboutButton).size(50,50).pad(5);
-
-
-	}
-
-	public void addButtonsInvisible(Stage stage,Skin uiSkin)
-	{
-		Table table = new Table();
-		table.setFillParent(true);
-
-		stage.addActor(table);
-		 //seting up the buttons
-		final TextButton pauseButton = new TextButton("Pause", uiSkin);
-	//	pauseButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen (pause should be visible though)
-		pauseButton.addListener(
-				new ChangeListener()
-				{
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						pausingButton();
-					}
-				});
-		final TextButton jumpButton = new TextButton("Jump", uiSkin);
-		jumpButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
-		jumpButton.addListener(
-				new ChangeListener()
-				{
-					@Override
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						jump();
-					}
-				});
-
-		final TextButton duckButton = new TextButton("Duck", uiSkin);
-		duckButton.setColor(0.0f,0.0f,0.0f, 0.0f); //make buttons invisible when on screen
-		duckButton.addListener(
-				new ChangeListener()
-				{
-					@Override
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						duck();
-					}
-				});
-		table.add(jumpButton).expand().fill();
-		table.add(pauseButton).expand().size(250,100).pad(5);
-		table.add(duckButton).expand().fill();
-
-	}
-
 
 	/**
 	 * Run method happens while the game is running

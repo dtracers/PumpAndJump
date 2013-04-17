@@ -29,12 +29,39 @@ public class PauseGame extends GameThread
 	Skin uiSkin;
 	Stage stage;
 	private ShapeRenderer shapeRenderer;
-
+	
+	//define my listeners
+	public ChangeListener optionsListener = new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+			PumpAndJump.addThread(ThreadName.OptionsGame, PauseGame.this);
+			//PumpAndJump.removeThread(ThreadName.RunningGame, PauseGame.this);
+			System.out.println("pressed!");
+		}
+	};
+	public ChangeListener unpauseListener = new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+		//	PumpAndJump.switchThread(ThreadName.RunningGame, PauseGame.this);
+			PumpAndJump.removeThread(ThreadName.PauseGame, PauseGame.this);
+			System.out.println("pressed!");
+			unpause();
+		}
+	};
+	public ChangeListener quitListener= new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+			PumpAndJump.switchThread(ThreadName.PreGame, PauseGame.this);
+			//PumpAndJump.removeThread(ThreadName.RunningGame, PauseGame.this);
+			System.out.println("pressed!");
+		}
+	};
+	
 	public PauseGame()
 	{
 		stage = new Stage();
 		width = Gdx.graphics.getWidth();height = Gdx.graphics.getHeight();
-
+		System.out.println("%a width: "+Integer.toString(width)+" height: "+Integer.toString(height));
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
@@ -53,41 +80,13 @@ public class PauseGame extends GameThread
 		stage.addActor(table);
 
 		final TextButton unpauseGameButton = new TextButton("Resume", uiSkin);
-		unpauseGameButton.addListener(
-				new ChangeListener()
-				{
-					public void changed(ChangeEvent event, Actor actor)
-					{
-					//	PumpAndJump.switchThread(ThreadName.RunningGame, PauseGame.this);
-						PumpAndJump.removeThread(ThreadName.PauseGame, PauseGame.this);
-						System.out.println("pressed!");
-						unpause();
-					}
-				});
-
+		unpauseGameButton.addListener(unpauseListener);
+		
 		final TextButton optionGameButton = new TextButton("Options", uiSkin);
-		optionGameButton.addListener(
-				new ChangeListener()
-				{
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						PumpAndJump.addThread(ThreadName.OptionsGame, PauseGame.this);
-						//PumpAndJump.removeThread(ThreadName.RunningGame, PauseGame.this);
-						System.out.println("pressed!");
-					}
-				});
+		optionGameButton.addListener(optionsListener);
 
 		final TextButton quitGameButton = new TextButton("Quit", uiSkin);
-		quitGameButton.addListener(
-				new ChangeListener()
-				{
-					public void changed(ChangeEvent event, Actor actor)
-					{
-						PumpAndJump.switchThread(ThreadName.PreGame, PauseGame.this);
-						//PumpAndJump.removeThread(ThreadName.RunningGame, PauseGame.this);
-						System.out.println("pressed!");
-					}
-				});
+		quitGameButton.addListener(quitListener);
 
 
 		final TextButton jumpGameButton = new TextButton("Jump Button", uiSkin);
