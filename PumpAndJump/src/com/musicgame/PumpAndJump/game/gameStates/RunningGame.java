@@ -85,7 +85,6 @@ public class RunningGame extends GameThread
 
 	public RunningGame()
 	{
-		reset();
 	}
 
 	/**
@@ -99,7 +98,7 @@ public class RunningGame extends GameThread
 
 		stage.addActor(this.controls.controlsTable);
 
-        player = new Player( new Point( 400.0f, 500.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+        player = new Player( new Point( 400.0f, 300.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
         soundFrame = 0;
@@ -209,6 +208,7 @@ public class RunningGame extends GameThread
 		}else
 		if(currentThread instanceof PreGame)
 		{
+			reset();
 			Gdx.input.setInputProcessor(stage);
 			try {
 				actualObjects = LevelInterpreter.loadLevel();
