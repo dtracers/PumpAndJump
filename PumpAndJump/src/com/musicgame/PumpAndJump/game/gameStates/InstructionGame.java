@@ -38,14 +38,15 @@ public class InstructionGame extends GameThread
 {
 	Skin uiSkin;
 	Stage stage;
-	SpriteBatch batch;
+	ThreadName reverseThread;
 	//private Table table;
 	public InstructionGame()
 	{
-		batch = new SpriteBatch();
 		stage = new Stage();
+
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
+
         Table table = new Table();
 		stage.addActor(table);
 		table.setFillParent(true);
@@ -63,7 +64,7 @@ public class InstructionGame extends GameThread
 					{
 						public void changed(ChangeEvent event, Actor actor)
 						{
-							PumpAndJump.switchThread(ThreadName.PreGame, InstructionGame.this);
+							goBack();
 						}
 					});
 
@@ -90,70 +91,29 @@ public class InstructionGame extends GameThread
         stage.setViewport(width, height, false);
     }
 
-	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void show() {
-	}
-
-	@Override
-	public void hide() {
-	}
-
-	@Override
-	public void dispose() {
+	public void goBack()
+	{
+		switch(reverseThread)
+		{
+			case PreGame:
+				PumpAndJump.switchThread(ThreadName.PreGame, this);break;
+			case PauseGame:
+				PumpAndJump.removeThread(ThreadName.OptionsGame, this);break;
+		}
 	}
 
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
+		reverseThread = currentThread.getThreadName();
 		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
-	public void addFrom(GameThread currentThread) {
+	public void addFrom(GameThread currentThread)
+	{
+		reverseThread = currentThread.getThreadName();
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -162,6 +122,15 @@ public class InstructionGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.InstructionGame;
+	}
+
+	@Override
+	public void repause() {
 	}
 
 }

@@ -37,7 +37,7 @@ public abstract class GameObject
 		return Intersector.overlapConvexPolygons( hull, gmObj.getHull() );
 	}
 
-	public void draw( SpriteBatch sb)
+	public void draw( SpriteBatch sb )
 	{
 
 	}
@@ -69,7 +69,7 @@ public abstract class GameObject
 		 sr.end();
 	}
 
-	public void update( double sec )
+	public void update( float delta )
 	{
 
 	}

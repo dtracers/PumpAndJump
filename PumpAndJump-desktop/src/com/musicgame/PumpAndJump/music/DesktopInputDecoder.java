@@ -2,7 +2,7 @@ package com.musicgame.PumpAndJump.music;
 
 import java.io.IOException;
 
-import com.musicgame.PumpAndJump.Util.InputDecoder;
+import com.musicgame.PumpAndJump.game.sound.InputDecoder;
 
 public class DesktopInputDecoder extends InputDecoder {
 

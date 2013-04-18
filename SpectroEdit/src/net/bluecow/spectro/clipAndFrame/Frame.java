@@ -23,6 +23,7 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 			private int timeLength;
 			private double mult[];
 			private static double preMult[] = { .5, .5, .5, .5, .25, .05, .25, .5, .5, .5, .5 };
+
 			//private final WindowFunction preWindowFunc;
 			//private final WindowFunction postWindowFunc;
 
@@ -104,6 +105,9 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 				int frameSize = timeData.length/numOfSections;
 
 				timeLength = timeData.length;
+
+			//	System.out.println(timeLength);
+				//put volume here
 				//WindowFunction preWindowFunc = preFunc[ octave ];
 				//WindowFunction postWindowFunc = new NullWindowFunction();
 
@@ -275,4 +279,8 @@ import net.bluecow.spectro.windowFunctions.WindowFunction;
 			}
 	    	return timeData;
 	  	}
+
+
+
+
 }

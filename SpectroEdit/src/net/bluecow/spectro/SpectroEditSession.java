@@ -44,6 +44,9 @@ public class SpectroEditSession
 	private final PlayerThread playerThread;
 	private final ClipPanel clipPanel;
 
+	//the fileName that is used throughout the program
+	public static String fileName;
+
 	protected SpectroEditSession(Clip c) throws LineUnavailableException
 	{
 		this.playerThread = new PlayerThread(c);
@@ -90,7 +93,6 @@ public class SpectroEditSession
 			{
 				f.setBounds(Integer.parseInt(frameBounds[0]), Integer.parseInt(frameBounds[1]), Integer.parseInt(frameBounds[2]), Integer.parseInt(frameBounds[3]));
 			}
-
 		}
 		else
 		{
@@ -99,7 +101,6 @@ public class SpectroEditSession
 			f.setSize(Math.min(screenSize.width - 50, f.getWidth()), Math.min(screenSize.height - 50, f.getHeight()));
 
 			f.setLocationRelativeTo(null);
-
 		}
 		f.addWindowListener(new WindowAdapter()
 		{
@@ -146,6 +147,7 @@ public class SpectroEditSession
 						JOptionPane.showMessageDialog(null, "Ok, maybe next time");
 						System.exit(0);
 					}
+					fileName = file;
 					File wavFile = new File(dir, file);
 					SpectroEditSession.createSession(wavFile);
 				}

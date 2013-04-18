@@ -36,7 +36,7 @@ public class AnimationUtil {
             ( (-p0 + 3 * p1 - 3 * p2 + p3) * t * t * t ) ) );
 	}
 
-	public class Point
+	public static class Point
 	{
 		public float x, y, z;
 		public Point()
@@ -149,6 +149,33 @@ public class AnimationUtil {
 		{
 			os.print("("+x+","+y+","+z+")\n");
 		}
+	}
+	
+	public static Point RotateAroundXAxis( Point p, float angle )
+	{
+		angle = (float) (angle*Math.PI/180.0f);
+		float x1 = p.x;
+		float y1 = (float) (p.y*Math.cos( angle ) - p.z*Math.sin( angle ));
+		float z1 = (float) (p.y*Math.sin( angle ) + p.z*Math.cos( angle ));
+		return new Point( x1, y1, z1 );
+	}
+
+	public static Point RotateAroundYAxis( Point p, float angle )
+	{
+		angle = (float) (angle*Math.PI/180.0f);
+		float x1 = (float) (p.x*Math.cos( angle ) + p.z*Math.sin( angle ));
+		float y1 = p.y;
+		float z1 = (float) (-p.x*Math.sin( angle ) + p.z*Math.cos( angle ));
+		return new Point( x1, y1, z1 );
+	}
+
+	public static Point RotateAroundZAxis( Point p, float angle )
+	{
+		angle = (float) (angle*Math.PI/180.0f);
+		float x1 = (float) (p.x*Math.cos( angle ) - p.y*Math.sin( angle ));
+		float y1 = (float) (p.x*Math.sin( angle ) + p.y*Math.cos( angle ));
+		float z1 = p.z;
+		return new Point( x1, y1, z1 );
 	}
 
 }

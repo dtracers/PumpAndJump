@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.musicgame.PumpAndJump.game.GameThread;
+import com.musicgame.PumpAndJump.game.ThreadName;
 
 public class DemoGame extends GameThread
 {
@@ -23,7 +24,6 @@ public class DemoGame extends GameThread
 	Texture notedudeImage;
 	Sound dropSound;
 	Music rainMusic;
-	SpriteBatch batch;
 	OrthographicCamera camera;
 	Rectangle bucket;
 	Array<Rectangle> raindrops;
@@ -42,47 +42,11 @@ public class DemoGame extends GameThread
 	private float[] waveFormVertices;
 
 	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
    	 	if(!this.isjumping && bucket.y <= this.bucket_initialY)
    	 		this.isjumping=true;
 
-		return false;
-	}
-
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
 		return false;
 	}
 
@@ -275,14 +239,6 @@ public class DemoGame extends GameThread
 	   	   }
 
 	@Override
-	public void hide() {
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 	      // dispose of all the native resources
@@ -315,6 +271,15 @@ public class DemoGame extends GameThread
 
 	@Override
 	public void unpause() {
+	}
+
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.DemoGame;
+	}
+
+	@Override
+	public void repause() {
 	}
 
 }

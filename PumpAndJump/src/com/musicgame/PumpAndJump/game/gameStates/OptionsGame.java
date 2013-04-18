@@ -39,13 +39,11 @@ public class OptionsGame extends GameThread
 
 	Skin uiSkin;
 	Stage stage;
-	SpriteBatch batch;
-	
+	ThreadName reverseThread;
 	public OptionsGame()
 	{
-		batch = new SpriteBatch();
 		stage = new Stage();
-		
+
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
 
@@ -66,7 +64,7 @@ public class OptionsGame extends GameThread
 		};
 
 		table.pad(10).defaults().expandX().space(4);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			table.row();
 			table.add(new Label(i + "uno", uiSkin)).expandX().fillX();
 
@@ -82,7 +80,7 @@ public class OptionsGame extends GameThread
 			slider.addListener(stopTouchDown); // Stops touchDown events from propagating to the FlickScrollPane.
 			table.add(slider);
 
-			table.add(new Label(i + "tres long0 long1 long2 long3 long4 long5 long6 long7 long8 long9 long10 long11 long12", uiSkin));
+			table.add(new Label(i + "tres long0 long1 long2 long3 long4 long5", uiSkin));
 		}
 
 		final TextButton flickButton = new TextButton("Flick Scroll", uiSkin.get("toggle", TextButtonStyle.class));
@@ -115,17 +113,17 @@ public class OptionsGame extends GameThread
 				scroll.setScrollbarsOnTop(onTopButton.isChecked());
 			}
 		});
-		
+
 		final TextButton backButton = new TextButton("Back", uiSkin);
 		backButton.addListener(
 					new ChangeListener()
 					{
 						public void changed(ChangeEvent event, Actor actor)
 						{
-							PumpAndJump.switchThread(ThreadName.PreGame, OptionsGame.this);
+							goBack();
 						}
 					});
-		container.add(scroll).expand().fill().colspan(4);
+		container.add(scroll).size(450,200);
 		container.row().space(10).padBottom(10);
 		container.add(backButton).size(250,50).pad(5);
 		//container.add(flickButton).right().expandX();
@@ -151,78 +149,48 @@ public class OptionsGame extends GameThread
         stage.setViewport(width, height, false);
     }
 
-	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void show() {
-	}
-
-	@Override
-	public void hide() {
-	}
-
-	@Override
-	public void dispose() {
+	public void goBack()
+	{
+		switch(reverseThread)
+		{
+			case PreGame:
+				PumpAndJump.switchThread(ThreadName.PreGame, this);break;
+			case PauseGame:
+				PumpAndJump.removeThread(ThreadName.OptionsGame, this);break;
+		}
 	}
 
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
+
 		Gdx.input.setInputProcessor(stage);
+		reverseThread = currentThread.getThreadName();
+
 	}
 
 	@Override
-	public void addFrom(GameThread currentThread) {
+	public void addFrom(GameThread currentThread)
+	{
+		Gdx.input.setInputProcessor(stage);
+		reverseThread = currentThread.getThreadName();
 	}
 
 	@Override
-	public void removeFrom(GameThread currentThread) {
+	public void removeFrom(GameThread currentThread)
+	{
 	}
 
 	@Override
 	public void unpause() {
 	}
 
+	@Override
+	public ThreadName getThreadName() {
+		return ThreadName.OptionsGame;
+	}
+
+	@Override
+	public void repause() {
+	}
 }

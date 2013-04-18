@@ -1,24 +1,25 @@
 package com.musicgame.PumpAndJump.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class GameThread extends Thread implements InputProcessor, Screen
 {
-	public int height,width;
+	public static SpriteBatch batch = new SpriteBatch();
+	public int height, width;
 
 	@Override
 	public void resize(int width, int height)
 	{
-		this.height = height;
-		this.width = width;
 	}
 
 	public void myWait()
 	{
 		synchronized(this)
 		{
-			pause();
+			repause();
 			try
 			{
 				this.wait();
@@ -38,7 +39,22 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 		}
 	}
 
+	/**
+	 * Returns the name that is accosiated with this thread object
+	 */
+	public abstract ThreadName getThreadName();
+
 	public abstract void unpause();
+	public abstract void repause();
+
+	/**
+	 * This is called before any of the addition abstract methods are called
+	 */
+	protected void updateSelf()
+	{
+		Gdx.input.setInputProcessor(this);
+		resize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+	}
 
 	/**
 	 * The calling object will get whatever ever needed information from the given object
@@ -61,4 +77,63 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 	 */
 	public abstract void removeFrom(GameThread currentThread);
 
+
+	/**
+	 * Empty methods we may use but we may not use them
+	 */
+	@Override
+	public boolean keyDown(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		return false;
+	}
+
+	@Override
+	public void pause() {
+	}
+
+	@Override
+	public void show() {
+	}
+
+	@Override
+	public void hide() {
+	}
+
+	@Override
+	public void dispose() {
+	}
 }

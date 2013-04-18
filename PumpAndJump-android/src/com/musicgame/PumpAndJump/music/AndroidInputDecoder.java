@@ -7,7 +7,7 @@ import android.annotation.TargetApi;
 import android.media.MediaExtractor;
 import android.os.Build;
 
-import com.musicgame.PumpAndJump.Util.InputDecoder;
+import com.musicgame.PumpAndJump.game.sound.InputDecoder;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class AndroidInputDecoder extends InputDecoder

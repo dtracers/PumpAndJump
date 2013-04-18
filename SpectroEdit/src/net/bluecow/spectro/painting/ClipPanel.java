@@ -31,6 +31,7 @@ import javax.swing.undo.UndoableEditSupport;
 import net.bluecow.spectro.PlayerThread;
 import net.bluecow.spectro.clipAndFrame.Clip;
 import net.bluecow.spectro.clipAndFrame.Frame;
+import net.bluecow.spectro.detection.BeatDetector;
 
 public class ClipPanel extends JPanel
 implements Scrollable
@@ -78,11 +79,11 @@ implements Scrollable
 		this.clip = clip;
 		System.out.println("frame count "+clip.getFrameCount());
 		int width = clip.getFrameCount()*( (int)Math.pow( 2.0, 7 ) );
-		setPreferredSize(new Dimension( width, 128));
+		setPreferredSize(new Dimension( width, 128+600));
 		this.img = new BufferedImage( width, 128, 1);
 		this.imgPixels = ((DataBufferInt)this.img.getRaster().getDataBuffer()).getData();
 		updateImage(null);
-		setBackground(Color.BLACK);
+		setBackground(Color.white);
 	}
 	public Point toClipCoords(Point p)
 	{
@@ -162,6 +163,7 @@ implements Scrollable
 		{
 			clipBounds.width = (this.img.getWidth() - clipBounds.x);
 		}
+
 		if (clipBounds != null)
 		{
 			g2.drawImage(this.img, clipBounds.x, clipBounds.y, clipBounds.x + clipBounds.width, clipBounds.y + clipBounds.height, clipBounds.x, clipBounds.y, clipBounds.x + clipBounds.width, clipBounds.y + clipBounds.height, Color.BLACK, null);
@@ -173,6 +175,19 @@ implements Scrollable
 
 		g2.setTransform(backupTransform);
 
+		int startY = this.img.getHeight()+100;
+
+		//clip.detectors[0].draw(g2, startY+300, 400);
+
+		for(BeatDetector beat:clip.detectors)
+		{
+			beat.draw(g2, startY, 200);
+			startY+=100;
+		}
+
+	//	g2.setColor(Color.red);
+	//	g2.fillRect(0, 0, length, 1000);
+
 		if(clipPlayLoc!=null)
 		{
 			g2.setColor(Color.red);
@@ -183,7 +198,7 @@ implements Scrollable
 				myX = position;
 			}
 			int x = position-(int)offsetPoint.getX();
-			g2.drawLine(x, 0, x, img.getHeight());
+			g2.drawLine(x, 0, x, clipBounds.height);
 			g2.setColor(Color.white);
 			double loc = clipPlayLoc.samplePosition;
 			loc /= 44100.0*2.;

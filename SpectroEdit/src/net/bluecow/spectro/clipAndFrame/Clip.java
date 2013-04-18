@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,6 +23,7 @@ import javazoom.spi.mpeg.sampled.convert.DecodedMpegAudioInputStream;
 import ddf.minim.effects.BandPass;
 import ddf.minim.effects.IIRFilter;
 
+import net.bluecow.spectro.detection.BeatDetector;
 import net.bluecow.spectro.inputReader.InputDecoder;
 import net.bluecow.spectro.inputReader.MP3Decoder;
 import net.bluecow.spectro.inputReader.WavDecoder;
@@ -59,9 +61,9 @@ public class Clip
 	private InputDecoder input;
 
 	//uses an array to add in the intensity
-	private ArrayList<float[]> pre_intensityarray;
-	private float[] post_intensityarray;
-	private int windowFrame = 0;//it starts at the bottom index
+
+	public BeatDetector[] detectors = new BeatDetector[4];//one for the total then the three parts
+
 
 	public Clip(File file) throws UnsupportedAudioFileException, IOException
 	{
@@ -84,6 +86,11 @@ public class Clip
 		filters[8] = new BandPass(75.0f, 25.0f, input.getSampleRate() );
 		filters[9] = new BandPass(37.5f, 12.5f, input.getSampleRate() );
 		filters[10] = new BandPass(18.75f, 6.25f, input.getSampleRate() );
+
+		detectors[0] = new BeatDetector(null);
+		detectors[1] = new BeatDetector(new BandPass(150.0f, 6.25f, input.getSampleRate() ));//lower register
+		detectors[2] = new BeatDetector(new BandPass(800.0f, 200f, input.getSampleRate() ));//middle register
+		detectors[3] = new BeatDetector(new BandPass(16400.0f,900f, input.getSampleRate() ));//high register
 		//preWindowFunction = new VorbisWindowFunction(input.frameSize);
 		//postWindowFunction = new NullWindowFunction();
 
@@ -111,10 +118,10 @@ public class Clip
 		filteredPartials = new double[11][input.frameSize];
 		float[] partArray = input.readSeparately();
 
-		creatIntensityWindow(partArray);
-
 		if( partArray != null )
 		{
+			calculateVE(partArray);
+
 			prefilter(partArray);
 			for( int i = 0; i < 11; i++ )
 			{
@@ -134,10 +141,6 @@ public class Clip
 	 */
 	public void creatIntensityWindow(float[] partArray)
 	{
-		for(int k=windowFrame - 2; k<windowFrame; k++)
-		{
-
-		}
 	}
 
 	public void postFilter()
@@ -345,4 +348,22 @@ public class Clip
 	  public double getSamplingRate() {
 	    return AUDIO_FORMAT.getSampleRate();
 	  }
+
+
+	  /**
+	   	 * David methods below
+	   	 * in array [0] it is the volume
+	   	 * in array [1] it is the energy
+	   	 * the length of the array is the size of the given array/1320
+	   	 */
+	   	public void calculateVE(float[] timeData)
+	   	{
+	   		int timeLength = timeData.length;
+	   	//	detectors[0].calculateVE(Arrays.copyOf(timeData,timeLength));
+	   		for(int k=0;k<detectors.length;k++)
+	   		{
+	   			detectors[k].calculateVE(Arrays.copyOf(timeData,timeLength));
+	   		}
+	   	}
+
 	}

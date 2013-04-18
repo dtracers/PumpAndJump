@@ -6,27 +6,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
-import com.musicgame.PumpAndJump.Util.InputDecoder;
-import com.musicgame.PumpAndJump.Util.MusicOutputStream;
+import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.gameStates.AboutGame;
+import com.musicgame.PumpAndJump.game.gameStates.Buffering;
 import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
+import com.musicgame.PumpAndJump.game.gameStates.FileChooserState;
 import com.musicgame.PumpAndJump.game.gameStates.InstructionGame;
 import com.musicgame.PumpAndJump.game.gameStates.OptionsGame;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
 import com.musicgame.PumpAndJump.game.gameStates.PreGame;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
+import com.musicgame.PumpAndJump.game.sound.InputDecoder;
+import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
 public class PumpAndJump extends Game
 {
 	public static InputDecoder inputStream;
 	public static MusicOutputStream outputStream;
-	Screen gameScreen;
+	GameScreen gameScreen;
 	InputProcessor input;
+
 
 	//MainMenuScreen menuScreen;
 
-	static PumpAndJump instance;
+	//static PumpAndJump instance;
 	static Array<GameThread> runningThreads;
 
 	/*
@@ -42,8 +46,11 @@ public class PumpAndJump extends Game
 	@Override
 	public void create()
 	{
-		instance = this;
+	//	instance = this;
 		runningThreads = new Array<GameThread>();
+
+		TextureMapping.constructStaticMapping();
+
 		gameScreen = new GameScreen();
 		this.setScreen(gameScreen);
 
@@ -62,10 +69,11 @@ public class PumpAndJump extends Game
 		postGameThread = new PostGame();
 		runningGameThread = new RunningGame();
 		pauseGameThread = new PauseGame();
-		demoGameThread = new DemoGame();
+	//	demoGameThread = new DemoGame();
 		aboutGameThread = new AboutGame();
 		inctructionsGameThread = new InstructionGame();
 		optionsGameThread = new OptionsGame();
+		bufferingThread = new Buffering();
 	}
 
 	/**
@@ -82,8 +90,8 @@ public class PumpAndJump extends Game
 	public static void switchThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
-		Gdx.input.setInputProcessor(temp);
-	//	instance.setScreen(temp);
+
+		temp.updateSelf();
 		temp.switchFrom(currentThread);
 		clearThreads(currentThread);
 		runningThreads.add(temp);
@@ -114,9 +122,9 @@ public class PumpAndJump extends Game
 	public static void addThread(ThreadName switchTo,GameThread currentThread)
 	{
 		GameThread temp = getThread(switchTo);
+		temp.updateSelf();
 		temp.addFrom(currentThread);
 		runningThreads.add(temp);
-		Gdx.input.setInputProcessor(temp);
 	}
 
 	/**
@@ -130,26 +138,26 @@ public class PumpAndJump extends Game
 	 * Pause
 	 * @param switchTo
 	 */
-	public static void removeThread(ThreadName switchTo,GameThread currentThread)
+	public static void removeThread(ThreadName switchTo, GameThread currentThread)
 	{
+		System.out.println("num threads before: ");
+		System.out.println(runningThreads.size);
 		GameThread temp = getThread(switchTo);
 		temp.removeFrom(currentThread);
+
 		runningThreads.removeValue(temp, true);
 		if(runningThreads.size>=1)
 		{
 			GameThread newTopThread = runningThreads.get(runningThreads.size-1);
-			newTopThread.switchFrom(temp);
 			Gdx.input.setInputProcessor(newTopThread);
+			newTopThread.switchFrom(temp);
+			System.out.println("num threads now: ");
+			System.out.println(runningThreads.size);
 		}
 	}
 
 	/**
-	 *
-	 * PreGame
-	 * PostGame
-	 * RunningGame
-	 * PauseGame
-	 *
+	 * gets the thread
 	 * @param switchTo
 	 * @return
 	 */
@@ -165,7 +173,8 @@ public class PumpAndJump extends Game
 			case  AboutGame:		return aboutGameThread;
 			case  OptionsGame:		return optionsGameThread;
 			case  InstructionGame:		return inctructionsGameThread;
-
+			case  Buffering:		return bufferingThread;
+			case FileChooser:		return fileChooserThread;
 		}
 		return null;
 	}
@@ -188,5 +197,7 @@ public class PumpAndJump extends Game
 	private static AboutGame aboutGameThread;
 	private static OptionsGame optionsGameThread;
 	private static InstructionGame inctructionsGameThread;
+	private static Buffering bufferingThread;
+	private static FileChooserState fileChooserThread;
 
 }
