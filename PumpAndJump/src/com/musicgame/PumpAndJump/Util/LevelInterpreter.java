@@ -1,4 +1,4 @@
-package com.musicgame.PumpAndJump;
+package com.musicgame.PumpAndJump.Util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +10,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.*;
+import com.musicgame.PumpAndJump.DuckObstacle;
+import com.musicgame.PumpAndJump.GameObject;
+import com.musicgame.PumpAndJump.JumpObstacle;
 
 public class LevelInterpreter
 {

@@ -9,7 +9,7 @@ import org.junit.rules.ExpectedException;
 import com.musicgame.PumpAndJump.DuckObstacle;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.JumpObstacle;
-import com.musicgame.PumpAndJump.LevelInterpreter;
+import com.musicgame.PumpAndJump.Util.LevelInterpreter;
 
 import java.io.File;
 import java.io.FileWriter;
