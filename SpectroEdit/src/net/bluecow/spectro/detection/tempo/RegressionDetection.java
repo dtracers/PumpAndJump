@@ -7,6 +7,9 @@ import net.bluecow.spectro.detection.Beat;
 public class RegressionDetection extends TempoDetector
 {
 
+	ArrayList<DistanceSet> distanceSets = new ArrayList<DistanceSet>();
+	DistanceSet correctDistances;
+	DistancePaint painter;
 	public RegressionDetection(ArrayList<Beat> beats) {
 		super(beats);
 	}
@@ -25,6 +28,7 @@ public class RegressionDetection extends TempoDetector
 		Beat startingBeat = detectedBeats.get(startIndex);
 
 		ArrayList<Distance> distancePermutations = new ArrayList<Distance>();
+		painter.distances = distancePermutations;
 
 		/**
 		 * Creates a bunch distances that will then be compared
@@ -38,6 +42,9 @@ public class RegressionDetection extends TempoDetector
 			distancePermutations.add(d);
 		}
 		double[] results = Statistics.leastSquares(distancePermutations);
+		painter.line = results;
+
+		Statistics.distances(distancePermutations, results);
 	}
 
 	@Override

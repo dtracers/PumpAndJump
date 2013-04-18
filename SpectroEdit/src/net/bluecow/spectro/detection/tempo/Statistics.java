@@ -113,6 +113,31 @@ public class Statistics
 	}
 
 	/**
+	 * this will compute the distances between the points and the line
+	 * abs(y1 - a*x1 - b)/sqrt(a^2+1)
+	 * it will set the values to the distance
+	 * it returns the average distance
+	 * distance is the Y value
+	 */
+	public static double distances(ArrayList<Distance> distances,double[] line)
+	{
+		int end = distances.size();
+
+	//	double[] distanceFromLine = new double[numberOf];
+
+		double total = 0;
+		for(int k=0;k<end;k++)
+		{
+			Distance d = distances.get(k);
+			double top = Math.abs(d.distance-line[0]*k-line[1]);
+			double bottom = Math.sqrt(line[0]*line[0]+1);
+			d.strength = top/bottom;
+			total += d.strength;
+		}
+		return total/end;
+	}
+
+	/**
 	 * Removes the items below the average
 	 * @param distances
 	 * @param temp
