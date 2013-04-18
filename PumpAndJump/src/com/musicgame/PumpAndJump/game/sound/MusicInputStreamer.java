@@ -19,7 +19,8 @@ public class MusicInputStreamer extends Thread
 	Decoder decoder;
 	public ArrayList<short[]> frames = new ArrayList<short[]>();
 	public int currentFrame;
-	public int frameSize = 1024/4;
+	public static int frameSize = 1024/4;
+	public static long sampleRate = 44100;
 	public boolean buffering = true;
 	public boolean doneReading = false;
 	//do frame stuff here

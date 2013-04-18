@@ -47,14 +47,17 @@ public class RunningGame extends GameThread
 	Player player;
 	//the current frame that the sound player is at
 	long soundFrame = 0;
+	//the timeRefernce of each object
+	double timeReference = 0;
 	int bufferDistance = 200;
 	long sampleRate = 44100;
 	long start = 0;
 	boolean toWait = false;
 	private boolean started = false;
 
+	//used for calculating delta
 	long previousTime;
-	long currentTime;
+ 	long currentTime;
 	float divide = 700;
 
 	private boolean songFinished = false;
@@ -310,6 +313,7 @@ public class RunningGame extends GameThread
 		{
 			outStreamer.write(streamer.frames.get((int)soundFrame));
 			soundFrame++;
+			timeReference = (soundFrame*MusicInputStreamer.frameSize)/((double)MusicInputStreamer.sampleRate);
 			if(streamer.frames.size()<=soundFrame)
 			{
 				songFinished = true;
