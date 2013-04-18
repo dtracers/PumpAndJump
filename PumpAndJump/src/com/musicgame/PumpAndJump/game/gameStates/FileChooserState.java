@@ -1,11 +1,12 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
+import com.musicgame.PumpAndJump.Util.FileChooser;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.ThreadName;
 
-public class FileChooser extends GameThread
+public class FileChooserState extends GameThread
 {
-
+	public static FileChooser fileDialog;
 	//need to make a file chooser
 	@Override
 	public void render(float delta)

@@ -2,5 +2,5 @@ package com.musicgame.PumpAndJump.game;
 
 public enum ThreadName
 {
-	PreGame,PostGame,RunningGame,PauseGame,DemoGame,AboutGame,InstructionGame,OptionsGame, Buffering;
+	PreGame,PostGame,RunningGame,PauseGame,DemoGame,AboutGame,InstructionGame,OptionsGame, Buffering,FileChooser;
 }

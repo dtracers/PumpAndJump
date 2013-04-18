@@ -10,6 +10,7 @@ import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.gameStates.AboutGame;
 import com.musicgame.PumpAndJump.game.gameStates.Buffering;
 import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
+import com.musicgame.PumpAndJump.game.gameStates.FileChooserState;
 import com.musicgame.PumpAndJump.game.gameStates.InstructionGame;
 import com.musicgame.PumpAndJump.game.gameStates.OptionsGame;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
@@ -25,6 +26,7 @@ public class PumpAndJump extends Game
 	public static MusicOutputStream outputStream;
 	GameScreen gameScreen;
 	InputProcessor input;
+
 
 	//MainMenuScreen menuScreen;
 
@@ -67,7 +69,7 @@ public class PumpAndJump extends Game
 		postGameThread = new PostGame();
 		runningGameThread = new RunningGame();
 		pauseGameThread = new PauseGame();
-		demoGameThread = new DemoGame();
+	//	demoGameThread = new DemoGame();
 		aboutGameThread = new AboutGame();
 		inctructionsGameThread = new InstructionGame();
 		optionsGameThread = new OptionsGame();
@@ -172,6 +174,7 @@ public class PumpAndJump extends Game
 			case  OptionsGame:		return optionsGameThread;
 			case  InstructionGame:		return inctructionsGameThread;
 			case  Buffering:		return bufferingThread;
+			case FileChooser:		return fileChooserThread;
 		}
 		return null;
 	}
@@ -195,5 +198,6 @@ public class PumpAndJump extends Game
 	private static OptionsGame optionsGameThread;
 	private static InstructionGame inctructionsGameThread;
 	private static Buffering bufferingThread;
+	private static FileChooserState fileChooserThread;
 
 }
