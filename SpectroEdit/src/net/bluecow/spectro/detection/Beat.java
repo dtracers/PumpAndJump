@@ -27,7 +27,7 @@ public class Beat
 	public int indexInList;
 	public String toString()
 	{
-		return ""+sampleLocation;
+		return ""+(double)(sampleLocation*1320.0/44100.0);
 	}
 
 
