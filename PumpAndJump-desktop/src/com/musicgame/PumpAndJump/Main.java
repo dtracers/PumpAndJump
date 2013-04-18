@@ -13,8 +13,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "PumpAndJump";
 		cfg.useGL20 = false;
-		cfg.width = 800;
-		cfg.height = 600;
+		cfg.width = 960;
+		cfg.height = 540;
 
 		new LwjglApplication(new PumpAndJump(), cfg);
 
