@@ -4,7 +4,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.gameStates.FileChooserState;
-import com.musicgame.PumpAndJump.music.DesktopInputDecoder;
 import com.musicgame.PumpAndJump.util.FileChooserDesktop;
 
 public class Main {
