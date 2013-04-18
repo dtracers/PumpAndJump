@@ -78,8 +78,8 @@ public class RunningGame extends GameThread
 			pausingButton();
 		}
 	};
-	
-	
+
+
 	public RunningGame()
 	{
 		reset();
@@ -91,9 +91,9 @@ public class RunningGame extends GameThread
 	public void reset()
 	{
 		stage = new Stage();
-		
+
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
-		
+
 		stage.addActor(this.controls.controlsTable);
 
         player = new Player( new Point( 400.0f, 500.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
@@ -189,7 +189,7 @@ public class RunningGame extends GameThread
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
-		
+
 		System.out.println("Switching!");
 		//Pause button won't work without this commented out
 		if(currentThread instanceof PauseGame)
