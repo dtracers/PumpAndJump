@@ -11,9 +11,11 @@ public class DistancePaint extends JPanel
 {
 	public static void main(String args[])
 	{
-		TempoDetector detector = new RegressionDetection(null);
+		RegressionDetection detector = new RegressionDetection(null);
+
 		detector.createBeatsFromAFile("The Hand That Feeds - Nine Inch Nails.txt");
 		DistancePaint p = new DistancePaint();
+		detector.painter =p;
 		createJFrame(p);
 		for(int k=0;k<detector.detectedBeats.size();k++)
 		{
