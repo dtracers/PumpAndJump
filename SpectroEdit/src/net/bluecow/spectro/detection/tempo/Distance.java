@@ -81,11 +81,11 @@ class DistanceSet implements Comparable
 			}
 		//	System.out.println("The Beats do match! "+averageValue);
 			distancesInSet.add(d);
-			//averageValue = Statistics.average(distancesInSet);
+			averageValue = Statistics.average(distancesInSet);
 		}else
 		{
 			distancesInSet.add(d);
-			//averageValue = Statistics.average(distancesInSet);
+			averageValue = Statistics.average(distancesInSet);
 		}
 
 		return true;
@@ -94,7 +94,11 @@ class DistanceSet implements Comparable
 	@Override
 	public int compareTo(Object arg0)
 	{
-		return (int) Math.signum(((DistanceSet)arg0).distancesInSet.size()-distancesInSet.size());
+		if(sortAvg)
+			return (int) Math.signum(averageValue-((DistanceSet)arg0).averageValue);
+		if(sortSize)
+			return (int) Math.signum(((DistanceSet)arg0).distancesInSet.size()-distancesInSet.size());
+		return 0;
 	}
 
 }

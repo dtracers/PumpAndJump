@@ -12,7 +12,32 @@ public class RegressionDetection extends TempoDetector
 	}
 
 	@Override
-	public void detectTempo(int startIndex) {
+	public void detectTempo(int startIndex)
+	{
+		if(detectedBeats.size()<numberOfBeats)
+		{
+			return;
+		}
+
+		//int startIndex = detectedBeats.size()-numberOfBeats;
+		int endIndex = startIndex+numberOfBeats;
+
+		Beat startingBeat = detectedBeats.get(startIndex);
+
+		ArrayList<Distance> distancePermutations = new ArrayList<Distance>();
+
+		/**
+		 * Creates a bunch distances that will then be compared
+		 */
+		if(anyPrintout)
+			System.out.println("Creating new distances");
+		for(int k = startIndex+1;k<endIndex;k++)
+		{
+			Beat b = detectedBeats.get(k);
+			Distance d = new Distance(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b);
+			distancePermutations.add(d);
+		}
+		double[] results = Statistics.leastSquares(distancePermutations);
 	}
 
 	@Override

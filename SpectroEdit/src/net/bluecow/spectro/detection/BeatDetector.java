@@ -154,7 +154,7 @@ public class BeatDetector
 
 		if(doOnce)
 		{
-			//tempoDetection.printDistanceSets();
+			((PermutationDetection)tempoDetection).printDistanceSets();
 			doOnce = false;
 			Beat.writeBeatsToFile(detectedBeats);
 		}
