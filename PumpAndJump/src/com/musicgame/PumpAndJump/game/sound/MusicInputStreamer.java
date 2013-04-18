@@ -14,7 +14,7 @@ import com.badlogic.gdx.audio.io.WavDecoder;
 public class MusicInputStreamer extends Thread
 {
 
-	String fileName = "Skrillex_Cinema.wav";
+	public String fileName= "Skrillex_Cinema.wav";
 //	String fileName = "Windows_XP_Startup.wav";
 	Decoder decoder;
 	public ArrayList<short[]> frames = new ArrayList<short[]>();
@@ -26,7 +26,7 @@ public class MusicInputStreamer extends Thread
 
 	public void loadSound()
 	{
-		decoder = new WavDecoder(Gdx.files.internal(fileName));
+		decoder = new WavDecoder(Gdx.files.absolute(fileName));
 
 	}
 

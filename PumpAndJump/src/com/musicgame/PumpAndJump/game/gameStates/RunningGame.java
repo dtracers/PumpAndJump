@@ -1,6 +1,10 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -185,6 +189,7 @@ public class RunningGame extends GameThread
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
+		
 		System.out.println("Switching!");
 		//Pause button won't work without this commented out
 		if(currentThread instanceof PauseGame)
@@ -208,7 +213,14 @@ public class RunningGame extends GameThread
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
+			JFileChooser jfc = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
+			jfc.setFileFilter(filter);
+		    jfc.showDialog(null,"Open");
+		    jfc.setVisible(true);
+		    File filename = jfc.getSelectedFile();
 			streamer = new MusicInputStreamer();
+			streamer.fileName=filename.getAbsolutePath();
 			streamer.loadSound();
 			streamer.start();
 			if(!started)
