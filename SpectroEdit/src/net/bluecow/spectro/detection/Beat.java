@@ -52,7 +52,7 @@ public class Beat
 			PrintStream print = new PrintStream(output);
 			for(Beat b:beats)
 			{
-				print.println(b.toString());
+				print.println("b "+ b.toString());
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
