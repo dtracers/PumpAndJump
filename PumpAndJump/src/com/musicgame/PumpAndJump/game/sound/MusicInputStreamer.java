@@ -28,7 +28,7 @@ public class MusicInputStreamer extends Thread
 
 	public void loadSound()
 	{
-		decoder = new WavDecoder(Gdx.files.absolute(fileName));
+		decoder = new WavDecoder(Gdx.files.internal(fileName));
 
 	}
 
