@@ -31,7 +31,7 @@ public class Obstacle extends GameObject
 		points[ 4 ] = width; points[ 5 ] = height;
 		points[ 6 ] = 0.0f; points[ 7 ] = height;
 		
-		shape = new Polygon( points );
+		poly = new Polygon( points );
 	}
 	
 	public float getStartTime()

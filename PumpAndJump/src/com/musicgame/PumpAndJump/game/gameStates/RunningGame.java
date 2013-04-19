@@ -131,7 +131,7 @@ public class RunningGame extends GameThread
 			currentTime = System.currentTimeMillis();
 			delta = (currentTime-previousTime)/divide;
 			pos.x += delta;
-			System.out.println( pos.x );
+			//System.out.println( pos.x );
 			player.update( new Matrix4(), delta);
 			
 			//update based on object's modelview

@@ -16,8 +16,6 @@ import com.musicgame.PumpAndJump.Util.IntersectionUtil;
 
 public class GameObject extends Model
 {
-	Polygon shape;
-	Polygon hull;
 	
 	public GameObject()
 	{
@@ -83,25 +81,7 @@ public class GameObject extends Model
 
 	public void update( Matrix4 before, float delta )
 	{
-		Matrix4 mv = getModelView( before.cpy() );
-		
-		if( shape != null )
-		{
-			Vector2[] points = IntersectionUtil.FloatToVector2( shape.getVertices() );
-			
-			for( Vector2 p : points )
-			{
-				Vector3 point= new Vector3( p.x, p.y, 0 );
-				
-				point = point.mul( mv );
-				
-				p.x = point.x;
-				p.y = point.y;
-			}
-			
-			float[] fpoints = IntersectionUtil.Vector2ToFloat( points );
-			hull = new Polygon( fpoints );
-		}
+		update( before );
 	}
 
 	@Override
