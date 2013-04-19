@@ -14,7 +14,7 @@ import com.badlogic.gdx.audio.io.WavDecoder;
 public class MusicInputStreamer extends Thread
 {
 
-	public String fileName= "The_Hand_That_Feeds.wav";
+	public String fileName= "the_hand_that_feeds.wav";
 //	public String fileName= "Skrillex_Cinema.wav";
 //	String fileName = "Windows_XP_Startup.wav";
 	Decoder decoder;

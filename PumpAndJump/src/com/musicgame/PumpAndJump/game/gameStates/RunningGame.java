@@ -84,7 +84,7 @@ public class RunningGame extends GameThread
 
 	public RunningGame()
 	{
-		
+
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class RunningGame extends GameThread
 		this.controls.setVisible( false );
 
         player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
-        
+
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
         scale = new Point( tempo, 1.0f, 1.0f );
@@ -133,7 +133,7 @@ public class RunningGame extends GameThread
 			pos.x += delta;
 			//System.out.println( pos.x );
 			player.update( new Matrix4(), delta);
-			
+
 			//update based on object's modelview
 			Matrix4 mv = new Matrix4();
 			makeWorldView( mv );
@@ -162,22 +162,22 @@ public class RunningGame extends GameThread
 	public void render(float delta)
 	{
 		batch.begin();
-		//save orginal matrix	
+		//save orginal matrix
 		Matrix4 mv = batch.getTransformMatrix();
 		Matrix4 before = new Matrix4( mv.cpy() );
-		
+
 		//make world view
 		makeWorldView( mv );
-		
+
 		//set world view
 		batch.setTransformMatrix( mv );
-		
+
 		//draw gameObjects
 		for(int k = 0;k<actualObjects.size();k++)
 		{
 			actualObjects.get( k ).draw( batch );
 		}
-		
+
 		//reset to the orignal transform matrix
 		batch.setTransformMatrix( before );
 	//	if(!toWait)
@@ -241,6 +241,7 @@ public class RunningGame extends GameThread
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
+			/*
 			System.out.println( "Size:"+actualObjects.size() );
 			JFileChooser jfc = new JFileChooser("../PumpAndJump-android/assets/");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
@@ -248,8 +249,14 @@ public class RunningGame extends GameThread
 		    jfc.showDialog(null,"Open");
 		    jfc.setVisible(true);
 		    File filename = jfc.getSelectedFile();
-			streamer = new MusicInputStreamer();
-			streamer.fileName=filename.getAbsolutePath();
+			*/
+		    streamer = new MusicInputStreamer();
+		    /*
+			if(filename != null)
+			{
+				streamer.fileName=filename.getAbsolutePath();
+			}
+			*/
 			streamer.loadSound();
 			streamer.start();
 			if(!started)
@@ -370,7 +377,7 @@ public class RunningGame extends GameThread
 		//System.out.println("Ducking");
 		player.duck();
 	}
-	
+
 	/**
 	 * multiplies and sets the input matrix by the world pos, rotation, and scale
 	 */
