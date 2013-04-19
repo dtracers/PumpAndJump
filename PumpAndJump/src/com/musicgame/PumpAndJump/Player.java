@@ -164,7 +164,7 @@ public class Player extends GameObject implements Animated{
 	}
 
 	@Override
-	public void update( float delta )
+	public void update( Matrix4 mv, float delta )
 	{
 		time += delta;
 		if( aniQ.stop )

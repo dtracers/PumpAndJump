@@ -7,6 +7,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -119,10 +120,13 @@ public class RunningGame extends GameThread
 			previousTime = currentTime;
 			currentTime = System.currentTimeMillis();
 			delta = (currentTime-previousTime)/divide;
-			player.update(delta);
+			player.update( new Matrix4(), delta);
+			
+			//update based on object's modelview
+			Matrix4 mv = new Matrix4();
 			for(int k = 0;k<levelObjects.size();k++)
 			{
-				levelObjects.get(k).update(delta);
+				levelObjects.get(k).update( mv, delta);
 			}
 
 			if(toWait)
@@ -210,7 +214,7 @@ public class RunningGame extends GameThread
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
-			JFileChooser jfc = new JFileChooser();
+			JFileChooser jfc = new JFileChooser("../PumpAndJump-android/assets/");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
 			jfc.setFileFilter(filter);
 		    jfc.showDialog(null,"Open");
@@ -326,7 +330,7 @@ public class RunningGame extends GameThread
 	 */
 	public void jump()
 	{
-		System.out.println("Jumping");
+		//System.out.println("Jumping");
 		player.jump();
 	}
 
@@ -335,7 +339,7 @@ public class RunningGame extends GameThread
 	 */
 	public void duck()
 	{
-		System.out.println("Ducking");
+		//System.out.println("Ducking");
 		player.duck();
 	}
 
