@@ -12,25 +12,27 @@ public class DistancePaint extends JPanel
 	public static void main(String args[])
 	{
 		RegressionDetection detector = new RegressionDetection(null);
-
-		detector.createBeatsFromAFile("The Hand That Feeds - Nine Inch Nails.txt");
+		detector.createBeatsFromAFile("The Hand That Feeds - Nine Inch Nails.mp3");
 		DistancePaint p = new DistancePaint();
 		detector.painter =p;
-		createJFrame(p);
+		JFrame f = createJFrame(p);
 		for(int k=0;k<1;k++)
 		{
-			p.repaint();
 			detector.detectTempo(k);
+			f.repaint();
 		}
+		f.repaint();
 	}
 
-	public static void createJFrame(DistancePaint p)
+	public static JFrame createJFrame(DistancePaint p)
 	{
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(false);
 		frame.setSize(900,900);
 		frame.add(p);
+		frame.setVisible(true);
+		return frame;
 	}
 
 
@@ -52,6 +54,7 @@ public class DistancePaint extends JPanel
 				double Ylocation = height-d.distance;
 
 				g.drawRect((int)Xlocation, (int)Ylocation, 1, 1);
+				System.out.println("Drawing "+Xlocation+" "+Ylocation);
 			}
 
 			if(line!= null)
@@ -62,6 +65,9 @@ public class DistancePaint extends JPanel
 				g.setColor(Color.blue);
 				g.drawLine((int)offX,(int) (height-(a*0+b+offY)), (int)(width+offX),(int) (height-(a*offY+b+offY)));
 			}
+		}else
+		{
+			System.out.println("NULL!");
 		}
 	}
 }
