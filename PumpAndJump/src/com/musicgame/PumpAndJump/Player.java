@@ -30,6 +30,7 @@ public class Player extends GameObject implements Animated{
 	{
 		hip = new PlayerHip( new Point( 0.0f, 0.0f, 0.0f ), angle );
 		this.p = pos;
+		
 		origY = pos.y;
 
 		hip.scale( 1.0f, 1.0f, 1.0f );
@@ -145,15 +146,11 @@ public class Player extends GameObject implements Animated{
 
 	public void display( SpriteBatch sb )
 	{
-		Matrix4 mv = sb.getTransformMatrix();
-		before = new Matrix4( mv.cpy() );
-
-		mv.translate( p.x, p.y, p.z );
-		sb.setTransformMatrix( mv );
+		pushTransforms( sb );
 
 		hip.display( sb );
 
-		sb.setTransformMatrix( before );
+		popTransforms( sb );
 	}
 
 	@Override
@@ -172,13 +169,13 @@ public class Player extends GameObject implements Animated{
 			getPose( f );
 			aniQ.switchAnimation( aniFSM.getAni(), f );
 		}
-		UpdatePose( aniQ.getPose( delta ) );
+		UpdatePose( mv, aniQ.getPose( delta ) );
 	}
 
 	@Override
-	public void UpdatePose(float[] pose) {
+	public void UpdatePose( Matrix4 mv, float[] pose ) {
 		setPose( pose );
-		Matrix4 m = new Matrix4();
+		Matrix4 m = mv.cpy();
 		m = m.translate( p.x,  p.y, p.z );
 		hip.update( m );
 	}
@@ -205,6 +202,11 @@ public class Player extends GameObject implements Animated{
 		Animation ta = aniFSM.startDuck();
 		if( ta != null )
 		aniQ.switchAnimation( ta, f );
+	}
+	
+	public void print()
+	{
+		hip.torso.print();
 	}
 }
 

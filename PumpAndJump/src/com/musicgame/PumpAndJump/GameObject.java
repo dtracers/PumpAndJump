@@ -33,18 +33,18 @@ public class GameObject extends Model
 		return hull;
 	}
 
-	public boolean intersects( Polygon poly )
+	/*public boolean intersects( Polygon poly )
 	{
 		if( hull == null )
 			return false;
 		return Intersector.overlapConvexPolygons( hull, poly );
-	}
+	}*/
 
 	public boolean intersects( GameObject gmObj )
 	{
-		if( hull == null )
-			return false;
-		return Intersector.overlapConvexPolygons( hull, gmObj.getHull() );
+		//if( hull == null )
+			//return false;
+		return intersects( gmObj.getHull() );
 	}
 
 	public void draw( SpriteBatch sb )
@@ -91,19 +91,5 @@ public class GameObject extends Model
 		drawSprite( sb );
 
 		popTransforms( sb );
-	}
-	
-	public void print()
-	{
-		if( hull != null )
-		{
-			float[] points = hull.getVertices();
-			for( int i = 0; i < points.length; i+=2 )
-			{
-				System.out.println( "("+points[i]+","+points[i+1]+")" );
-			}
-		}
-		else
-			System.out.println( hull );
 	}
 }

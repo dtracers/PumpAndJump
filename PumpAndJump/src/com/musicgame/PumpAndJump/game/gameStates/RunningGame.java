@@ -34,7 +34,7 @@ public class RunningGame extends GameThread
 	(by on screen it does include some that are partially off the screen too)
 	the objects are basically a queue added at the end and removed from the front
 	*/
-	//ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
+	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	//contains the list of all objects that are in the level
 	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
 
@@ -47,12 +47,13 @@ public class RunningGame extends GameThread
 	int bufferDistance = 200;
 	long sampleRate = 44100;
 	long start = 0;
-	float tempo = 120.0f;
+	float tempo = 240.0f;
 	Point pos;
 	Point rotation;
 	Point scale;
 	boolean toWait = false;
 	private boolean started = false;
+	int bleck = 0;
 
 	//used for calculating delta
 	long previousTime;
@@ -130,18 +131,20 @@ public class RunningGame extends GameThread
 			previousTime = currentTime;
 			currentTime = System.currentTimeMillis();
 			delta = (currentTime-previousTime)/divide;
-			pos.x += delta;
-			//System.out.println( pos.x );
+			pos.x = (float)timeReference;
+			
 			player.update( new Matrix4(), delta);
 			
 			//update based on object's modelview
 			Matrix4 mv = new Matrix4();
 			makeWorldView( mv );
+			
 			for(int k = 0;k<actualObjects.size();k++)
 			{
 				actualObjects.get(k).update( mv, delta);
+				
 			}
-
+			
 			if(toWait)
 				myWait();
 			try {
