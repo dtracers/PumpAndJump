@@ -85,6 +85,8 @@ public class FSM {
 	//Returns a Random element from an ArrayList
 	<T> T getRandom( ArrayList< T > list )
 	{
+		if( list == null )
+			return null;
 		if( list.size() == 0 )
 			return null;
 		int r = (int)( Math.random()*list.size() );

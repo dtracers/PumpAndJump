@@ -85,12 +85,16 @@ public class AnimationQueue {
 		//queue[ 0 ].normalize();
 		queue[ 1 ] = new Keyframe( pose, 0.0f, 0);
 		queue[ 1 ].t =  -queue[1].dist( a.keyframes.get(0) );
-		//queue[ 1 ].normalize();
+		//queue[ 1 ].normalize( queue[ 2 ] );
 		queue[ 2 ] = a.keyframes.get( 0 ).copy();
 		//queue[ 2 ].normalize();
 		queue[ 3 ] = a.keyframes.get( 1 ).copy();
 		//queue[ 2 ].normalize();
 		queue[ 0 ].t = queue[0].t - lastTime;
+		
+		queue[ 1 ].normalize( queue[2] );
+		queue[ 0 ].normalize( queue[1] );
+		
 		lastTime = queue[1].t;
 		isLooping = a.isLooping;
 		System.out.println( a.isLooping );

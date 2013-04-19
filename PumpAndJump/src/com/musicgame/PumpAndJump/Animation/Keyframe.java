@@ -26,16 +26,33 @@ public class Keyframe {
 		return new Keyframe( p, t, index );
 	}
 	
-	public void normalize()
+	public void normalize( Keyframe kf )
 	{
 		for( int i = 0; i < pose.length; i++ )
 		{
 			if( i != 15)
 			{
+				float posValue;
+				float negValue;
 				if( pose[i] >= 0.0f )
-					pose[i] %= 360.0f;
+				{
+					posValue = pose[i]%360.0f;
+					negValue = pose[i]%360.0f - 360.0f;
+				}
 				else
-					pose[i] = 360.0f + (pose[i]%360.0f );
+				{
+					posValue = pose[i]%360.0f + 360.0f;
+					negValue = pose[i]%360.0f;
+				}
+				
+				if( Math.abs( posValue - kf.pose[i] ) <=  Math.abs( negValue - kf.pose[i] ) )
+				{
+					pose[i] = posValue;
+				}
+				else
+				{
+					pose[i] = negValue;
+				}
 			}
 		}
 	}

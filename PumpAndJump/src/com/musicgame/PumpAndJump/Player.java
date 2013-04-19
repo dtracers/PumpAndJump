@@ -50,7 +50,7 @@ public class Player extends GameObject implements Animated{
 	}
 
 	//This method has to exist because java is bad
-	void actuallySetPose( Float[] a )
+	synchronized void actuallySetPose( Float[] a )
 	{
 		hip.angle.z = pose[ 0 ];
 
@@ -78,29 +78,29 @@ public class Player extends GameObject implements Animated{
 	}
 
 	//Same
-	void actuallyGetPose()
+	synchronized void actuallyGetPose()
 	{
-		pose[ 0 ] = Float.valueOf( hip.angle.z );
+		pose[ 0 ] = Float.valueOf( hip.angle.z%360.0f );
 
-		pose[ 1 ] = Float.valueOf( hip.leftThigh.angle.z );
-		pose[ 2 ] = Float.valueOf( hip.leftThigh.shin.angle.z );
-		pose[ 3 ] = Float.valueOf( hip.leftThigh.shin.foot.angle.z );
-		pose[ 4 ] = Float.valueOf( hip.leftThigh.shin.foot.tuckles.angle.z );
+		pose[ 1 ] = Float.valueOf( hip.leftThigh.angle.z%360.0f  );
+		pose[ 2 ] = Float.valueOf( hip.leftThigh.shin.angle.z%360.0f  );
+		pose[ 3 ] = Float.valueOf( hip.leftThigh.shin.foot.angle.z%360.0f  );
+		pose[ 4 ] = Float.valueOf( hip.leftThigh.shin.foot.tuckles.angle.z%360.0f  );
 
-		pose[ 5 ] = Float.valueOf( hip.rightThigh.angle.z );
-		pose[ 6 ] = Float.valueOf( hip.rightThigh.shin.angle.z );
-		pose[ 7 ] = Float.valueOf( hip.rightThigh.shin.foot.angle.z );
-		pose[ 8 ] = Float.valueOf( hip.rightThigh.shin.foot.tuckles.angle.z );
+		pose[ 5 ] = Float.valueOf( hip.rightThigh.angle.z%360.0f  );
+		pose[ 6 ] = Float.valueOf( hip.rightThigh.shin.angle.z%360.0f  );
+		pose[ 7 ] = Float.valueOf( hip.rightThigh.shin.foot.angle.z%360.0f  );
+		pose[ 8 ] = Float.valueOf( hip.rightThigh.shin.foot.tuckles.angle.z%360.0f  );
 
-		pose[ 9 ] = Float.valueOf( hip.torso.angle.z );
+		pose[ 9 ] = Float.valueOf( hip.torso.angle.z%360.0f  );
 
-		pose[ 10 ] = Float.valueOf( hip.torso.leftArm.angle.z );
-		pose[ 11 ] = Float.valueOf( hip.torso.leftArm.forearm.angle.z );
+		pose[ 10 ] = Float.valueOf( hip.torso.leftArm.angle.z%360.0f  );
+		pose[ 11 ] = Float.valueOf( hip.torso.leftArm.forearm.angle.z%360.0f  );
 
-		pose[ 12 ] = Float.valueOf( hip.torso.rightArm.angle.z );
-		pose[ 13 ] = Float.valueOf( hip.torso.rightArm.forearm.angle.z );
+		pose[ 12 ] = Float.valueOf( hip.torso.rightArm.angle.z%360.0f  );
+		pose[ 13 ] = Float.valueOf( hip.torso.rightArm.forearm.angle.z%360.0f  );
 
-		pose[ 14 ] = Float.valueOf( hip.torso.head.angle.z );
+		pose[ 14 ] = Float.valueOf( hip.torso.head.angle.z%360.0f  );
 
 		pose[ 15 ] = Float.valueOf( hip.p.y );
 	}
@@ -164,7 +164,7 @@ public class Player extends GameObject implements Animated{
 	}
 
 	@Override
-	public synchronized void update( float delta )
+	public void update( float delta )
 	{
 		time += delta;
 		if( aniQ.stop )

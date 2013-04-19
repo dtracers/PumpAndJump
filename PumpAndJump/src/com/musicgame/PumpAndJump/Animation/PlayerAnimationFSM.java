@@ -94,6 +94,9 @@ public class PlayerAnimationFSM extends FSM{
 		ArrayList< Animation > possibleAnimations = States.get( getRandom( stateChoices ) );
 	
 		Animation ani = getRandom( possibleAnimations );
+		
+		if( ani == null )
+			return null;
 
 		currentAni = AnimationToName.get( ani );
 		nextAni = AnimationToName.get( ani );
