@@ -75,7 +75,7 @@ public abstract class Model
 
 	public abstract void display( SpriteBatch sb );
 	
-	private Matrix4 getModelView( Matrix4 mv )
+	protected Matrix4 getModelView( Matrix4 mv )
 	{
 		mv.translate( p.x, p.y, p.z );
 
@@ -88,9 +88,9 @@ public abstract class Model
 		return mv;
 	}
 	
-	public void update( Matrix4 mv )
+	public void update( Matrix4 before )
 	{
-		mv = getModelView( mv );
+		Matrix4 mv = getModelView( before.cpy() );
 		
 		if( poly != null )
 		{

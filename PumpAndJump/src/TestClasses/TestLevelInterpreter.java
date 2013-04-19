@@ -24,8 +24,8 @@ public class TestLevelInterpreter {
 	public void testGetNextObject() {
 		String jumpTestCase="j 1.2 1.3";
 		String slideTestCase="s 1.2 3.4";
-		JumpObstacle expectedJumpOutput=new JumpObstacle(1.2,3.4);
-		DuckObstacle expectedSlideOutput=new DuckObstacle(1.2,3.4);
+		JumpObstacle expectedJumpOutput = new JumpObstacle( 1.2f, 3.4f);
+		DuckObstacle expectedSlideOutput = new DuckObstacle( 1.2f, 3.4f);
 
 		GameObject jumpResult=LevelInterpreter.getNextObject(jumpTestCase);
 		assertTrue("Didn't return a jump obstacle for jump input",jumpResult instanceof JumpObstacle);

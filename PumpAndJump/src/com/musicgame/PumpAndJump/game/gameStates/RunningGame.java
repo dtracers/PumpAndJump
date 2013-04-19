@@ -34,7 +34,7 @@ public class RunningGame extends GameThread
 	(by on screen it does include some that are partially off the screen too)
 	the objects are basically a queue added at the end and removed from the front
 	*/
-	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
+	//ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	//contains the list of all objects that are in the level
 	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
 
@@ -47,6 +47,10 @@ public class RunningGame extends GameThread
 	int bufferDistance = 200;
 	long sampleRate = 44100;
 	long start = 0;
+	float tempo = 120.0f;
+	Point pos;
+	Point rotation;
+	Point scale;
 	boolean toWait = false;
 	private boolean started = false;
 
@@ -80,6 +84,7 @@ public class RunningGame extends GameThread
 
 	public RunningGame()
 	{
+		
 	}
 
 	/**
@@ -92,8 +97,13 @@ public class RunningGame extends GameThread
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
 
 		stage.addActor(this.controls.controlsTable);
+		this.controls.setVisible( false );
 
-        player = new Player( new Point( 400.0f, Gdx.graphics.getHeight()-200, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+        player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+        
+        pos = new Point( 0.0f, 0.0f, 0.0f );
+        rotation = new Point( 0.0f, 0.0f, 0.0f );
+        scale = new Point( tempo, 1.0f, 1.0f );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
         soundFrame = 0;
@@ -120,13 +130,16 @@ public class RunningGame extends GameThread
 			previousTime = currentTime;
 			currentTime = System.currentTimeMillis();
 			delta = (currentTime-previousTime)/divide;
+			pos.x += delta;
+			//System.out.println( pos.x );
 			player.update( new Matrix4(), delta);
 			
 			//update based on object's modelview
 			Matrix4 mv = new Matrix4();
-			for(int k = 0;k<levelObjects.size();k++)
+			makeWorldView( mv );
+			for(int k = 0;k<actualObjects.size();k++)
 			{
-				levelObjects.get(k).update( mv, delta);
+				actualObjects.get(k).update( mv, delta);
 			}
 
 			if(toWait)
@@ -149,10 +162,24 @@ public class RunningGame extends GameThread
 	public void render(float delta)
 	{
 		batch.begin();
-		for(int k = 0;k<levelObjects.size();k++)
+		//save orginal matrix	
+		Matrix4 mv = batch.getTransformMatrix();
+		Matrix4 before = new Matrix4( mv.cpy() );
+		
+		//make world view
+		makeWorldView( mv );
+		
+		//set world view
+		batch.setTransformMatrix( mv );
+		
+		//draw gameObjects
+		for(int k = 0;k<actualObjects.size();k++)
 		{
-			levelObjects.get(k).draw(batch);
+			actualObjects.get( k ).draw( batch );
 		}
+		
+		//reset to the orignal transform matrix
+		batch.setTransformMatrix( before );
 	//	if(!toWait)
 	//		player.update( delta );
 		player.draw( batch );
@@ -214,6 +241,7 @@ public class RunningGame extends GameThread
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
+			System.out.println( "Size:"+actualObjects.size() );
 			JFileChooser jfc = new JFileChooser("../PumpAndJump-android/assets/");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
 			jfc.setFileFilter(filter);
@@ -246,7 +274,7 @@ public class RunningGame extends GameThread
 	public void removeFrom(GameThread currentThread)
 	{
 		reset();
-		System.out.println("BEING REMOBED");
+		System.out.println("BEING REMOVED");
 	}
 
 	/**
@@ -341,6 +369,20 @@ public class RunningGame extends GameThread
 	{
 		//System.out.println("Ducking");
 		player.duck();
+	}
+	
+	/**
+	 * multiplies and sets the input matrix by the world pos, rotation, and scale
+	 */
+	private void makeWorldView( Matrix4 mv )
+	{
+		mv.translate( -pos.x*tempo, pos.y, pos.z );
+
+		mv.rotate( 1.0f, 0.0f, 0.0f, rotation.x );
+		mv.rotate( 0.0f, 1.0f, 0.0f, rotation.y );
+		mv.rotate( 0.0f, 0.0f, 1.0f, rotation.z );
+
+		mv.scale( scale.x, scale.y, scale.z );
 	}
 
 }

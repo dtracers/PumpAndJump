@@ -1,25 +1,32 @@
 package com.musicgame.PumpAndJump;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
+import com.musicgame.PumpAndJump.Util.IntersectionUtil;
 
 
 
 
-public abstract class GameObject
+public class GameObject extends Model
 {
+	Polygon shape;
 	Polygon hull;
-
+	
 	public GameObject()
 	{
-
+		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 	}
 
 	public GameObject(Polygon hull)
 	{
+		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 		this.hull = hull;
 	}
 
@@ -30,18 +37,22 @@ public abstract class GameObject
 
 	public boolean intersects( Polygon poly )
 	{
+		if( hull == null )
+			return false;
 		return Intersector.overlapConvexPolygons( hull, poly );
 	}
 
 	public boolean intersects( GameObject gmObj )
 	{
+		if( hull == null )
+			return false;
 		return Intersector.overlapConvexPolygons( hull, gmObj.getHull() );
 	}
 
 	public void draw( SpriteBatch sb )
 	{
-
-	}
+		display( sb );
+	} 
 
 	public void draw( ShapeRenderer sr )
 	{
@@ -70,8 +81,49 @@ public abstract class GameObject
 		 sr.end();
 	}
 
-	public void update( Matrix4 mv, float delta )
+	public void update( Matrix4 before, float delta )
 	{
+		Matrix4 mv = getModelView( before.cpy() );
 		
+		if( shape != null )
+		{
+			Vector2[] points = IntersectionUtil.FloatToVector2( shape.getVertices() );
+			
+			for( Vector2 p : points )
+			{
+				Vector3 point= new Vector3( p.x, p.y, 0 );
+				
+				point = point.mul( mv );
+				
+				p.x = point.x;
+				p.y = point.y;
+			}
+			
+			float[] fpoints = IntersectionUtil.Vector2ToFloat( points );
+			hull = new Polygon( fpoints );
+		}
+	}
+
+	@Override
+	public void display(SpriteBatch sb) {
+		pushTransforms( sb );
+
+		drawSprite( sb );
+
+		popTransforms( sb );
+	}
+	
+	public void print()
+	{
+		if( hull != null )
+		{
+			float[] points = hull.getVertices();
+			for( int i = 0; i < points.length; i+=2 )
+			{
+				System.out.println( "("+points[i]+","+points[i+1]+")" );
+			}
+		}
+		else
+			System.out.println( hull );
 	}
 }

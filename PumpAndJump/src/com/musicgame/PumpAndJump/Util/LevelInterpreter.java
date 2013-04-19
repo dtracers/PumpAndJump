@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.*;
+import com.musicgame.PumpAndJump.Beat;
 import com.musicgame.PumpAndJump.DuckObstacle;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.JumpObstacle;
@@ -29,13 +30,13 @@ public class LevelInterpreter
 		if(inputLine.matches(jumpPattern)){
 			String[] input=inputLine.split(" ");
 			double startTime=Double.parseDouble(input[1]);
-			return new JumpObstacle(startTime,0);
+			return new JumpObstacle((float)startTime,0);
 		}
 		if(inputLine.matches(slidePattern)){
 			String[] input=inputLine.split(" ");
 			double startTime=Double.parseDouble(input[1]);
 			double endTime=Double.parseDouble(input[2]);
-			return new DuckObstacle(startTime,endTime);
+			return new DuckObstacle((float)startTime,(float)endTime);
 		}
 		System.out.println(inputLine);
 		return null;
@@ -50,16 +51,18 @@ public class LevelInterpreter
 		if(!s.hasNextDouble())
 			return null;
 		double start = s.nextDouble();
+		if( type.equals( "b" ) )
+			return new Beat( (float)start );
 		if(!s.hasNextDouble())
 			return null;
 		double end = s.nextDouble();
 		GameObject obj;
 		if(type.equalsIgnoreCase("j"))
 		{
-			return new JumpObstacle(start,end);
+			return new JumpObstacle((float)start,(float)end);
 		}else if(type.equalsIgnoreCase("d"))
 		{
-			return new DuckObstacle(start,end);
+			return new DuckObstacle((float)start,(float)end);
 		}
 		return null;
 	}
