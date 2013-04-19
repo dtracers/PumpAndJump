@@ -97,7 +97,7 @@ public class AnimationQueue {
 		
 		lastTime = queue[1].t;
 		isLooping = a.isLooping;
-		System.out.println( a.isLooping );
+		//System.out.println( a.isLooping );
 	}
 
 	public float[] getPose( float changeInTime )

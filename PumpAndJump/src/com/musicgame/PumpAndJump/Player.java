@@ -220,7 +220,8 @@ class PlayerForearm extends Model
 	{
 		super(  new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
@@ -235,9 +236,13 @@ class PlayerForearm extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = 90.0f; break;
+				angle.z = 90.0f; 
+				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				break;
 			case RIGHT:
-				angle.z = 60.0f; break;
+				angle.z = 60.0f; 
+				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				break;
 		}
 	}
 
@@ -270,7 +275,8 @@ class PlayerShoulder extends Model
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 		side = a;
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
@@ -289,9 +295,13 @@ class PlayerShoulder extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = 135.0f; break;
+				angle.z = 135.0f; 
+				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				break;
 			case RIGHT:
-				angle.z = -135.0f; break;
+				angle.z = -135.0f;
+				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				break;
 		}
 	}
 
@@ -322,7 +332,8 @@ class PlayerHead extends Model
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
@@ -366,7 +377,8 @@ class PlayerTorso extends Model
 	{
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 90.0f ),new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
@@ -418,7 +430,8 @@ class PlayerTuckles extends Model
 	{
 		super( new Point( 9.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
@@ -455,7 +468,8 @@ class PlayerFoot extends Model
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f ,1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
@@ -474,9 +488,13 @@ class PlayerFoot extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = 90.0f; break;
+				angle.z = 90.0f;
+				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				break;
 			case RIGHT:
-				angle.z = 90.0f; break;
+				angle.z = 90.0f; 
+				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				break;
 		}
 	}
 
@@ -508,7 +526,8 @@ class PlayerShin extends Model
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
@@ -527,9 +546,13 @@ class PlayerShin extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = -60.0f; break;
+				angle.z = -60.0f; 
+				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				break;
 			case RIGHT:
-				angle.z = -45.0f; break;
+				angle.z = -45.0f; 
+				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				break;
 		}
 	}
 
@@ -563,7 +586,8 @@ class PlayerThigh extends Model
 	{
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "BlackTemp.png" ) );
+		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2 );
 
@@ -584,9 +608,13 @@ class PlayerThigh extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = -45.0f; break;
+				angle.z = -45.0f; 
+				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				break;
 			case RIGHT:
-				angle.z = -90.0f; break;
+				angle.z = -90.0f; 
+				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				break;
 		}
 	}
 
