@@ -17,9 +17,10 @@ public class DistancePaint extends JPanel
 		DistancePaint p = new DistancePaint();
 		detector.painter =p;
 		createJFrame(p);
-		for(int k=0;k<detector.detectedBeats.size();k++)
+		for(int k=0;k<1;k++)
 		{
-
+			p.repaint();
+			detector.detectTempo(k);
 		}
 	}
 

@@ -27,7 +27,7 @@ public class Beat
 	public int indexInList;
 	public String toString()
 	{
-		return ""+(double)(sampleLocation*1320.0/44100.0);
+		return ""+sampleLocation;//"b "+(double)(sampleLocation*1320.0/44100.0);
 	}
 
 
@@ -52,7 +52,7 @@ public class Beat
 			PrintStream print = new PrintStream(output);
 			for(Beat b:beats)
 			{
-				print.println("b "+ b.toString());
+				print.println(b.toString());
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
