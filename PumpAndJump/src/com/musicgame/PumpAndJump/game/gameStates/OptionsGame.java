@@ -51,7 +51,6 @@ public class OptionsGame extends GameThread
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
         this.controls = new GameControls();//jumpListener,duckListener,pauseListener);
-        //this.controls.setDisabled();
         
         Table container = new Table();
 		stage.addActor(container);
@@ -78,17 +77,18 @@ public class OptionsGame extends GameThread
 						}
 					});
 		final TextButton saveButton = new TextButton("Save", uiSkin);
-		backButton.addListener(
+		saveButton.addListener(
 					new ChangeListener()
 					{
 						public void changed(ChangeEvent event, Actor actor)
 						{
-							//goBack();
+							controls.saveControls();
+							goBack();
 						}
 					});
-		Slider controlsLayoutSlider = new Slider(0, 2, 1, false, uiSkin);
+		Slider controlsLayoutSlider = new Slider(0, 3, 1, false, uiSkin);
 		controlsLayoutSlider.addListener(stopTouchDown);
-		controlsLayoutSlider.setValue( 0 );
+		controlsLayoutSlider.setValue( controls.getControllerLayout() );
 		controlsLayoutSlider.addListener( new ChangeListener()
 		{
 			public void changed(ChangeEvent event, Actor actor)
@@ -97,13 +97,14 @@ public class OptionsGame extends GameThread
 			}
 		});
 		Slider visibilitySlider = new Slider(0, 100, 1, false, uiSkin);
+		visibilitySlider.setValue(controls.getVisibility()*100);
 		visibilitySlider.addListener(stopTouchDown);
 		visibilitySlider.addListener(
 				new ChangeListener()
 				{
 					public void changed(ChangeEvent event, Actor actor)
 					{
-						controls.setVisiblity(((Slider) actor).getValue()/100.0f);
+						controls.setVisibility(((Slider) actor).getValue()/100.0f);
 					}
 				});
 		int buttonWidth = Gdx.graphics.getWidth()/2-15;

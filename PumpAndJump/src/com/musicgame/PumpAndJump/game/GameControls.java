@@ -1,6 +1,7 @@
 package com.musicgame.PumpAndJump.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -13,11 +14,14 @@ import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 
 public class GameControls
 {
-	public Table controlsTable= new Table();;
+	public Table controlsTable= new Table();
+	Preferences prefs = Gdx.app.getPreferences("ControlsPreferences");
 	TextButton jumpButton;
 	TextButton pauseButton;
 	TextButton duckButton;
-	float visiblity;
+	
+	float visibility;
+	int controllerLayout;
 	//define my listeners
 	public ChangeListener jumpListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
@@ -40,19 +44,21 @@ public class GameControls
 	
 	public GameControls()
 	{	
-		/*controlsTable 
-		//controlsTable.setFillParent(true);
-		controlsTable.debug(); // turn on all debug lines (table, cell, and widget)
-		controlsTable.debugTable(); // turn on only table lines*/
-		this.visiblity=1.0f;
-		this.defineControlsTable(0);
+		
+		this.visibility=this.prefs.getFloat("visibility", 1.0f);
+		this.controllerLayout=this.prefs.getInteger("controllerLayout", 0);
+		
+		this.defineControlsTable(this.controllerLayout);
 		jumpButton.addListener(jumpListener);
 		duckButton.addListener(duckListener);
 		pauseButton.addListener(pauseListener);
 	}
 	public GameControls(ChangeListener jumpL, ChangeListener duckL, ChangeListener pauseL)
-	{	
-		this.defineControlsTable(0);
+	{
+		this.visibility=this.prefs.getFloat("visibility", 1.0f);
+		this.controllerLayout=this.prefs.getInteger("controllerLayout", 0);
+		
+		this.defineControlsTable(this.controllerLayout);
 		jumpButton.addListener(jumpL);
 		duckButton.addListener(duckL);
 		pauseButton.addListener(pauseL);
@@ -67,32 +73,97 @@ public class GameControls
 		pauseButton = new TextButton("Pause", uiSkin);
 		jumpButton = new TextButton("Jump", uiSkin);
 		duckButton = new TextButton("Duck", uiSkin);
-		if(controllertype == 1)
+		if(controllertype == 1)//entire left jump, pause center top, entire right duck
 		{
-			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(2).center().pad(5);controlsTable.row();
-			controlsTable.add(jumpButton).fill().expand().pad(5).left();
-			controlsTable.add(pauseButton).size(100,100).pad(5).center();
-			controlsTable.add(duckButton).fill().expand().pad(5).right();
+			this.controllerLayout=1;
+			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			Table ltable=new Table();
+			ltable.add(jumpButton).fill().expand();
+			Table rtable=new Table();
+			rtable.add(duckButton).fill().expand();
+			Table ctable=new Table();
+			ctable.add(pauseButton).fill().expand();
+			ctable.row();
+			ctable.add().fill().expand();
+			ctable.row();
+			ctable.add().fill().expand().pad(5);
+			
+			controlsTable.add(ltable).fill().expand().pad(5).left();
+			controlsTable.add(ctable).fill().expand().pad(5).center();
+			controlsTable.add(rtable).fill().expand().pad(5).right();
+
 		}
 		else if(controllertype == 2)
 		{
-			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(2).center().pad(5);controlsTable.row();
-			controlsTable.add(jumpButton).fill().expand().pad(5).left();
-			controlsTable.add(pauseButton).size(250,100).pad(5).center();
-			controlsTable.add(duckButton).fill().expand().pad(5).right();		
+			this.controllerLayout=2;
+			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			Table ltable=new Table();
+			ltable.add(jumpButton).fill().expand();
+			ltable.row();
+			ltable.add(duckButton).fill().expand();
+			Table rtable=new Table();
+			rtable.add().fill().expand();
+			Table ctable=new Table();
+			ctable.add().fill().expand();
+			ctable.row();
+			ctable.add(pauseButton).fill().expand();
+			ctable.row();
+			ctable.add().fill().expand().pad(5);
+			controlsTable.add(ltable).fill().expand().pad(5).left();
+			controlsTable.add(ctable).fill().expand().pad(5).center();
+			controlsTable.add(rtable).fill().expand().pad(5).right();
 		}
-		else //default controller type =0
+		else if(controllertype == 3)
 		{
-			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(2).center().pad(5);controlsTable.row();
-			controlsTable.add(jumpButton).fill().expand().pad(5).left();
-			controlsTable.add(pauseButton).size(100,100).pad(5).center();
-			controlsTable.add(duckButton).fill().expand().pad(5).right();
+			this.controllerLayout=2;
+			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			Table ltable=new Table();
+			ltable.add(jumpButton).fill().expand();
+			ltable.row();
+			ltable.add(duckButton).fill().expand();
+			Table rtable=new Table();
+			rtable.add().fill().expand();
+			Table ctable=new Table();
+			ctable.add(pauseButton).fill().expand();
+			ctable.row();
+			ctable.add().fill().expand();
+			ctable.row();
+			ctable.add().fill().expand().pad(5);
+			controlsTable.add(ltable).fill().expand().pad(5).left();
+			controlsTable.add(ctable).fill().expand().pad(5).center();
+			controlsTable.add(rtable).fill().expand().pad(5).right();
 		}
-		this.setVisiblity(this.visiblity);
-		System.out.print("width: ");
-		System.out.println(Gdx.graphics.getWidth());
+		else //default controller type =0 //entire left jump, pause center, entire right duck
+		{
+			this.controllerLayout=0;
+			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			Table ltable=new Table();
+			ltable.add(jumpButton).fill().expand();
+			Table rtable=new Table();
+			rtable.add(duckButton).fill().expand();
+			Table ctable=new Table();
+			ctable.add().fill().expand();
+			ctable.row();
+			ctable.add(pauseButton).fill().expand();
+			ctable.row();
+			ctable.add().fill().expand().pad(5);
+			controlsTable.add(ltable).fill().expand().pad(5).left();
+			controlsTable.add(ctable).fill().expand().pad(5).center();
+			controlsTable.add(rtable).fill().expand().pad(5).right();
+
+		}
+		this.setVisibility(this.visibility);
 	}
-	
+	public float getVisibility(){return this.visibility;}
+	public int getControllerLayout(){return this.controllerLayout;}
+	public void saveControls()
+	{
+		this.prefs.putFloat("visibility", this.visibility);
+		this.prefs.putInteger("controllerLayout", this.controllerLayout);
+		this.prefs.flush();
+		System.out.print("controllerLayout:");System.out.println(this.controllerLayout);
+		System.out.print("visibility:");System.out.println(this.visibility);
+	}
 	public void setDisabled(boolean disabled)
 	{
 			jumpButton.setDisabled(disabled);
@@ -100,11 +171,11 @@ public class GameControls
 			duckButton.setDisabled(disabled);
 	
 	}
-	public void setVisiblity(float visibl)
+	public void setVisibility(float visibl)
 	{		
-		this.visiblity = visibl;
-			jumpButton.setColor(visiblity, visiblity, visiblity, visiblity);
-			pauseButton.setColor(visiblity, visiblity, visiblity, visiblity);
-			duckButton.setColor(visiblity, visiblity, visiblity, visiblity);
+		this.visibility = visibl;
+			jumpButton.setColor(visibility, visibility, visibility, visibility);
+			pauseButton.setColor(visibility, visibility, visibility, visibility);
+			duckButton.setColor(visibility, visibility, visibility, visibility);
 	}
 }
