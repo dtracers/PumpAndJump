@@ -96,11 +96,17 @@ public class PauseGame extends GameThread
 		duckGameButton.setDisabled(true);
 		duckGameButton.setColor(.4f,.4f,.4f,.6f);
 		table.add(jumpGameButton).expand().fill();
-
-		table.add(optionGameButton).expand().size(250,100).pad(5);
-		table.add(quitGameButton).expand().size(250,100).pad(5);
-		table.add(unpauseGameButton).expand().size(250,100).pad(5);
-
+		
+		Table centertable = new Table();
+		centertable.setFillParent(true);
+		centertable.debug(); // turn on all debug lines (table, cell, and widget)
+		centertable.debugTable(); // turn on only table lines
+		centertable.add(optionGameButton).expand();//.size(250,100).pad(5);
+		centertable.row();
+		centertable.add(quitGameButton).expand();//.size(250,100).pad(5);
+		centertable.row();
+		centertable.add(unpauseGameButton).expand();//.size(250,100).pad(5);
+		table.add(centertable);
 		table.add(duckGameButton).expand().fill();
 
 	}
@@ -127,7 +133,7 @@ public class PauseGame extends GameThread
 
 		//stage.act(Math.min(delta, 1 / 30f));
 		stage.draw();
-		//Table.drawDebug(stage);
+		Table.drawDebug(stage);
 		//System.out.println("going");
 	}
 

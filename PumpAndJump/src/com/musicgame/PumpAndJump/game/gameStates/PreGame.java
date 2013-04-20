@@ -102,15 +102,31 @@ public class PreGame extends GameThread
 						Gdx.app.exit();
 					}
 				});
-		table.add(startGameButton).size(250,50).pad(5);
+		int buttonWidth = Gdx.graphics.getWidth()/2;
+		int buttonHeight = Gdx.graphics.getHeight()/5-10;
+		table.add().expand().fill();
+		table.add(startGameButton).expand().fill().pad(5);
+		table.add().expand().fill();
+		
 		table.row();
-		table.add(optionsButton).size(250,50).pad(5);
+		table.add().expand().fill();
+		table.add(optionsButton).expand().fill().pad(5);
+		table.add().expand().fill();
+		
 		table.row();
-		table.add(instructionsButton).size(250,50).pad(5);
+		table.add().expand().fill();
+		table.add(instructionsButton).expand().fill().pad(5);
+		table.add().expand().fill();
+		
 		table.row();
-		table.add(aboutButton).size(250,50).pad(5);
+		table.add().expand().fill();
+		table.add(aboutButton).expand().fill().pad(5);
+		table.add().expand().fill();
+		
 		table.row();
-		table.add(exitButton).size(250,50).pad(5);
+		table.add().expand().fill();
+		table.add(exitButton).expand().fill().pad(5);
+		table.add().expand().fill();
 
 		//Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
 		//table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);

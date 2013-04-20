@@ -98,7 +98,7 @@ public class RunningGame extends GameThread
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
 
 		stage.addActor(this.controls.controlsTable);
-		this.controls.setVisible( false );
+		//this.controls.setVisible( false );
 
         player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 
