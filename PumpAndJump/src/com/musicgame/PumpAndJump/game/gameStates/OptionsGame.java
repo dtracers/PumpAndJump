@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
@@ -39,22 +40,25 @@ public class OptionsGame extends GameThread
 
 	Skin uiSkin;
 	Stage stage;
-	ThreadName reverseThread;
+	ThreadName fromThread;
+	GameControls controls;
+	private Table container;
+	
 	public OptionsGame()
 	{
 		stage = new Stage();
 
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
-
+        this.controls = new GameControls();//jumpListener,duckListener,pauseListener);
+        
         Table container = new Table();
 		stage.addActor(container);
 		container.setFillParent(true);
 
-		Table table = new Table();
-		// table.debug();
+		Table scrolltable = new Table();
 
-		final ScrollPane scroll = new ScrollPane(table, uiSkin);
+		final ScrollPane scroll = new ScrollPane(scrolltable, uiSkin);
 
 		InputListener stopTouchDown = new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -62,57 +66,6 @@ public class OptionsGame extends GameThread
 				return false;
 			}
 		};
-
-		table.pad(10).defaults().expandX().space(4);
-		for (int i = 0; i < 10; i++) {
-			table.row();
-			table.add(new Label(i + "uno", uiSkin)).expandX().fillX();
-
-			TextButton button = new TextButton(i + "dos", uiSkin);
-			table.add(button);
-			button.addListener(new ClickListener() {
-				public void clicked (InputEvent event, float x, float y) {
-					System.out.println("click " + x + ", " + y);
-				}
-			});
-
-			Slider slider = new Slider(0, 100, 1, false, uiSkin);
-			slider.addListener(stopTouchDown); // Stops touchDown events from propagating to the FlickScrollPane.
-			table.add(slider);
-
-			table.add(new Label(i + "tres long0 long1 long2 long3 long4 long5", uiSkin));
-		}
-
-		final TextButton flickButton = new TextButton("Flick Scroll", uiSkin.get("toggle", TextButtonStyle.class));
-		flickButton.setChecked(true);
-		flickButton.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				scroll.setFlickScroll(flickButton.isChecked());
-			}
-		});
-
-		final TextButton fadeButton = new TextButton("Fade Scrollbars", uiSkin.get("toggle", TextButtonStyle.class));
-		fadeButton.setChecked(true);
-		fadeButton.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				scroll.setFadeScrollBars(fadeButton.isChecked());
-			}
-		});
-
-		final TextButton smoothButton = new TextButton("Smooth Scrolling", uiSkin.get("toggle", TextButtonStyle.class));
-		smoothButton.setChecked(true);
-		smoothButton.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				scroll.setSmoothScrolling(smoothButton.isChecked());
-			}
-		});
-
-		final TextButton onTopButton = new TextButton("Scrollbars On Top", uiSkin.get("toggle", TextButtonStyle.class));
-		onTopButton.addListener(new ChangeListener() {
-			public void changed (ChangeEvent event, Actor actor) {
-				scroll.setScrollbarsOnTop(onTopButton.isChecked());
-			}
-		});
 
 		final TextButton backButton = new TextButton("Back", uiSkin);
 		backButton.addListener(
@@ -123,13 +76,53 @@ public class OptionsGame extends GameThread
 							goBack();
 						}
 					});
-		container.add(scroll).size(450,200);
-		container.row().space(10).padBottom(10);
-		container.add(backButton).size(250,50).pad(5);
-		//container.add(flickButton).right().expandX();
-		//container.add(onTopButton);
-		//container.add(smoothButton);
-		//container.add(fadeButton).left().expandX();
+		final TextButton saveButton = new TextButton("Save", uiSkin);
+		saveButton.addListener(
+					new ChangeListener()
+					{
+						public void changed(ChangeEvent event, Actor actor)
+						{
+							controls.saveControls();
+							goBack();
+						}
+					});
+		Slider controlsLayoutSlider = new Slider(0, 3, 1, false, uiSkin);
+		controlsLayoutSlider.addListener(stopTouchDown);
+		controlsLayoutSlider.setValue( controls.getControllerLayout() );
+		controlsLayoutSlider.addListener( new ChangeListener()
+		{
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				controls.defineControlsTable( (int)((Slider) actor).getValue());
+			}
+		});
+		Slider visibilitySlider = new Slider(0, 100, 1, false, uiSkin);
+		visibilitySlider.setValue(controls.getVisibility()*100);
+		visibilitySlider.addListener(stopTouchDown);
+		visibilitySlider.addListener(
+				new ChangeListener()
+				{
+					public void changed(ChangeEvent event, Actor actor)
+					{
+						controls.setVisibility(((Slider) actor).getValue()/100.0f);
+					}
+				});
+		int buttonWidth = Gdx.graphics.getWidth()/2-15;
+		int buttonHeight = Gdx.graphics.getHeight()/6-10;
+		
+		container.add(scroll).expand().fill();//.colspan(2);//.pad(10).colspan(2);
+		
+		scrolltable.add(new Label("Controls Layout ", uiSkin)).right().pad(5);
+		scrolltable.add(controlsLayoutSlider).left();
+		scrolltable.row();//.size(500,500);
+		scrolltable.add(this.controls.controlsTable).colspan(2).size((int)(0.6f*Gdx.graphics.getWidth()),(int)(0.6f*Gdx.graphics.getHeight()) );
+
+		scrolltable.row();//.space(10).padBottom(10);
+		scrolltable.add(new Label("Controls Visibility ", uiSkin)).pad(5);
+		scrolltable.add(visibilitySlider).expand().fill().pad(15);
+		scrolltable.row();//.space(10).padBottom(10);
+		scrolltable.add(backButton).size(buttonWidth,buttonHeight).pad(5).left();
+		scrolltable.add(saveButton).size(buttonWidth,buttonHeight).pad(5).right();
 	}
 
 	@Override
@@ -151,7 +144,7 @@ public class OptionsGame extends GameThread
 
 	public void goBack()
 	{
-		switch(reverseThread)
+		switch(fromThread)
 		{
 			case PreGame:
 				PumpAndJump.switchThread(ThreadName.PreGame, this);break;
@@ -165,7 +158,7 @@ public class OptionsGame extends GameThread
 	{
 
 		Gdx.input.setInputProcessor(stage);
-		reverseThread = currentThread.getThreadName();
+		fromThread = currentThread.getThreadName();
 
 	}
 
@@ -173,7 +166,7 @@ public class OptionsGame extends GameThread
 	public void addFrom(GameThread currentThread)
 	{
 		Gdx.input.setInputProcessor(stage);
-		reverseThread = currentThread.getThreadName();
+		fromThread = currentThread.getThreadName();
 	}
 
 	@Override

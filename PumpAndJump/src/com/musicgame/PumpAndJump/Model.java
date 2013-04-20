@@ -109,17 +109,21 @@ public abstract class Model
 			float[] fpoints = IntersectionUtil.Vector2ToFloat( points );
 			hull = new Polygon( fpoints );
 			
-			for( Model m : children )
-			{
-				m.update( new Matrix4( mv ) );
-			}
+			
+		}
+		for( Model m : children )
+		{
+			m.update( new Matrix4( mv ) );
 		}
 	}
 	
 	public boolean intersects( Polygon otherHull )
 	{
-		if( Intersector.overlapConvexPolygons( hull, poly ) )
-			return true;
+		if( hull != null )
+		{
+			if( Intersector.overlapConvexPolygons( hull, otherHull ) )
+				return true;
+		}
 		
 		for( Model m: children )
 		{
@@ -128,5 +132,19 @@ public abstract class Model
 		}
 		
 		return false;
+	}
+	
+	public void print()
+	{
+		if( hull != null )
+		{
+			float[] points = hull.getVertices();
+			for( int i = 0; i < points.length; i+=2 )
+			{
+				System.out.println( "("+points[i]+","+points[i+1]+")" );
+			}
+		}
+		else
+			System.out.println( hull );
 	}
 }
