@@ -16,7 +16,7 @@ public class MusicInputStreamer extends Thread
 
 //	public String fileName= "the_hand_that_feeds.wav";
 //	public String fileName= "Skrillex_Cinema.wav";
-	String fileName = "Windows_XP_Startup.wav";
+	public String fileName = "Windows_XP_Startup.wav";
 	Decoder decoder;
 	public ArrayList<short[]> frames = new ArrayList<short[]>();
 	public int currentFrame;

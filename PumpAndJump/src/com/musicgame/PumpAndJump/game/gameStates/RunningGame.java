@@ -132,19 +132,19 @@ public class RunningGame extends GameThread
 			currentTime = System.currentTimeMillis();
 			delta = (currentTime-previousTime)/divide;
 			pos.x = (float)timeReference;
-			
+
 			player.update( new Matrix4(), delta);
 
 			//update based on object's modelview
 			Matrix4 mv = new Matrix4();
 			makeWorldView( mv );
-			
+
 			for(int k = 0;k<actualObjects.size();k++)
 			{
 				actualObjects.get(k).update( mv, delta);
-				
+
 			}
-			
+
 			if(toWait)
 				myWait();
 			try {
@@ -244,7 +244,7 @@ public class RunningGame extends GameThread
 				actualObjects = new ArrayList<GameObject>();
 				e.printStackTrace();
 			}
-			/*
+
 			System.out.println( "Size:"+actualObjects.size() );
 			JFileChooser jfc = new JFileChooser("../PumpAndJump-android/assets/");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
@@ -252,14 +252,14 @@ public class RunningGame extends GameThread
 		    jfc.showDialog(null,"Open");
 		    jfc.setVisible(true);
 		    File filename = jfc.getSelectedFile();
-			*/
+
 		    streamer = new MusicInputStreamer();
-		    /*
+
 			if(filename != null)
 			{
 				streamer.fileName=filename.getAbsolutePath();
 			}
-			*/
+
 			streamer.loadSound();
 			streamer.start();
 			if(!started)
