@@ -8,10 +8,10 @@ public class RegressionDetection extends TempoDetector
 {
 
 	public static double distanceSensitivity = 1.15;
-	ArrayList<DistanceSet> distanceSets = new ArrayList<DistanceSet>();
+	ArrayList<IntervalSet> distanceSets = new ArrayList<IntervalSet>();
 
 	double averageDistance;
-	DistanceSet correctDistances;
+	IntervalSet correctDistances;
 	DistancePaint painter;
 
 	double runningDistanceAverage = 0;
@@ -33,7 +33,7 @@ public class RegressionDetection extends TempoDetector
 
 		Beat startingBeat = detectedBeats.get(startIndex);
 
-		ArrayList<Distance> distancePermutations = new ArrayList<Distance>();
+		ArrayList<Interval> distancePermutations = new ArrayList<Interval>();
 		painter.distances = distancePermutations;
 
 		/**
@@ -44,7 +44,7 @@ public class RegressionDetection extends TempoDetector
 		for(int k = startIndex+1;k<endIndex;k++)
 		{
 			Beat b = detectedBeats.get(k);
-			Distance d = new Distance(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b,k-(startIndex+1));
+			Interval d = new Interval(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b,k-(startIndex+1));
 			distancePermutations.add(d);
 		}
 		double[] results = Statistics.leastSquares(distancePermutations);
@@ -54,7 +54,7 @@ public class RegressionDetection extends TempoDetector
 		runThroughs++;
 
 		//R^2 value
-		ArrayList<Distance> secondRound = distancePermutations;
+		ArrayList<Interval> secondRound = distancePermutations;
 		double[] results2 = results;
 		boolean loop = false;
 
@@ -65,7 +65,7 @@ public class RegressionDetection extends TempoDetector
 			counter++;
 			loop = true;
 			averageDistance = Statistics.distances(secondRound, results);
-			ArrayList<Distance>secondRound2 = new ArrayList<Distance>();
+			ArrayList<Interval>secondRound2 = new ArrayList<Interval>();
 			for(int k = 0;k<secondRound.size();k++)
 			{
 				if(secondRound.get(k).strength>averageDistance*distanceSensitivity)

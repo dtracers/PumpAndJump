@@ -5,24 +5,24 @@ import java.util.ArrayList;
 
 import net.bluecow.spectro.detection.Beat;
 
-class Distance implements Comparable,Averageable
+class Interval implements Comparable,Averageable
 {
 	Color col;// = new Color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255));
-	double distance;
+	double intervalSize;
 	double strength = 0.5;
 	Beat starting;
 	Beat other;
 	int tempIndex = 0;//this index is temporary and is only maintained for a short time and may be changed often
 
-	public Distance(long dist, double str, Beat startingBeat, Beat other)
+	public Interval(long dist, double str, Beat startingBeat, Beat other)
 	{
-		distance = dist;
+		intervalSize = dist;
 		strength = str;
 		starting = startingBeat;
 		this.other = other;
 	}
 
-	public Distance(long dist, double str, Beat startingBeat, Beat other, int index)
+	public Interval(long dist, double str, Beat startingBeat, Beat other, int index)
 	{
 		this(dist,str,startingBeat,other);
 		tempIndex = index;
@@ -31,37 +31,37 @@ class Distance implements Comparable,Averageable
 	@Override
 	public int compareTo(Object arg0)
 	{
-		return (int) Math.signum(distance-((Distance)arg0).distance);
+		return (int) Math.signum(intervalSize-((Interval)arg0).intervalSize);
 	}
 
 	public String toString()
 	{
-		return "starting "+starting.sampleLocation+" ending "+other.sampleLocation+"d: "+distance+" s: "+strength;
+		return "starting "+starting.sampleLocation+" ending "+other.sampleLocation+"d: "+intervalSize+" s: "+strength;
 	}
 	@Override
 	public double averageValue() {
-		return distance;
+		return intervalSize;
 	}
 }
 
-class DistanceSet implements Comparable
+class IntervalSet implements Comparable
 {
 	public static boolean sortSize;
 	public static boolean sortAvg;
-	ArrayList<Distance> distancesInSet = new ArrayList<Distance>();
+	ArrayList<Interval> distancesInSet = new ArrayList<Interval>();
 	int size = 0;
 	double averageValue = 0;
 	int createdBeatIndex;
 
-	public DistanceSet(int createdIndex)
+	public IntervalSet(int createdIndex)
 	{
 		this.createdBeatIndex = createdIndex;
 	}
-	public boolean addDistance(Distance d)
+	public boolean addDistance(Interval d)
 	{
 		if(distancesInSet.size()>=1)
 		{
-			Distance previous = distancesInSet.get(distancesInSet.size()-1);
+			Interval previous = distancesInSet.get(distancesInSet.size()-1);
 			if(previous.other!=d.starting)
 			{
 				double totalDistance = d.starting.sampleLocation - previous.other.sampleLocation;
@@ -104,9 +104,9 @@ class DistanceSet implements Comparable
 	public int compareTo(Object arg0)
 	{
 		if(sortAvg)
-			return (int) Math.signum(averageValue-((DistanceSet)arg0).averageValue);
+			return (int) Math.signum(averageValue-((IntervalSet)arg0).averageValue);
 		if(sortSize)
-			return (int) Math.signum(((DistanceSet)arg0).distancesInSet.size()-distancesInSet.size());
+			return (int) Math.signum(((IntervalSet)arg0).distancesInSet.size()-distancesInSet.size());
 		return 0;
 	}
 

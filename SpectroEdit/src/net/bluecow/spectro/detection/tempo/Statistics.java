@@ -19,7 +19,7 @@ public class Statistics
 	 * @param endIndex
 	 * @return a double array with the line equation and it also will fill the Distance array
 	 */
-	public static double[] leastSquares(ArrayList<Distance> distances)
+	public static double[] leastSquares(ArrayList<Interval> distances)
 	{
 		int MAXN = distances.size();
 		int n = 0;
@@ -30,9 +30,9 @@ public class Statistics
 		double sumx = 0.0, sumy = 0.0, sumx2 = 0.0;
 		while(n<MAXN)
 		{
-			Distance d = distances.get(n);
+			Interval d = distances.get(n);
 		    x[n] = d.tempIndex;
-		    y[n] = d.distance;
+		    y[n] = d.intervalSize;
 		    sumx  += x[n];
 		    sumx2 += x[n] * x[n];
 		    sumy  += y[n];
@@ -95,7 +95,7 @@ public class Statistics
 	 * it returns the average distance
 	 * distance is the Y value
 	 */
-	public static double distances(int startIndex,int numberOf,ArrayList<Distance> distances,double[] line)
+	public static double distances(int startIndex,int numberOf,ArrayList<Interval> distances,double[] line)
 	{
 		int end = startIndex+numberOf;
 
@@ -104,8 +104,8 @@ public class Statistics
 		double total = 0;
 		for(int k=startIndex;k<end;k++)
 		{
-			Distance d = distances.get(k);
-			double top = Math.abs(d.distance-line[0]*k-line[1]);
+			Interval d = distances.get(k);
+			double top = Math.abs(d.intervalSize-line[0]*k-line[1]);
 			double bottom = Math.sqrt(line[0]*line[0]+1);
 			d.strength = top/bottom;
 			total += d.strength;
@@ -120,7 +120,7 @@ public class Statistics
 	 * it returns the average distance
 	 * distance is the Y value
 	 */
-	public static double distances(ArrayList<Distance> distances,double[] line)
+	public static double distances(ArrayList<Interval> distances,double[] line)
 	{
 		int end = distances.size();
 
@@ -129,8 +129,8 @@ public class Statistics
 		double total = 0;
 		for(int k=0;k<end;k++)
 		{
-			Distance d = distances.get(k);
-			double top = Math.abs(d.distance-line[0]*k-line[1]);
+			Interval d = distances.get(k);
+			double top = Math.abs(d.intervalSize-line[0]*k-line[1]);
 			double bottom = Math.sqrt(line[0]*line[0]+1);
 			d.strength = top/bottom;
 			total += d.strength;
@@ -145,11 +145,11 @@ public class Statistics
 	 * @param average
 	 */
 
-	public static void removeItemsBelowAverage(ArrayList<Distance> distances,ArrayList<Beat> temp, double average)
+	public static void removeItemsBelowAverage(ArrayList<Interval> distances,ArrayList<Beat> temp, double average)
 	{
 		for(int k=0;k<distances.size();k++)
 		{
-			Distance d = distances.get(k);
+			Interval d = distances.get(k);
 			if(d.strength<average)
 			{
 				distances.remove(k);
@@ -167,12 +167,12 @@ public class Statistics
 	 * @return
 	 */
 
-	public static ArrayList<Beat> removeItemsAboveAverage(ArrayList<Distance> distances,ArrayList<Beat> temp, double average)
+	public static ArrayList<Beat> removeItemsAboveAverage(ArrayList<Interval> distances,ArrayList<Beat> temp, double average)
 	{
 		ArrayList<Beat> removedItems = new ArrayList<Beat>();
 		for(int k=0;k<distances.size();k++)
 		{
-			Distance d = distances.get(k);
+			Interval d = distances.get(k);
 			if(d.strength>average)
 			{
 				distances.remove(k);
@@ -208,13 +208,13 @@ public class Statistics
 	 * @param thingsToAverage
 	 * @return
 	 */
-	public static double average(ArrayList<Distance> thingsToAverage)
+	public static double average(ArrayList<Interval> thingsToAverage)
 	{
 		int length = thingsToAverage.size();
 		double total = 0;
 		for(int k=0; k<length;k++)
 		{
-			total+=thingsToAverage.get(k).distance;
+			total+=thingsToAverage.get(k).intervalSize;
 		}
 		return total/length;
 	}
@@ -224,7 +224,7 @@ public class Statistics
 	 * @param thingsToAverage
 	 * @return
 	 */
-	public static double averageSize(ArrayList<DistanceSet> thingsToAverage)
+	public static double averageSize(ArrayList<IntervalSet> thingsToAverage)
 	{
 		int length = thingsToAverage.size();
 		if(length<1)

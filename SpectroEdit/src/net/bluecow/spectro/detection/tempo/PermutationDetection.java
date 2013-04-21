@@ -11,99 +11,32 @@ public class PermutationDetection extends TempoDetector {
 		super(beats);
 	}
 
-	double distancesenstitivity = 4;
+	double distanceAcuteness = 4;
 
 
-	ArrayList<DistanceSet> distanceSets = new ArrayList<DistanceSet>();
+	ArrayList<IntervalSet> distanceSets = new ArrayList<IntervalSet>();
 
 	@Override
 	public void detectTempo(int startIndex)
 	{
+		//we need a certain number of beats before we can run the program
 		if(detectedBeats.size()<numberOfBeats)
 		{
 			return;
 		}
 
-		//int startIndex = detectedBeats.size()-numberOfBeats;
 		int endIndex = startIndex+numberOfBeats;
 
-		Beat startingBeat = detectedBeats.get(startIndex);
-
-		ArrayList<Distance> distancePermutations = new ArrayList<Distance>();
+		ArrayList<Interval> intervalPermutations;
 
 		/**
 		 * Creates a bunch distances that will then be compared
 		 */
 		if(anyPrintout)
 			System.out.println("Creating new distances");
-		for(int k = startIndex+1;k<endIndex;k++)
-		{
-			Beat b = detectedBeats.get(k);
-			Distance d = new Distance(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b);
-			if(d.distance<maxDistanceAllowed)
-			{
-			//	System.out.println(d.distance);
-				distancePermutations.add(d);
-			}
-		}
+		intervalPermutations = createIntervalArray(startIndex,endIndex);
 
-		/**
-		 * This tries to add distances that are similar to the distanceSets (the list is in distance sorted order)
-		 * it will go up the list of while the distances are less than the average in the distance set
-		 * it will remove distances from the firstRoundDistances
-		 * left overs will be creating there own distanceList
-		 * before the left overs are added to their own distnaceList the list is culled removing sets that have a lower than average
-		 * R2-Value that is some how combined with the number in the set
-		 */
-		//removes it from the list - the left overs
-		int tempDistanceIndex = 0;//it starts off trying to compare distances
-
-		if(compareTestPrintout&&anyPrintout)
-			System.out.println("comparing distances");
-		for(int k = 0;k<distanceSets.size();k++)
-		{
-			if(tempDistanceIndex>= distancePermutations.size()||tempDistanceIndex<0)
-				break;
-			DistanceSet dSet = distanceSets.get(k);
-			double avgDistance = dSet.averageValue;
-			Distance distances = distancePermutations.get(tempDistanceIndex);
-			//while the distances in the new list is less than the current distance count up (kinda like insertion sort)
-			while(distances.distance<=avgDistance)
-			{
-				if(compareTestPrintout&&anyPrintout)
-					System.out.println(tempDistanceIndex+" during: "+(avgDistance-distances.distance)+" "+distances.distance+" "+avgDistance);
-				//if it is close enough add it to the list of distance sets
-				if(Math.abs(avgDistance-distances.distance)<distancesenstitivity)
-				{
-					if(compareTestPrintout&&anyPrintout)
-						System.out.println("We have a winner in this set!");
-					if(dSet.addDistance(distances))
-					{
-						distancePermutations.remove(tempDistanceIndex);
-						tempDistanceIndex-=1;
-					}
-				}
-				tempDistanceIndex++;
-				if(tempDistanceIndex>= distancePermutations.size())
-					break;
-				distances = distancePermutations.get(tempDistanceIndex);
-			}
-			if(compareTestPrintout&&anyPrintout)
-				System.out.println(tempDistanceIndex+" after: "+(avgDistance-distances.distance)+" "+distances.distance+" "+avgDistance);
-			//do it for the one that is one above the distance too
-			if(Math.abs(distances.distance-avgDistance)<distancesenstitivity)
-			{
-				if(compareTestPrintout&&anyPrintout)
-					System.out.println("We have a winner in this set!");
-				if(dSet.addDistance(distances))
-				{
-					if(tempDistanceIndex>= distancePermutations.size())
-						tempDistanceIndex-=1;
-					distancePermutations.remove(tempDistanceIndex);
-					tempDistanceIndex-=1;
-				}
-			}
-		}
+		addIntervalsToSet(intervalPermutations);
 
 		/**
 		 * Removing the weak sets here
@@ -116,7 +49,7 @@ public class PermutationDetection extends TempoDetector {
 			System.out.println("Size before "+distanceSets.size());
 		for(int k = 0; k<distanceSets.size();k++)
 		{
-			DistanceSet set = distanceSets.get(k);
+			IntervalSet set = distanceSets.get(k);
 			if(set.distancesInSet.size()<avg&&startIndex-set.createdBeatIndex>numberOfBeats/4)
 			{
 				if(cullingPrintoutDetailed&&anyPrintout)
@@ -128,42 +61,155 @@ public class PermutationDetection extends TempoDetector {
 		if(cullingPrintout&&anyPrintout)
 			System.out.println("Size after "+distanceSets.size());
 		//adding the leftOver distances here
-		for(int k = 0; k<distancePermutations.size(); k++)
+		for(int k = 0; k<intervalPermutations.size(); k++)
 		{
-			Distance d = distancePermutations.get(k);
-			DistanceSet set = new DistanceSet(d.starting.indexInList);
+			Interval d = intervalPermutations.get(k);
+			IntervalSet set = new IntervalSet(d.starting.indexInList);
 			set.addDistance(d);
 			distanceSets.add(set);
 		}
-		DistanceSet.sortSize = true;
-		DistanceSet.sortAvg = false;
+		IntervalSet.sortSize = true;
+		IntervalSet.sortAvg = false;
 		Collections.sort(distanceSets);
 
 //		System.out.println("Max Size"+distanceSets.get(0).distancesInSet.size());
 
-		DistanceSet.sortSize = false;
-		DistanceSet.sortAvg = true;
+		IntervalSet.sortSize = false;
+		IntervalSet.sortAvg = true;
 		Collections.sort(distanceSets);
 	}
 
+
+	/**
+	 * Creates the Interval Array
+	 * limitations on the arry:
+	 *
+	 * The max interval is limited by maxIntervalAllowed
+	 *
+	 * A regression is also done on the current interval set
+	 * and will not allow items that are very far away from the regression line
+	 * @param startIndex
+	 * @param endIndex
+	 * @return
+	 */
+	public ArrayList<Interval> createIntervalArray(int startIndex,int endIndex)
+	{
+		ArrayList<Interval> regression = new ArrayList<Interval>();
+		ArrayList<Interval> intervalPermutations = new ArrayList<Interval>();
+
+		Beat startingBeat = detectedBeats.get(startIndex);
+
+		//adds all of the distances to the list
+		for(int k = startIndex+1;k<endIndex;k++)
+		{
+			Beat b = detectedBeats.get(k);
+			Interval d = new Interval(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b);
+
+			regression.add(d);
+		}
+
+		double[] results = Statistics.leastSquares(regression);
+		for(int k = 0 ;k<regression.size();k++)
+		{
+			Interval d = regression.get(k);
+			double interval = d.intervalSize;
+			double lineDistance = interval-results[0];
+			if(interval<maxIntervalAllowed)//&&Math.abs(lineDistance)<(distanceAcuteness+1))
+			{
+				intervalPermutations.add(d);
+			}
+		}
+
+		return intervalPermutations;
+	}
+
+	/**
+	 * This tries to add distances that are similar to the distanceSets (the list is in distance sorted order)
+	 * it will go up the list of while the distances are less than the average in the distance set
+	 * it will remove distances from the firstRoundDistances
+	 * left overs will be creating there own distanceList
+	 * before the left overs are added to their own distnaceList the list is culled removing sets that have a lower than average
+	 */
+	public void addIntervalsToSet(ArrayList<Interval> intervalPermutations)
+	{
+	//	ArrayList<Interval> leftOvers = new ArrayList<Interval>();
+		//removes it from the list - the left overs
+		int tempDistanceIndex = 0;//it starts off trying to compare distances
+
+		for(int k = 0;k<distanceSets.size();k++)
+		{
+			if(tempDistanceIndex >= intervalPermutations.size() || tempDistanceIndex<0)
+				break;
+
+			IntervalSet dSet = distanceSets.get(k);
+			double avgIntervalLength = dSet.averageValue;
+			Interval currentInterval = intervalPermutations.get(tempDistanceIndex);
+
+			//while the distances in the new list is less than the current distance count up (kinda like insertion sort)
+			while(currentInterval.intervalSize <= avgIntervalLength)
+			{
+				//if it is close enough add it to the list of distance sets
+				if(Math.abs(avgIntervalLength - currentInterval.intervalSize) < distanceAcuteness)
+				{
+					if(dSet.addDistance(currentInterval))
+					{
+
+						intervalPermutations.remove(tempDistanceIndex);
+						tempDistanceIndex-=1;
+
+					}else
+					{
+						//leftOvers.add(currentInterval);
+					}
+				}else
+				{
+					//leftOvers.add(currentInterval);
+				}
+
+				tempDistanceIndex++;
+
+				if(tempDistanceIndex >= intervalPermutations.size())
+					break;
+
+				currentInterval = intervalPermutations.get(tempDistanceIndex);
+			}
+
+			//do it for the one that is one above the distance too
+			if(Math.abs(currentInterval.intervalSize-avgIntervalLength)<distanceAcuteness)
+			{
+				if(dSet.addDistance(currentInterval))
+				{
+					if(tempDistanceIndex>= intervalPermutations.size())
+						tempDistanceIndex-=1;
+					intervalPermutations.remove(tempDistanceIndex);
+					tempDistanceIndex-=1;
+				}else
+				{
+					//leftOvers.add(currentInterval);
+				}
+			}
+		}
+
+	//	return intervalPermutations;
+	}
 
 	public void printDistanceSets()
 	{
 		for(int q = 0;q<distanceSets.size();q++)
 		{
-			DistanceSet set = distanceSets.get(q);
+			IntervalSet set = distanceSets.get(q);
 			System.out.println("average Distance "+set.averageValue+" size "+set.distancesInSet.size());
 		}
 	}
 
 	public void setTempoBeats()
 	{
-		DistanceSet.sortSize = true;
-		DistanceSet.sortAvg = false;
+		IntervalSet.sortSize = true;
+		IntervalSet.sortAvg = false;
 		Collections.sort(distanceSets);
 
 		for(int k = 0;k<Math.min(distanceSets.size(),5);k++)
-			for(Distance d:distanceSets.get(k).distancesInSet)
+			for(Interval d:distanceSets.get(k).distancesInSet)
 			{
 				d.starting.predictedBeat = true;
 			}

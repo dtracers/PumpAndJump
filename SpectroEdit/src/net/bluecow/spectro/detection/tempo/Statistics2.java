@@ -17,7 +17,7 @@ public class Statistics2 {
 	 * @param endIndex
 	 * @return a double array with the line equation and it also will fill the Distance array
 	 */
-	public static double[] leastSquares(int startIndex,int numberOf,ArrayList<Beat> beats,ArrayList<Distance> distances)
+	public static double[] leastSquares(int startIndex,int numberOf,ArrayList<Beat> beats,ArrayList<Interval> distances)
 	{
 		int start = startIndex;
 		int end = startIndex+numberOf;
@@ -34,9 +34,9 @@ public class Statistics2 {
 			Beat startingBeat = beats.get(k-1);
 			Beat otherBeat = beats.get(k);
 			int index = k -(start+1);
-			Distance d = new Distance(otherBeat.sampleLocation - startingBeat.sampleLocation,1,startingBeat,otherBeat);
+			Interval d = new Interval(otherBeat.sampleLocation - startingBeat.sampleLocation,1,startingBeat,otherBeat);
 			x[index] = index;
-			y[index] = d.distance;
+			y[index] = d.intervalSize;
 			distances.add(d);
 
 			sumx  += x[index];
@@ -60,7 +60,7 @@ public class Statistics2 {
 	 * @param endIndex
 	 * @return a double array with the line equation and it also will fill the Distance array
 	 */
-	public static double[] leastSquares(int numberOf,ArrayList<Beat> beats,ArrayList<Distance> distances)
+	public static double[] leastSquares(int numberOf,ArrayList<Beat> beats,ArrayList<Interval> distances)
 	{
 		int MAXN = numberOf;
 		int n = 1;
@@ -73,10 +73,10 @@ public class Statistics2 {
 		{
 			Beat startingBeat = beats.get(n-1);
 			Beat otherBeat = beats.get(n);
-			Distance d = new Distance(otherBeat.sampleLocation - startingBeat.sampleLocation,1,startingBeat,otherBeat);
+			Interval d = new Interval(otherBeat.sampleLocation - startingBeat.sampleLocation,1,startingBeat,otherBeat);
 			distances.add(d);
 		    x[n] = n-1;
-		    y[n] = d.distance;
+		    y[n] = d.intervalSize;
 		    sumx  += x[n];
 		    sumx2 += x[n] * x[n];
 		    sumy  += y[n];
@@ -138,7 +138,7 @@ public class Statistics2 {
 	 * @param endIndex
 	 * @return a double array with the line equation and it also will fill the Distance array
 	 */
-	public static double[] weightedLeastSquares(int numberOf,ArrayList<Distance> distances,double average)
+	public static double[] weightedLeastSquares(int numberOf,ArrayList<Interval> distances,double average)
 	{
 		int MAXN = numberOf*10;
 		int n = 0;
@@ -150,7 +150,7 @@ public class Statistics2 {
 		double sumx = 0.0, sumy = 0.0, sumx2 = 0.0;
 		while(counter<distances.size())
 		{
-			Distance d = distances.get(counter);
+			Interval d = distances.get(counter);
 			double strength = d.strength;
 			if(strength>average)
 				strength = average;

@@ -63,9 +63,9 @@ public class DistancePaint extends JPanel
 	int offX = 10;
 	int offY = 10;
 	double[] line;
-	ArrayList<Distance> distances;
+	ArrayList<Interval> distances;
 	public double averageDistance;
-	public ArrayList<Distance> secondRound;
+	public ArrayList<Interval> secondRound;
 	public double[] line2;
 
 	static double realDistance = 0;
@@ -86,10 +86,10 @@ public class DistancePaint extends JPanel
 			g.setColor(Color.green);
 			for(int k =0;k<distances.size();k++)
 			{
-				Distance d = distances.get(k);
+				Interval d = distances.get(k);
 				maxIndex = d.tempIndex;
 				double Xlocation = ((double)maxIndex)*(double)width/length;
-				double Ylocation = height-(d.distance)*maxHeight;
+				double Ylocation = height-(d.intervalSize)*maxHeight;
 
 				g.drawRect((int)Xlocation, (int)Ylocation, 1, 1);
 			}
@@ -126,9 +126,9 @@ public class DistancePaint extends JPanel
 				g.setColor(Color.red);
 				for(int k =0;k<secondRound.size();k++)
 				{
-					Distance d = secondRound.get(k);
+					Interval d = secondRound.get(k);
 					double Xlocation = d.tempIndex*width/length;
-					double Ylocation = height-d.distance*maxHeight;
+					double Ylocation = height-d.intervalSize*maxHeight;
 
 					g.drawRect((int)Xlocation, (int)Ylocation, 1, 1);
 				}

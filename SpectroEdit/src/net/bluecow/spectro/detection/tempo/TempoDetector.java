@@ -19,7 +19,7 @@ public abstract class TempoDetector
 	public static double frameSize = 1320;
 	public static double BPMtoFrameRatio = (60.0*samplingRate/frameSize);//the ratio from an BPM to actual frame distances
 	public static double SlowestBPM = 20;
-	public static double maxDistanceAllowed = BPMtoFrameRatio/SlowestBPM;
+	public static double maxIntervalAllowed = BPMtoFrameRatio/SlowestBPM;
 
 	static int numberOfBeats = 30;
 
@@ -103,7 +103,7 @@ public abstract class TempoDetector
 
 	/**
 	 * Calculates the distance from a tempo in BPM
-	 * @param distance
+	 * @param intervalSize
 	 * @return
 	 */
 	public static double calculateDistanceFromTempo(double tempo)
