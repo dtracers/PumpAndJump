@@ -13,6 +13,9 @@ public class RegressionDetection extends TempoDetector
 	double averageDistance;
 	DistanceSet correctDistances;
 	DistancePaint painter;
+
+	double runningDistanceAverage = 0;
+	double runThroughs = 0;
 	public RegressionDetection(ArrayList<Beat> beats) {
 		super(beats);
 	}
@@ -47,32 +50,49 @@ public class RegressionDetection extends TempoDetector
 		double[] results = Statistics.leastSquares(distancePermutations);
 		painter.line = results;
 
+		runningDistanceAverage+= results[0];
+		runThroughs++;
+
 		//R^2 value
-		ArrayList<Distance> secondRound = null;
-		double[] results2 = null;
-		if(results[2]<.998)
+		ArrayList<Distance> secondRound = distancePermutations;
+		double[] results2 = results;
+		boolean loop = false;
+
+		int counter = 0;
+		if(results2[2]<.998&&secondRound.size()>this.numberOfBeats/3)
 		{
-			averageDistance = Statistics.distances(distancePermutations, results);
-			secondRound = new ArrayList<Distance>();
-			for(int k = 0;k<distancePermutations.size();k++)
+			System.out.println("time through "+counter+" "+results[2]+" "+secondRound.size());
+			counter++;
+			loop = true;
+			averageDistance = Statistics.distances(secondRound, results);
+			ArrayList<Distance>secondRound2 = new ArrayList<Distance>();
+			for(int k = 0;k<secondRound.size();k++)
 			{
-				if(distancePermutations.get(k).strength>averageDistance*distanceSensitivity)
+				if(secondRound.get(k).strength>averageDistance*distanceSensitivity)
 				{
 				//	System.out.println("Removing");
 				}else
 				{
-					secondRound.add(distancePermutations.get(k));
+					secondRound2.add(secondRound.get(k));
 				}
 			}
+			secondRound = secondRound2;
 			results2 = Statistics.leastSquares(secondRound);
-		}else
+
+			runningDistanceAverage+=results2[0];
+			runThroughs++;
+
+		}
+		if(!loop)
 		{
-			//only for debugging
 			averageDistance = 0;
+			results2 = null;
+			secondRound = null;
 		}
 		painter.line2 = results2;
 		painter.secondRound = secondRound;
-		painter.averageDistance = averageDistance;
+		painter.averageDistance = runningDistanceAverage/runThroughs;
+
 
 	}
 

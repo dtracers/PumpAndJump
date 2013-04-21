@@ -22,6 +22,11 @@ public class DistancePaint extends JPanel
 		p.setBackground(Color.white);
 		detector.painter =p;
 		JFrame f = createJFrame(p,file);
+
+		if(TempoDetector.realTempo!=0)
+		{
+			 realDistance = TempoDetector.calculateDistanceFromTempo(TempoDetector.realTempo);
+		}
 		for(int k=0;k<detector.detectedBeats.size();k++)
 		{
 			detector.detectTempo(k);
@@ -54,7 +59,7 @@ public class DistancePaint extends JPanel
 	}
 
 
-	int width = 600,height = 600;
+	int width = 800,height = 800;
 	int offX = 10;
 	int offY = 10;
 	double[] line;
@@ -63,12 +68,13 @@ public class DistancePaint extends JPanel
 	public ArrayList<Distance> secondRound;
 	public double[] line2;
 
+	static double realDistance = 0;
 	@Override
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(Color.white);
 		g.fillRect(0, 0, width, height);
-		double maxHeight =0.7; //(height-30)/distances.get(distances.size()-1).distance;
+		double maxHeight =0.3; //(height-30)/distances.get(distances.size()-1).distance;
 
 		int maxIndex = 0;
 		if(distances!=null)
@@ -89,7 +95,15 @@ public class DistancePaint extends JPanel
 			}
 
 			g.setColor(Color.red);
-			g.drawLine(0,height,maxIndex,(int)(TempoDetector.calculateDistanceFromTempo(TempoDetector.realTempo)*maxIndex));
+			if(TempoDetector.realTempo!=0)
+			{
+				g.drawLine(offX,height+offY,width+offX,(int)(height-((realDistance)*maxIndex*maxHeight+offY)));
+				g.drawString("REAL TEMPO "+TempoDetector.realTempo, 200, 80);
+				g.drawString("REAL Distance "+realDistance, 200, 90);
+			}
+
+			g.setColor(Color.GRAY);
+			g.drawLine(offX,height+offY,width+offX,(int)(height-((averageDistance)*maxIndex*maxHeight+offY)));
 
 			if(line!= null)
 			{
@@ -103,7 +117,7 @@ public class DistancePaint extends JPanel
 				}
 					g.drawString("Y = "+a+"*x"+b, 0, 20);
 					g.drawString("R = "+R2, 0, 40);
-					g.drawString("Avg Dist "+averageDistance, 0, 60);
+					g.drawString("Avg Dist "+averageDistance, 0, 70);
 					g.drawString("TEMPO "+TempoDetector.calculateTempoFromDistance(a), 0, 80);
 			}
 
@@ -133,7 +147,6 @@ public class DistancePaint extends JPanel
 					g.setColor(Color.black);
 					g.drawString("Y = "+a+"*x"+b, 0, 30);
 					g.drawString("R = "+R2, 0, 50);
-					g.drawString("Avg Dist "+averageDistance, 0, 70);
 					g.drawString("TEMPO "+TempoDetector.calculateTempoFromDistance(a), 0, 90);
 			}
 		}else

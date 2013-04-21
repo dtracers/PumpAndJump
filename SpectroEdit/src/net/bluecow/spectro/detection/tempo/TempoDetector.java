@@ -21,7 +21,7 @@ public abstract class TempoDetector
 	public static double SlowestBPM = 20;
 	public static double maxDistanceAllowed = BPMtoFrameRatio/SlowestBPM;
 
-	static int numberOfBeats = 60;
+	static int numberOfBeats = 30;
 
 	ArrayList<Beat> detectedBeats;
 	public static double realTempo;
