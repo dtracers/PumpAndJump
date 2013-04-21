@@ -12,13 +12,22 @@ class Distance implements Comparable,Averageable
 	double strength = 0.5;
 	Beat starting;
 	Beat other;
-	public Distance(long l, double i, Beat startingBeat, Beat other)
+	int tempIndex = 0;//this index is temporary and is only maintained for a short time and may be changed often
+
+	public Distance(long dist, double str, Beat startingBeat, Beat other)
 	{
-		distance = l;
-		strength = i;
+		distance = dist;
+		strength = str;
 		starting = startingBeat;
 		this.other = other;
 	}
+
+	public Distance(long dist, double str, Beat startingBeat, Beat other, int index)
+	{
+		this(dist,str,startingBeat,other);
+		tempIndex = index;
+	}
+
 	@Override
 	public int compareTo(Object arg0)
 	{

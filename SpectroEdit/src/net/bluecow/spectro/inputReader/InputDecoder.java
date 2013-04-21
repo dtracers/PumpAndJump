@@ -19,11 +19,13 @@ public abstract class InputDecoder
 
 	public static InputDecoder createInputDecoder( double spectralScale, File file )
 	{
-		if( file.getName().endsWith(".wav") || file.getName().endsWith(".aif") )
+		String ending = file.getName().substring(file.getName().lastIndexOf("."),file.getName().length());
+		System.out.println(ending);
+		if( ending.equalsIgnoreCase(".wav") || ending.equalsIgnoreCase(".aif") )
 		{
 			return new WavDecoder( spectralScale, file );
 		}
-		else if( file.getName().endsWith(".mp3") )
+		else if( ending.equalsIgnoreCase(".mp3") )
 		{
 			return new MP3Decoder( spectralScale, file );
 		}

@@ -25,7 +25,7 @@ public class DistancePaint extends JPanel
 		for(int k=0;k<detector.detectedBeats.size();k++)
 		{
 			detector.detectTempo(k);
-			Thread.sleep(100);
+			Thread.sleep(500);
 			f.repaint();
 		}
 		f.repaint();
@@ -60,39 +60,81 @@ public class DistancePaint extends JPanel
 	double[] line;
 	ArrayList<Distance> distances;
 	public double averageDistance;
+	public ArrayList<Distance> secondRound;
+	public double[] line2;
 
 	@Override
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(Color.white);
 		g.fillRect(0, 0, width, height);
+		double maxHeight =0.7; //(height-30)/distances.get(distances.size()-1).distance;
+
+		int maxIndex = 0;
 		if(distances!=null)
 		{
+
+			//System.out.println(maxHeight);
 			int length = distances.size();
+
 			g.setColor(Color.green);
 			for(int k =0;k<distances.size();k++)
 			{
 				Distance d = distances.get(k);
-				double Xlocation = k*width/length;
-				double Ylocation = height-d.distance;
+				maxIndex = d.tempIndex;
+				double Xlocation = ((double)maxIndex)*(double)width/length;
+				double Ylocation = height-(d.distance)*maxHeight;
 
 				g.drawRect((int)Xlocation, (int)Ylocation, 1, 1);
-				System.out.println("Drawing "+Xlocation+" "+Ylocation);
 			}
+
+			g.setColor(Color.red);
+			g.drawLine(0,height,maxIndex,(int)(TempoDetector.calculateDistanceFromTempo(TempoDetector.realTempo)*maxIndex));
 
 			if(line!= null)
 			{
 				double a = line[0];
 				double b = line[1];
 				double R2 = line[2];
-				if(R2>.998)
+				if(R2>.998||true)
 				{
 					g.setColor(Color.blue);
-					g.drawLine((int)offX,(int) (height-(a*0+b+offY)), (int)(width+offX),(int) (height-(a*distances.size()+b+offY)));
+					g.drawLine(offX,(int) (height-(a*0+b+offY)), width+offX,(int) (height-(a*maxIndex+b+offY)*maxHeight));
 				}
 					g.drawString("Y = "+a+"*x"+b, 0, 20);
-					g.drawString("R = "+R2, 0, 30);
-					g.drawString("Avg Dist "+averageDistance, 0, 40);
+					g.drawString("R = "+R2, 0, 40);
+					g.drawString("Avg Dist "+averageDistance, 0, 60);
+					g.drawString("TEMPO "+TempoDetector.calculateTempoFromDistance(a), 0, 80);
+			}
+
+			if(secondRound!= null)
+			{
+				g.setColor(Color.red);
+				for(int k =0;k<secondRound.size();k++)
+				{
+					Distance d = secondRound.get(k);
+					double Xlocation = d.tempIndex*width/length;
+					double Ylocation = height-d.distance*maxHeight;
+
+					g.drawRect((int)Xlocation, (int)Ylocation, 1, 1);
+				}
+			}
+
+			if(line2!= null)
+			{
+				double a = line2[0];
+				double b = line2[1];
+				double R2 = line2[2];
+				if(R2>.998||true)
+				{
+					g.setColor(Color.GRAY);
+					g.drawLine(offX,(int) (height-(a*0+b+offY)), width+offX,(int) (height-(a*maxIndex+b+offY)*maxHeight));
+				}
+					g.setColor(Color.black);
+					g.drawString("Y = "+a+"*x"+b, 0, 30);
+					g.drawString("R = "+R2, 0, 50);
+					g.drawString("Avg Dist "+averageDistance, 0, 70);
+					g.drawString("TEMPO "+TempoDetector.calculateTempoFromDistance(a), 0, 90);
 			}
 		}else
 		{

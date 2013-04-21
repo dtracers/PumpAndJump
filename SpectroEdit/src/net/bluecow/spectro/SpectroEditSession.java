@@ -118,6 +118,7 @@ public class SpectroEditSession
 			}
 		});
 		f.setVisible(true);
+		f.setTitle(this.fileName);
 	}
 
 	public static SpectroEditSession createSession(File wavFile) throws UnsupportedAudioFileException, IOException, LineUnavailableException

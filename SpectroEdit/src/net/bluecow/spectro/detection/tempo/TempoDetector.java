@@ -21,9 +21,10 @@ public abstract class TempoDetector
 	public static double SlowestBPM = 20;
 	public static double maxDistanceAllowed = BPMtoFrameRatio/SlowestBPM;
 
-	static int numberOfBeats = 30;
+	static int numberOfBeats = 60;
 
 	ArrayList<Beat> detectedBeats;
+	public static double realTempo;
 
 	public TempoDetector(ArrayList<Beat> beats)
 	{
@@ -53,6 +54,10 @@ public abstract class TempoDetector
 				e.printStackTrace();
 			}
 			System.out.println("Reading");
+			if(s.hasNextDouble())
+			{
+				realTempo = s.nextDouble();
+			}
 			while(s.hasNext())
 			{
 				long s2 =s.nextLong();
@@ -84,4 +89,27 @@ public abstract class TempoDetector
 	}
 
 	public abstract void setTempoBeats();
+
+	/**
+	 * Calculates the tempo from the average distance
+	 * @param distance
+	 * @return
+	 */
+	public static double calculateTempoFromDistance(double distance)
+	{
+		double BPS = samplingRate/(distance*frameSize);
+		return BPS*60.0;
+	}
+
+	/**
+	 * Calculates the distance from a tempo in BPM
+	 * @param distance
+	 * @return
+	 */
+	public static double calculateDistanceFromTempo(double tempo)
+	{
+		double BPS = tempo/60.0;
+		double distance = samplingRate/(BPS*frameSize);
+		return distance;
+	}
 }

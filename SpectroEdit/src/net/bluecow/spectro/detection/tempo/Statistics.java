@@ -7,13 +7,14 @@ import net.bluecow.spectro.detection.Beat;
 
 public class Statistics
 {
-	public static boolean debug = true;
+	public static boolean debug = false;
 	public static boolean debugDetailed = false;
 
 	/**
 	 * a is at 0
 	 * b is at 1
 	 *
+	 *it uses the value tempIndex for the x position
 	 * @param startIndex
 	 * @param endIndex
 	 * @return a double array with the line equation and it also will fill the Distance array
@@ -30,7 +31,7 @@ public class Statistics
 		while(n<MAXN)
 		{
 			Distance d = distances.get(n);
-		    x[n] = n;
+		    x[n] = d.tempIndex;
 		    y[n] = d.distance;
 		    sumx  += x[n];
 		    sumx2 += x[n] * x[n];
