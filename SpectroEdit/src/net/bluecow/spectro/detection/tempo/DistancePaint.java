@@ -2,16 +2,20 @@ package net.bluecow.spectro.detection.tempo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DistancePaint extends JPanel
 {
 	public static void main(String args[]) throws InterruptedException
 	{
 		String file = "The Hand That Feeds - Nine Inch Nails.mp3";
+		file = getFileName();
 		RegressionDetection detector = new RegressionDetection(null);
 		detector.createBeatsFromAFile(file);
 		DistancePaint p = new DistancePaint();
@@ -25,6 +29,17 @@ public class DistancePaint extends JPanel
 			f.repaint();
 		}
 		f.repaint();
+	}
+
+	public static String getFileName()
+	{
+		JFileChooser jfc = new JFileChooser("../SpectroEdit/");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("txt files", "txt");
+		jfc.setFileFilter(filter);
+	    jfc.showDialog(null,"Open");
+	    jfc.setVisible(true);
+	    File filename = jfc.getSelectedFile();
+	    return filename.getAbsolutePath();
 	}
 
 	public static JFrame createJFrame(DistancePaint p,String name)
@@ -44,6 +59,7 @@ public class DistancePaint extends JPanel
 	int offY = 10;
 	double[] line;
 	ArrayList<Distance> distances;
+	public double averageDistance;
 
 	@Override
 	public void paintComponent(Graphics g)
@@ -76,6 +92,7 @@ public class DistancePaint extends JPanel
 				}
 					g.drawString("Y = "+a+"*x"+b, 0, 20);
 					g.drawString("R = "+R2, 0, 30);
+					g.drawString("Avg Dist "+averageDistance, 0, 40);
 			}
 		}else
 		{

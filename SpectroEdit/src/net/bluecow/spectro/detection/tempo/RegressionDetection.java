@@ -8,6 +8,7 @@ public class RegressionDetection extends TempoDetector
 {
 
 	ArrayList<DistanceSet> distanceSets = new ArrayList<DistanceSet>();
+	double averageDistance;
 	DistanceSet correctDistances;
 	DistancePaint painter;
 	public RegressionDetection(ArrayList<Beat> beats) {
@@ -44,7 +45,8 @@ public class RegressionDetection extends TempoDetector
 		double[] results = Statistics.leastSquares(distancePermutations);
 		painter.line = results;
 
-		Statistics.distances(distancePermutations, results);
+		averageDistance = Statistics.distances(distancePermutations, results);
+		painter.averageDistance = averageDistance;
 	}
 
 	@Override
