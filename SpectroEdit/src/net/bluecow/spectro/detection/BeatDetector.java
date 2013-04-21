@@ -2,9 +2,15 @@ package net.bluecow.spectro.detection;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import net.bluecow.spectro.SpectroEditSession;
 import net.bluecow.spectro.detection.tempo.PermutationDetection;
 import net.bluecow.spectro.detection.tempo.TempoDetector;
 
@@ -40,6 +46,9 @@ public class BeatDetector
 	//the senstitivity of the beat detector:  smaller numbers remove more beats and is more strict
 	double senstitivity = 0.8;
 
+
+
+
 	static boolean doOnce = true;
 
 
@@ -47,6 +56,7 @@ public class BeatDetector
 	private TempoDetector tempoDetection;
 	static int counter = 0;
 
+	//values used for writing out the files
 
 
 	public BeatDetector(IIRFilter bandPass)
@@ -157,6 +167,7 @@ public class BeatDetector
 			((PermutationDetection)tempoDetection).printDistanceSets();
 			doOnce = false;
 			Beat.writeBeatsToFile(detectedBeats);
+			writeIntensityToFile();
 		}
 
 	}
@@ -219,5 +230,69 @@ public class BeatDetector
 		 */
 
 		currentIndex++;
+	}
+
+	public void writeIntensityToFile()
+	{
+		try {
+			String fileName = SpectroEditSession.fileName;
+			fileName = fileName.substring(0,fileName.indexOf("."));
+			fileName = fileName +"_animation"+type+".txt";
+			System.out.println(fileName);
+			File f = new File(fileName);
+			f.createNewFile();
+
+			FileOutputStream output = new FileOutputStream(f);
+			PrintStream print = new PrintStream(output);
+
+			print.println("-2 "+this.AveragedEnergydata.size()+" 0 0 1 false");
+
+			for(int k = 0;k<AveragedEnergydata.size();k+=17)
+			{
+				print.println(AveragedEnergydata.get(k)+" "+TempoDetector.calculateTimeFromLocation(k));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+		//16.70454545454545
+		//-2 #ofItems 0 0 1 false
+		//(write value) time it occurs
+
+	}
+
+	public static void writeBeatsToFile(ArrayList<Beat> beats)
+	{
+		System.out.println("Writing beats to file");
+		try {
+			String fileName = SpectroEditSession.fileName;
+			fileName = fileName.substring(0,fileName.indexOf("."));
+			fileName = fileName +".txt";
+			System.out.println(fileName);
+			File f = new File(fileName);
+			/*
+			int counter = 0;
+			while(f.exists())
+			{
+				f = new File("test"+counter+".txt");
+				counter++;
+			}
+			*/
+			f.createNewFile();
+
+			FileOutputStream output = new FileOutputStream(f);
+			PrintStream print = new PrintStream(output);
+			for(Beat b:beats)
+			{
+				print.println(b.toString());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

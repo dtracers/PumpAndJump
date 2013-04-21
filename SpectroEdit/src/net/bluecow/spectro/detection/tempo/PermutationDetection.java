@@ -103,18 +103,18 @@ public class PermutationDetection extends TempoDetector {
 		for(int k = startIndex+1;k<endIndex;k++)
 		{
 			Beat b = detectedBeats.get(k);
-			Interval d = new Interval(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b);
-
+			Interval d = new Interval(b.sampleLocation-startingBeat.sampleLocation,1,startingBeat,b,k-(startIndex+1));
 			regression.add(d);
 		}
 
 		double[] results = Statistics.leastSquares(regression);
+
 		for(int k = 0 ;k<regression.size();k++)
 		{
 			Interval d = regression.get(k);
 			double interval = d.intervalSize;
 			double lineDistance = interval-results[0];
-			if(interval<maxIntervalAllowed)//&&Math.abs(lineDistance)<(distanceAcuteness+1))
+			if(interval<maxIntervalAllowed&&Math.abs(lineDistance)<((distanceAcuteness+1)*2))
 			{
 				intervalPermutations.add(d);
 			}
