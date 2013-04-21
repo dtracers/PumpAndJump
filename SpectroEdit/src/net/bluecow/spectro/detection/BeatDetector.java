@@ -166,7 +166,7 @@ public class BeatDetector
 		{
 			((PermutationDetection)tempoDetection).printDistanceSets();
 			doOnce = false;
-			Beat.writeBeatsToFile(detectedBeats);
+			Beat.writeBeatsToFile(detectedBeats,type);
 			writeIntensityToFile();
 		}
 
@@ -262,37 +262,5 @@ public class BeatDetector
 		//-2 #ofItems 0 0 1 false
 		//(write value) time it occurs
 
-	}
-
-	public static void writeBeatsToFile(ArrayList<Beat> beats)
-	{
-		System.out.println("Writing beats to file");
-		try {
-			String fileName = SpectroEditSession.fileName;
-			fileName = fileName.substring(0,fileName.indexOf("."));
-			fileName = fileName +".txt";
-			System.out.println(fileName);
-			File f = new File(fileName);
-			/*
-			int counter = 0;
-			while(f.exists())
-			{
-				f = new File("test"+counter+".txt");
-				counter++;
-			}
-			*/
-			f.createNewFile();
-
-			FileOutputStream output = new FileOutputStream(f);
-			PrintStream print = new PrintStream(output);
-			for(Beat b:beats)
-			{
-				print.println(b.toString());
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

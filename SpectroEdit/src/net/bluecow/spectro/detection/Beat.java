@@ -31,13 +31,13 @@ public class Beat
 	}
 
 
-	public static void writeBeatsToFile(ArrayList<Beat> beats)
+	public static void writeBeatsToFile(ArrayList<Beat> beats,int type)
 	{
 		System.out.println("Writing beats to file");
 		try {
 			String fileName = SpectroEditSession.fileName;
 			fileName = fileName.substring(0,fileName.indexOf("."));
-			fileName = fileName +".txt";
+			fileName = fileName +type+".txt";
 			System.out.println(fileName);
 			File f = new File(fileName);
 			/*
