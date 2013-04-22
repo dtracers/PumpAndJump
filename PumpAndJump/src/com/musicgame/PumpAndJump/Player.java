@@ -30,7 +30,7 @@ public class Player extends GameObject implements Animated{
 	{
 		hip = new PlayerHip( new Point( 0.0f, 0.0f, 0.0f ), angle );
 		this.p = pos;
-		
+
 		origY = pos.y;
 
 		hip.scale( 1.0f, 1.0f, 1.0f );
@@ -43,9 +43,9 @@ public class Player extends GameObject implements Animated{
 		getPose( fpose );
 
 		done = (float) Math.random()*5.0f + 1.0f;
-		
+
 		aniFSM = new PlayerAnimationFSM( "playerStates.txt", "playerFSM.txt", "r" );
-		
+
 		aniQ = new AnimationQueue( aniFSM.getAni(), fpose );
 	}
 
@@ -189,7 +189,7 @@ public class Player extends GameObject implements Animated{
 	public void jump()
 	{
 		float[] f = new float[ pose.length ];
-		getPose( f ); 
+		getPose( f );
 		Animation ta = aniFSM.startJump();
 		if( ta != null )
 			aniQ.switchAnimation( ta, f );
@@ -203,7 +203,7 @@ public class Player extends GameObject implements Animated{
 		if( ta != null )
 		aniQ.switchAnimation( ta, f );
 	}
-	
+
 	public void print()
 	{
 		hip.torso.print();
@@ -224,26 +224,26 @@ class PlayerForearm extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = 90.0f; 
-				image = TextureMapping.staticGetSprite( "foot" );;
+				angle.z = 90.0f;
+				image = TextureMapping.staticGetSprite( "leftforearm" );;
 				break;
 			case RIGHT:
-				angle.z = 60.0f; 
-				image = TextureMapping.staticGetSprite( "foot" );;
+				angle.z = 60.0f;
+				image = TextureMapping.staticGetSprite( "rightforearm" );;
 				break;
 		}
-		
+
 		width = image.getWidth();
 		height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 	}
 
@@ -275,7 +275,7 @@ class PlayerShoulder extends Model
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 		side = a;
-		
+
 		forearm = new PlayerForearm( a );
 
 		children.add( forearm );
@@ -283,7 +283,7 @@ class PlayerShoulder extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = 135.0f; 
+				angle.z = 135.0f;
 				image = TextureMapping.staticGetSprite( "leftarm" );
 				break;
 			case RIGHT:
@@ -291,18 +291,18 @@ class PlayerShoulder extends Model
 				image = TextureMapping.staticGetSprite( "rightarm" );
 				break;
 		}
-		
+
 		width = image.getWidth();
 		height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 	}
 
@@ -340,18 +340,18 @@ class PlayerHead extends Model
 
 		width = image.getWidth();
 		height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
-		
-		
+
+
 	}
 
 	public void display( SpriteBatch sb )
@@ -389,15 +389,15 @@ class PlayerTorso extends Model
 
 		width = image.getWidth();
 		height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 
 		leftArm = new PlayerShoulder( Side.LEFT );
@@ -443,17 +443,17 @@ class PlayerTuckles extends Model
 		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
 		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
-		
+
 		//width = image.getWidth();
 		//height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[6];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 
 	}
@@ -494,21 +494,21 @@ class PlayerFoot extends Model
 				image = TextureMapping.staticGetSprite( "foot" );
 				break;
 			case RIGHT:
-				angle.z = 90.0f; 
+				angle.z = 90.0f;
 				image = TextureMapping.staticGetSprite( "foot" );
 				break;
 		}
 		width = image.getWidth();
 		height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 	}
 
@@ -539,7 +539,7 @@ class PlayerShin extends Model
 	PlayerShin( Side a )
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-		
+
 		foot = new PlayerFoot( a );
 
 		children.add( foot );
@@ -547,26 +547,26 @@ class PlayerShin extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = -60.0f; 
+				angle.z = -60.0f;
 				image = TextureMapping.staticGetSprite( "leftshin" );
 				break;
 			case RIGHT:
-				angle.z = -45.0f; 
+				angle.z = -45.0f;
 				image = TextureMapping.staticGetSprite( "rightshin" );
 				break;
 		}
-		
+
 		width = image.getWidth();
 		height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 	}
 
@@ -609,26 +609,26 @@ class PlayerThigh extends Model
 		switch( a )
 		{
 			case LEFT:
-				angle.z = -45.0f; 
+				angle.z = -45.0f;
 				image = TextureMapping.staticGetSprite( "leftthigh" );
 				break;
 			case RIGHT:
-				angle.z = -90.0f; 
+				angle.z = -90.0f;
 				image = TextureMapping.staticGetSprite( "rightthigh" );
 				break;
 		}
-		
+
 		width = image.getWidth();
 		height = image.getHeight();
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
-		
+
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-		
+
 		poly = new Polygon( points );
 	}
 
