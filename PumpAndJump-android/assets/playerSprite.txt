@@ -1,0 +1,123 @@
+playerSprite.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+chestlarge
+  rotate: false
+  xy: 39, 2
+  size: 70, 12
+  orig: 70, 12
+  offset: 0, 0
+  index: -1
+leftforearm
+  rotate: false
+  xy: 44, 68
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+rightarm
+  rotate: false
+  xy: 88, 82
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+chest
+  rotate: false
+  xy: 2, 2
+  size: 35, 6
+  orig: 35, 6
+  offset: 0, 0
+  index: -1
+leftthigh
+  rotate: false
+  xy: 24, 82
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+rightthigh
+  rotate: false
+  xy: 88, 96
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+foot
+  rotate: false
+  xy: 111, 2
+  size: 9, 5
+  orig: 9, 5
+  offset: 0, 0
+  index: -1
+leftarmlarge
+  rotate: false
+  xy: 2, 68
+  size: 40, 12
+  orig: 40, 12
+  offset: 0, 0
+  index: -1
+rightforearm
+  rotate: false
+  xy: 2, 96
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+leftforearmlarge
+  rotate: false
+  xy: 66, 68
+  size: 40, 12
+  orig: 40, 12
+  offset: 0, 0
+  index: -1
+rightshin
+  rotate: false
+  xy: 66, 96
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+leftshin
+  rotate: false
+  xy: 2, 82
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+rightforearmlarge
+  rotate: false
+  xy: 24, 96
+  size: 40, 12
+  orig: 40, 12
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 2, 16
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+headlarge
+  rotate: false
+  xy: 29, 16
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+leftarm
+  rotate: false
+  xy: 81, 16
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+leftthighlarge
+  rotate: false
+  xy: 46, 82
+  size: 40, 12
+  orig: 40, 12
+  offset: 0, 0
+  index: -1
