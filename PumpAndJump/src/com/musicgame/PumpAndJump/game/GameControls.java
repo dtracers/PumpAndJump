@@ -26,25 +26,24 @@ public class GameControls
 	public ChangeListener jumpListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
-			System.out.println("jump!");
+			//System.out.println("jump!");
 		}
 	};
 	public ChangeListener duckListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
-			System.out.println("duck!");
+			//System.out.println("duck!");
 		}
 	};
 	public ChangeListener pauseListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
-			System.out.println("pause!");
+			//System.out.println("pause!");
 		}
 	};
 	
 	public GameControls()
 	{	
-		
 		this.visibility=this.prefs.getFloat("visibility", 1.0f);
 		this.controllerLayout=this.prefs.getInteger("controllerLayout", 0);
 		
@@ -76,7 +75,7 @@ public class GameControls
 		if(controllertype == 1)//entire left jump, pause center top, entire right duck
 		{
 			this.controllerLayout=1;
-			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			//controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
 			Table ltable=new Table();
 			ltable.add(jumpButton).fill().expand();
 			Table rtable=new Table();
@@ -96,7 +95,7 @@ public class GameControls
 		else if(controllertype == 2)
 		{
 			this.controllerLayout=2;
-			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			//controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
 			Table ltable=new Table();
 			ltable.add(jumpButton).fill().expand();
 			ltable.row();
@@ -116,7 +115,7 @@ public class GameControls
 		else if(controllertype == 3)
 		{
 			this.controllerLayout=2;
-			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			//controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
 			Table ltable=new Table();
 			ltable.add(jumpButton).fill().expand();
 			ltable.row();
@@ -136,7 +135,7 @@ public class GameControls
 		else //default controller type =0 //entire left jump, pause center, entire right duck
 		{
 			this.controllerLayout=0;
-			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			//controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
 			Table ltable=new Table();
 			ltable.add(jumpButton).fill().expand();
 			Table rtable=new Table();
@@ -150,7 +149,21 @@ public class GameControls
 			controlsTable.add(ltable).fill().expand().pad(5).left();
 			controlsTable.add(ctable).fill().expand().pad(5).center();
 			controlsTable.add(rtable).fill().expand().pad(5).right();
-
+			/*this.controllerLayout=0;
+			controlsTable.add(new Label("Controls "+Integer.toString(controllertype), uiSkin)).colspan(3).center().pad(5);controlsTable.row();
+			Table ltable=new Table();
+			ltable.add(jumpButton).fill().expand();
+			Table rtable=new Table();
+			rtable.add(duckButton).fill().expand();
+			Table ctable=new Table();
+			ctable.add().fill().expand();
+			ctable.row();
+			ctable.add(pauseButton).fill().expand();
+			ctable.row();
+			ctable.add().fill().expand().pad(5);
+			controlsTable.add(ltable).fill().expand().pad(5).left().size(200,200);*/
+			//controlsTable.add(ctable).fill().expand().pad(5).center();
+			//controlsTable.add(rtable).fill().expand().pad(5).right();
 		}
 		this.setVisibility(this.visibility);
 	}

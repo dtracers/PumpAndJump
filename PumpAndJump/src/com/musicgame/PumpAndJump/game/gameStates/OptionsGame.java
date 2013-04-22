@@ -113,7 +113,7 @@ public class OptionsGame extends GameThread
 		container.add(scroll).expand().fill();//.colspan(2);//.pad(10).colspan(2);
 		
 		scrolltable.add(new Label("Controls Layout ", uiSkin)).right().pad(5);
-		scrolltable.add(controlsLayoutSlider).left();
+		scrolltable.add(controlsLayoutSlider).left().expand().fill().pad(15);
 		scrolltable.row();//.size(500,500);
 		scrolltable.add(this.controls.controlsTable).colspan(2).size((int)(0.6f*Gdx.graphics.getWidth()),(int)(0.6f*Gdx.graphics.getHeight()) );
 

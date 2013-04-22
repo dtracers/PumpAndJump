@@ -96,7 +96,7 @@ public class RunningGame extends GameThread
 		stage = new Stage();
 
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
-
+		this.controls.controlsTable.setFillParent(true);
 		stage.addActor(this.controls.controlsTable);
 		//this.controls.setVisible( false );
 
