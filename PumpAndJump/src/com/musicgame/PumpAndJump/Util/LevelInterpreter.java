@@ -78,7 +78,7 @@ public class LevelInterpreter
 	{
 		//Gdx.files.internal("Something in assets");
 		ArrayList<GameObject> Level;
-		FileHandle dir= Gdx.files.internal("Level1.txt");
+		FileHandle dir= Gdx.files.internal("level1.txt");
 
 		if(!dir.exists())
 		{
