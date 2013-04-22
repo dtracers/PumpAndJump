@@ -245,13 +245,14 @@ public class RunningGame extends GameThread
 				e.printStackTrace();
 			}
 
-			System.out.println( "Size:"+actualObjects.size() );
+			/*System.out.println( "Size:"+actualObjects.size() );
 			JFileChooser jfc = new JFileChooser("../PumpAndJump-android/assets/");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
 			jfc.setFileFilter(filter);
 		    jfc.showDialog(null,"Open");
 		    jfc.setVisible(true);
-		    File filename = jfc.getSelectedFile();
+		    File filename = jfc.getSelectedFile();*/
+			File filename=null;
 
 		    streamer = new MusicInputStreamer();
 

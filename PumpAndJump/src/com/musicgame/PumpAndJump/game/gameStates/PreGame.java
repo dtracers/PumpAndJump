@@ -102,8 +102,11 @@ public class PreGame extends GameThread
 						Gdx.app.exit();
 					}
 				});
-		int buttonWidth = Gdx.graphics.getWidth()/2;
-		int buttonHeight = Gdx.graphics.getHeight()/5-10;
+		
+		TextButtonStyle textstyle = startGameButton.getStyle();
+		textstyle.font.scale(0.5f);
+		startGameButton.setStyle(textstyle);
+		
 		table.add().expand().fill();
 		table.add(startGameButton).expand().fill().pad(5);
 		table.add().expand().fill();
