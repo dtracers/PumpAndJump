@@ -104,8 +104,8 @@ public class PreGame extends GameThread
 				});
 		
 		TextButtonStyle textstyle = startGameButton.getStyle();
-		textstyle.font.scale(0.5f);
-		startGameButton.setStyle(textstyle);
+		//textstyle.font.scale(0.5f);
+		//startGameButton.setStyle(textstyle);
 		
 		table.add().expand().fill();
 		table.add(startGameButton).expand().fill().pad(5);

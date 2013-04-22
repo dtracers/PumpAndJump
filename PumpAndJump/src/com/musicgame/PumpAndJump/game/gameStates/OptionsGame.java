@@ -60,8 +60,8 @@ public class OptionsGame extends GameThread
 		//container.debugTable(); // turn on only table lines
 		
 		Table scrolltable = new Table();
-		scrolltable.debug(); // turn on all debug lines (table, cell, and widget)
-		scrolltable.debugTable(); // turn on only table lines
+		//scrolltable.debug(); // turn on all debug lines (table, cell, and widget)
+		//scrolltable.debugTable(); // turn on only table lines
 		final ScrollPane scroll = new ScrollPane(scrolltable, uiSkin);
 
 		InputListener stopTouchDown = new InputListener() {
