@@ -3,7 +3,6 @@ package com.musicgame.PumpAndJump.game.gameStates;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
@@ -11,7 +10,7 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 
 public class Buffering extends GameThread
 {
-	Texture dropImage = new Texture(Gdx.files.internal("droplet.png"));
+	Texture bufferingImage = new Texture(Gdx.files.internal("buffering.png"));
 	BitmapFont  font = new BitmapFont();
 	float x,y;
 	long position;
@@ -20,6 +19,7 @@ public class Buffering extends GameThread
 	long delay = 5000;
 	boolean threadStarted;
 	long counter = 0;
+	
 	public Buffering()
 	{
 	}
@@ -30,11 +30,9 @@ public class Buffering extends GameThread
 		x = 500.0f+20.0f*com.badlogic.gdx.math.MathUtils.cos(position/(MathUtils.PI*2.0f));
 		y = 500.0f+20.0f*com.badlogic.gdx.math.MathUtils.sin(position/(MathUtils.PI*2.0f));
 
-
-
 		batch.begin();
 		font.draw(batch,"Counting "+counter,500, 500);
-		batch.draw(dropImage, x,y);
+		batch.draw(bufferingImage, x,y);
 		batch.end();
 		position++;
 	//	System.out.println("Buffering! " +x+" "+y);
@@ -58,7 +56,7 @@ public class Buffering extends GameThread
 		if(currentThread instanceof RunningGame)
 		{
 			final RunningGame game = (RunningGame)currentThread;
-		//	System.out.println("ADDING THE BUFFER THREAD!!!! YAYYYY");
+			//System.out.println("ADDING THE BUFFER THREAD!!!! YAYYYY");
 			runMethod = new Thread()
 			{
 				public void run()
