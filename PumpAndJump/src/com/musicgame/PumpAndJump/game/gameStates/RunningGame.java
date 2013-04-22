@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.Player;
+import com.musicgame.PumpAndJump.Animation.Animation;
+import com.musicgame.PumpAndJump.Animation.AnimationQueue;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.LevelInterpreter;
 import com.musicgame.PumpAndJump.game.GameControls;
@@ -44,6 +46,7 @@ public class RunningGame extends GameThread
 	long soundFrame = 0;
 	//the timeRefernce of each object
 	double timeReference = 0;
+	double lastTimeReference = 0;
 	int bufferDistance = 200;
 	long sampleRate = 44100;
 	long start = 0;
@@ -51,6 +54,8 @@ public class RunningGame extends GameThread
 	Point pos;
 	Point rotation;
 	Point scale;
+	Animation levelAni;
+	AnimationQueue levelAniQ;
 	boolean toWait = false;
 	private boolean started = false;
 	int bleck = 0;
@@ -101,6 +106,9 @@ public class RunningGame extends GameThread
 		//this.controls.setVisible( false );
 
         player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+        float[] f = { 0.0f };
+        levelAni = new Animation( "level1_ani.txt" );
+        levelAniQ = new AnimationQueue( levelAni, f );
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
@@ -130,11 +138,12 @@ public class RunningGame extends GameThread
 		//	System.out.println(actualObjects.size());
 			previousTime = currentTime;
 			currentTime = System.currentTimeMillis();
-			delta = (currentTime-previousTime)/divide;
+			delta = (float)(timeReference-lastTimeReference);
 			pos.x = (float)timeReference;
 
 			player.update( new Matrix4(), delta);
 
+			setRotation( levelAniQ.getPose( delta ) );
 			//update based on object's modelview
 			Matrix4 mv = new Matrix4();
 			makeWorldView( mv );
@@ -145,6 +154,7 @@ public class RunningGame extends GameThread
 
 			}
 
+			lastTimeReference += delta;
 			if(toWait)
 				myWait();
 			try {
@@ -389,11 +399,22 @@ public class RunningGame extends GameThread
 	{
 		mv.translate( -pos.x*tempo, pos.y, pos.z );
 
+		rotateWorldView(mv);
+
+		mv.scale( scale.x, scale.y, scale.z );
+	}
+
+	private void rotateWorldView(Matrix4 mv)
+	{
 		mv.rotate( 1.0f, 0.0f, 0.0f, rotation.x );
 		mv.rotate( 0.0f, 1.0f, 0.0f, rotation.y );
 		mv.rotate( 0.0f, 0.0f, 1.0f, rotation.z );
+	}
 
-		mv.scale( scale.x, scale.y, scale.z );
+
+	void setRotation( float[] f )
+	{
+		rotation.z = f[ 0 ];
 	}
 
 }

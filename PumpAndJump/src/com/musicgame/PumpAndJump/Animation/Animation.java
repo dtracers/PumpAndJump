@@ -192,6 +192,22 @@ public class Animation {
 			t = s.nextFloat();
 			keyframes.add( new Keyframe( pose, t, i ) );
 		}
+		
+		if( actor == 0 )
+		{
+			float lastValue = 0.0f;
+			for( Keyframe kf: keyframes )
+			{
+				float ydist = kf.pose[ 0 ] - lastValue;
+				float h = (float) Math.sqrt( 1000.0f*1000.0f +  ydist*ydist );
+				float o = ydist;
+				
+				float angle = (float) Math.asin( o/h );
+				
+				lastValue = kf.pose[ 0 ];
+				kf.pose[ 0 ] = angle;
+			}
+		}
 
 		s.close();
 	}

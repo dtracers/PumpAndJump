@@ -144,7 +144,7 @@ public class Player extends GameObject implements Animated{
 		}
 	}
 
-	public void display( SpriteBatch sb )
+	public synchronized void display( SpriteBatch sb )
 	{
 		pushTransforms( sb );
 
@@ -160,7 +160,7 @@ public class Player extends GameObject implements Animated{
 	}
 
 	@Override
-	public void update( Matrix4 mv, float delta )
+	public synchronized void update( Matrix4 mv, float delta )
 	{
 		time += delta;
 		if( aniQ.stop )
@@ -173,7 +173,7 @@ public class Player extends GameObject implements Animated{
 	}
 
 	@Override
-	public void UpdatePose( Matrix4 mv, float[] pose ) {
+	public synchronized void UpdatePose( Matrix4 mv, float[] pose ) {
 		setPose( pose );
 		Matrix4 m = mv.cpy();
 		m = m.translate( p.x,  p.y, p.z );
