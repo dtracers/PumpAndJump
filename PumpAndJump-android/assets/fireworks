@@ -1,4 +1,4 @@
-Untitled
+Red Fireworks
 - Delay -
 active: false
 - Duration - 
@@ -149,10 +149,10 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-D:\Dungeons\square.jpg
+C:\Users\Matt\Documents\GitHub\PumpAndJump\PumpAndJump-android\assets\square.jpg
 
 
-Untitled
+Blue Fireworks
 - Delay -
 active: false
 - Duration - 
@@ -285,10 +285,10 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-D:\Dungeons\square.jpg
+C:\Users\Matt\Documents\GitHub\PumpAndJump\PumpAndJump-android\assets\square.jpg
 
 
-Untitled
+Greeen Fireworks
 - Delay -
 active: false
 - Duration - 
@@ -439,4 +439,4 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-D:\Dungeons\square.jpg
+C:\Users\Matt\Documents\GitHub\PumpAndJump\PumpAndJump-android\assets\square.jpg
