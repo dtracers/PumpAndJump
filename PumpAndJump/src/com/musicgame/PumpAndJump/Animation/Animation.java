@@ -206,6 +206,7 @@ public class Animation {
 
 			//	lastValue = kf.pose[ 0 ];
 			//	kf.pose[ 0 ] = angle;
+			//	kf.pose[ 0 ] = (float) (((ydist*180.0f/Math.PI)%180-90.0)*Math.PI/180.0f);
 			}
 		}
 
