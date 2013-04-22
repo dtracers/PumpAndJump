@@ -49,6 +49,7 @@ class IntervalSet implements Comparable
 	public static boolean sortSize;
 	public static boolean sortAvg;
 	ArrayList<Interval> distancesInSet = new ArrayList<Interval>();
+	ArrayList<Beat> beats;
 	int size = 0;
 	double averageValue = 0;
 	int createdBeatIndex;
@@ -69,6 +70,7 @@ class IntervalSet implements Comparable
 				{
 					double dividedDistance = totalDistance/averageValue;
 					double decimal = Math.abs(dividedDistance-Math.rint(dividedDistance));
+					/*
 					if(d.starting.sampleLocation>770&&d.starting.sampleLocation<790&&previous.other.sampleLocation<800&&previous.other.sampleLocation>760)
 					{
 						System.out.println("the starting location "+previous);
@@ -80,6 +82,7 @@ class IntervalSet implements Comparable
 							System.out.println(totalDistance+" "+dividedDistance+" "+decimal);
 						}
 					}
+					*/
 					//then I need to combine it into one thing? and then attach that result chain hopefully (which will result in a tree?)
 					if(totalDistance<1)
 					{
