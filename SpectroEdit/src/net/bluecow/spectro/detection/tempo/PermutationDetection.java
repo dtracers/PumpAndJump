@@ -153,17 +153,9 @@ public class PermutationDetection extends TempoDetector {
 				{
 					if(dSet.addDistance(currentInterval))
 					{
-
 						intervalPermutations.remove(tempDistanceIndex);
 						tempDistanceIndex-=1;
-
-					}else
-					{
-						//leftOvers.add(currentInterval);
 					}
-				}else
-				{
-					//leftOvers.add(currentInterval);
 				}
 
 				tempDistanceIndex++;
@@ -183,13 +175,9 @@ public class PermutationDetection extends TempoDetector {
 						tempDistanceIndex-=1;
 					intervalPermutations.remove(tempDistanceIndex);
 					tempDistanceIndex-=1;
-				}else
-				{
-					//leftOvers.add(currentInterval);
 				}
 			}
 		}
-
 	//	return intervalPermutations;
 	}
 
