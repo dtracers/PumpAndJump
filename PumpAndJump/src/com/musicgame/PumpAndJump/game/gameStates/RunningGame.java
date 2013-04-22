@@ -179,6 +179,9 @@ public class RunningGame extends GameThread
 		Matrix4 mv = batch.getTransformMatrix();
 		Matrix4 before = new Matrix4( mv.cpy() );
 
+		rotateWorldView( mv );
+
+		Matrix4 beforeWV = new Matrix4( mv.cpy() );
 		//make world view
 		makeWorldView( mv );
 
@@ -191,14 +194,13 @@ public class RunningGame extends GameThread
 			actualObjects.get( k ).draw( batch );
 		}
 
-		//reset to the orignal transform matrix
-		batch.setTransformMatrix( before );
-	//	if(!toWait)
-	//		player.update( delta );
+		//reset to the original transform matrix
+		batch.setTransformMatrix( beforeWV );
+
 		player.draw( batch );
+
+		batch.setTransformMatrix( before );
 		batch.end();
-	//	Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
-	//	Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		if(!toWait)
 		{
 			stage.act(Math.min(delta, 1 / 30f));
@@ -398,8 +400,6 @@ public class RunningGame extends GameThread
 	private void makeWorldView( Matrix4 mv )
 	{
 		mv.translate( -pos.x*tempo, pos.y, pos.z );
-
-		rotateWorldView(mv);
 
 		mv.scale( scale.x, scale.y, scale.z );
 	}

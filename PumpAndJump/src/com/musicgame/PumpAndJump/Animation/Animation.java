@@ -14,18 +14,18 @@ import com.badlogic.gdx.files.FileHandle;
  * @author gigemjt
  */
 public class Animation {
-	
+
 	static Map< String, Animation > FileToAnimation = new TreeMap< String, Animation >();
-	
+
 	public ArrayList< Keyframe > keyframes;
 	public int dof = 16;
 	public int actor = 1;
 	public boolean isLooping;
-	
+
 	public static void main( String[] args )
 	{
 		//test file inputs;'
-		
+
 		/*Animation a = new Animation( "TestAnimationType0.txt" );
 		System.out.println( a.actor );
 		System.out.println( a.keyframes.size() );
@@ -36,19 +36,19 @@ public class Animation {
 		System.out.println( c.actor );
 		System.out.println( c.keyframes.size() );*/
 	}
-	
+
 	public Animation( String fileName )
 	{
 		keyframes = new ArrayList< Keyframe >();
 		System.out.println( fileName );
 		loadAnimation( fileName );
 	}
-	
+
 	public Animation( Animation ani )
 	{
 		copy( ani );
 	}
-	
+
 	void copy( Animation ani )
 	{
 		keyframes = new ArrayList< Keyframe >();
@@ -57,7 +57,7 @@ public class Animation {
 			keyframes.add( kf.copy() );
 		}
 	}
-	
+
 	void loadAnimation( String fileName )
 	{
 		fileName = fileName.toLowerCase();
@@ -72,25 +72,25 @@ public class Animation {
 			FileToAnimation.put( fileName, new Animation( this ) );
 		}
 	}
-	
+
 	void ReadAnimation( String fileName )
 	{
 		FileHandle dir =  Gdx.files.internal( fileName );
 		Scanner s = new Scanner( dir.reader() );
-		
+
 		int type;
 		type = s.nextInt();
-		
+
 		switch( type )
 		{
 			case -1: readType1( s ); break;
 			case -2: readType2( s ); break;
 			default: readType( s, type ); break;
 		}
-		
+
 		normalize();
 	}
-	
+
 	public void scaleTimes( float scalar )
 	{
 		for( Keyframe kf: keyframes )
@@ -98,7 +98,7 @@ public class Animation {
 			kf.t *= scalar;
 		}
 	}
-	
+
 	public void changeTime( int index, float newTime )
 	{
 		float timeDiff = newTime - keyframes.get( index ).t;
@@ -107,7 +107,7 @@ public class Animation {
 			keyframes.get( i ).t += timeDiff;
 		}
 	}
-	
+
 	public void changeTimeRange( int index, float[] times )
 	{
 		if( times.length > 0 )
@@ -126,24 +126,24 @@ public class Animation {
 			}
 		}
 	}
-	
+
 	private void normalize( )
 	{
 		for( int i = 0; i < dof; i++ )
 		{
 			int numberOfFullCircles = (int)(keyframes.get(0).pose[i] / 360);
-			
+
 			for( int j = 0; j < keyframes.size(); j++ )
 			{
-				keyframes.get( j ).pose[ i ] -= ((float)numberOfFullCircles)*(360.0f); 
+				keyframes.get( j ).pose[ i ] -= ((float)numberOfFullCircles)*(360.0f);
 			}
 		}
 	}
-	
+
 	private void readType1( Scanner s )
 	{
 		int size = s.nextInt();
-		
+
 		float origY = s.nextFloat();
 
 		float t = 0.0f;
@@ -152,7 +152,7 @@ public class Animation {
 		{
 
 			float[] pose = new float[ dof ];
-			
+
 			for( int j = 0; j < dof; j++ )
 			{
 				pose[j] = s.nextFloat();
@@ -164,17 +164,17 @@ public class Animation {
 
 		s.close();
 	}
-	
+
 	private void readType2( Scanner s )
 	{
 		int size = s.nextInt();
-		
+
 		float origY = s.nextFloat();
-		
-		actor = s.nextInt(); 
-		
+
+		actor = s.nextInt();
+
 		dof = s.nextInt();
-		
+
 		isLooping = s.nextBoolean();
 
 		float t = 0.0f;
@@ -182,7 +182,7 @@ public class Animation {
 		for( int i = 0; i < size; i++ )
 		{
 			float[] pose = new float[ dof ];
-			
+
 			for( int j = 0; j < dof; j++ )
 			{
 				pose[j] = s.nextFloat();
@@ -192,26 +192,26 @@ public class Animation {
 			t = s.nextFloat();
 			keyframes.add( new Keyframe( pose, t, i ) );
 		}
-		
+
 		if( actor == 0 )
 		{
 			float lastValue = 0.0f;
 			for( Keyframe kf: keyframes )
 			{
 				float ydist = kf.pose[ 0 ] - lastValue;
-				float h = (float) Math.sqrt( 1000.0f*1000.0f +  ydist*ydist );
+				float h = (float) Math.sqrt( 300.0f*300.0f +  ydist*ydist );
 				float o = ydist;
-				
+
 				float angle = (float) Math.asin( o/h );
-				
-				lastValue = kf.pose[ 0 ];
-				kf.pose[ 0 ] = angle;
+
+			//	lastValue = kf.pose[ 0 ];
+			//	kf.pose[ 0 ] = angle;
 			}
 		}
 
 		s.close();
 	}
-	
+
 	private void readType( Scanner s, int size )
 	{
 		float[] pose = new float[ dof ];
@@ -231,5 +231,5 @@ public class Animation {
 			keyframes.add( new Keyframe( pose, t, i ) );
 		}
 	}
-	
+
 }
