@@ -114,7 +114,7 @@ public class PermutationDetection extends TempoDetector {
 			Interval d = regression.get(k);
 			double interval = d.intervalSize;
 			double lineDistance = interval-results[0];
-			if(interval<maxIntervalAllowed&&Math.abs(lineDistance)<((distanceAcuteness+1)*2))
+			if(interval<maxIntervalAllowed)
 			{
 				intervalPermutations.add(d);
 			}
