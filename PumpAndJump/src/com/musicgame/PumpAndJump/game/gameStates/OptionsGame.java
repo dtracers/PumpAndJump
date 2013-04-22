@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -55,9 +56,12 @@ public class OptionsGame extends GameThread
         Table container = new Table();
 		stage.addActor(container);
 		container.setFillParent(true);
-
+		//container.debug(); // turn on all debug lines (table, cell, and widget)
+		//container.debugTable(); // turn on only table lines
+		
 		Table scrolltable = new Table();
-
+		scrolltable.debug(); // turn on all debug lines (table, cell, and widget)
+		scrolltable.debugTable(); // turn on only table lines
 		final ScrollPane scroll = new ScrollPane(scrolltable, uiSkin);
 
 		InputListener stopTouchDown = new InputListener() {
@@ -110,19 +114,37 @@ public class OptionsGame extends GameThread
 		int buttonWidth = Gdx.graphics.getWidth()/2-15;
 		int buttonHeight = Gdx.graphics.getHeight()/6-10;
 		
-		container.add(scroll).expand().fill();//.colspan(2);//.pad(10).colspan(2);
+		container.add(scroll).expand().fill();
 		
-		scrolltable.add(new Label("Controls Layout ", uiSkin)).right().pad(5);
-		scrolltable.add(controlsLayoutSlider).left().expand().fill().pad(15);
-		scrolltable.row();//.size(500,500);
-		scrolltable.add(this.controls.controlsTable).colspan(2).size((int)(0.6f*Gdx.graphics.getWidth()),(int)(0.6f*Gdx.graphics.getHeight()) );
+		scrolltable.add().expand().fill();
+		Label l = new Label("Controls Layout ", uiSkin);
+		l.setAlignment(Align.center);
+		scrolltable.add(l).expand().fill();
+		scrolltable.add(controlsLayoutSlider).colspan(3).expand().fill();
+		scrolltable.add().expand().fill();
 
-		scrolltable.row();//.space(10).padBottom(10);
-		scrolltable.add(new Label("Controls Visibility ", uiSkin)).pad(5);
-		scrolltable.add(visibilitySlider).expand().fill().pad(15);
-		scrolltable.row();//.space(10).padBottom(10);
-		scrolltable.add(backButton).size(buttonWidth,buttonHeight).pad(5).left();
-		scrolltable.add(saveButton).size(buttonWidth,buttonHeight).pad(5).right();
+		scrolltable.row();
+		scrolltable.add(this.controls.controlsTable).colspan(6).size((int)(0.6f*Gdx.graphics.getWidth()),(int)(0.6f*Gdx.graphics.getHeight()) );
+
+		scrolltable.row();
+		scrolltable.add().expand().fill();
+		Label vl = new Label("Visibility  ", uiSkin);
+		vl.setAlignment(Align.center);
+		scrolltable.add(vl).expand().fill();
+		scrolltable.add(visibilitySlider).colspan(3).expand().fill();
+		scrolltable.add().expand().fill();
+		
+		scrolltable.row();
+		scrolltable.add().expand().fill();
+		scrolltable.add().expand().fill();
+		scrolltable.add().expand().fill();
+		scrolltable.add().expand().fill();
+		scrolltable.add().expand().fill();
+		scrolltable.add().expand().fill();
+		
+		scrolltable.row();
+		scrolltable.add(backButton).colspan(3).expand().fill().pad(5);//.colspan(2).pad(5).left();
+		scrolltable.add(saveButton).colspan(3).expand().fill().pad(5);//.size(buttonWidth,buttonHeight);//.colspan(2).pad(5).right();
 	}
 
 	@Override

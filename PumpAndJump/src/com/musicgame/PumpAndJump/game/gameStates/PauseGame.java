@@ -89,25 +89,32 @@ public class PauseGame extends GameThread
 		quitGameButton.addListener(quitListener);
 
 
-		final TextButton jumpGameButton = new TextButton("Jump Button", uiSkin);
-		jumpGameButton.setColor(.4f,.4f,.4f,.6f);
-		jumpGameButton.setDisabled(true);
-		final TextButton duckGameButton = new TextButton("Duck Button", uiSkin);
-		duckGameButton.setDisabled(true);
-		duckGameButton.setColor(.4f,.4f,.4f,.6f);
-		table.add(jumpGameButton).expand().fill();
 		
-		Table centertable = new Table();
-		centertable.setFillParent(true);
-		centertable.debug(); // turn on all debug lines (table, cell, and widget)
-		centertable.debugTable(); // turn on only table lines
-		centertable.add(optionGameButton).expand();//.size(250,100).pad(5);
-		centertable.row();
-		centertable.add(quitGameButton).expand();//.size(250,100).pad(5);
-		centertable.row();
-		centertable.add(unpauseGameButton).expand();//.size(250,100).pad(5);
-		table.add(centertable);
-		table.add(duckGameButton).expand().fill();
+		//Table centertable = new Table();
+		//centertable.setFillParent(true);
+		//centertable.debug(); // turn on all debug lines (table, cell, and widget)
+		//centertable.debugTable(); // turn on only table lines
+		table.row();
+		table.add().expand().fill();
+		table.add().expand().fill();
+		table.add().expand().fill();
+		table.row();
+		table.add().expand().fill();
+		table.add(unpauseGameButton).expand().fill().pad(5);
+		table.add().expand().fill();
+		table.row();
+		table.add().expand().fill();
+		table.add(optionGameButton).expand().fill().pad(5);
+		table.add().expand().fill();
+		table.row();
+		table.add().expand().fill();
+		table.add(quitGameButton).expand().fill().pad(5);
+		table.add().expand().fill();
+		table.row();
+		table.add().expand().fill();
+		table.add().expand().fill();
+		table.add().expand().fill();
+		
 
 	}
 
