@@ -214,37 +214,37 @@ enum Side{ LEFT, RIGHT };
 
 class PlayerForearm extends Model
 {
-	public final float width = 20.0f;
-	public final float height = 4.0f;
+	public float width = 20.0f;
+	public float height = 4.0f;
 
 	public PlayerForearm( Side a )
 	{
 		super(  new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-		image.setBounds( 0.0f, 0.0f, width, height );
+		switch( a )
+		{
+			case LEFT:
+				angle.z = 90.0f; 
+				image = TextureMapping.staticGetSprite( "foot" );;
+				break;
+			case RIGHT:
+				angle.z = 60.0f; 
+				image = TextureMapping.staticGetSprite( "foot" );;
+				break;
+		}
+		
+		width = image.getWidth();
+		height = image.getHeight();
+		
 		image.setPosition( 0.0f, -height/2.0f );
-
+		
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-
+		
 		poly = new Polygon( points );
-
-		switch( a )
-		{
-			case LEFT:
-				angle.z = 90.0f; 
-				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
-				break;
-			case RIGHT:
-				angle.z = 60.0f; 
-				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
-				break;
-		}
 	}
 
 	public void display( SpriteBatch sb )
@@ -268,27 +268,14 @@ class PlayerShoulder extends Model
 {
 	public PlayerForearm forearm;
 	public Side side;
-	public final float width = 20.0f;
-	public final float height = 4.0f;
+	public float width = 20.0f;
+	public float height = 4.0f;
 
 	PlayerShoulder( Side a )
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 		side = a;
-
-		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-		image.setBounds( 0.0f, 0.0f, width, height );
-		image.setPosition( 0.0f, -height/2.0f );
-
-		float[] points = new float[8];
-		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
-		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
-		points[ 4 ] = width; points[5] = height/2.0f;
-		points[ 6 ] = width; points[7] = -height/2.0f;
-
-		poly = new Polygon( points );
-
+		
 		forearm = new PlayerForearm( a );
 
 		children.add( forearm );
@@ -297,13 +284,26 @@ class PlayerShoulder extends Model
 		{
 			case LEFT:
 				angle.z = 135.0f; 
-				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "leftarm" );
 				break;
 			case RIGHT:
 				angle.z = -135.0f;
-				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "rightarm" );
 				break;
 		}
+		
+		width = image.getWidth();
+		height = image.getHeight();
+		
+		image.setPosition( 0.0f, -height/2.0f );
+		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
 	}
 
 	public void display( SpriteBatch sb )
@@ -326,25 +326,32 @@ class PlayerShoulder extends Model
 
 class PlayerHead extends Model
 {
-	public final float width = 25.0f;
-	public final float height = 25.0f;
+	public float width = 25.0f;
+	public float height = 25.0f;
 
 	public PlayerHead()
 	{
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image = TextureMapping.staticGetSprite( "head" );;
 		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
+		width = image.getWidth();
+		height = image.getHeight();
+		
+		image.setPosition( 0.0f, -height/2.0f );
+		
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-
+		
 		poly = new Polygon( points );
+		
+		
 	}
 
 	public void display( SpriteBatch sb )
@@ -371,24 +378,26 @@ class PlayerTorso extends Model
 	public PlayerShoulder leftArm;
 	public PlayerShoulder rightArm;
 	public PlayerHead head;
-	public final float width = 35.0f;
-	public final float height = 4.0f;
+	public float width = 35.0f;
+	public float height = 4.0f;
 
 	public PlayerTorso()
 	{
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 90.0f ),new Point( 1.0f, 1.0f, 1.0f ) );
 
-		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-		image.setBounds( 0.0f, 0.0f, width, height );
-		image.setPosition( 0.0f, -height/2.0f );
+		image = TextureMapping.staticGetSprite( "chest" );
 
+		width = image.getWidth();
+		height = image.getHeight();
+		
+		image.setPosition( 0.0f, -height/2.0f );
+		
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = height/2.0f;
 		points[ 6 ] = width; points[7] = -height/2.0f;
-
+		
 		poly = new Polygon( points );
 
 		leftArm = new PlayerShoulder( Side.LEFT );
@@ -424,8 +433,8 @@ class PlayerTorso extends Model
 
 class PlayerTuckles extends Model
 {
-	public final float width = 3.0f;
-	public final float height = 4.0f;
+	public float width = 3.0f;
+	public float height = 4.0f;
 
 	public PlayerTuckles( Side a )
 	{
@@ -434,14 +443,19 @@ class PlayerTuckles extends Model
 		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
 		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
+		
+		//width = image.getWidth();
+		//height = image.getHeight();
+		
 		image.setPosition( 0.0f, -height/2.0f );
-
+		
 		float[] points = new float[6];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
 		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
 		points[ 4 ] = width; points[5] = -height/2.0f;
-
+		
 		poly = new Polygon( points );
+
 	}
 
 	public void display( SpriteBatch sb )
@@ -462,25 +476,12 @@ class PlayerTuckles extends Model
 class PlayerFoot extends Model
 {
 	public PlayerTuckles tuckles;
-	public final float width = 9.0f;
-	public final float height = 4.0f;
+	public float width = 9.0f;
+	public float height = 4.0f;
 
 	public PlayerFoot( Side a )
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f ,1.0f ) );
-
-		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-		image.setBounds( 0.0f, 0.0f, width, height );
-		image.setPosition( 0.0f, -height/2.0f );
-
-		float[] points = new float[8];
-		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
-		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
-		points[ 4 ] = width; points[5] = height/2.0f;
-		points[ 6 ] = width; points[7] = -height/2.0f;
-
-		poly = new Polygon( points );
 
 		tuckles = new PlayerTuckles( a );
 
@@ -490,13 +491,25 @@ class PlayerFoot extends Model
 		{
 			case LEFT:
 				angle.z = 90.0f;
-				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "foot" );
 				break;
 			case RIGHT:
 				angle.z = 90.0f; 
-				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "foot" );
 				break;
 		}
+		width = image.getWidth();
+		height = image.getHeight();
+		
+		image.setPosition( 0.0f, -height/2.0f );
+		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
 	}
 
 	public void display( SpriteBatch sb )
@@ -520,26 +533,13 @@ class PlayerFoot extends Model
 class PlayerShin extends Model
 {
 	public PlayerFoot foot;
-	public final float width = 20.0f;
-	public final float height = 4.0f;
+	public float width = 20.0f;
+	public float height = 4.0f;
 
 	PlayerShin( Side a )
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-
-		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-		image.setBounds( 0.0f, 0.0f, width, height );
-		image.setPosition( 0.0f, -height/2.0f );
-
-		float[] points = new float[8];
-		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
-		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
-		points[ 4 ] = width; points[5] = height/2.0f;
-		points[ 6 ] = width; points[7] = -height/2.0f;
-
-		poly = new Polygon( points );
-
+		
 		foot = new PlayerFoot( a );
 
 		children.add( foot );
@@ -548,13 +548,26 @@ class PlayerShin extends Model
 		{
 			case LEFT:
 				angle.z = -60.0f; 
-				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "leftshin" );
 				break;
 			case RIGHT:
 				angle.z = -45.0f; 
-				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "rightshin" );
 				break;
 		}
+		
+		width = image.getWidth();
+		height = image.getHeight();
+		
+		image.setPosition( 0.0f, -height/2.0f );
+		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
 	}
 
 	public void display( SpriteBatch sb )
@@ -580,25 +593,12 @@ class PlayerThigh extends Model
 {
 	public PlayerShin shin;
 	public Side side;
-	public final float width = 20.0f;
-	public final float height = 4.0f;
+	public float width = 20.0f;
+	public float height = 4.0f;
 
 	public PlayerThigh( Side a )
 	{
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
-
-		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-		image.setBounds( 0.0f, 0.0f, width, height );
-		image.setPosition( 0.0f, -height/2 );
-
-		float[] points = new float[8];
-		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
-		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
-		points[ 4 ] = width; points[5] = height/2.0f;
-		points[ 6 ] = width; points[7] = -height/2.0f;
-
-		poly = new Polygon( points );
 
 		shin = new PlayerShin( a );
 
@@ -610,13 +610,26 @@ class PlayerThigh extends Model
 		{
 			case LEFT:
 				angle.z = -45.0f; 
-				image.setColor( 1.0f, 0.0f, 0.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "leftthigh" );
 				break;
 			case RIGHT:
 				angle.z = -90.0f; 
-				image.setColor( 0.0f, 0.0f, 1.0f, 1.0f );
+				image = TextureMapping.staticGetSprite( "rightthigh" );
 				break;
 		}
+		
+		width = image.getWidth();
+		height = image.getHeight();
+		
+		image.setPosition( 0.0f, -height/2.0f );
+		
+		float[] points = new float[8];
+		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
+		points[ 2 ] = 0.0f; points[3] =  height/2.0f;
+		points[ 4 ] = width; points[5] = height/2.0f;
+		points[ 6 ] = width; points[7] = -height/2.0f;
+		
+		poly = new Polygon( points );
 	}
 
 	public void display( SpriteBatch sb )

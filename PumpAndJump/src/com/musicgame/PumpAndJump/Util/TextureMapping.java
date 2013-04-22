@@ -5,20 +5,25 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class TextureMapping 
 {
 	public static TextureMapping textures;
 	public Map< String, Texture > nameToTexture;
+	public TextureAtlas textureAtlas;
 	
 	public TextureMapping()
 	{
 		nameToTexture = new HashMap< String, Texture >();
+		textureAtlas = new TextureAtlas( "playersprite.txt" );
 	}
 	
 	public static void constructStaticMapping()
 	{
 		textures = new TextureMapping();
+		
 	}
 	
 	public int addTexture( String textureStr )
@@ -58,8 +63,29 @@ public class TextureMapping
 		return null;
 	}
 	
+	public static Sprite staticGetSprite( String spriteName )
+	{
+
+		if( textures != null )
+		{
+			Sprite s = textures.getSprite( spriteName );
+			if( s != null )
+			{
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	public Texture get( String textureStr )
 	{
-		return nameToTexture.get( textureStr );
+		if( nameToTexture.get( textureStr ) != null )
+			return nameToTexture.get( textureStr );
+		return null;
+	}
+	
+	public Sprite getSprite( String spriteName )
+	{
+		return textureAtlas.createSprite( spriteName );
 	}
 }
