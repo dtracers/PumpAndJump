@@ -49,7 +49,9 @@ public class RunningGame extends GameThread
 	//the timeRefernce of each object
 	double timeReference = 0;
 	double lastTimeReference = 0;
-	int bufferDistance = 200;
+
+
+	int bufferDistance = 20;
 	long sampleRate = 44100;
 	long start = 0;
 	float tempo = 240.0f;
@@ -61,10 +63,8 @@ public class RunningGame extends GameThread
 	boolean toWait = false;
 	private boolean started = false;
 	Sprite background;
-	int bleck = 0;
 
 	//used for calculating delta
-	float divide = 1000;
 
 	private boolean songFinished = false;
 	GameControls controls;
