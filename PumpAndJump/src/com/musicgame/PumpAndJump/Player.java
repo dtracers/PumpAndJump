@@ -334,7 +334,7 @@ class PlayerHead extends Model
 		super( new Point( 35.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
 
 		image = TextureMapping.staticGetSprite( "head" );;
-		image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
+	//	image.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 		image.setBounds( 0.0f, 0.0f, width, height );
 		image.setPosition( 0.0f, -height/2.0f );
 
