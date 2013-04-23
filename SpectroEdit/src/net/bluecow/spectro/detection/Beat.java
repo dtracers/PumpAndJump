@@ -1,5 +1,6 @@
 package net.bluecow.spectro.detection;
 
+
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 import net.bluecow.spectro.SpectroEditSession;
 
-public class Beat
+public class Beat implements Comparable
 {
 	public Beat(long highestIndex, float highestPoint,int indexInList)
 	{
@@ -61,5 +62,11 @@ public class Beat
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public int compareTo(Object o)
+	{
+		return (int) Math.signum(this.sampleLocation-((Beat)o).sampleLocation);
 	}
 }
