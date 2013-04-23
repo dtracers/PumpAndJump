@@ -7,6 +7,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,6 +18,7 @@ import com.musicgame.PumpAndJump.Animation.Animation;
 import com.musicgame.PumpAndJump.Animation.AnimationQueue;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.LevelInterpreter;
+import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
@@ -58,6 +60,7 @@ public class RunningGame extends GameThread
 	AnimationQueue levelAniQ;
 	boolean toWait = false;
 	private boolean started = false;
+	Sprite background;
 	int bleck = 0;
 
 	//used for calculating delta
@@ -109,6 +112,11 @@ public class RunningGame extends GameThread
         float[] f = { 0.0f };
         levelAni = new Animation( "level1_ani.txt" );
         levelAniQ = new AnimationQueue( levelAni, f );
+
+        background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+        background.setSize( Gdx.graphics.getHeight(), Gdx.graphics.getWidth()  );
+        background.setPosition( 0.0f, 0.0f );
+        background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
@@ -174,6 +182,8 @@ public class RunningGame extends GameThread
 	{
 		batch.begin();
 		//save orginal matrix
+		background.draw( batch );
+
 		Matrix4 mv = batch.getTransformMatrix();
 		Matrix4 before = new Matrix4( mv.cpy() );
 
@@ -362,6 +372,7 @@ public class RunningGame extends GameThread
 			if(streamer.frames.size()<=soundFrame)
 			{
 				songFinished = true;
+				PumpAndJump.switchThread(ThreadName.PostGame, this);
 			}
 		}
 	}

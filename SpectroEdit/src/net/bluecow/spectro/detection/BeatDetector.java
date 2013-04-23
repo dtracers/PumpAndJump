@@ -46,8 +46,8 @@ public class BeatDetector
 	//the senstitivity of the beat detector:  smaller numbers remove more beats and is more strict
 	double senstitivity = 0.8;
 
-	Beat maxInstantBeat;
-	Beat maxAverageBeat;
+	Beat maxInstantBeat = new Beat(0, 0, 0);
+	Beat maxAverageBeat = new Beat(0 ,0 ,0);
 
 
 	static boolean doOnce = true;

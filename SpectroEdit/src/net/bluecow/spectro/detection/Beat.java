@@ -14,6 +14,9 @@ import net.bluecow.spectro.SpectroEditSession;
 
 public class Beat implements Comparable
 {
+
+	static boolean SORT_BY_LOCATION = false;
+	static boolean SORT_BY_INTENSITY = false;
 	public Beat(long highestIndex, float highestPoint,int indexInList)
 	{
 		soundIntensity = highestPoint;
@@ -67,6 +70,13 @@ public class Beat implements Comparable
 	@Override
 	public int compareTo(Object o)
 	{
-		return (int) Math.signum(this.sampleLocation-((Beat)o).sampleLocation);
+		if(SORT_BY_LOCATION)
+		{
+			return (int) Math.signum(this.sampleLocation-((Beat)o).sampleLocation);
+		}else if(SORT_BY_INTENSITY)
+		{
+			return (int) Math.signum(this.soundIntensity-((Beat)o).soundIntensity);
+		}else
+			return 0;
 	}
 }
