@@ -24,6 +24,7 @@ public class LevelInterpreter
 	 * @param inputLine
 	 * @return
 	 */
+	/*
 	public static GameObject getNextObjectPattern(String inputLine){
 		String jumpPattern="j \\d+(\\.\\d+)?\\s*";
 		String slidePattern="d \\d+(\\.\\d+)? \\d+(\\.\\d+)?\\s*";
@@ -41,6 +42,7 @@ public class LevelInterpreter
 		System.out.println(inputLine);
 		return null;
 	}
+	*/
 
 	public static GameObject getNextObject(String inputLine)
 	{
