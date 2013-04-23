@@ -61,8 +61,6 @@ public class RunningGame extends GameThread
 	int bleck = 0;
 
 	//used for calculating delta
-	long previousTime;
- 	long currentTime;
 	float divide = 1000;
 
 	private boolean songFinished = false;
@@ -98,6 +96,8 @@ public class RunningGame extends GameThread
 	 */
 	public void reset()
 	{
+		lastTimeReference = 0;
+		timeReference = 0;
 		stage = new Stage();
 
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
@@ -124,8 +124,9 @@ public class RunningGame extends GameThread
 	@Override
 	public void run()
 	{
-		previousTime = currentTime = System.currentTimeMillis();
 		float delta = 0;
+		timeReference = 0;
+		lastTimeReference = 0;
 		while(true)
 		{
 			if(bufferingNeeded())
@@ -135,9 +136,6 @@ public class RunningGame extends GameThread
 			{
 				writeSound();
 			}
-		//	System.out.println(actualObjects.size());
-			previousTime = currentTime;
-			currentTime = System.currentTimeMillis();
 			delta = (float)(timeReference-lastTimeReference);
 			pos.x = (float)timeReference;
 
@@ -306,8 +304,6 @@ public class RunningGame extends GameThread
 	@Override
 	public void unpause() {
 		toWait = false;
-		previousTime = System.currentTimeMillis();
-		currentTime = System.currentTimeMillis();
 	}
 
 	@Override
