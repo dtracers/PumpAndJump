@@ -8,7 +8,6 @@ import android.media.MediaExtractor;
 import android.os.Build;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.musicgame.PumpAndJump.game.sound.InputDecoder;
 import com.musicgame.PumpAndJump.game.sound.MP3Decoder;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

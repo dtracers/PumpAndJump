@@ -3,7 +3,6 @@ package com.musicgame.PumpAndJump.music;
 import java.io.IOException;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.musicgame.PumpAndJump.game.sound.InputDecoder;
 import com.musicgame.PumpAndJump.game.sound.MP3Decoder;
 
 public class DesktopMP3Decoder extends MP3Decoder {
