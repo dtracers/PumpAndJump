@@ -48,9 +48,9 @@ public class MusicInputStreamer extends Thread
 				if(decoder.getChannels()==2)
 				{
 					frame2[k] = (short) ((buf[k*2]+buf[k*2+1])/2.0);//gets half of the song (maybe because it is stereo?)
-				}else if(decoder.getChannels()==2)
+				}else if(decoder.getChannels()==1)
 				{
-					frame2[k] = (buf[k]);//gets half of the song (maybe because it is stereo?)
+					frame2[k] = (buf[k]);//its mono so we can put it straight through
 				}
 			}
 		//	System.out.println("Reading the song" +readSong+" "+currentFrame);

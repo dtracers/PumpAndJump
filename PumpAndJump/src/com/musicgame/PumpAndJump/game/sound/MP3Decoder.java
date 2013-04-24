@@ -1,44 +1,42 @@
 package com.musicgame.PumpAndJump.game.sound;
 
 
+import java.io.File;
+
 import com.badlogic.gdx.audio.io.Decoder;
 import com.badlogic.gdx.files.FileHandle;
 
-public class MP3Decoder extends Decoder
+public abstract class MP3Decoder extends Decoder
 {
-
+	protected String absolutePath = null;
+	/**
+	 * It is empty and does absolutely nothing for right now
+	 * @param file
+	 */
 	public MP3Decoder(FileHandle file)
 	{
-
-	}
-	@Override
-	public int readSamples(short[] paramArrayOfShort, int paramInt1,
-			int paramInt2) {
-		return 0;
-	}
-
-	@Override
-	public int skipSamples(int paramInt) {
-		return 0;
+		if(file!=null)
+		{
+			File f = file.file();
+			if(f!=null)
+			{
+				absolutePath = f.getAbsolutePath();
+			}
+		}
 	}
 
-	@Override
-	public int getChannels() {
-		return 0;
-	}
+	/**
+	 * Will create a specific instance of the MP3 decoder with the given file
+	 * @param file
+	 * @return
+	 */
+	public abstract MP3Decoder getInstance(FileHandle file);
 
-	@Override
-	public int getRate() {
-		return 0;
-	}
-
-	@Override
-	public float getLength() {
-		return 0;
-	}
-
-	@Override
-	public void dispose() {
-	}
+	/**
+	 * @param samples		this is the short array that the values are copied into
+	 * @param offset		this is the offest
+	 * @param numsamples	the number samples that will be read
+	 */
+	public abstract int readSamples(short[] samples, int offset, int numSamples);
 
 }
