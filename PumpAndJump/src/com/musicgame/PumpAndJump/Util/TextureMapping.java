@@ -17,7 +17,7 @@ public class TextureMapping
 	public TextureMapping()
 	{
 		nameToTexture = new HashMap< String, Texture >();
-		textureAtlas = new TextureAtlas( "playersprite.txt" );
+		textureAtlas = new TextureAtlas( "playerSprite.txt" );
 	}
 	
 	public static void constructStaticMapping()

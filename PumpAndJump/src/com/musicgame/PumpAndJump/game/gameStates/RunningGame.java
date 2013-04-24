@@ -102,7 +102,7 @@ public class RunningGame extends GameThread
 		lastTimeReference = 0;
 		timeReference = 0;
 		stage = new Stage();
-
+		
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
 		this.controls.controlsTable.setFillParent(true);
 		stage.addActor(this.controls.controlsTable);
@@ -245,7 +245,10 @@ public class RunningGame extends GameThread
 		if(currentThread instanceof PauseGame)
 		{
 			Gdx.input.setInputProcessor(stage);
+			
 			this.myNotify();
+			this.controls.loadPrefs();
+			this.controls.defineControlsTable();
 			System.out.println("unpause");
 		}else
 		if(currentThread instanceof Buffering)

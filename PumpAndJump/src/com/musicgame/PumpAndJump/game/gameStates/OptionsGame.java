@@ -97,7 +97,8 @@ public class OptionsGame extends GameThread
 		{
 			public void changed(ChangeEvent event, Actor actor)
 			{
-				controls.defineControlsTable( (int)((Slider) actor).getValue());
+				controls.setControlsLayout( (int)((Slider) actor).getValue());
+				controls.defineControlsTable();
 			}
 		});
 		Slider visibilitySlider = new Slider(0, 100, 1, false, uiSkin);
