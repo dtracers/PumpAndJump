@@ -67,13 +67,17 @@ public class MusicInputStreamer extends Thread
 				*/
 			}else
 			{
+			//	System.out.println("Music Input");
+				/*
 				try {
-					Thread.sleep(100);
+					Thread.sleep(30);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				*/
 			}
 		}
+		System.out.println("FINISHED READING THE MUSIC FILE");
 		doneReading = true;
 	}
 }
