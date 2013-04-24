@@ -17,12 +17,12 @@ import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
 import com.musicgame.PumpAndJump.game.gameStates.PreGame;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
-import com.musicgame.PumpAndJump.game.sound.InputDecoder;
+import com.musicgame.PumpAndJump.game.sound.MP3Decoder;
 import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
 public class PumpAndJump extends Game
 {
-	public static InputDecoder inputStream;
+	public static MP3Decoder MP3decoder;
 	public static MusicOutputStream outputStream;
 	GameScreen gameScreen;
 	InputProcessor input;

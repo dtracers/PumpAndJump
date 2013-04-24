@@ -1,6 +1,7 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -17,6 +18,7 @@ import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Animation.Animation;
 import com.musicgame.PumpAndJump.Animation.AnimationQueue;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
+import com.musicgame.PumpAndJump.Util.FileFormatException;
 import com.musicgame.PumpAndJump.Util.LevelInterpreter;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.GameControls;
@@ -102,7 +104,7 @@ public class RunningGame extends GameThread
 		lastTimeReference = 0;
 		timeReference = 0;
 		stage = new Stage();
-		
+
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
 		this.controls.controlsTable.setFillParent(true);
 		stage.addActor(this.controls.controlsTable);
@@ -245,7 +247,7 @@ public class RunningGame extends GameThread
 		if(currentThread instanceof PauseGame)
 		{
 			Gdx.input.setInputProcessor(stage);
-			
+
 			this.myNotify();
 			this.controls.loadPrefs();
 			this.controls.defineControlsTable();
@@ -284,7 +286,13 @@ public class RunningGame extends GameThread
 				streamer.fileName=filename.getAbsolutePath();
 			}
 
-			streamer.loadSound();
+			try {
+				streamer.loadSound();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (FileFormatException e) {
+				e.printStackTrace();
+			}
 			streamer.start();
 			if(!started)
 			{

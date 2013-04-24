@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.gameStates.FileChooserState;
+import com.musicgame.PumpAndJump.music.DesktopMP3Decoder;
 import com.musicgame.PumpAndJump.util.FileChooserDesktop;
 
 public class Main {
@@ -18,6 +19,8 @@ public class Main {
 		new LwjglApplication(new PumpAndJump(), cfg);
 
 		FileChooserState.fileDialog = new FileChooserDesktop(null,null);
+
+		PumpAndJump.MP3decoder = new DesktopMP3Decoder(null);
 	//	PumpAndJump.inputStream = new DesktopInputDecoder(0, null);
 	//	PumpAndJump.outputStream = new DesktopInputDecoder(0, null);
 	}

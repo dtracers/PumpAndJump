@@ -1,10 +1,14 @@
 package com.musicgame.PumpAndJump.game.sound;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.io.Decoder;
 import com.badlogic.gdx.audio.io.WavDecoder;
+import com.badlogic.gdx.files.FileHandle;
+import com.musicgame.PumpAndJump.Util.FileFormatException;
+import com.musicgame.PumpAndJump.game.PumpAndJump;
 
 /**
  * This is the thread that runs and decompiles the music
@@ -26,10 +30,41 @@ public class MusicInputStreamer extends Thread
 	public boolean doneReading = false;
 	//do frame stuff here
 
-	public void loadSound()
+	public void loadSound() throws FileNotFoundException, FileFormatException
 	{
-		decoder = new WavDecoder(Gdx.files.internal(fileName));
+		FileHandle file = null;
+		try
+		{
+			file = Gdx.files.internal(fileName);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			try
+			{
+				file = Gdx.files.absolute(fileName);
+			}catch(Exception e2)
+			{
+				e2.printStackTrace();
+			}
+		}
+		if(file == null||!file.exists())
+		{
+			throw new FileNotFoundException(fileName);
 
+		}
+		//it is not null and it exists
+
+		String extension = file.extension();
+		if(extension.equalsIgnoreCase("wav"))
+		{
+			decoder = new WavDecoder(file);
+		}else if(extension.equalsIgnoreCase("mp3"))
+		{
+			decoder = PumpAndJump.MP3decoder.getInstance(file);
+		}else
+		{
+			throw new FileFormatException("File format not supported "+extension);
+		}
 	}
 
 	/**
