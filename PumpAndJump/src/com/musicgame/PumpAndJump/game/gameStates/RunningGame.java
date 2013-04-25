@@ -315,7 +315,7 @@ public class RunningGame extends GameThread
 	@Override
 	public void removeFrom(GameThread currentThread)
 	{
-		reset();
+		streamer.dispose();
 		System.out.println("BEING REMOVED");
 	}
 
@@ -374,13 +374,14 @@ public class RunningGame extends GameThread
 
 	public void writeSound()
 	{
-	//	System.out.println("Output Sound "+soundFrame);
+
 		if(!songFinished)
 		{
-			outStreamer.write(streamer.frames.get((int)soundFrame));
+			System.out.println("Output Sound "+streamer.frames.size());
+			outStreamer.write(streamer.getNextOutputFile());
 			soundFrame++;
 			timeReference = (soundFrame*MusicInputStreamer.frameSize)/((double)MusicInputStreamer.sampleRate);
-			if(streamer.frames.size()<=soundFrame)
+			if(streamer.frames.size()>=1)
 			{
 				songFinished = true;
 				PumpAndJump.switchThread(ThreadName.PostGame, this);

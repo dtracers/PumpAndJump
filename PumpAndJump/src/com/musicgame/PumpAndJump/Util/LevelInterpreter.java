@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -98,13 +99,14 @@ public class LevelInterpreter
 	 * @return
 	 */
 	public static ArrayList<GameObject> loadFromScanner(Scanner scan){
-		ArrayList<GameObject> Level=new ArrayList<GameObject>();
+		ArrayList<GameObject> level=new ArrayList<GameObject>();
 		while(scan.hasNextLine()){
 			GameObject obstacle=getNextObject(scan.nextLine());
 
 			if(obstacle!=null)
-				Level.add(obstacle);
+				level.add(obstacle);
+			 return level;
 		}
-		return Level;
+		return level;
 	}
 }
