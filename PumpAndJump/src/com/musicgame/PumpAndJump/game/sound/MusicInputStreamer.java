@@ -19,6 +19,7 @@ public class MusicInputStreamer extends Thread
 {
 
 	public String fileName= "the_hand_that_feeds.wav";
+//	public String fileName= "the_hand_that_feeds.mp3";
 //	public String fileName= "Skrillex_Cinema.wav";
 //	public String fileName = "Windows_XP_Startup.wav";
 	Decoder decoder;
@@ -28,10 +29,12 @@ public class MusicInputStreamer extends Thread
 	public static long sampleRate = 44100;
 	public boolean buffering = true;
 	public boolean doneReading = false;
+	private boolean forceStop = false;
 	//do frame stuff here
 
 	public void loadSound() throws FileNotFoundException, FileFormatException
 	{
+		forceStop = false;
 		FileHandle file = null;
 		try
 		{
@@ -60,6 +63,7 @@ public class MusicInputStreamer extends Thread
 			decoder = new WavDecoder(file);
 		}else if(extension.equalsIgnoreCase("mp3"))
 		{
+			System.out.println("Creating MP3 FILE VERSIOn");
 			decoder = PumpAndJump.MP3decoder.getInstance(file);
 		}else
 		{
@@ -89,7 +93,7 @@ public class MusicInputStreamer extends Thread
 				}
 			}
 		//	System.out.println("Reading the song" +readSong+" "+currentFrame);
-			frames.add(frame2);
+			addFrames(frame2);
 			currentFrame++;
 			if(buffering)
 			{
@@ -102,17 +106,39 @@ public class MusicInputStreamer extends Thread
 				*/
 			}else
 			{
-			//	System.out.println("Music Input");
-				/*
+				System.out.println("Music Input");
+
 				try {
 					Thread.sleep(30);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				*/
+
+			}
+			if(forceStop)
+			{
+				break;
 			}
 		}
 		System.out.println("FINISHED READING THE MUSIC FILE");
 		doneReading = true;
+	}
+	public synchronized void addFrames(short[] frame2)
+	{
+		frames.add(frame2);
+	}
+
+	public synchronized short[] getNextOutputFile()
+	{
+		//frames.get((int)0);
+		if(frames.size()==0)
+			return null;
+		return frames.remove(0);
+	}
+
+	public void dispose()
+	{
+		forceStop = true;
+		frames = new ArrayList<short[]>();
 	}
 }

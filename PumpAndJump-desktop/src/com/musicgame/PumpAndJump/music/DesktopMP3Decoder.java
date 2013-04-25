@@ -5,7 +5,8 @@ import java.io.IOException;
 import com.badlogic.gdx.files.FileHandle;
 import com.musicgame.PumpAndJump.game.sound.MP3Decoder;
 
-public class DesktopMP3Decoder extends MP3Decoder {
+public class DesktopMP3Decoder extends MP3Decoder
+{
 
 	public DesktopMP3Decoder(FileHandle file) {
 		super(file);

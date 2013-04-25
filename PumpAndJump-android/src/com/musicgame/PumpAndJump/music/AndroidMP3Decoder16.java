@@ -18,7 +18,8 @@ public class AndroidMP3Decoder16 extends MP3Decoder
 	public AndroidMP3Decoder16(FileHandle file)
 	{
 		super(file);
-		extractor.setDataSource(absolutePath);
+		if(absolutePath!=null)
+			extractor.setDataSource(absolutePath);
 	}
 
 	/*
