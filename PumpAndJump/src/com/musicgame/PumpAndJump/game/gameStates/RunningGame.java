@@ -266,7 +266,7 @@ public class RunningGame extends GameThread
 			System.out.println("NOTIFYING");
 			this.myNotify();
 		}else
-		if(currentThread instanceof PreGame)
+		if(currentThread instanceof PreGame || currentThread instanceof FileChooserState)
 		{
 			System.out.println("SWITCHING AND TRING TO DO ");
 			reset();
