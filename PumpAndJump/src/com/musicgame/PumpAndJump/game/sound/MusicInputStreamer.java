@@ -40,7 +40,7 @@ public class MusicInputStreamer extends Thread
 		FileHandle file = null;
 		try
 		{
-			file = Gdx.files.internal(fileName);
+			file = Gdx.files.absolute(fileName);
 		}catch(Exception e)
 		{
 			e.printStackTrace();

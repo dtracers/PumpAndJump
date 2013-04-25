@@ -1,5 +1,6 @@
 package com.musicgame.PumpAndJump;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -9,6 +10,7 @@ import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.gameStates.FileChooserState;
 import com.musicgame.PumpAndJump.game.sound.MP3Decoder;
 import com.musicgame.PumpAndJump.music.AndroidMP3Decoder16;
+import com.musicgame.PumpAndJump.util.Chooser;
 import com.musicgame.PumpAndJump.util.FileChooserAndroid;
 
 public class MainActivity extends AndroidApplication {
@@ -23,9 +25,13 @@ public class MainActivity extends AndroidApplication {
 
         initialize(new PumpAndJump(), cfg);
 
-        FileChooserState.fileDialog = new FileChooserAndroid(null,null);
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-
+        FileChooserState.fileDialog = new FileChooserAndroid(null);
+        Intent intent = new Intent();
+		intent.setClass(this, Chooser.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //required to launch from non-activity
+		startActivity(intent);
+        /*int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        
         MP3Decoder decoder;
 
         if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN){
@@ -33,7 +39,7 @@ public class MainActivity extends AndroidApplication {
         } else{
         	decoder = null;
         }
-        PumpAndJump.MP3decoder = decoder;
+        PumpAndJump.MP3decoder = decoder;*/
      //   PumpAndJump.inputStream = new AndroidInputDecoder(0, null);
     }
 }

@@ -8,6 +8,11 @@ public class FileChooserState extends GameThread
 {
 	public static FileChooser fileDialog;
 	//need to make a file chooser
+	public FileChooserState()
+	{
+		fileDialog.getFile();
+		
+	}
 	@Override
 	public void render(float delta)
 	{
@@ -16,7 +21,7 @@ public class FileChooserState extends GameThread
 
 	@Override
 	public ThreadName getThreadName() {
-		return null;
+		return ThreadName.FileChooser;
 	}
 
 	@Override
@@ -29,6 +34,8 @@ public class FileChooserState extends GameThread
 
 	@Override
 	public void switchFrom(GameThread currentThread) {
+		
+		
 	}
 
 	@Override

@@ -278,7 +278,7 @@ public class RunningGame extends GameThread
 		    jfc.showDialog(null,"Open");
 		    jfc.setVisible(true);
 		    File filename = jfc.getSelectedFile();*/
-			File filename=null;
+			File filename=FileChooserState.fileDialog.getFile();
 
 		    streamer = new MusicInputStreamer();
 
