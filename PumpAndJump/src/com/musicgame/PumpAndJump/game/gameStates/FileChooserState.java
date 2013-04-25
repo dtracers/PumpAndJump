@@ -25,6 +25,7 @@ public class FileChooserState extends GameThread
 	SpriteBatch batch;
 	public static FileChooser fileDialog;
 	public static String type;
+	public static String test;
 	//need to make a file chooser
 	public FileChooserState()
 	{

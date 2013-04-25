@@ -97,8 +97,14 @@ public class PreGame extends GameThread
 					{
 						check.show(stage);
 					}
+					else if(FileChooserState.type=="android" || FileChooserState.test=="no")
+					{
+						PumpAndJump.switchThread(ThreadName.FileChooser, PreGame.this);
+						
+					}
 					else
-					PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
+						PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
+
 				}
 			});
 		final TextButton aboutButton = new TextButton("About", uiSkin);

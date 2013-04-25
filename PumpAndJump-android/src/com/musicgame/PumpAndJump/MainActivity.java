@@ -26,17 +26,17 @@ public class MainActivity extends AndroidApplication {
         cfg.useCompass = false;
 
         initialize(new PumpAndJump(), cfg);
-
+        
         FileChooserState.fileDialog = new FileChooserAndroid(null);
         FileChooserState.type="android";
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
 		// set title
-		alertDialogBuilder.setTitle("No GPS");
+		alertDialogBuilder.setTitle("Music");
 
 		// set dialog message
 		alertDialogBuilder
-			.setMessage("Please Enable GPS!")
+			.setMessage("Upload Music?")
 			.setCancelable(false)
 			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
@@ -53,7 +53,7 @@ public class MainActivity extends AndroidApplication {
 				public void onClick(DialogInterface dialog,int id) {
 					// if this button is clicked, just close
 					// the dialog box and do nothing
-
+					FileChooserState.test="no";
 				}
 			});
 
