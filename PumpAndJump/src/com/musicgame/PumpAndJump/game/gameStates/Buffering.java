@@ -63,10 +63,10 @@ public class Buffering extends GameThread
 				{
 					counter = 0;
 					startTime = System.currentTimeMillis();
-					while(game.bufferingNeeded())
+					while(game.streamer.bufferingNeeded())
 					{
 						System.out.println("Buffering");
-						counter = game.minBufferingDistance();
+						counter = game.streamer.minBufferingDistance();
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {

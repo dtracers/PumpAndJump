@@ -25,15 +25,16 @@ import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
+import com.musicgame.PumpAndJump.game.sound.MusicHandler;
 import com.musicgame.PumpAndJump.game.sound.MusicInputStreamer;
 import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
 public class RunningGame extends GameThread
 {
 	Stage stage;
-
-	MusicInputStreamer streamer;
-	MusicOutputStream outStreamer = new MusicOutputStream();
+	MusicHandler streamer;
+//	MusicInputStreamer streamer;
+//	MusicOutputStream outStreamer = new MusicOutputStream();
 
 	/**
 	this is a list of the on screen objects
@@ -140,7 +141,7 @@ public class RunningGame extends GameThread
 		lastTimeReference = 0;
 		while(true)
 		{
-			if(bufferingNeeded())
+			if(streamer.bufferingNeeded())
 			{
 				goBuffer();
 			}else
@@ -280,7 +281,7 @@ public class RunningGame extends GameThread
 		    File filename = jfc.getSelectedFile();*/
 			File filename=FileChooserState.fileDialog.getFile();
 
-		    streamer = new MusicInputStreamer();
+		    streamer = new MusicHandler();
 
 			if(filename != null)
 			{
@@ -353,51 +354,10 @@ public class RunningGame extends GameThread
 		PumpAndJump.addThread(ThreadName.PauseGame, this);
 	}
 
-	/**
-	 * Returns true if the bufferingDistance is less than the bufferDistance value
-	 * it is calculated by: MusicInputStream.currentFrame - OuputStream.currentFrame
-	 * @return
-	 */
-	public boolean bufferingNeeded()
-	{
-		return streamer.currentFrame-soundFrame<minBufferDistance&&!streamer.doneReading;
-	}
-
-	/**
-	 * calcualtes how far off the minBufferDistance is away from the the actual buffer distance
-	 * @return
-	 */
-	public long minBufferingDistance()
-	{
-		return minBufferDistance - (streamer.currentFrame-soundFrame);
-	}
-
-	/**
-	 * calcualtes how far the inputframe is from the output frame
-	 * @return
-	 */
-	public long bufferDistance()
-	{
-		return streamer.currentFrame-soundFrame;
-	}
-
 	public void writeSound()
 	{
-		if(!songFinished)
-		{
-			outStreamer.write(streamer.getNextOutputFile());
-			if(bufferDistance()<this.maxBufferDistance)
-			{
-				streamer.slowingDownBuffer = false;//speed buffering back up
-			}
-			soundFrame++;
-			timeReference = (soundFrame*MusicInputStreamer.frameSize)/((double)MusicInputStreamer.sampleRate);
-			if(streamer.frames.size()<=1)
-			{
-				songFinished = true;
-			//	PumpAndJump.switchThread(ThreadName.PostGame, this);
-			}
-		}
+		streamer.writeSound();
+		songFinished = streamer.isSongOver();
 	}
 
 	@Override

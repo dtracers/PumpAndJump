@@ -17,11 +17,10 @@ public class MusicHandler extends Thread
 	//for both
 	public static final int minBufferDistance = 20;
 	public static final int maxBufferDistance = 200;
-	public static final int arraySampleLength = 1000;
-	public static final int frameSize = 1024/4;
+	public static final int arraySampleLength = 500;
+	public static final int frameSize = 1024*8;//256;// 1024/4;
 	public static final int sampleRate = 44100;
-
-	short[] musicFile = new short[arraySampleLength*frameSize];
+	ArrayList<short[]> musicFile = new ArrayList<short[]>();
 
 	//for input streaming
 	short[] buf = new short[frameSize*2];
@@ -30,7 +29,7 @@ public class MusicHandler extends Thread
 //	public String fileName= "Skrillex_Cinema.wav";
 //	public String fileName = "Windows_XP_Startup.wav";
 	Decoder decoder;
-	int currentFrame;
+	int inputFrame;
 
 	public boolean buffering = true;
 	public boolean doneReading = false;
@@ -38,7 +37,7 @@ public class MusicHandler extends Thread
 	public boolean slowingDownBuffer = false;
 
 	//for output streaming
-	int soundFrame = 0;
+	int outputFrame = 0;
 	boolean songFinished = false;
 	int latency;
 	AudioDevice device;
@@ -50,7 +49,10 @@ public class MusicHandler extends Thread
 
 	public MusicHandler()
 	{
-
+		for(int k = 0;k<arraySampleLength;k++)
+		{
+			musicFile.add(new short[frameSize]);
+		}
 		setUpOutputStream();
 	}
 
@@ -113,35 +115,37 @@ public class MusicHandler extends Thread
 		{
 			if(!slowingDownBuffer)
 			{
+		//		int offset = frameSize*inputLocation;
+				short[] currentFrame = musicFile.get(inputLocation);
 				//has to convert it to mono
 				if(decoder.getChannels() == 2)
 				{
 					readSong = decoder.readSamples(buf,0, frameSize*2);
-					int offset = frameSize*inputLocation;
 					for(int k=0;k<frameSize;k++)
 					{
-						musicFile[k+offset] = (short) ((buf[k*2]+buf[k*2+1])/2.0);//gets half of the song (maybe because it is stereo?)
+						currentFrame[k] = (short) ((buf[k*2]+buf[k*2+1])/2.0);//gets half of the song (maybe because it is stereo?)
 					}
 				}else //we can put it straight in
 				{
-					readSong = decoder.readSamples(musicFile,inputLocation*frameSize, frameSize);
+					readSong = decoder.readSamples(currentFrame,0, frameSize);
 				}
-				currentFrame++;
-				inputLocation = currentFrame%arraySampleLength;
+				inputFrame++;
+				inputLocation = inputFrame%arraySampleLength;
 				if(bufferDistance()>maxBufferDistance)
 				{
+					System.out.println("slow down doggy");
 					slowingDownBuffer = true;
 				}
 
 				if(buffering)
 				{
-					/*
+
 					try {
 						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					*/
+
 				}else
 				{
 					System.out.println("Music Input");
@@ -179,7 +183,7 @@ public class MusicHandler extends Thread
 	 */
 	public boolean bufferingNeeded()
 	{
-		return currentFrame-soundFrame<minBufferDistance&&!doneReading;
+		return inputFrame-outputFrame<minBufferDistance&&!doneReading;
 	}
 
 	/**
@@ -188,7 +192,7 @@ public class MusicHandler extends Thread
 	 */
 	public long minBufferingDistance()
 	{
-		return minBufferDistance - (currentFrame-soundFrame);
+		return minBufferDistance - (inputFrame-outputFrame);
 	}
 
 	/**
@@ -197,7 +201,7 @@ public class MusicHandler extends Thread
 	 */
 	public long bufferDistance()
 	{
-		return currentFrame-soundFrame;
+		return inputFrame-outputFrame;
 	}
 
 
@@ -225,21 +229,29 @@ public class MusicHandler extends Thread
 	 */
 	public void writeSound()
 	{
+	//	System.out.println("Writing sound: ouputLocation "+outputLocation+" inputLocation "+inputLocation);
 		if(!songFinished)
 		{
-			device.writeSamples(musicFile, outputLocation*frameSize, frameSize);
-			if(bufferDistance()<this.maxBufferDistance)
+			short[] currentFrame = musicFile.get(outputLocation);
+			device.writeSamples(currentFrame, 0, frameSize);
+			if(bufferDistance()<maxBufferDistance)
 			{
 				slowingDownBuffer = false;//speed buffering back up as the input is to close
 			}
-			soundFrame++;
-			outputLocation = (int) (soundFrame%arraySampleLength);//puts the output location at the correct place
-			timeReference = (soundFrame*MusicInputStreamer.frameSize)/((double)MusicInputStreamer.sampleRate);
+			outputFrame++;
+			outputLocation =(outputFrame%arraySampleLength);//puts the output location at the correct place
+			timeReference = (outputFrame*frameSize)/((double)sampleRate);
 			if(doneReading&&bufferDistance()<2)
 			{
+				System.out.println("DONE READING?");
 				songFinished = true;
 			}
 		}
 
+	}
+
+	//othe
+
+	public void dispose() {
 	}
 }
