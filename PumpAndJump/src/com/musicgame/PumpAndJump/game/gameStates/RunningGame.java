@@ -152,6 +152,7 @@ public class RunningGame extends GameThread
 			{
 				writeSound();
 			}
+			timeReference = streamer.getTimeReference();
 			delta = (float)(timeReference-lastTimeReference);
 			pos.x = (float)timeReference;
 
@@ -267,6 +268,7 @@ public class RunningGame extends GameThread
 		}else
 		if(currentThread instanceof PreGame)
 		{
+			System.out.println("SWITCHING AND TRING TO DO ");
 			reset();
 			Gdx.input.setInputProcessor(stage);
 			try {

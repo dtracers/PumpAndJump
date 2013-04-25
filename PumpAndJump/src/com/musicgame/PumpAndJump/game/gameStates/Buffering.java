@@ -73,6 +73,7 @@ public class Buffering extends GameThread
 							e.printStackTrace();
 						}
 					}
+					game.streamer.buffering = false;
 					PumpAndJump.removeThread(ThreadName.Buffering, Buffering.this);
 				}
 			};

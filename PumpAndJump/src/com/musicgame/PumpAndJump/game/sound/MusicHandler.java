@@ -18,7 +18,7 @@ public class MusicHandler extends Thread
 	public static final int minBufferDistance = 20;
 	public static final int maxBufferDistance = 200;
 	public static final int arraySampleLength = 500;
-	public static final int frameSize = 1024*8;//256;// 1024/4;
+	public static final int frameSize = 256;//1024*8;//256;// 1024/4;
 	public static final int sampleRate = 44100;
 	ArrayList<short[]> musicFile = new ArrayList<short[]>();
 
@@ -65,15 +65,24 @@ public class MusicHandler extends Thread
 		FileHandle file = null;
 		try
 		{
-			file = Gdx.files.absolute(fileName);
+			file = Gdx.files.internal(fileName);
+			if(file == null)
+			{
+				int i = 1/0;
+			}
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 			try
 			{
 				file = Gdx.files.absolute(fileName);
+				if(file == null)
+				{
+					int i = 1/0;
+				}
 			}catch(Exception e2)
 			{
+				file = Gdx.files.internal("the_hand_that_feeds.wav");
 				e2.printStackTrace();
 			}
 		}
@@ -115,7 +124,6 @@ public class MusicHandler extends Thread
 		{
 			if(!slowingDownBuffer)
 			{
-		//		int offset = frameSize*inputLocation;
 				short[] currentFrame = musicFile.get(inputLocation);
 				//has to convert it to mono
 				if(decoder.getChannels() == 2)
@@ -133,25 +141,25 @@ public class MusicHandler extends Thread
 				inputLocation = inputFrame%arraySampleLength;
 				if(bufferDistance()>maxBufferDistance)
 				{
-					System.out.println("slow down doggy");
+			//		System.out.println("slow down doggy");
 					slowingDownBuffer = true;
 				}
 
 				if(buffering)
 				{
-
+					/*
 					try {
 						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-					}
+					}*/
 
 				}else
 				{
-					System.out.println("Music Input");
+				//	System.out.println("Music Input");
 
 					try {
-						Thread.sleep(30);
+						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -229,7 +237,6 @@ public class MusicHandler extends Thread
 	 */
 	public void writeSound()
 	{
-	//	System.out.println("Writing sound: ouputLocation "+outputLocation+" inputLocation "+inputLocation);
 		if(!songFinished)
 		{
 			short[] currentFrame = musicFile.get(outputLocation);
