@@ -61,6 +61,7 @@ public class Buffering extends GameThread
 			{
 				public void run()
 				{
+					game.streamer.buffering = true;
 					counter = 0;
 					startTime = System.currentTimeMillis();
 					while(game.streamer.bufferingNeeded())
