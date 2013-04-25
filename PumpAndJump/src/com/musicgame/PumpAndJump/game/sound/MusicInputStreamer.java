@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.io.Decoder;
+import com.badlogic.gdx.audio.io.Mpg123Decoder;
+import com.badlogic.gdx.audio.io.VorbisDecoder;
 import com.badlogic.gdx.audio.io.WavDecoder;
 import com.badlogic.gdx.files.FileHandle;
 import com.musicgame.PumpAndJump.Util.FileFormatException;
@@ -68,6 +70,10 @@ public class MusicInputStreamer extends Thread
 		{
 			System.out.println("Creating MP3 FILE VERSIOn");
 			decoder = PumpAndJump.MP3decoder.getInstance(file);
+		//	decoder = new Mpg123Decoder(file);
+		}else if(extension.equalsIgnoreCase("ogg"))
+		{
+			decoder = new VorbisDecoder(file);
 		}else
 		{
 			throw new FileFormatException("File format not supported "+extension);
