@@ -97,7 +97,7 @@ public class PreGame extends GameThread
 					{
 						check.show(stage);
 					}
-					else if(FileChooserState.type=="android" || FileChooserState.test=="no")
+					else if(FileChooserState.type=="android" && FileChooserState.test=="no")
 					{
 						PumpAndJump.switchThread(ThreadName.FileChooser, PreGame.this);
 						
