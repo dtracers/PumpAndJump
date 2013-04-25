@@ -19,7 +19,7 @@ public class Buffering extends GameThread
 	long delay = 5000;
 	boolean threadStarted;
 	long counter = 0;
-	
+
 	public Buffering()
 	{
 	}
@@ -65,7 +65,8 @@ public class Buffering extends GameThread
 					startTime = System.currentTimeMillis();
 					while(game.bufferingNeeded())
 					{
-						counter = game.bufferingDistance();
+						System.out.println("Buffering");
+						counter = game.minBufferingDistance();
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {

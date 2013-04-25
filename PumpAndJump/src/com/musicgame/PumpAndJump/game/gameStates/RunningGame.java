@@ -53,7 +53,8 @@ public class RunningGame extends GameThread
 	double lastTimeReference = 0;
 
 
-	int bufferDistance = 20;
+	int minBufferDistance = 20;
+	int maxBufferDistance = 200;
 	long sampleRate = 44100;
 	long start = 0;
 	float tempo = 240.0f;
@@ -359,32 +360,42 @@ public class RunningGame extends GameThread
 	 */
 	public boolean bufferingNeeded()
 	{
-		return streamer.currentFrame-soundFrame<bufferDistance&&!streamer.doneReading;
+		return streamer.currentFrame-soundFrame<minBufferDistance&&!streamer.doneReading;
 	}
 
 	/**
-	 * Returns true if the bufferingDistance is less than the bufferDistance value
-	 * it is calculated by: MusicInputStream.currentFrame - OuputStream.currentFrame
+	 * calcualtes how far off the minBufferDistance is away from the the actual buffer distance
 	 * @return
 	 */
-	public long bufferingDistance()
+	public long minBufferingDistance()
 	{
-		return bufferDistance - (streamer.currentFrame-soundFrame);
+		return minBufferDistance - (streamer.currentFrame-soundFrame);
+	}
+
+	/**
+	 * calcualtes how far the inputframe is from the output frame
+	 * @return
+	 */
+	public long bufferDistance()
+	{
+		return streamer.currentFrame-soundFrame;
 	}
 
 	public void writeSound()
 	{
-
 		if(!songFinished)
 		{
-			System.out.println("Output Sound "+streamer.frames.size());
 			outStreamer.write(streamer.getNextOutputFile());
+			if(bufferDistance()<this.maxBufferDistance)
+			{
+				streamer.slowingDownBuffer = false;//speed buffering back up
+			}
 			soundFrame++;
 			timeReference = (soundFrame*MusicInputStreamer.frameSize)/((double)MusicInputStreamer.sampleRate);
-			if(streamer.frames.size()>=1)
+			if(streamer.frames.size()<=1)
 			{
 				songFinished = true;
-				PumpAndJump.switchThread(ThreadName.PostGame, this);
+			//	PumpAndJump.switchThread(ThreadName.PostGame, this);
 			}
 		}
 	}
