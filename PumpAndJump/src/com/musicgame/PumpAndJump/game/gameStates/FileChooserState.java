@@ -56,7 +56,7 @@ public class FileChooserState extends GameThread
 				public void changed(ChangeEvent event, Actor actor)
 				{
 					RunningGame.pick=false;
-					//RunningGame.filename=new File("the_hand_that_feeds.wav");
+					RunningGame.test="the_hand_that_feeds.wav";
 					PumpAndJump.switchThread(ThreadName.RunningGame, FileChooserState.this);
 				}
 			});

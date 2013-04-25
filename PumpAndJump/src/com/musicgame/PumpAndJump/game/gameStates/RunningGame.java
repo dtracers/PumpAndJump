@@ -35,8 +35,9 @@ public class RunningGame extends GameThread
 	MusicHandler streamer;
 //	MusicInputStreamer streamer;
 //	MusicOutputStream outStreamer = new MusicOutputStream();
-	static File filename=new File("");
+	static File filename=null;
 	static boolean pick=false;
+	static String test=null;
 //	MusicInputStreamer streamer;
 //	MusicOutputStream outStreamer = new MusicOutputStream();
 
@@ -289,12 +290,17 @@ public class RunningGame extends GameThread
 			{
 				filename=FileChooserState.fileDialog.getFile();
 			}
+			//System.out.println(filename);
 
 		    streamer = new MusicHandler();
 
 			if(filename != null)
 			{
 				streamer.fileName=filename.getAbsolutePath();
+			}
+			if(!pick && test!=null)
+			{
+				streamer.fileName=test;
 			}
 
 			try {
