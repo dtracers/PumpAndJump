@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -33,17 +35,45 @@ public class PreGame extends GameThread
 	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
+	Dialog check;
+	TextButton yes;
+	TextButton no;
 
 	public PreGame()
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
+		
+		
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
-
+        yes=new TextButton("yes",uiSkin);
+        no=new TextButton("no",uiSkin);
+        yes.addListener(new ChangeListener()
+		{
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				
+				RunningGame.pick=true;
+				PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
+			}
+		});
+		
+		no.addListener(new ChangeListener()
+			{
+				public void changed(ChangeEvent event, Actor actor)
+				{
+					
+					
+					PumpAndJump.switchThread(ThreadName.FileChooser, PreGame.this);
+				}
+			});
+        check=new Dialog("Use own music?",uiSkin);
+		check.button(yes);
+		check.button(no);
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
 		//table.debug(); // turn on all debug lines (table, cell, and widget)
@@ -62,7 +92,9 @@ public class PreGame extends GameThread
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
-					PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
+					check.show(stage);
+					
+					//PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
 				}
 			});
 		final TextButton aboutButton = new TextButton("About", uiSkin);

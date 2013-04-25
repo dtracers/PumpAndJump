@@ -31,7 +31,8 @@ import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 public class RunningGame extends GameThread
 {
 	Stage stage;
-
+	static File filename=new File("");
+	static boolean pick=false;
 	MusicInputStreamer streamer;
 	MusicOutputStream outStreamer = new MusicOutputStream();
 
@@ -278,7 +279,10 @@ public class RunningGame extends GameThread
 		    jfc.showDialog(null,"Open");
 		    jfc.setVisible(true);
 		    File filename = jfc.getSelectedFile();*/
-			File filename=FileChooserState.fileDialog.getFile();
+			if(pick)
+			{
+				filename=FileChooserState.fileDialog.getFile();
+			}
 
 		    streamer = new MusicInputStreamer();
 
