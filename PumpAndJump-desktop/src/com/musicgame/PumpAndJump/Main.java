@@ -19,6 +19,7 @@ public class Main {
 		new LwjglApplication(new PumpAndJump(), cfg);
 
 		FileChooserState.fileDialog = new FileChooserDesktop(null);
+		FileChooserState.type="desktop";
 
 		PumpAndJump.MP3decoder = new DesktopMP3Decoder(null);
 	//	PumpAndJump.inputStream = new DesktopInputDecoder(0, null);

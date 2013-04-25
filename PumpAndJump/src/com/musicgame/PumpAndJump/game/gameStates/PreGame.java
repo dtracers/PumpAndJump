@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.musicgame.PumpAndJump.Util.FileChooser;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
@@ -92,9 +93,12 @@ public class PreGame extends GameThread
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
-					check.show(stage);
-					
-					//PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
+					if(FileChooserState.type=="desktop")
+					{
+						check.show(stage);
+					}
+					else
+					PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
 				}
 			});
 		final TextButton aboutButton = new TextButton("About", uiSkin);

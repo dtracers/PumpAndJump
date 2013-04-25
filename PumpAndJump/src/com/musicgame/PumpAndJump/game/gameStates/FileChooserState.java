@@ -24,6 +24,7 @@ public class FileChooserState extends GameThread
 	Stage stage;
 	SpriteBatch batch;
 	public static FileChooser fileDialog;
+	public static String type;
 	//need to make a file chooser
 	public FileChooserState()
 	{
@@ -53,6 +54,7 @@ public class FileChooserState extends GameThread
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
+					RunningGame.pick=false;
 					//RunningGame.filename=new File("the_hand_that_feeds.wav");
 					PumpAndJump.switchThread(ThreadName.RunningGame, FileChooserState.this);
 				}

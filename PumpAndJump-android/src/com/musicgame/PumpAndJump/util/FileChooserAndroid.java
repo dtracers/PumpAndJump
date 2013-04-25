@@ -26,13 +26,10 @@ public class FileChooserAndroid extends FileChooser{
 
 	@Override
 	public File getFile() {
-		System.out.println("HERE1");
-		
-		
-		
-		
-		
+				
 		return file;
 	}
+
+	
 
 }
