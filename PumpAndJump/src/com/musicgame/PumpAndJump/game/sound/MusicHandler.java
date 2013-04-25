@@ -17,7 +17,7 @@ public class MusicHandler extends Thread
 	//for both
 	public static final int minBufferDistance = 20;
 	public static final int maxBufferDistance = 200;
-	public static final int arraySampleLength = 500;
+	public static final int arraySampleLength = 1000;
 	public static final int frameSize = 256;//1024*8;//256;// 1024/4;
 	public static final int sampleRate = 44100;
 	ArrayList<short[]> musicFile = new ArrayList<short[]>();

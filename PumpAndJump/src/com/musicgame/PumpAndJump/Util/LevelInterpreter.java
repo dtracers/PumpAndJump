@@ -105,7 +105,7 @@ public class LevelInterpreter
 
 			if(obstacle!=null)
 				level.add(obstacle);
-			 return level;
+			// return level;
 		}
 		return level;
 	}
