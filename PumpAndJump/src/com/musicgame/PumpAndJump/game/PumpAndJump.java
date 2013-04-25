@@ -74,6 +74,7 @@ public class PumpAndJump extends Game
 		inctructionsGameThread = new InstructionGame();
 		optionsGameThread = new OptionsGame();
 		bufferingThread = new Buffering();
+		fileChooserThread=new FileChooserState();
 	}
 
 	/**
