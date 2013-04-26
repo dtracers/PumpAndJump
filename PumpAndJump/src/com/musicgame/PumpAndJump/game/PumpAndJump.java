@@ -63,7 +63,7 @@ public class PumpAndJump extends Game
 
 	}
 
-	private void initialize()
+	private static void initialize()
 	{
 		preGameThread = new PreGame();
 		postGameThread = new PostGame();

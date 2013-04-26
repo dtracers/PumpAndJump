@@ -53,6 +53,6 @@ public class Obstacle extends GameObject
 	 */
 	public boolean inScreenRange(float screenLeftTime,float screenRightTime)
 	{
-		return end<screenLeftTime||start>screenRightTime;
+		return start<=screenRightTime&&end>=screenLeftTime;
 	}
 }

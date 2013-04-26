@@ -59,10 +59,6 @@ public class RunningGame extends GameThread
 	double timeReference = 0;
 	double lastTimeReference = 0;
 
-
-	int minBufferDistance = 20;
-	int maxBufferDistance = 200;
-	long sampleRate = 44100;
 	long start = 0;
 	float tempo = 240.0f;
 	Point pos;
@@ -70,7 +66,7 @@ public class RunningGame extends GameThread
 	Point scale;
 	Animation levelAni;
 	AnimationQueue levelAniQ;
-	boolean toWait = false;
+	static boolean toWait = false;
 	private boolean started = false;
 	Sprite background;
 
@@ -209,17 +205,16 @@ public class RunningGame extends GameThread
 
 		//set world view
 		batch.setTransformMatrix( mv );
-
 		//draw gameObjects
+
 		for(int k = 0;k<actualObjects.size();k++)
 		{
 			Obstacle currentObj = actualObjects.get(k);
-			if(currentObj.inScreenRange((float)timeReference, (float)(timeReference+3)))
+			if(currentObj.inScreenRange((float)(timeReference), (float)(timeReference+6)))
 			{
 				currentObj.draw( batch );
 			}
 		}
-
 		//reset to the original transform matrix
 		batch.setTransformMatrix( beforeWV );
 
