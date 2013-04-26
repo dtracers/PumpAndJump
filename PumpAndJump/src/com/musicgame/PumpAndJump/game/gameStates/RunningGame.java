@@ -27,27 +27,15 @@ import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.sound.MusicHandler;
-import com.musicgame.PumpAndJump.game.sound.MusicInputStreamer;
-import com.musicgame.PumpAndJump.game.sound.MusicOutputStream;
 
 public class RunningGame extends GameThread
 {
 	Stage stage;
 	MusicHandler streamer;
-//	MusicInputStreamer streamer;
-//	MusicOutputStream outStreamer = new MusicOutputStream();
 	static File filename=null;
 	static boolean pick=false;
 	static String test=null;
-//	MusicInputStreamer streamer;
-//	MusicOutputStream outStreamer = new MusicOutputStream();
 
-	/**
-	this is a list of the on screen objects
-	(by on screen it does include some that are partially off the screen too)
-	the objects are basically a queue added at the end and removed from the front
-	*/
-	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	//contains the list of all objects that are in the level
 	ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
 
@@ -56,10 +44,9 @@ public class RunningGame extends GameThread
 	//the current frame that the sound player is at
 	long soundFrame = 0;
 	//the timeRefernce of each object
-	double timeReference = 0;
-	double lastTimeReference = 0;
+	static double timeReference = 0;
+	static double lastTimeReference = 0;
 
-	long start = 0;
 	float tempo = 240.0f;
 	Point pos;
 	Point rotation;
