@@ -167,8 +167,11 @@ public class RunningGame extends GameThread
 
 			for(int k = 0;k<actualObjects.size();k++)
 			{
-				actualObjects.get(k).update( mv, delta);
-
+				Obstacle currentObj = actualObjects.get(k);
+				if(currentObj.inScreenRange((float)timeReference, (float)(timeReference+3)))
+				{
+					currentObj.update( mv, delta);
+				}
 			}
 
 			lastTimeReference += delta;
@@ -210,8 +213,11 @@ public class RunningGame extends GameThread
 		//draw gameObjects
 		for(int k = 0;k<actualObjects.size();k++)
 		{
-
-			actualObjects.get( k ).draw( batch );
+			Obstacle currentObj = actualObjects.get(k);
+			if(currentObj.inScreenRange((float)timeReference, (float)(timeReference+3)))
+			{
+				currentObj.draw( batch );
+			}
 		}
 
 		//reset to the original transform matrix

@@ -22,7 +22,7 @@ public class Obstacle extends GameObject
 		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
 		image.setSize( End - Start, Height );
 	}
-	
+
 	void makeHull()
 	{
 		float[] points = new float[ 8 ];
@@ -30,17 +30,29 @@ public class Obstacle extends GameObject
 		points[ 2 ] = width; points[ 3 ] = 0.0f;
 		points[ 4 ] = width; points[ 5 ] = height;
 		points[ 6 ] = 0.0f; points[ 7 ] = height;
-		
+
 		poly = new Polygon( points );
 	}
-	
+
 	public float getStartTime()
 	{
 		return start;
 	}
-	
+
 	public float getEndTime()
 	{
 		return end;
+	}
+
+	/**
+	 * If the start time of the object is off the screen to the right  (has not been on screen yet)
+	 * or the end time is off the time to the left (has been on screen and just left)
+	 * @param screenLeftTime
+	 * @param screenRightTime
+	 * @return
+	 */
+	public boolean inScreenRange(float screenLeftTime,float screenRightTime)
+	{
+		return end<screenLeftTime||start>screenRightTime;
 	}
 }

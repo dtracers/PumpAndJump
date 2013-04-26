@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 import com.musicgame.PumpAndJump.DuckObstacle;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.JumpObstacle;
+import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Util.LevelInterpreter;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class TestLevelInterpreter {
 			writer.flush();
 			Scanner input=new Scanner(temp);
 
-			ArrayList <GameObject> result =	LevelInterpreter.loadFromScanner(input);
+			ArrayList <Obstacle> result =	LevelInterpreter.loadFromScanner(input);
 			System.out.println(result.size());
 			assertEquals("Invalid Return Size",result.size(),2);
 			assertTrue("Incorrect gameObject type",result.get(0) instanceof JumpObstacle);
