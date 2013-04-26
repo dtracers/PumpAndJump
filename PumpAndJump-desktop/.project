@@ -18,7 +18,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<location>C:/Users/Garrett/Documents/GitHub/PumpAndJump/PumpAndJump-android/assets</location>
+			<locationURI>WORKSPACE_LOC/PumpAndJump/PumpAndJump-android/assets</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
