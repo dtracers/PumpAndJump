@@ -1,5 +1,7 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
+import java.util.Scanner;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -49,10 +51,11 @@ public class AboutGame extends GameThread
 		Table scrolltable = new Table();
 		scrolltable.setFillParent(true);
 		final ScrollPane scroll = new ScrollPane(scrolltable, uiSkin);
-		final Label infoText = new Label("A side scroller game that generates levels from music. New line tester. Made in the labs at Texas A&M.", uiSkin);
+		//final Label infoText = new Label("A side scroller game that generates levels from music.\n New line tester. Made in the labs at Texas A&M.", uiSkin);
+		final Label infoText = new Label(readStory(),uiSkin);
+		infoText.setFontScale((float) 0.8);
 		infoText.setWrap(true);
-		scrolltable.add(infoText).size(400,150);
-
+		scrolltable.add(infoText).size(800,500);
 
 		final TextButton backButton = new TextButton("Back", uiSkin);
 		backButton.addListener(
@@ -64,9 +67,24 @@ public class AboutGame extends GameThread
 						}
 					});
 
-		table.add(scroll).size(450,200);
+		table.add(scroll).size(800,500);
 		table.row().space(10).padBottom(10);
 		table.add(backButton).size(250,50).pad(5);
+	}
+
+	private static String readStory()
+	{
+		FileHandle dir= Gdx.files.internal("story.txt");
+		Scanner LevelIn = new Scanner(dir.reader());
+		String storyText = "";
+		while(LevelIn.hasNextLine())
+		{
+			String g2 = LevelIn.nextLine();
+			System.out.println(g2);
+			storyText+=g2+"\n";
+		}
+		System.out.println(storyText);
+		return storyText;
 	}
 
 	@Override
