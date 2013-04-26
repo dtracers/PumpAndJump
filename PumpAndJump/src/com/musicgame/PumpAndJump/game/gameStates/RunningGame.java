@@ -47,7 +47,7 @@ public class RunningGame extends GameThread
 	static double timeReference = 0;
 	static double lastTimeReference = 0;
 
-	float tempo = 240.0f;
+	static float tempo = 240.0f;
 	Point pos;
 	Point rotation;
 	Point scale;
@@ -56,8 +56,6 @@ public class RunningGame extends GameThread
 	static boolean toWait = false;
 	private boolean started = false;
 	Sprite background;
-
-	//used for calculating delta
 
 	private boolean songFinished = false;
 	GameControls controls;

@@ -4,7 +4,6 @@ package com.musicgame.PumpAndJump.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Array;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.gameStates.AboutGame;
@@ -25,22 +24,8 @@ public class PumpAndJump extends Game
 	GameScreen gameScreen;
 	InputProcessor input;
 
-
-	//MainMenuScreen menuScreen;
-
-	//static PumpAndJump instance;
 	static Array<GameThread> runningThreads;
 
-	/*
-	@Override
-	public void create()
-	{
-		gameScreen= new GameScreen();
-		menuScreen = new MainMenuScreen(this);
-		setScreen(menuScreen);
-
-	}
-	*/
 	@Override
 	public void create()
 	{
