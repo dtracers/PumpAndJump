@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.GameObject;
+import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Animation.Animation;
 import com.musicgame.PumpAndJump.Animation.AnimationQueue;
@@ -48,7 +49,7 @@ public class RunningGame extends GameThread
 	*/
 	ArrayList<GameObject> levelObjects = new ArrayList<GameObject>();
 	//contains the list of all objects that are in the level
-	ArrayList<GameObject> actualObjects = new ArrayList<GameObject>();
+	ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
 
 	//Player object
 	Player player;
@@ -209,6 +210,7 @@ public class RunningGame extends GameThread
 		//draw gameObjects
 		for(int k = 0;k<actualObjects.size();k++)
 		{
+
 			actualObjects.get( k ).draw( batch );
 		}
 
@@ -275,7 +277,7 @@ public class RunningGame extends GameThread
 			try {
 				actualObjects = LevelInterpreter.loadLevel();
 			} catch (Exception e) {
-				actualObjects = new ArrayList<GameObject>();
+				actualObjects = new ArrayList<Obstacle>();
 				e.printStackTrace();
 			}
 

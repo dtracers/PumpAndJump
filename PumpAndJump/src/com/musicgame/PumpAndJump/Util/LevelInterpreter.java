@@ -15,6 +15,7 @@ import com.musicgame.PumpAndJump.Beat;
 import com.musicgame.PumpAndJump.DuckObstacle;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.JumpObstacle;
+import com.musicgame.PumpAndJump.Obstacle;
 
 public class LevelInterpreter
 {
@@ -45,7 +46,7 @@ public class LevelInterpreter
 	}
 	*/
 
-	public static GameObject getNextObject(String inputLine)
+	public static Obstacle getNextObject(String inputLine)
 	{
 		Scanner s = new Scanner(inputLine);
 		if(!s.hasNext())
@@ -77,10 +78,10 @@ public class LevelInterpreter
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static ArrayList<GameObject> loadLevel() throws FileNotFoundException
+	public static ArrayList<Obstacle> loadLevel() throws FileNotFoundException
 	{
 		//Gdx.files.internal("Something in assets");
-		ArrayList<GameObject> Level;
+		ArrayList<Obstacle> Level;
 		FileHandle dir= Gdx.files.internal("level1.txt");
 
 		if(!dir.exists())
@@ -98,10 +99,10 @@ public class LevelInterpreter
 	 * Will throw runtime error if scan is null
 	 * @return
 	 */
-	public static ArrayList<GameObject> loadFromScanner(Scanner scan){
-		ArrayList<GameObject> level=new ArrayList<GameObject>();
+	public static ArrayList<Obstacle> loadFromScanner(Scanner scan){
+		ArrayList<Obstacle> level=new ArrayList<Obstacle>();
 		while(scan.hasNextLine()){
-			GameObject obstacle=getNextObject(scan.nextLine());
+			Obstacle obstacle=getNextObject(scan.nextLine());
 
 			if(obstacle!=null)
 				level.add(obstacle);
