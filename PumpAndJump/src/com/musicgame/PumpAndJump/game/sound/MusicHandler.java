@@ -22,15 +22,18 @@ public class MusicHandler extends Thread
 	public static final int sampleRate = 44100;
 	ArrayList<short[]> musicFile = new ArrayList<short[]>();
 
-	//for input streaming
-	short[] buf = new short[frameSize*2];
-	public String fileName= "the_hand_that_feeds.wav";
+
+	public static String fileName= "the_hand_that_feeds.wav";
 //	public String fileName= "the_hand_that_feeds.mp3";
 //	public String fileName= "Skrillex_Cinema.wav";
 //	public String fileName = "Windows_XP_Startup.wav";
+
+	//for input streaming
+	short[] buf = new short[frameSize*2];
 	Decoder decoder;
 	int inputFrame;
 
+	//other methods
 	public boolean buffering = true;
 	public boolean doneReading = false;
 	private boolean forceStop = false;
@@ -39,7 +42,6 @@ public class MusicHandler extends Thread
 	//for output streaming
 	int outputFrame = 0;
 	boolean songFinished = false;
-	int latency;
 	AudioDevice device;
 
 	//location objects
@@ -219,7 +221,6 @@ public class MusicHandler extends Thread
 	public void setUpOutputStream()
 	{
 		device = Gdx.audio.newAudioDevice(44100, true);
-		latency = device.getLatency();
 	}
 
 
