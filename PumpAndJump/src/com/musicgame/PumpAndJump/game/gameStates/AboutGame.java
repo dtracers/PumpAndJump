@@ -68,7 +68,7 @@ public class AboutGame extends GameThread
 					});
 
 		table.add(scroll).size(800,500);
-		table.row().space(10).padBottom(10);
+		table.row().space(10);//.padBottom(10);
 		table.add(backButton).size(250,50).pad(5);
 	}
 

@@ -135,7 +135,7 @@ public class RunningGame extends GameThread
 			{
 				writeSound();
 			}
-			timeReference = streamer.getTimeReference();
+			timeReference = streamer.timeReference;
 			delta = (float)(timeReference-lastTimeReference);
 			pos.x = (float)timeReference;
 
@@ -360,7 +360,7 @@ public class RunningGame extends GameThread
 	public void writeSound()
 	{
 		streamer.writeSound();
-		songFinished = streamer.isSongOver();
+		songFinished = streamer.songFinished;
 	}
 
 	@Override

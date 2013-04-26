@@ -41,13 +41,13 @@ public class MusicHandler extends Thread
 
 	//for output streaming
 	int outputFrame = 0;
-	boolean songFinished = false;
+	public boolean songFinished = false;
 	AudioDevice device;
 
 	//location objects
 	int outputLocation = 0;
 	int inputLocation = 0;
-	double timeReference = 0;
+	public double timeReference = 0;
 
 	public MusicHandler()
 	{
@@ -221,16 +221,6 @@ public class MusicHandler extends Thread
 	public void setUpOutputStream()
 	{
 		device = Gdx.audio.newAudioDevice(44100, true);
-	}
-
-
-	public double getTimeReference()
-	{
-		return timeReference;
-	}
-	public boolean isSongOver()
-	{
-		return songFinished;
 	}
 
 	/**
