@@ -9,7 +9,8 @@ public class BeatDetector
 	//this is the instantaneous VEdata
 	public ArrayList<float[]> VEdata = new ArrayList<float[]>();
 	//this is the average VEdata (over 43 Energy histories
-	public ArrayList<Double> AveragedEnergydata = new ArrayList<Double>();
+	//public ArrayList<Double> AveragedEnergydata = new ArrayList<Double>();
+	double[] AveragedEnergydata;
 
 	public static final int historyLength = 20;//43;
 	public static final int LongHistoryLength = historyLength*4;//43;
@@ -29,7 +30,7 @@ public class BeatDetector
 	boolean aboveAverage = false;
 	long highestIndex = 0;//the index of the highest point when it is above the beat
 	double timeIndex = 0;
-	long highestShiftIndex = 0;//the index of the highest point when it is above the beat (shifted for the average value
+	int highestShiftIndex = 0;//the index of the highest point when it is above the beat (shifted for the average value
 	float highestPoint;
 	//the senstitivity of the beat detector:  smaller numbers remove more beats and is more strict
 	double senstitivity = 0.8;
@@ -44,10 +45,12 @@ public class BeatDetector
 
 	public BeatDetector()
 	{
-		for(int k = 0;k<LongHistoryLength;k++)
+
+		for(int k = 0;k<=LongHistoryLength;k++)
 		{
 			VEdata.add(new float[2]);
 		}
+		AveragedEnergydata = new double[LongHistoryLength];
 	}
 
 	public void combineArray(ArrayList<short[]> timeData,int startIndex)
@@ -69,22 +72,19 @@ public class BeatDetector
    		//the size of bits that the array is taken over
    		int averageSize = MusicHandler.LargeFrameSize;
    		//number of values
-   		int index = 0;
+
    		float[] result = VEdata.get(currentIndex);
 		float volume = 0;
 		float energy = 0;
 		for(int q = 0; q<averageSize;q++)
 		{
-			float data = timeData[index];
+			float data = timeData[q];
 			volume+=data;
 			energy+=data*data;
-
-			index++;
 		}
 		maxEnergy = Math.max(maxEnergy, energy);
 		result[0] = volume;
 		result[1] = energy;
-		VEdata.add(result);
 
 		EnergyHistory[currentHistoryIndex] = energy;
 
@@ -94,7 +94,7 @@ public class BeatDetector
 			value+=EnergyHistory[q];
 		}
 		value/=historyLength;
-		AveragedEnergydata.add(value);
+		AveragedEnergydata[currentIndex] = value;
 
 		//moves the index for the history which is a looping value
 		currentHistoryIndex++;
@@ -104,7 +104,7 @@ public class BeatDetector
 			beatDetectionAlgorithm();
 		//moves the index for the index in VEdata
 		counterIndex++;
-		currentIndex%=LongHistoryLength;
+		currentIndex=counterIndex%LongHistoryLength;
 
    	}
 
@@ -116,9 +116,9 @@ public class BeatDetector
 	public void beatDetectionAlgorithm()
 	{
 		shiftIndex = (counterIndex-shiftAvg)%LongHistoryLength;
-
+	//	System.out.println(currentIndex+" "+shiftIndex);
 		float instantEnergy = VEdata.get((currentIndex))[1];
-		double averageEnergy = AveragedEnergydata.get(shiftIndex);
+		double averageEnergy = AveragedEnergydata[shiftIndex];
 		if(instantEnergy>=averageEnergy)
 		{
 			if(instantEnergy>highestPoint)
@@ -131,7 +131,7 @@ public class BeatDetector
 			aboveAverage = true;
 		}else if(aboveAverage)
 		{
-			double avgEnergy = AveragedEnergydata.get((int) (highestShiftIndex));
+			double avgEnergy = AveragedEnergydata[highestShiftIndex];
 			double division = avgEnergy/highestPoint;
 
 			aboveAverage = false;
