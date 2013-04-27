@@ -19,6 +19,7 @@ public class MusicHandler extends Thread
 	public static final int maxBufferDistance = 200;
 	public static final int arraySampleLength = 1000;
 	public static final int frameSize = 256;//1024*8;//256;// 1024/4;
+	public static final int LargeFrameSize = frameSize*4;//1024*8;//256;// 1024/4;
 	public static final int sampleRate = 44100;
 	ArrayList<short[]> musicFile = new ArrayList<short[]>();
 
@@ -28,10 +29,12 @@ public class MusicHandler extends Thread
 //	public String fileName= "Skrillex_Cinema.wav";
 //	public String fileName = "Windows_XP_Startup.wav";
 
+
 	//for input streaming
 	short[] buf = new short[frameSize*2];
 	Decoder decoder;
 	int inputFrame;
+	BeatDetector detect = new BeatDetector();
 
 	//other methods
 	public boolean buffering = true;
@@ -141,6 +144,8 @@ public class MusicHandler extends Thread
 				}
 				inputFrame++;
 				inputLocation = inputFrame%arraySampleLength;
+				if(inputFrame>4)
+					detect.combineArray(musicFile, inputFrame-4);
 				if(bufferDistance()>maxBufferDistance)
 				{
 			//		System.out.println("slow down doggy");
