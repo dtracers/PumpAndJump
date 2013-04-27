@@ -11,7 +11,8 @@ public class BeatDetector
 	//this is the average VEdata (over 43 Energy histories
 	public ArrayList<Double> AveragedEnergydata = new ArrayList<Double>();
 
-	int historyLength = 20;//43;
+	public static final int historyLength = 20;//43;
+	public static final int LongHistoryLength = historyLength*4;//43;
 
 	private double[] EnergyHistory = new double[historyLength];
 	int currentHistoryIndex = 0;
@@ -27,6 +28,8 @@ public class BeatDetector
 	//values used for the actual beat detection
 	boolean aboveAverage = false;
 	long highestIndex = 0;//the index of the highest point when it is above the beat
+	double timeIndex = 0;
+	long highestShiftIndex = 0;//the index of the highest point when it is above the beat (shifted for the average value
 	float highestPoint;
 	//the senstitivity of the beat detector:  smaller numbers remove more beats and is more strict
 	double senstitivity = 0.8;
@@ -41,7 +44,7 @@ public class BeatDetector
 
 	public BeatDetector()
 	{
-		for(int k = 0;k<historyLength*2;k++)
+		for(int k = 0;k<LongHistoryLength;k++)
 		{
 			VEdata.add(new float[2]);
 		}
@@ -101,7 +104,7 @@ public class BeatDetector
 			beatDetectionAlgorithm();
 		//moves the index for the index in VEdata
 		counterIndex++;
-		currentIndex%=historyLength*2;
+		currentIndex%=LongHistoryLength;
 
    	}
 
@@ -112,27 +115,29 @@ public class BeatDetector
 	 */
 	public void beatDetectionAlgorithm()
 	{
-		shiftIndex = (counterIndex-shiftAvg)%historyLength*2;
+		shiftIndex = (counterIndex-shiftAvg)%LongHistoryLength;
 
 		float instantEnergy = VEdata.get((currentIndex))[1];
-		double averageEnergy = AveragedEnergydata.get(currentIndex-shiftAvg);
+		double averageEnergy = AveragedEnergydata.get(shiftIndex);
 		if(instantEnergy>=averageEnergy)
 		{
 			if(instantEnergy>highestPoint)
 			{
 				highestPoint = instantEnergy;
-				highestIndex = currentIndex;
+				highestIndex = counterIndex;
+				timeIndex = (MusicHandler.inputFrame*MusicHandler.frameSize)/((double)MusicHandler.sampleRate);
+				highestShiftIndex = shiftIndex;
 			}
 			aboveAverage = true;
 		}else if(aboveAverage)
 		{
-			double avgEnergy = AveragedEnergydata.get((int) (highestIndex-shiftAvg));
+			double avgEnergy = AveragedEnergydata.get((int) (highestShiftIndex));
 			double division = avgEnergy/highestPoint;
 
 			aboveAverage = false;
 			if(division<senstitivity)
 			{
-				detectedBeats.add(new Beat(highestIndex,highestPoint,detectedBeats.size()));
+				detectedBeats.add(new Beat(highestIndex,highestPoint,detectedBeats.size(),timeIndex));
 			}
 			highestPoint = 0;
 			highestIndex = -1;

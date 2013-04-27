@@ -5,9 +5,9 @@ public class Beat implements Comparable
 
 	static boolean SORT_BY_LOCATION = false;
 	static boolean SORT_BY_INTENSITY = false;
-	public Beat(long highestIndex, float highestPoint,int indexInList)
+	public Beat(long highestIndex, float highestPoint,int indexInList, double timeIndex)
 	{
-		System.out.println("Creating a beat at "+highestIndex);
+		System.out.println("Creating a beat at "+highestIndex+" time index "+timeIndex);
 		soundIntensity = highestPoint;
 		sampleLocation = highestIndex;
 		this.indexInList = indexInList;

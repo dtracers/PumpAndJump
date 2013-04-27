@@ -33,7 +33,7 @@ public class MusicHandler extends Thread
 	//for input streaming
 	short[] buf = new short[frameSize*2];
 	Decoder decoder;
-	int inputFrame;
+	static int inputFrame;
 	BeatDetector detect = new BeatDetector();
 
 	//other methods
@@ -50,7 +50,7 @@ public class MusicHandler extends Thread
 	//location objects
 	int outputLocation = 0;
 	int inputLocation = 0;
-	public double timeReference = 0;
+	public static double timeReference = 0;
 
 	public MusicHandler()
 	{
@@ -144,7 +144,7 @@ public class MusicHandler extends Thread
 				}
 				inputFrame++;
 				inputLocation = inputFrame%arraySampleLength;
-				if(inputFrame>4)
+				if(inputFrame%4==0)
 					detect.combineArray(musicFile, inputFrame-4);
 				if(bufferDistance()>maxBufferDistance)
 				{
