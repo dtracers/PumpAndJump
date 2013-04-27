@@ -59,6 +59,8 @@ public class RunningGame extends GameThread
 	static boolean toWait = false;
 	private boolean started = false;
 	static Sprite background;
+	static Sprite leftBar;
+	static Sprite rightBar;
 	static OrthographicCamera cam;
 	static Matrix4 oldProjection;
 
@@ -113,9 +115,21 @@ public class RunningGame extends GameThread
         cam = CameraHelp.GetCamera();
 
         background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-        background.setSize( CameraHelp.virtualWidth, CameraHelp.virtualHeight  );
-        background.setPosition( 0.0f, -CameraHelp.virtualHeight/2.0f );
+        background.setSize( CameraHelp.virtualWidth, Gdx.graphics.getHeight()  );
+        background.setPosition( 0.0f, -Gdx.graphics.getHeight()/2.0f );
         background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
+        
+        leftBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+        rightBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+        float barWidth = ( Gdx.graphics.getWidth() - CameraHelp.virtualWidth ) / 2.0f;
+        
+        leftBar.setSize( barWidth, Gdx.graphics.getHeight() );
+        leftBar.setPosition( -barWidth, -Gdx.graphics.getHeight()/2.0f );
+        leftBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
+        
+        rightBar.setSize( barWidth, Gdx.graphics.getHeight() );
+        rightBar.setPosition( CameraHelp.virtualWidth, -Gdx.graphics.getHeight()/2.0f );
+        rightBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
@@ -152,7 +166,7 @@ public class RunningGame extends GameThread
 
 			player.update( new Matrix4(), delta);
 
-			setRotation( levelAniQ.getPose( delta ) );
+			//setRotation( levelAniQ.getPose( delta ) );
 			//update based on object's modelview
 			Matrix4 mv = new Matrix4();
 			makeWorldView( mv );
@@ -240,6 +254,10 @@ public class RunningGame extends GameThread
 		player.draw( batch );
 
 		batch.setTransformMatrix( before );
+		
+		leftBar.draw( batch );
+		rightBar.draw( batch );
+		
 		batch.end();
 		if(!toWait)
 		{
