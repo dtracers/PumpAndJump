@@ -8,11 +8,13 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.musicgame.PumpAndJump.CameraHelp;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Player;
@@ -56,6 +58,8 @@ public class RunningGame extends GameThread
 	static boolean toWait = false;
 	private boolean started = false;
 	Sprite background;
+	OrthographicCamera cam;
+	Matrix4 oldProjection;
 
 	private boolean songFinished = false;
 	GameControls controls;
@@ -104,15 +108,19 @@ public class RunningGame extends GameThread
         float[] f = { 0.0f };
         levelAni = new Animation( "level1_ani.txt" );
         levelAniQ = new AnimationQueue( levelAni, f );
+        cam = CameraHelp.GetCamera();
 
         background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-        background.setSize( Gdx.graphics.getHeight(), Gdx.graphics.getWidth()  );
-        background.setPosition( 0.0f, 0.0f );
+        background.setSize( CameraHelp.virtualWidth, CameraHelp.virtualHeight  );
+        background.setPosition( 0.0f, -CameraHelp.virtualHeight/2.0f );
         background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
         scale = new Point( tempo, 1.0f, 1.0f );
+        
+        oldProjection = batch.getProjectionMatrix();
+        batch.setProjectionMatrix( cam.combined );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
         soundFrame = 0;
@@ -138,7 +146,7 @@ public class RunningGame extends GameThread
 			}
 			timeReference = streamer.timeReference;
 			delta = (float)(timeReference-lastTimeReference);
-			pos.x = (float)timeReference;
+			pos.x = (float)timeReference-( player.p.x/scale.x );
 
 			player.update( new Matrix4(), delta);
 
@@ -150,7 +158,7 @@ public class RunningGame extends GameThread
 			for(int k = 0;k<actualObjects.size();k++)
 			{
 				Obstacle currentObj = actualObjects.get(k);
-				if(currentObj.inScreenRange((float)timeReference, (float)(timeReference+3)))
+				if(currentObj.inScreenRange((float)(timeReference-.3333f), (float)(timeReference+3.0f)))
 				{
 					currentObj.update( mv, delta);
 				}
@@ -196,7 +204,7 @@ public class RunningGame extends GameThread
 		for(int k = 0;k<actualObjects.size();k++)
 		{
 			Obstacle currentObj = actualObjects.get(k);
-			if(currentObj.inScreenRange((float)(timeReference), (float)(timeReference+6)))
+			if(currentObj.inScreenRange((float)( timeReference - .3333f ), (float)( timeReference + 3.0f )))
 			{
 				currentObj.draw( batch );
 			}
