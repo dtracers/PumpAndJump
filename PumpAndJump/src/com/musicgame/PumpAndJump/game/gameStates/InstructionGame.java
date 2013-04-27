@@ -36,16 +36,17 @@ import com.musicgame.PumpAndJump.game.ThreadName;
  */
 public class InstructionGame extends GameThread
 {
-	Skin uiSkin;
 	Stage stage;
 	ThreadName reverseThread;
 	//private Table table;
 	public InstructionGame()
 	{
 		stage = new Stage();
-
+		if(uiSkin == null)
+		{
         FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
         uiSkin = new Skin( skinFile );
+		}
 
         Table table = new Table();
 		stage.addActor(table);

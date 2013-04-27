@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public abstract class GameThread implements InputProcessor, Screen, Runnable
 {
+	public static Skin uiSkin;
 	public static SpriteBatch batch = new SpriteBatch();
 	public int height, width;
 

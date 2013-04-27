@@ -20,7 +20,6 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 
 public class FileChooserState extends GameThread
 {
-	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
 	public static FileChooser fileDialog;
@@ -34,8 +33,11 @@ public class FileChooserState extends GameThread
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        uiSkin = new Skin( skinFile );
+		if(uiSkin == null)
+		{
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        uiSkin = new Skin( skinFile );
+		}
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
@@ -63,7 +65,7 @@ public class FileChooserState extends GameThread
 		table.add().expand().fill();
 		table.add(startGameButton).expand().fill().pad(5);
 		table.add().expand().fill();
-		
+
 	}
 	@Override
     public void render(float delta)

@@ -33,7 +33,6 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 public class PreGame extends GameThread
 {
 
-	Skin uiSkin;
 	Stage stage;
 	SpriteBatch batch;
 	Dialog check;
@@ -44,31 +43,40 @@ public class PreGame extends GameThread
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
-		
-		
+	}
 
+	/**
+	 * sets up all of the buttons and stuff
+	 */
+	public void setUp()
+	{
+
+		stage = new Stage();
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        uiSkin = new Skin( skinFile );
+		if(uiSkin == null)
+		{
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        uiSkin = new Skin( skinFile );
+		}
         yes=new TextButton("yes",uiSkin);
         no=new TextButton("no",uiSkin);
         yes.addListener(new ChangeListener()
 		{
 			public void changed(ChangeEvent event, Actor actor)
 			{
-				
+
 				RunningGame.pick=true;
 				PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
 			}
 		});
-		
+
 		no.addListener(new ChangeListener()
 			{
 				public void changed(ChangeEvent event, Actor actor)
 				{
-					
-					
+
+
 					PumpAndJump.switchThread(ThreadName.FileChooser, PreGame.this);
 				}
 			});
@@ -100,7 +108,7 @@ public class PreGame extends GameThread
 					else if(FileChooserState.type=="android" && FileChooserState.test=="no")
 					{
 						PumpAndJump.switchThread(ThreadName.FileChooser, PreGame.this);
-						
+
 					}
 					else
 						PumpAndJump.switchThread(ThreadName.RunningGame, PreGame.this);
@@ -144,30 +152,30 @@ public class PreGame extends GameThread
 						Gdx.app.exit();
 					}
 				});
-		
+
 		TextButtonStyle textstyle = startGameButton.getStyle();
 		//textstyle.font.scale(0.5f);
 		//startGameButton.setStyle(textstyle);
-		
+
 		table.add().expand().fill();
 		table.add(startGameButton).expand().fill().pad(5);
 		table.add().expand().fill();
-		
+
 		table.row();
 		table.add().expand().fill();
 		table.add(optionsButton).expand().fill().pad(5);
 		table.add().expand().fill();
-		
+
 		table.row();
 		table.add().expand().fill();
 		table.add(instructionsButton).expand().fill().pad(5);
 		table.add().expand().fill();
-		
+
 		table.row();
 		table.add().expand().fill();
 		table.add(aboutButton).expand().fill().pad(5);
 		table.add().expand().fill();
-		
+
 		table.row();
 		table.add().expand().fill();
 		table.add(exitButton).expand().fill().pad(5);
@@ -177,6 +185,17 @@ public class PreGame extends GameThread
 		//table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
 	}
 
+	/**
+	 * Tries to remove everything for garbage cleaning
+	 */
+	public void breakDown()
+	{
+		stage = new Stage();
+		batch = null;
+		check = null;
+		yes = null;
+		no = null;
+	}
 	@Override
     public void render(float delta)
 	{
@@ -197,6 +216,7 @@ public class PreGame extends GameThread
 	@Override
 	public void switchFrom(GameThread currentThread)
 	{
+		setUp();
 		Gdx.input.setInputProcessor(stage);
 	}
 
@@ -205,7 +225,9 @@ public class PreGame extends GameThread
 	}
 
 	@Override
-	public void removeFrom(GameThread currentThread) {
+	public void removeFrom(GameThread currentThread)
+	{
+		breakDown();
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class GameControls
 	TextButton jumpButton;
 	TextButton pauseButton;
 	TextButton duckButton;
-	
+
 	float visibility;
 	int controllerLayout;
 	//define my listeners
@@ -42,27 +42,35 @@ public class GameControls
 			//System.out.println("pause!");
 		}
 	};
-	
+
 	public GameControls()
-	{	
-		FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-	    this.uiSkin = new Skin( skinFile );
+	{
+		if(uiSkin == null)
+		{
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        GameThread.uiSkin = new Skin( skinFile );
+		}
+		this.uiSkin = GameThread.uiSkin;
 		this.visibility=this.prefs.getFloat("visibility", 1.0f);
 		this.controllerLayout=this.prefs.getInteger("controllerLayout", 0);
-		
+
 		this.defineControlsTable();
 
 	}
 	public GameControls(ChangeListener jumpL, ChangeListener duckL, ChangeListener pauseL)
 	{
-		FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-	    this.uiSkin = new Skin( skinFile );
+		if(uiSkin == null)
+		{
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        GameThread.uiSkin = new Skin( skinFile );
+		}
+		this.uiSkin = GameThread.uiSkin;
 		this.visibility=this.prefs.getFloat("visibility", 1.0f);
 		this.controllerLayout=this.prefs.getInteger("controllerLayout", 0);
 		this.jumpListener = jumpL;
 		this.duckListener = duckL;
 		this.pauseListener = pauseL;
-		
+
 		this.defineControlsTable();
 	}
 	public void loadPrefs()
@@ -78,11 +86,11 @@ public class GameControls
 		pauseButton = new TextButton("Pause", uiSkin);
 		jumpButton = new TextButton("Jump", uiSkin);
 		duckButton = new TextButton("Duck", uiSkin);
-		
+
 		jumpButton.addListener(jumpListener);
 		duckButton.addListener(duckListener);
 		pauseButton.addListener(pauseListener);
-		
+
 		if(this.controllerLayout == 1)//entire left jump, pause center top, entire right duck
 		{
 			//this.controllerLayout=1;
@@ -97,7 +105,7 @@ public class GameControls
 			ctable.add().fill().expand();
 			ctable.row();
 			ctable.add().fill().expand().pad(5);
-			
+
 			controlsTable.add(ltable).fill().expand().pad(5).left();
 			controlsTable.add(ctable).fill().expand().pad(5).center();
 			controlsTable.add(rtable).fill().expand().pad(5).right();
@@ -178,17 +186,17 @@ public class GameControls
 			jumpButton.setDisabled(disabled);
 			pauseButton.setDisabled(disabled);
 			duckButton.setDisabled(disabled);
-	
+
 	}
 	public void setVisibility(float visibl)
-	{		
+	{
 		this.visibility = visibl;
 			jumpButton.setColor(visibility, visibility, visibility, visibility);
 			pauseButton.setColor(visibility, visibility, visibility, visibility);
 			duckButton.setColor(visibility, visibility, visibility, visibility);
 	}
 	public void setControlsLayout(int clay)
-	{		
+	{
 		this.controllerLayout = clay;
 	}
 }

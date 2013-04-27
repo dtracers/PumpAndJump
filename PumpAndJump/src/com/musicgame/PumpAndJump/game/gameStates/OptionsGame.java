@@ -39,26 +39,28 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 public class OptionsGame extends GameThread
 {
 
-	Skin uiSkin;
 	Stage stage;
 	ThreadName fromThread;
 	GameControls controls;
 	private Table container;
-	
+
 	public OptionsGame()
 	{
 		stage = new Stage();
 
-        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        uiSkin = new Skin( skinFile );
+		if(uiSkin == null)
+		{
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        uiSkin = new Skin( skinFile );
+		}
         this.controls = new GameControls();//jumpListener,duckListener,pauseListener);
-        
+
         Table container = new Table();
 		stage.addActor(container);
 		container.setFillParent(true);
 		//container.debug(); // turn on all debug lines (table, cell, and widget)
 		//container.debugTable(); // turn on only table lines
-		
+
 		Table scrolltable = new Table();
 		//scrolltable.debug(); // turn on all debug lines (table, cell, and widget)
 		//scrolltable.debugTable(); // turn on only table lines
@@ -114,9 +116,9 @@ public class OptionsGame extends GameThread
 				});
 		int buttonWidth = Gdx.graphics.getWidth()/2-15;
 		int buttonHeight = Gdx.graphics.getHeight()/6-10;
-		
+
 		container.add(scroll).expand().fill();
-		
+
 		scrolltable.add().expand().fill();
 		Label l = new Label("Controls Layout ", uiSkin);
 		l.setAlignment(Align.center);
@@ -134,7 +136,7 @@ public class OptionsGame extends GameThread
 		scrolltable.add(vl).expand().fill();
 		scrolltable.add(visibilitySlider).colspan(3).expand().fill();
 		scrolltable.add().expand().fill();
-		
+
 		scrolltable.row();
 		scrolltable.add().expand().fill();
 		scrolltable.add().expand().fill();
@@ -142,7 +144,7 @@ public class OptionsGame extends GameThread
 		scrolltable.add().expand().fill();
 		scrolltable.add().expand().fill();
 		scrolltable.add().expand().fill();
-		
+
 		scrolltable.row();
 		scrolltable.add(backButton).colspan(3).expand().fill().pad(5);//.colspan(2).pad(5).left();
 		scrolltable.add(saveButton).colspan(3).expand().fill().pad(5);//.size(buttonWidth,buttonHeight);//.colspan(2).pad(5).right();

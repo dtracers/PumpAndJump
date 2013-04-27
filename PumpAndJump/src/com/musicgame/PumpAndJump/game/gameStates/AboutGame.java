@@ -35,15 +35,19 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 public class AboutGame extends GameThread
 {
 
-	Skin uiSkin;
 	Stage stage;
 
 	public AboutGame()
 	{
 		batch = new SpriteBatch();
 		stage = new Stage();
-        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        uiSkin = new Skin( skinFile );
+
+		if(uiSkin == null)
+		{
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        uiSkin = new Skin( skinFile );
+		}
+
         Table table = new Table();
 		stage.addActor(table);
 		table.setFillParent(true);

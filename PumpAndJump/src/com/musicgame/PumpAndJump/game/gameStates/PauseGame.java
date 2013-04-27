@@ -26,10 +26,9 @@ import com.musicgame.PumpAndJump.game.ThreadName;
  */
 public class PauseGame extends GameThread
 {
-	Skin uiSkin;
 	Stage stage;
 	private ShapeRenderer shapeRenderer;
-	
+
 	//define my listeners
 	public ChangeListener optionsListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
@@ -56,7 +55,7 @@ public class PauseGame extends GameThread
 			System.out.println("pressed!");
 		}
 	};
-	
+
 	public PauseGame()
 	{
 		stage = new Stage();
@@ -64,8 +63,11 @@ public class PauseGame extends GameThread
 		System.out.println("%a width: "+Integer.toString(width)+" height: "+Integer.toString(height));
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        uiSkin = new Skin( skinFile );
+		if(uiSkin == null)
+		{
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        uiSkin = new Skin( skinFile );
+		}
 
         shapeRenderer = new ShapeRenderer();
 
@@ -81,7 +83,7 @@ public class PauseGame extends GameThread
 
 		final TextButton unpauseGameButton = new TextButton("Resume", uiSkin);
 		unpauseGameButton.addListener(unpauseListener);
-		
+
 		final TextButton optionGameButton = new TextButton("Options", uiSkin);
 		optionGameButton.addListener(optionsListener);
 
@@ -89,7 +91,7 @@ public class PauseGame extends GameThread
 		quitGameButton.addListener(quitListener);
 
 
-		
+
 		//Table centertable = new Table();
 		//centertable.setFillParent(true);
 		//centertable.debug(); // turn on all debug lines (table, cell, and widget)
@@ -114,7 +116,7 @@ public class PauseGame extends GameThread
 		table.add().expand().fill();
 		table.add().expand().fill();
 		table.add().expand().fill();
-		
+
 
 	}
 
