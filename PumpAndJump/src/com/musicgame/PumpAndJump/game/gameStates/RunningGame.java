@@ -250,10 +250,11 @@ public class RunningGame extends GameThread
 		}
 		//reset to the original transform matrix
 		batch.setTransformMatrix( beforeWV );
-
+		
 		player.draw( batch );
-
+		
 		batch.setTransformMatrix( before );
+		
 		
 		leftBar.draw( batch );
 		rightBar.draw( batch );

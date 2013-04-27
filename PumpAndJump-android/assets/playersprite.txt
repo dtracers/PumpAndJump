@@ -2,122 +2,101 @@ playersprite.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-chestlarge
-  rotate: false
-  xy: 39, 2
-  size: 70, 12
-  orig: 70, 12
-  offset: 0, 0
-  index: -1
-leftforearm
-  rotate: false
-  xy: 44, 68
-  size: 20, 6
-  orig: 20, 6
-  offset: 0, 0
-  index: -1
-rightarm
-  rotate: false
-  xy: 88, 82
-  size: 20, 6
-  orig: 20, 6
-  offset: 0, 0
-  index: -1
-chest
+Chest
   rotate: false
   xy: 2, 2
-  size: 35, 6
-  orig: 35, 6
+  size: 250, 42
+  orig: 250, 42
   offset: 0, 0
   index: -1
-leftthigh
+LeftForeArm
   rotate: false
-  xy: 24, 82
-  size: 20, 6
-  orig: 20, 6
+  xy: 104, 148
+  size: 140, 42
+  orig: 140, 42
   offset: 0, 0
   index: -1
-rightthigh
+Head
   rotate: false
-  xy: 88, 96
-  size: 20, 6
-  orig: 20, 6
+  xy: 2, 46
+  size: 100, 100
+  orig: 100, 100
   offset: 0, 0
   index: -1
-foot
+LeftFoot
   rotate: false
-  xy: 111, 2
-  size: 9, 5
-  orig: 9, 5
+  xy: 2, 148
+  size: 100, 50
+  orig: 100, 50
   offset: 0, 0
   index: -1
-leftarmlarge
+LeftShin
   rotate: false
-  xy: 2, 68
-  size: 40, 12
-  orig: 40, 12
+  xy: 2, 200
+  size: 140, 42
+  orig: 140, 42
   offset: 0, 0
   index: -1
-rightforearm
+LeftTuckle
   rotate: false
-  xy: 2, 96
-  size: 20, 6
-  orig: 20, 6
+  xy: 144, 244
+  size: 50, 40
+  orig: 50, 40
   offset: 0, 0
   index: -1
-leftforearmlarge
+RightTuckle
   rotate: false
-  xy: 66, 68
-  size: 40, 12
-  orig: 40, 12
+  xy: 144, 428
+  size: 50, 40
+  orig: 50, 40
   offset: 0, 0
   index: -1
-rightshin
+RightFoot
   rotate: false
-  xy: 66, 96
-  size: 20, 6
-  orig: 20, 6
+  xy: 148, 288
+  size: 100, 50
+  orig: 100, 50
   offset: 0, 0
   index: -1
-leftshin
+RightShin
   rotate: false
-  xy: 2, 82
-  size: 20, 6
-  orig: 20, 6
+  xy: 2, 384
+  size: 140, 42
+  orig: 140, 42
   offset: 0, 0
   index: -1
-rightforearmlarge
+RightForeArm
   rotate: false
-  xy: 24, 96
-  size: 40, 12
-  orig: 40, 12
+  xy: 2, 340
+  size: 140, 42
+  orig: 140, 42
   offset: 0, 0
   index: -1
-head
+LeftThigh
   rotate: false
-  xy: 2, 16
-  size: 25, 25
-  orig: 25, 25
+  xy: 2, 244
+  size: 140, 42
+  orig: 140, 42
   offset: 0, 0
   index: -1
-headlarge
+RightThigh
   rotate: false
-  xy: 29, 16
-  size: 50, 50
-  orig: 50, 50
+  xy: 2, 428
+  size: 140, 42
+  orig: 140, 42
   offset: 0, 0
   index: -1
-leftarm
+RightArm
   rotate: false
-  xy: 81, 16
-  size: 20, 6
-  orig: 20, 6
+  xy: 2, 288
+  size: 144, 42
+  orig: 144, 42
   offset: 0, 0
   index: -1
-leftthighlarge
+LeftArm
   rotate: false
-  xy: 46, 82
-  size: 40, 12
-  orig: 40, 12
+  xy: 104, 46
+  size: 144, 42
+  orig: 144, 42
   offset: 0, 0
   index: -1
