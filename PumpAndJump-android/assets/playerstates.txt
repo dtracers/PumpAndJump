@@ -1,9 +1,10 @@
-10
+11
 w walk.txt
 r run.txt
 h handstand.txt
 sh starthandstand.txt
 sjtl starttucklegs.txt
+sjrf rightsideflip.txt
 sjbf startbackflip.txt
 sdbf startbellyslide.txt
 sdss startspyslide.txt
