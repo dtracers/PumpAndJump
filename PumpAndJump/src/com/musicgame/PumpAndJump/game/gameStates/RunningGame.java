@@ -90,6 +90,7 @@ public class RunningGame extends GameThread
 	 */
 	public void reset()
 	{
+		System.out.println("WHY IS THIS NOT WORKING?");
 		lastTimeReference = 0;
 		timeReference = 0;
 		stage = new Stage();
@@ -299,18 +300,28 @@ public class RunningGame extends GameThread
 				e.printStackTrace();
 			}
 			streamer.start();
+
+
+
 			if(!started)
 			{
 				started = true;
-				this.start();
+				startThread();
 			}else
 			{
 				this.myNotify();
 			}
+
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
 	}
 
+
+	private void startThread()
+	{
+		Thread running = new Thread(this);
+		running.start();
+	}
 
 	@Override
 	public void addFrom(GameThread currentThread)

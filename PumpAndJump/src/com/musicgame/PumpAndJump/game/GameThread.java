@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public abstract class GameThread extends Thread implements InputProcessor, Screen
+public abstract class GameThread implements InputProcessor, Screen, Runnable
 {
 	public static SpriteBatch batch = new SpriteBatch();
 	public int height, width;
@@ -122,18 +122,20 @@ public abstract class GameThread extends Thread implements InputProcessor, Scree
 	}
 
 	@Override
-	public void pause() {
-	}
+	public void pause() {}
 
 	@Override
-	public void show() {
-	}
+	public void show() {}
 
 	@Override
-	public void hide() {
-	}
+	public void hide() {}
 
 	@Override
-	public void dispose() {
-	}
+	public void dispose() {}
+
+	@Override
+	public void resume() {}
+
+	@Override
+	public void run(){}
 }
