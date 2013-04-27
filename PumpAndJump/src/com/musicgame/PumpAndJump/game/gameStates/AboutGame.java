@@ -39,6 +39,7 @@ public class AboutGame extends GameThread
 
 	public AboutGame()
 	{
+		batch = new SpriteBatch();
 		stage = new Stage();
 
 		if(uiSkin == null)

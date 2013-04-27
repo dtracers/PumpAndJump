@@ -34,12 +34,14 @@ public class PreGame extends GameThread
 {
 
 	Stage stage;
+	SpriteBatch batch;
 	Dialog check;
 	TextButton yes;
 	TextButton no;
 
 	public PreGame()
 	{
+		batch = new SpriteBatch();
 		stage = new Stage();
 	}
 
@@ -189,6 +191,7 @@ public class PreGame extends GameThread
 	public void breakDown()
 	{
 		stage = new Stage();
+		batch = null;
 		check = null;
 		yes = null;
 		no = null;
