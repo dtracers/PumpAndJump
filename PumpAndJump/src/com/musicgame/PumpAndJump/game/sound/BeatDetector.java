@@ -116,7 +116,6 @@ public class BeatDetector
 	public void beatDetectionAlgorithm()
 	{
 		shiftIndex = (counterIndex-shiftAvg)%LongHistoryLength;
-	//	System.out.println(currentIndex+" "+shiftIndex);
 		float instantEnergy = VEdata.get((currentIndex))[1];
 		double averageEnergy = AveragedEnergydata[shiftIndex];
 		if(instantEnergy>=averageEnergy)
