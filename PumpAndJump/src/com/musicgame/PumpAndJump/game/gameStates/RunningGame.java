@@ -32,17 +32,18 @@ import com.musicgame.PumpAndJump.game.sound.MusicHandler;
 
 public class RunningGame extends GameThread
 {
-	Stage stage;
-	MusicHandler streamer;
+	static Stage stage;
+	static MusicHandler streamer;
 	static File filename=null;
 	static boolean pick=false;
 	static String test=null;
 
 	//contains the list of all objects that are in the level
-	ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
+	static ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
+	static int lastStartIndex = 0;
 
 	//Player object
-	Player player;
+	static Player player;
 	//the current frame that the sound player is at
 	long soundFrame = 0;
 	//the timeRefernce of each object
@@ -50,16 +51,16 @@ public class RunningGame extends GameThread
 	static double lastTimeReference = 0;
 
 	static float tempo = 240.0f;
-	Point pos;
-	Point rotation;
-	Point scale;
-	Animation levelAni;
-	AnimationQueue levelAniQ;
+	static Point pos;
+	static Point rotation;
+	static Point scale;
+	static Animation levelAni;
+	static AnimationQueue levelAniQ;
 	static boolean toWait = false;
 	private boolean started = false;
-	Sprite background;
-	OrthographicCamera cam;
-	Matrix4 oldProjection;
+	static Sprite background;
+	static OrthographicCamera cam;
+	static Matrix4 oldProjection;
 
 	private boolean songFinished = false;
 	GameControls controls;
@@ -96,6 +97,7 @@ public class RunningGame extends GameThread
 	{
 		System.out.println("WHY IS THIS NOT WORKING?");
 		lastTimeReference = 0;
+		lastStartIndex = 0;
 		timeReference = 0;
 		stage = new Stage();
 
@@ -155,12 +157,31 @@ public class RunningGame extends GameThread
 			Matrix4 mv = new Matrix4();
 			makeWorldView( mv );
 
-			for(int k = 0;k<actualObjects.size();k++)
+			// move last index
+			for(int k = lastStartIndex;k<actualObjects.size();k++)
 			{
 				Obstacle currentObj = actualObjects.get(k);
-				if(currentObj.inScreenRange((float)(timeReference-.3333f), (float)(timeReference+3.0f)))
+				if(currentObj.rightOfLeftSideOfScreen( (float) timeReference - .33333f ) )
 				{
-					currentObj.update( mv, delta);
+					break;
+				}
+				else
+				{
+					lastStartIndex++;
+				}
+			}
+			
+			// update the obstacles that are onscreen
+			for(int k = lastStartIndex;k<actualObjects.size();k++)
+			{
+				Obstacle currentObj = actualObjects.get(k);
+				if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
+				{
+					currentObj.update( mv, delta );
+				}
+				else
+				{
+					break;
 				}
 			}
 
@@ -201,12 +222,16 @@ public class RunningGame extends GameThread
 		batch.setTransformMatrix( mv );
 		//draw gameObjects
 
-		for(int k = 0;k<actualObjects.size();k++)
+		for(int k = lastStartIndex;k<actualObjects.size();k++)
 		{
 			Obstacle currentObj = actualObjects.get(k);
-			if(currentObj.inScreenRange((float)( timeReference - .3333f ), (float)( timeReference + 3.0f )))
+			if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
 			{
 				currentObj.draw( batch );
+			}
+			else
+			{
+				break;
 			}
 		}
 		//reset to the original transform matrix

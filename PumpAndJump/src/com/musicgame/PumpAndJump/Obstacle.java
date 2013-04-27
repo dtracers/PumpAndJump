@@ -51,6 +51,16 @@ public class Obstacle extends GameObject
 	 * @param screenRightTime
 	 * @return
 	 */
+	public boolean leftOfRightSideOfScreen( float screenRightTime )
+	{
+		return start <= screenRightTime;
+	}
+	
+	public boolean rightOfLeftSideOfScreen( float screenLeftTime )
+	{
+		return end >= screenLeftTime;
+	}
+	
 	public boolean inScreenRange(float screenLeftTime,float screenRightTime)
 	{
 		return start<=screenRightTime&&end>=screenLeftTime;
