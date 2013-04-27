@@ -1,10 +1,11 @@
-9
+10
 w 5 r sh sjtl sdbf sdss
 r 5 w sh sjtl sdbf sdss
-h 5 w r sjbf sdbf sdss
+h 5 w r sjbf sdhbf sdss
 sh 1 h
 sjtl 5 w jtl2r h sdbf sdss
-sdbf 4 w r h sjtl 
+sdbf 4 w r h sjtl
+sdhbf 4 w r h sjtl
 sdss 4 w r sh sjtl
 sjbf 4 w r sdbf sdss
 jtl2r 1 r
