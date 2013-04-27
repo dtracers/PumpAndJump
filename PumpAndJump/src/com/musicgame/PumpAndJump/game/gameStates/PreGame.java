@@ -191,7 +191,6 @@ public class PreGame extends GameThread
 	public void breakDown()
 	{
 		stage = new Stage();
-		batch = null;
 		check = null;
 		yes = null;
 		no = null;
