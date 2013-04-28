@@ -10,6 +10,7 @@ import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class BeatDetector
 {
+	ObjectCreator obj = new ObjectCreator();
 	//this is the instantaneous VEdata
 	public ArrayList<float[]> VEdata = new ArrayList<float[]>();
 	//this is the average VEdata (over 43 Energy histories
@@ -154,6 +155,7 @@ public class BeatDetector
 				Beat b = new Beat((float) timeIndex);
 				createdObjects.add(b);
 				detectedBeats.add(new SignificantItem(highestIndex,highestPoint,detectedBeats.size(),timeIndex));
+				obj.createObjects(createdObjects, timeIndex);
 			}
 			highestPoint = 0;
 			highestIndex = -1;
@@ -167,10 +169,4 @@ public class BeatDetector
 		 * (maybe take two averages?)
 		 */
 	}
-
-	public void createObjects()
-	{
-
-	}
-
 }
