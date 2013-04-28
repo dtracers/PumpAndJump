@@ -24,7 +24,7 @@ public class BeatDetector
 	int currentHistoryIndex = 0;
 
 
-	ArrayList<SignificantItem> detectedBeats = new ArrayList<SignificantItem>();
+	ArrayList<SignificantItem> importantItems = new ArrayList<SignificantItem>();
 	ArrayList<Obstacle> createdObjects;
 
 	double maxEnergy = 0;
@@ -59,6 +59,7 @@ public class BeatDetector
 		}
 		AveragedEnergydata = new double[LongHistoryLength];
 		createdObjects = actualObjects;
+		obj.importantItems = importantItems;
 	}
 
 	public void combineArray(ArrayList<short[]> timeData,int startIndex)
@@ -154,7 +155,7 @@ public class BeatDetector
 			{
 				Beat b = new Beat((float) timeIndex);
 				createdObjects.add(b);
-				detectedBeats.add(new SignificantItem(highestIndex,highestPoint,detectedBeats.size(),timeIndex));
+				importantItems.add(new SignificantItem(highestIndex,highestPoint,importantItems.size(),timeIndex));
 				obj.createObjects(createdObjects, timeIndex);
 			}
 			highestPoint = 0;

@@ -9,6 +9,7 @@ import com.musicgame.PumpAndJump.Obstacle;
 
 public class ObjectCreator
 {
+	ArrayList<SignificantItem> importantItems;
 	double timeSinceLastObjectEnded = 0;
 	public static final double maxObjectLength = .75;//in seconds
 	public static final double minObjectLength = 0.3;//in seconds
@@ -30,7 +31,6 @@ public class ObjectCreator
 	{
 		if(start-timeSinceLastDuckEnded>=minDistanceBetweenObjects)
 		{
-
 			timeSinceLastDuckEnded = end;
 			DuckObstacle h = new DuckObstacle((float)start, (float)(end));
 			objects.add(h);
