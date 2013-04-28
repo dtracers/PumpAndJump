@@ -1,5 +1,7 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
+import java.io.Reader;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -55,9 +57,21 @@ public class InstructionGame extends GameThread
 		Table scrolltable = new Table();
 		scrolltable.setFillParent(true);
 		final ScrollPane scroll = new ScrollPane(scrolltable, uiSkin);
-		final Label infoText = new Label("This is where we tell the user how to play the game.", uiSkin);
-		scrolltable.add(infoText).size(400,150);
-
+		
+		FileHandle instructionsFile = Gdx.files.internal("instructions.txt");
+		String instructions="";
+		Reader r=instructionsFile.reader();
+		try{
+		while(r.ready())
+			instructions+=(char)r.read();
+		}
+		catch(Exception e){
+			;
+		}
+		final Label infoText = new Label(instructions, uiSkin);
+		infoText.setWrap(true);
+		scrolltable.add(infoText).size(800,150);
+		scrolltable.left();
 
 		final TextButton backButton = new TextButton("Back", uiSkin);
 		backButton.addListener(
@@ -69,7 +83,7 @@ public class InstructionGame extends GameThread
 						}
 					});
 
-		table.add(scroll).size(450,200);
+		table.add(scroll).size(900,400);
 		table.row().space(10).padBottom(10);
 		table.add(backButton).size(250,50).pad(5);
 

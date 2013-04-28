@@ -1,0 +1,4 @@
+This game has you jumping over and ducking under obstacles. 
+These obstacles will be created by the music you select. 
+Press the right side of the screen to slide/duck and the left side of the screen to jump. 
+These controls can be changed in the options menu.
