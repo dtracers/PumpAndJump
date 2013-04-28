@@ -168,11 +168,11 @@ public class RunningGame extends GameThread
 					{
 						levelAniQ = new AnimationQueue( levelAni, new float[]{ 0.0f } );
 					}
-					
+
 				}
 				else
 					setRotation( levelAniQ.getPose( delta ) );
-				
+
 				//update based on object's modelview
 				Matrix4 mv = new Matrix4();
 				makeWorldView( mv );
@@ -400,11 +400,11 @@ public class RunningGame extends GameThread
 					{
 						writeSound();
 					}
-						if(toWait)
-						{
-							myWait();
-						}
+					if(toWait)
+					{
+						myWait();
 					}
+				}
 			}
 
 		});
@@ -421,7 +421,6 @@ public class RunningGame extends GameThread
 	public void removeFrom(GameThread currentThread)
 	{
 		streamer.dispose();
-		streamer = null;
 		this.myNotify();//notifies to exit the thread
 		stopRunning = true;
 		System.out.println("BEING REMOVED");
