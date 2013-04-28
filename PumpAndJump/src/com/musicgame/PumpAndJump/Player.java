@@ -189,7 +189,7 @@ public class Player extends GameObject implements Animated{
 		return hip.intersects( p );
 	}
 
-	public void jump()
+	public synchronized void jump()
 	{
 		float[] f = new float[ pose.length ];
 		getPose( f );
@@ -198,7 +198,7 @@ public class Player extends GameObject implements Animated{
 			aniQ.switchAnimation( ta, f );
 	}
 
-	public void duck()
+	public synchronized void duck()
 	{
 		float[] f = new float[ pose.length ];
 		getPose( f );

@@ -117,7 +117,7 @@ public class AnimationQueue {
 
 		//currentTime += changeInTime;
 
-		float[] newpos = new float[ ani.dof];
+		float[] newpos = new float[ ani.dof ];
 
 		if( !isLooping && lastTime > ani.keyframes.get( ani.keyframes.size() - 1 ).t )
 		{

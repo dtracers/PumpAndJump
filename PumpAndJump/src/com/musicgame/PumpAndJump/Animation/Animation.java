@@ -20,9 +20,10 @@ public class Animation {
 
 	public ArrayList< Keyframe > keyframes;
 	float lastValue;
+	float lastAngle;
 	public int dof = 1;
 	public int actor = 0;
-	public boolean isLooping;
+	public boolean isLooping = false;
 
 	public static void main( String[] args )
 	{
@@ -252,6 +253,8 @@ public class Animation {
 
 		float angle = (float) Math.asin( o/h );
 		fs[0] = (float) (angle/Math.PI*180.0f);
+		fs[ 0 ] = fs[ 0 ] - lastAngle;
+		lastAngle = (float) (angle/Math.PI*180.0f);
 		keyframes.add( new Keyframe( fs, (float)inputTimeReference, keyframes.size() - 1 ) ); 
 	}
 

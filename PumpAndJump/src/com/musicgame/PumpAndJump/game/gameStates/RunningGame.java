@@ -253,7 +253,7 @@ public class RunningGame extends GameThread
 		Matrix4 mv = batch.getTransformMatrix();
 		Matrix4 before = new Matrix4( mv.cpy() );
 
-		rotateWorldView( mv );
+		//rotateWorldView( mv );
 
 		Matrix4 beforeWV = new Matrix4( mv.cpy() );
 		//make world view
@@ -494,7 +494,7 @@ public class RunningGame extends GameThread
 	/**
 	 * multiplies and sets the input matrix by the world pos, rotation, and scale
 	 */
-	private synchronized void makeWorldView( Matrix4 mv )
+	private void makeWorldView( Matrix4 mv )
 	{
 		mv.translate( -pos.x*tempo, pos.y, pos.z );
 
@@ -511,7 +511,7 @@ public class RunningGame extends GameThread
 
 	synchronized void setRotation( float[] f )
 	{
-		rotation.z = f[ 0 ];
+		rotation.z = -f[ 0 ];
 	}
 
 }
