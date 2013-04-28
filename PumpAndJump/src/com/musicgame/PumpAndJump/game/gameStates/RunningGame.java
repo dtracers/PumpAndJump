@@ -117,7 +117,7 @@ public class RunningGame extends GameThread
 
         background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
         background.setSize( CameraHelp.virtualWidth, Gdx.graphics.getHeight()  );
-        background.setPosition( 0.0f, -Gdx.graphics.getHeight()/2.0f );
+        background.setPosition( 0.0f, -Gdx.graphics.getHeight()/2.0f+60.0f );
         background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 
         leftBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
@@ -125,11 +125,11 @@ public class RunningGame extends GameThread
         float barWidth = ( Gdx.graphics.getWidth() - CameraHelp.virtualWidth ) / 2.0f;
 
         leftBar.setSize( barWidth, Gdx.graphics.getHeight() );
-        leftBar.setPosition( -barWidth, -Gdx.graphics.getHeight()/2.0f );
+        leftBar.setPosition( -barWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
         leftBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
 
         rightBar.setSize( barWidth, Gdx.graphics.getHeight() );
-        rightBar.setPosition( CameraHelp.virtualWidth, -Gdx.graphics.getHeight()/2.0f );
+        rightBar.setPosition( CameraHelp.virtualWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
         rightBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
