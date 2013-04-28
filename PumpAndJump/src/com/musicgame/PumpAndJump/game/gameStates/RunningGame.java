@@ -287,18 +287,21 @@ public class RunningGame extends GameThread
 			started = false;
 
 			System.out.println("SWITCHING AND TRING TO DO ");
+
 			quickReset();
 
 			Gdx.input.setInputProcessor(stage);
 
 			musicReset();
 
-		//	longReset();
+			longReset();
 
 			PumpAndJump.addThread(ThreadName.PreLoaderState, this);
 
 		}else if(currentThread instanceof PreLoaderState)
 		{
+			Gdx.input.setInputProcessor(stage);
+
 			streamer.start();
 
 			startThread();
