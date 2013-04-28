@@ -170,7 +170,9 @@ public class PauseGame extends GameThread
 	}
 
 	@Override
-	public void removeFrom(GameThread currentThread) {
+	public void removeFrom(GameThread currentThread)
+	{
+		PumpAndJump.setThreadToNull(getThreadName());
 	}
 
 	@Override

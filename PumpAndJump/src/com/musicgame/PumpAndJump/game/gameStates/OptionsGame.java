@@ -197,6 +197,7 @@ public class OptionsGame extends GameThread
 	@Override
 	public void removeFrom(GameThread currentThread)
 	{
+		PumpAndJump.setThreadToNull(getThreadName());
 	}
 
 	@Override

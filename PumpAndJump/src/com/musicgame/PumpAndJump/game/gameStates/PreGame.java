@@ -227,6 +227,7 @@ public class PreGame extends GameThread
 	public void removeFrom(GameThread currentThread)
 	{
 		breakDown();
+		PumpAndJump.setThreadToNull(getThreadName());
 	}
 
 	@Override

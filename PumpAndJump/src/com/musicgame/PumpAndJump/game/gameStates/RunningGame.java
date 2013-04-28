@@ -384,6 +384,7 @@ public class RunningGame extends GameThread
 		this.myNotify();//notifies to exit the thread
 		stopRunning = true;
 		System.out.println("BEING REMOVED");
+		PumpAndJump.setThreadToNull(getThreadName());
 	}
 
 	/**
