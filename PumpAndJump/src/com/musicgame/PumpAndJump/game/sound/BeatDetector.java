@@ -60,6 +60,7 @@ public class BeatDetector
 		AveragedEnergydata = new double[LongHistoryLength];
 		createdObjects = actualObjects;
 		obj.importantItems = importantItems;
+		obj.objects = createdObjects;
 	}
 
 	public void combineArray(ArrayList<short[]> timeData,int startIndex)
@@ -155,8 +156,9 @@ public class BeatDetector
 			{
 				Beat b = new Beat((float) timeIndex);
 				createdObjects.add(b);
-				importantItems.add(new SignificantItem(highestIndex,highestPoint,importantItems.size(),timeIndex));
-				obj.createObjects(createdObjects, timeIndex);
+				importantItems.add(new SignificantItem(highestIndex,highestPoint,importantItems.size(),timeIndex,b));
+			//	obj.createObjects(createdObjects, timeIndex);
+				obj.createObjects();
 			}
 			highestPoint = 0;
 			highestIndex = -1;
