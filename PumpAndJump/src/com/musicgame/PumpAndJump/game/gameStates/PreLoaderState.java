@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.musicgame.PumpAndJump.Animation.Animation;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
@@ -18,7 +19,6 @@ public class PreLoaderState extends GameThread
 	public void render(float delta)
 	{
 		float percent = loadingThread.loadingPercent/((float)loadingThread.maxLoading);
-		System.out.println("I am painting while loading");
 		Gdx.gl.glEnable(GL10.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -54,7 +54,7 @@ public class PreLoaderState extends GameThread
 	@Override
 	public void run()
 	{
-
+		Animation.loadingAnimation = 0;
 		loadingThread.longReset();
 		PumpAndJump.removeThread(PreLoaderState.this.getThreadName(), PreLoaderState.this);
 	}

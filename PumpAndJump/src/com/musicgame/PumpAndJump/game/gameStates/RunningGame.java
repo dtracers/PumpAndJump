@@ -299,13 +299,24 @@ public class RunningGame extends GameThread
 			{
 
 				@Override
-				public void run() {
+				public void run()
+				{
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					PumpAndJump.addThread(ThreadName.PreLoaderState, RunningGame.this);
+					//now it is is the rendering thread
+					Gdx.app.postRunnable(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							// process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
+							PumpAndJump.addThread(ThreadName.PreLoaderState, RunningGame.this);
+						}
+					});
+
 				}
 
 

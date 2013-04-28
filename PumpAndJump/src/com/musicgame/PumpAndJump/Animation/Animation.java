@@ -25,6 +25,8 @@ public class Animation {
 	public int actor = 0;
 	public boolean isLooping = false;
 
+	public static int loadingAnimation = 0;
+
 	public static void main( String[] args )
 	{
 		//test file inputs;'
@@ -48,6 +50,10 @@ public class Animation {
 	{
 		keyframes = new ArrayList< Keyframe >();
 		System.out.println( fileName );
+
+		//for loading screen
+		loadingAnimation++;
+
 		loadAnimation( fileName );
 		if( actor == 1 )
 		{
@@ -255,7 +261,7 @@ public class Animation {
 		fs[0] = (float) (angle/Math.PI*180.0f);
 		fs[ 0 ] = fs[ 0 ] - lastAngle;
 		lastAngle = (float) (angle/Math.PI*180.0f);
-		keyframes.add( new Keyframe( fs, (float)inputTimeReference, keyframes.size() - 1 ) ); 
+		keyframes.add( new Keyframe( fs, (float)inputTimeReference, keyframes.size() - 1 ) );
 	}
 
 }
