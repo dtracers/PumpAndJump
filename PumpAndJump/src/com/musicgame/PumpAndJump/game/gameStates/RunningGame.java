@@ -136,7 +136,6 @@ public class RunningGame extends GameThread
 					{
 						currentObj.done();
 						lastStartIndex++;
-						System.out.println("Indexes "+ lastStartIndex);
 					}
 				}
 

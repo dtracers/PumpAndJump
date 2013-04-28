@@ -37,7 +37,6 @@ public class ObjectCreator
 		{
 			readyForObjectCreation = true;
 
-			System.out.println("I am able to create an object");
 			startObjectTime = i.timeIndex;
 			endObjectTime = i.timeIndex;
 
@@ -73,7 +72,7 @@ public class ObjectCreator
 			}
 
 			int index = objects.indexOf(start);
-			System.out.println("Ading at "+index);
+//			System.out.println("Ading at "+index);
 			if(index>0)
 			{
 				objects.add(index-1,create);
