@@ -247,12 +247,11 @@ public class Animation {
 	public void addKeyFrame(float[] fs, double inputTimeReference) {
 		float ydist = (float)((fs[0] - lastValue)/Math.pow( 10, 8 ));
 		lastValue = fs[ 0 ];
-		float h = (float) Math.sqrt( 1.0f +  ydist*ydist );
+		float h = (float) Math.sqrt( 100.0f*100.0f +  ydist*ydist );
 		float o = ydist;
 
 		float angle = (float) Math.asin( o/h );
 		fs[0] = (float) (angle/Math.PI*180.0f);
-		System.out.println( fs[0] );
 		keyframes.add( new Keyframe( fs, (float)inputTimeReference, keyframes.size() - 1 ) ); 
 	}
 
