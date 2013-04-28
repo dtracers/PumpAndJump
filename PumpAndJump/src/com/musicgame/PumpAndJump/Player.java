@@ -36,6 +36,10 @@ public class Player extends GameObject implements Animated{
 
 		origY = pos.y;
 
+	}
+
+	public void loadAnimation()
+	{
 		hip.scale( 1.0f, 1.0f, 1.0f );
 
 		changed = true;
@@ -294,7 +298,7 @@ class PlayerShoulder extends Model
 		image.setPosition( 0.0f, -height/2.0f );
 		image.setSize( width, height );
 
-		
+
 
 		float[] points = new float[8];
 		points[ 0 ] =  0.0f; points[1] = -height/2.0f;
@@ -443,7 +447,7 @@ class PlayerTuckles extends Model
 				image = TextureMapping.staticGetSprite( "RightTuckle" );
 				break;
 		}
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
 		image.setSize( width, height );
 
@@ -499,9 +503,9 @@ class PlayerFoot extends Model
 				break;
 		}
 		effect = new ParticleEffect();
-		effect.load(Gdx.files.internal("firefeet"), 
+		effect.load(Gdx.files.internal("firefeet"),
 	            particle );
-		
+
 		image.setPosition( 0.0f, -height/2.0f );
 		image.setSize( width, height );
 
@@ -527,7 +531,7 @@ class PlayerFoot extends Model
 		drawSprite( sb );
 
 		tuckles.display( sb );
-		
+
 		Matrix4 mv = sb.getTransformMatrix();
 		mv.rotate( 1.0f, 0.0f, 0.0f, 180.0f );
 		sb.setTransformMatrix( mv );

@@ -18,11 +18,12 @@ public class PreLoaderState extends GameThread
 	public void render(float delta)
 	{
 		float percent = loadingThread.loadingPercent/((float)loadingThread.maxLoading);
+		System.out.println("I am painting while loading");
 		Gdx.gl.glEnable(GL10.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		shapeRenderer.begin(ShapeType.FilledRectangle);
-		shapeRenderer.filledRect(0f, height/2.0f, width*percent,50 , new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(0f, 0f, 1f, 0.75f));
+		shapeRenderer.filledRect(0f, 0f, 50f,50f , new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(0.5f, 0.5f, 0.5f, 0.5f), new Color(0f, 0f, 1f, 0.75f));
 		shapeRenderer.end();
 
 		Gdx.gl.glDisable(GL10.GL_BLEND);
@@ -53,7 +54,8 @@ public class PreLoaderState extends GameThread
 	@Override
 	public void run()
 	{
-		//loadingThread.longReset();
+
+		loadingThread.longReset();
 		PumpAndJump.removeThread(PreLoaderState.this.getThreadName(), PreLoaderState.this);
 	}
 

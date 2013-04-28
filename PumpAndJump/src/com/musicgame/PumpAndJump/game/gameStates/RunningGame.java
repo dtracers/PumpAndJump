@@ -294,9 +294,23 @@ public class RunningGame extends GameThread
 
 			musicReset();
 
-			longReset();
+			//longReset();
+			Thread delay = new Thread(new Runnable()
+			{
 
-			PumpAndJump.addThread(ThreadName.PreLoaderState, this);
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					PumpAndJump.addThread(ThreadName.PreLoaderState, RunningGame.this);
+				}
+
+
+			});
+			delay.start();
 
 		}else if(currentThread instanceof PreLoaderState)
 		{
@@ -357,6 +371,8 @@ public class RunningGame extends GameThread
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
         scale = new Point( tempo, 1.0f, 1.0f );
+
+        player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 	}
 
 	/**
@@ -401,11 +417,9 @@ public class RunningGame extends GameThread
 	 */
 	public void longReset()
 	{
-
-		loadingPercent++;
+		player.loadAnimation();
+		//loadingPercent++;
 		//this.controls.setVisible( false );
-
-        player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
 
         loadingPercent++;
 
