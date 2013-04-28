@@ -53,7 +53,7 @@ public class PreLoaderState extends GameThread
 	@Override
 	public void run()
 	{
-		loadingThread.reset();
+		loadingThread.longReset();
 		PumpAndJump.removeThread(PreLoaderState.this.getThreadName(), PreLoaderState.this);
 	}
 

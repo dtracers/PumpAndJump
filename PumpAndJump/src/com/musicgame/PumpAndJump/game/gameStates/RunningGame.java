@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,14 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.Beat;
 import com.musicgame.PumpAndJump.CameraHelp;
-import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Animation.Animation;
 import com.musicgame.PumpAndJump.Animation.AnimationQueue;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.FileFormatException;
-import com.musicgame.PumpAndJump.Util.LevelInterpreter;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
@@ -91,76 +86,6 @@ public class RunningGame extends GameThread
 	public int loadingPercent = 0;
 	public int maxLoading = 11;
 
-
-	/**
-	 * Sets up the game for running
-	 */
-	public void reset()
-	{
-		loadingPercent = 0;
-		System.out.println("WHY IS THIS NOT WORKING?");
-		lastTimeReference = 0;
-		lastStartIndex = 0;
-		stage = new Stage();
-
-		loadingPercent++;
-
-		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
-		this.controls.controlsTable.setFillParent(true);
-		stage.addActor(this.controls.controlsTable);
-
-		loadingPercent++;
-		//this.controls.setVisible( false );
-
-        player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
-
-        loadingPercent++;
-
-        float[] f = { 0.0f };
-        levelAni = new Animation( );
-        cam = CameraHelp.GetCamera();
-
-        loadingPercent++;
-
-        background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-        background.setSize( CameraHelp.virtualWidth, Gdx.graphics.getHeight()  );
-        background.setPosition( 0.0f, -Gdx.graphics.getHeight()/2.0f+60.0f );
-        background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-
-        loadingPercent++;
-
-        leftBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-        rightBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
-        float barWidth = ( Gdx.graphics.getWidth() - CameraHelp.virtualWidth ) / 2.0f;
-
-        loadingPercent++;
-
-        leftBar.setSize( barWidth, Gdx.graphics.getHeight() );
-        leftBar.setPosition( -barWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
-        leftBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
-
-        loadingPercent++;
-
-        rightBar.setSize( barWidth, Gdx.graphics.getHeight() );
-        rightBar.setPosition( CameraHelp.virtualWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
-        rightBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
-
-        loadingPercent++;
-
-        pos = new Point( 0.0f, 0.0f, 0.0f );
-        rotation = new Point( 0.0f, 0.0f, 0.0f );
-        scale = new Point( tempo, 1.0f, 1.0f );
-
-        loadingPercent++;
-
-        oldProjection = batch.getProjectionMatrix();
-        batch.setProjectionMatrix( cam.combined );
-		// Create a table that fills the screen. Everything else will go inside this table.
-
-        loadingPercent++;
-
-        soundFrame = 0;
-	}
 
 	/**
 	 * Run method happens while the game is running
@@ -358,41 +283,14 @@ public class RunningGame extends GameThread
 		if(currentThread instanceof PreGame || currentThread instanceof FileChooserState)
 		{
 			System.out.println("SWITCHING AND TRING TO DO ");
-			reset();
+			quickReset();
+
 			Gdx.input.setInputProcessor(stage);
-			try {
-			//	actualObjects = LevelInterpreter.loadLevel();
-				Beat b = new Beat(0);
-				actualObjects = new ArrayList<Obstacle>();
-			} catch (Exception e) {
-				actualObjects = new ArrayList<Obstacle>();
-				e.printStackTrace();
-			}
 
-			if(pick)
-			{
-				filename=FileChooserState.fileDialog.getFile();
-			}
-			//System.out.println(filename);
+			musicReset();
 
-		    streamer = new MusicHandler(actualObjects);
+			longReset();
 
-			if(filename != null)
-			{
-				streamer.fileName=filename.getAbsolutePath();
-			}
-			if(!pick && test!=null)
-			{
-				streamer.fileName=test;
-			}
-
-			try {
-				streamer.loadSound();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (FileFormatException e) {
-				e.printStackTrace();
-			}
 			streamer.start();
 
 			startThread();
@@ -400,6 +298,123 @@ public class RunningGame extends GameThread
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
 	}
+
+
+	/**
+	 * Has the items that actually load the game quite quickly!
+	 */
+	public void quickReset()
+	{
+		loadingPercent = 0;
+		lastTimeReference = 0;
+		lastStartIndex = 0;
+
+		//creates a new stage
+		stage = new Stage();
+
+		loadingPercent++;
+
+		//adds game controls
+		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
+		this.controls.controlsTable.setFillParent(true);
+		stage.addActor(this.controls.controlsTable);
+
+		loadingPercent++;
+
+		//background
+		background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+        background.setSize( CameraHelp.virtualWidth, Gdx.graphics.getHeight()  );
+        background.setPosition( 0.0f, -Gdx.graphics.getHeight()/2.0f+60.0f );
+        background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
+
+        loadingPercent++;
+
+        //creates bars
+        leftBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+        rightBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+        float barWidth = ( Gdx.graphics.getWidth() - CameraHelp.virtualWidth ) / 2.0f;
+
+        leftBar.setSize( barWidth, Gdx.graphics.getHeight() );
+        leftBar.setPosition( -barWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
+        leftBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
+
+        rightBar.setSize( barWidth, Gdx.graphics.getHeight() );
+        rightBar.setPosition( CameraHelp.virtualWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
+        rightBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
+
+        loadingPercent++;
+
+        pos = new Point( 0.0f, 0.0f, 0.0f );
+        rotation = new Point( 0.0f, 0.0f, 0.0f );
+        scale = new Point( tempo, 1.0f, 1.0f );
+	}
+
+	/**
+	 * Resets the items that have to do with music
+	 */
+	public void musicReset()
+	{
+		//	actualObjects = LevelInterpreter.loadLevel();
+		Beat b = new Beat(0);
+		actualObjects = new ArrayList<Obstacle>();
+
+		if(pick)
+		{
+			filename=FileChooserState.fileDialog.getFile();
+		}
+		//System.out.println(filename);
+
+	    streamer = new MusicHandler(actualObjects);
+
+		if(filename != null)
+		{
+			streamer.fileName=filename.getAbsolutePath();
+		}
+		if(!pick && test!=null)
+		{
+			streamer.fileName=test;
+		}
+
+		try {
+			streamer.loadSound();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			PumpAndJump.switchThread(ThreadName.PreGame, this);
+		} catch (FileFormatException e) {
+			e.printStackTrace();
+			PumpAndJump.switchThread(ThreadName.PreGame, this);
+		}
+	}
+
+	/**
+	 * Sets up the game for running
+	 */
+	public void longReset()
+	{
+
+		loadingPercent++;
+		//this.controls.setVisible( false );
+
+        player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+
+        loadingPercent++;
+
+        float[] f = { 0.0f };
+        levelAni = new Animation( );
+        cam = CameraHelp.GetCamera();
+
+
+        loadingPercent++;
+
+        oldProjection = batch.getProjectionMatrix();
+        batch.setProjectionMatrix( cam.combined );
+		// Create a table that fills the screen. Everything else will go inside this table.
+
+        loadingPercent++;
+
+        soundFrame = 0;
+	}
+
 
 
 	private void startThread()
