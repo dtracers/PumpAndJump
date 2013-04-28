@@ -28,6 +28,8 @@ public class BeatDetector
 
 	double maxEnergy = 0;
 
+	int slowDown = 0;
+
 
 	int shiftAvg = historyLength/2;//this is used so that some of the future values are computed in the average of the current value
 
@@ -105,7 +107,13 @@ public class BeatDetector
 		currentHistoryIndex++;
 		currentHistoryIndex%=historyLength;
 
-		RunningGame.levelAni.addKeyFrame(new float[]{(float)value},MusicHandler.inputTimeReference);
+
+		if(slowDown == 17)
+		{
+			slowDown = 0;
+			RunningGame.levelAni.addKeyFrame(new float[]{(float)value},MusicHandler.inputTimeReference);
+		}
+		slowDown++;
 
 		if(counterIndex>=shiftAvg)
 			beatDetectionAlgorithm();

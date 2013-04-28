@@ -80,8 +80,7 @@ public class LevelInterpreter
 	 */
 	public static ArrayList<Obstacle> loadLevel() throws FileNotFoundException
 	{
-		if(true)
-			return null;
+
 		//Gdx.files.internal("Something in assets");
 		ArrayList<Obstacle> Level;
 		FileHandle dir= Gdx.files.internal("level1.txt");
