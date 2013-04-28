@@ -191,6 +191,8 @@ public class RunningGame extends GameThread
 	@Override
 	public void render(float delta)
 	{
+		if(!started)
+			return;
 		batch.begin();
 		//save orginal matrix
 		background.draw( batch );
@@ -282,6 +284,8 @@ public class RunningGame extends GameThread
 		}else
 		if(currentThread instanceof PreGame || currentThread instanceof FileChooserState)
 		{
+			started = false;
+
 			System.out.println("SWITCHING AND TRING TO DO ");
 			quickReset();
 
@@ -289,12 +293,15 @@ public class RunningGame extends GameThread
 
 			musicReset();
 
-			longReset();
+		//	longReset();
 
+			PumpAndJump.addThread(ThreadName.PreLoaderState, this);
+
+		}else if(currentThread instanceof PreLoaderState)
+		{
 			streamer.start();
 
 			startThread();
-
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
 	}
@@ -416,9 +423,9 @@ public class RunningGame extends GameThread
 	}
 
 
-
 	private void startThread()
 	{
+		started = true;
 		Thread running = new Thread(this);
 		Thread musicOutput = new Thread(new Runnable()
 		{
