@@ -69,6 +69,7 @@ public class InstructionGame extends GameThread
 			;
 		}
 		final Label infoText = new Label(instructions, uiSkin);
+		infoText.setFontScale(0.8f);
 		infoText.setWrap(true);
 		scrolltable.add(infoText).size(800,150);
 		scrolltable.left();
