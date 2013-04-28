@@ -7,7 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.gameStates.AboutGame;
-import com.musicgame.PumpAndJump.game.gameStates.Buffering;
+import com.musicgame.PumpAndJump.game.gameStates.BufferingState;
 import com.musicgame.PumpAndJump.game.gameStates.DemoGame;
 import com.musicgame.PumpAndJump.game.gameStates.FileChooserState;
 import com.musicgame.PumpAndJump.game.gameStates.InstructionGame;
@@ -56,7 +56,7 @@ public class PumpAndJump extends Game
 	//	aboutGameThread = new AboutGame();
 	//	inctructionsGameThread = new InstructionGame();
 	//	optionsGameThread = new OptionsGame();
-		bufferingThread = new Buffering();
+		bufferingThread = new BufferingState();
 	//	fileChooserThread=new FileChooserState();
 	}
 
@@ -158,8 +158,8 @@ public class PumpAndJump extends Game
 			case  AboutGame:		aboutGameThread = null;break;
 			case  OptionsGame:		optionsGameThread = null;break;
 			case  InstructionGame:		inctructionsGameThread = null;break;
-			case  Buffering:		bufferingThread = null;break;
-			case FileChooser:		fileChooserThread = null;break;
+			case  BufferingState:		bufferingThread = null;break;
+			case FileChooserState:		fileChooserThread = null;break;
 		}
 	}
 
@@ -180,8 +180,8 @@ public class PumpAndJump extends Game
 			case  AboutGame:		return aboutGameThread;
 			case  OptionsGame:		return optionsGameThread;
 			case  InstructionGame:		return inctructionsGameThread;
-			case  Buffering:		return bufferingThread;
-			case FileChooser:		return fileChooserThread;
+			case  BufferingState:		return bufferingThread;
+			case FileChooserState:		return fileChooserThread;
 		}
 		return null;
 	}
@@ -260,15 +260,15 @@ public class PumpAndJump extends Game
 				}
 				return inctructionsGameThread;
 			}
-			case  Buffering:
+			case  BufferingState:
 			{
 				if(bufferingThread == null)
 				{
-					bufferingThread = new Buffering();
+					bufferingThread = new BufferingState();
 				}
 				return bufferingThread;
 			}
-			case FileChooser:
+			case FileChooserState:
 			{
 				if(fileChooserThread == null)
 				{
@@ -301,7 +301,7 @@ public class PumpAndJump extends Game
 	private static AboutGame aboutGameThread;
 	private static OptionsGame optionsGameThread;
 	private static InstructionGame inctructionsGameThread;
-	private static Buffering bufferingThread;
+	private static BufferingState bufferingThread;
 	private static FileChooserState fileChooserThread;
 
 }

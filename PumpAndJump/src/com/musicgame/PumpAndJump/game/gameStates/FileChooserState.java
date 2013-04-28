@@ -104,7 +104,7 @@ public class FileChooserState extends GameThread
 
 	@Override
 	public ThreadName getThreadName() {
-		return ThreadName.FileChooser;
+		return ThreadName.FileChooserState;
 	}
 
 	@Override

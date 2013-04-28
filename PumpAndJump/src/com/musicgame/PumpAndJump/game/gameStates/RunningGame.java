@@ -88,56 +88,76 @@ public class RunningGame extends GameThread
 		}
 	};
 
+	public int loadingPercent = 0;
+	public int maxLoading = 11;
 
-	public RunningGame()
-	{
-
-	}
 
 	/**
 	 * Sets up the game for running
 	 */
 	public void reset()
 	{
+		loadingPercent = 0;
 		System.out.println("WHY IS THIS NOT WORKING?");
 		lastTimeReference = 0;
 		lastStartIndex = 0;
 		stage = new Stage();
 
+		loadingPercent++;
+
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
 		this.controls.controlsTable.setFillParent(true);
 		stage.addActor(this.controls.controlsTable);
+
+		loadingPercent++;
 		//this.controls.setVisible( false );
 
         player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+
+        loadingPercent++;
+
         float[] f = { 0.0f };
         levelAni = new Animation( );
         cam = CameraHelp.GetCamera();
+
+        loadingPercent++;
 
         background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
         background.setSize( CameraHelp.virtualWidth, Gdx.graphics.getHeight()  );
         background.setPosition( 0.0f, -Gdx.graphics.getHeight()/2.0f+60.0f );
         background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
 
+        loadingPercent++;
+
         leftBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
         rightBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
         float barWidth = ( Gdx.graphics.getWidth() - CameraHelp.virtualWidth ) / 2.0f;
+
+        loadingPercent++;
 
         leftBar.setSize( barWidth, Gdx.graphics.getHeight() );
         leftBar.setPosition( -barWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
         leftBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
 
+        loadingPercent++;
+
         rightBar.setSize( barWidth, Gdx.graphics.getHeight() );
         rightBar.setPosition( CameraHelp.virtualWidth, -Gdx.graphics.getHeight()/2.0f + 60.0f );
         rightBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
+
+        loadingPercent++;
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
         scale = new Point( tempo, 1.0f, 1.0f );
 
+        loadingPercent++;
+
         oldProjection = batch.getProjectionMatrix();
         batch.setProjectionMatrix( cam.combined );
 		// Create a table that fills the screen. Everything else will go inside this table.
+
+        loadingPercent++;
 
         soundFrame = 0;
 	}
@@ -329,7 +349,7 @@ public class RunningGame extends GameThread
 			this.controls.defineControlsTable();
 			System.out.println("unpause");
 		}else
-		if(currentThread instanceof Buffering)
+		if(currentThread instanceof BufferingState)
 		{
 			Gdx.input.setInputProcessor(stage);
 			System.out.println("NOTIFYING");
@@ -447,7 +467,7 @@ public class RunningGame extends GameThread
 		System.out.println("GO BUFFER!");
 		streamer.buffering = true;
 		toWait = true;
-		PumpAndJump.addThread(ThreadName.Buffering, this);
+		PumpAndJump.addThread(ThreadName.BufferingState, this);
 	}
 
 	/**

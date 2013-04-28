@@ -8,7 +8,7 @@ import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 
-public class Buffering extends GameThread
+public class BufferingState extends GameThread
 {
 	Texture bufferingImage = new Texture(Gdx.files.internal("buffering.png"));
 	BitmapFont  font = new BitmapFont();
@@ -20,7 +20,7 @@ public class Buffering extends GameThread
 	boolean threadStarted;
 	long counter = 0;
 
-	public Buffering()
+	public BufferingState()
 	{
 	}
 
@@ -75,7 +75,7 @@ public class Buffering extends GameThread
 						}
 					}
 					game.streamer.buffering = false;
-					PumpAndJump.removeThread(ThreadName.Buffering, Buffering.this);
+					PumpAndJump.removeThread(ThreadName.BufferingState, BufferingState.this);
 				}
 			};
 			runMethod.start();
@@ -90,7 +90,7 @@ public class Buffering extends GameThread
 	@Override
 	public ThreadName getThreadName()
 	{
-		return ThreadName.Buffering;
+		return ThreadName.BufferingState;
 	}
 
 	@Override

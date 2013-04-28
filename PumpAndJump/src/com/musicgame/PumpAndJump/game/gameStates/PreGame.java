@@ -78,7 +78,7 @@ public class PreGame extends GameThread
 				{
 
 
-					PumpAndJump.switchThread(ThreadName.FileChooser, PreGame.this);
+					PumpAndJump.switchThread(ThreadName.FileChooserState, PreGame.this);
 				}
 			});
         check=new Dialog("Use own music?",uiSkin);
@@ -108,7 +108,7 @@ public class PreGame extends GameThread
 					}
 					else if(FileChooserState.type=="android" && FileChooserState.test=="no")
 					{
-						PumpAndJump.switchThread(ThreadName.FileChooser, PreGame.this);
+						PumpAndJump.switchThread(ThreadName.FileChooserState, PreGame.this);
 
 					}
 					else

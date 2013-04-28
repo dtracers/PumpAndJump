@@ -142,7 +142,6 @@ public class PauseGame extends GameThread
 
 		//stage.act(Math.min(delta, 1 / 30f));
 		stage.draw();
-		Table.drawDebug(stage);
 		//System.out.println("going");
 	}
 
