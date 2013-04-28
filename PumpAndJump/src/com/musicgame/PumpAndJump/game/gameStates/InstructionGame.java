@@ -44,8 +44,8 @@ public class InstructionGame extends GameThread
 		stage = new Stage();
 		if(uiSkin == null)
 		{
-        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
-        uiSkin = new Skin( skinFile );
+	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
+	        uiSkin = new Skin( skinFile );
 		}
 
         Table table = new Table();

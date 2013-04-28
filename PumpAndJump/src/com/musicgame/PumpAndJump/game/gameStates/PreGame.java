@@ -41,7 +41,8 @@ public class PreGame extends GameThread
 
 	public PreGame()
 	{
-		batch = new SpriteBatch();
+		if(batch == null)
+			batch = new SpriteBatch();
 		stage = new Stage();
 	}
 
