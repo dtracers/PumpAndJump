@@ -41,7 +41,7 @@ public class CameraHelp {
 		  }
 		  
 		  OrthographicCamera camera = new OrthographicCamera(viewportWidth, viewportHeight);
-		  camera.position.set(virtualWidth/2, 0.0f, 0.0f);
+		  camera.position.set(virtualWidth/2, 60.0f, 0.0f);
 		  camera.update();
 		  return camera;
 	}

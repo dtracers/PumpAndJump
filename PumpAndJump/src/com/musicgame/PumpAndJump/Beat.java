@@ -8,13 +8,16 @@ import com.badlogic.gdx.math.Matrix4;
 
 public class Beat extends Obstacle{
 	
-	ParticleEffect effect;
+	static ParticleEffect effect;
 	float tempo;
-	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt") );
+	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt" ) );
     
 	public Beat(float startTime){
 		super( startTime, startTime+.01f, 55.0f, 10.0f );
 		image.setColor( 1.0f, 0.0f, 1.0f, 1.0f );
+		effect = new ParticleEffect();
+		effect.load(Gdx.files.internal("fireworks"), 
+	            particle );
 		
 	}
 	
@@ -25,7 +28,7 @@ public class Beat extends Obstacle{
 		drawSprite( sb );
 		
 		sb.setTransformMatrix( getModelView( new Matrix4() ) );
-		if( effect != null )
+		if( effect != null && !effect.isComplete() )
 		{
 			effect.draw( sb );
 		}
@@ -36,7 +39,7 @@ public class Beat extends Obstacle{
 	
 	public void done()
 	{
-		effect = null;
+		
 	}
 	
 	public void update( Matrix4 m, float delta )
@@ -48,11 +51,9 @@ public class Beat extends Obstacle{
 	
 	public void Impacted( float tempo )
 	{
-		effect = new ParticleEffect();
-		effect.load(Gdx.files.internal("fireworks"), 
-	            particle );
+		effect.reset();
 		effect.setPosition( CameraHelp.virtualWidth/2.0f, 0.0f );
 		this.tempo = tempo/60.0f/2.0f;
-		effect.start();
+		//effect.start();
 	}
 }

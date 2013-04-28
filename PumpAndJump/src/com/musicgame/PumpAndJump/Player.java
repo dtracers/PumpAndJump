@@ -6,8 +6,11 @@ import com.musicgame.PumpAndJump.Animation.AnimationQueue;
 import com.musicgame.PumpAndJump.Animation.PlayerAnimationFSM;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.Util.TextureMapping;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 
@@ -473,6 +476,8 @@ class PlayerFoot extends Model
 	public PlayerTuckles tuckles;
 	public float width = 9.0f;
 	public float height = 5.0f;
+	ParticleEffect effect;
+	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt" ) );
 
 	public PlayerFoot( Side a )
 	{
@@ -493,6 +498,9 @@ class PlayerFoot extends Model
 				image = TextureMapping.staticGetSprite( "RightFoot" );
 				break;
 		}
+		effect = new ParticleEffect();
+		effect.load(Gdx.files.internal("firefeet"), 
+	            particle );
 		
 		image.setPosition( 0.0f, -height/2.0f );
 		image.setSize( width, height );
@@ -519,6 +527,11 @@ class PlayerFoot extends Model
 		drawSprite( sb );
 
 		tuckles.display( sb );
+		
+		Matrix4 mv = sb.getTransformMatrix();
+		mv.rotate( 1.0f, 0.0f, 0.0f, 180.0f );
+		sb.setTransformMatrix( mv );
+		effect.draw( sb, Gdx.graphics.getDeltaTime() );
 
 		popTransforms( sb );
 	}

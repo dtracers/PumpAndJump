@@ -2,8 +2,8 @@ Red Fireworks
 - Delay -
 active: false
 - Duration - 
-lowMin: 250.0
-lowMax: 350.0
+lowMin: 1.0
+lowMax: 1.0
 - Count - 
 min: 0
 max: 50
@@ -156,8 +156,8 @@ Blue Fireworks
 - Delay -
 active: false
 - Duration - 
-lowMin: 250.0
-lowMax: 350.0
+lowMin: 1.0
+lowMax: 1.0
 - Count - 
 min: 0
 max: 50
@@ -292,8 +292,8 @@ Green Fireworks
 - Delay -
 active: false
 - Duration - 
-lowMin: 250.0
-lowMax: 350.0
+lowMin: 1.0
+lowMax: 1.0
 - Count - 
 min: 0
 max: 50
