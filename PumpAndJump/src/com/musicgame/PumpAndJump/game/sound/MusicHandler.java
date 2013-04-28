@@ -158,7 +158,8 @@ public class MusicHandler extends Thread
 					readSong = decoder.readSamples(currentFrame,0, frameSize);
 				}
 				inputFrame++;
-				inputTimeReference = (inputFrame*MusicHandler.frameSize)/((double)MusicHandler.sampleRate);
+				if(!stopRunning)
+					inputTimeReference = (inputFrame*MusicHandler.frameSize)/((double)MusicHandler.sampleRate);
 				inputLocation = inputFrame%arraySampleLength;
 				if(inputFrame%4==0)
 					detect.combineArray(musicFile, inputFrame-4);
