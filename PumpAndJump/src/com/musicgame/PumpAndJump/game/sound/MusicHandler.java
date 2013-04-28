@@ -16,9 +16,9 @@ import com.musicgame.PumpAndJump.game.PumpAndJump;
 public class MusicHandler extends Thread
 {
 	//for both
-	public static final int arraySampleLength = 1000;
+	public static final int arraySampleLength = 2000;
 	public static final int minBufferDistance = 20;
-	public static final int maxBufferDistance = arraySampleLength/2;
+	public static final int maxBufferDistance = arraySampleLength*3/2;
 	public static final int frameSize = 256;//1024*8;//256;// 1024/4;
 	public static final int LargeFrameSize = frameSize*4;//1024*8;//256;// 1024/4;
 	public static final int sampleRate = 44100;
