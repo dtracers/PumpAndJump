@@ -56,7 +56,7 @@ public class RunningGame extends GameThread
 	static Point rotation;
 	static Point scale;
 	public static Animation levelAni;
-	static AnimationQueue levelAniQ;
+	static AnimationQueue levelAniQ = null;
 	static boolean toWait = false;
 	private boolean started = false;
 	static Sprite background;
@@ -111,8 +111,7 @@ public class RunningGame extends GameThread
 
         player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
         float[] f = { 0.0f };
-        levelAni = new Animation( "level1_ani.txt" );
-        levelAniQ = new AnimationQueue( levelAni, f );
+        levelAni = new Animation( );
         cam = CameraHelp.GetCamera();
 
         background = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
@@ -163,8 +162,17 @@ public class RunningGame extends GameThread
 				pos.x = (float)timeReference-( player.p.x/scale.x );
 
 				player.update( new Matrix4(), delta);
-
-				//setRotation( levelAniQ.getPose( delta ) );
+				if( levelAniQ == null )
+				{
+					if( levelAni.keyframes.size() > 10 )
+					{
+						levelAniQ = new AnimationQueue( levelAni, new float[]{ 0.0f } );
+					}
+					
+				}
+				else
+					setRotation( levelAniQ.getPose( delta ) );
+				
 				//update based on object's modelview
 				Matrix4 mv = new Matrix4();
 				makeWorldView( mv );

@@ -19,8 +19,9 @@ public class Animation {
 	static Map< String, Animation > FileToAnimation = new TreeMap< String, Animation >();
 
 	public ArrayList< Keyframe > keyframes;
-	public int dof = 16;
-	public int actor = 1;
+	float lastValue;
+	public int dof = 1;
+	public int actor = 0;
 	public boolean isLooping;
 
 	public static void main( String[] args )
@@ -36,6 +37,10 @@ public class Animation {
 		Animation c = new Animation( "TestAnimationType2.txt" );
 		System.out.println( c.actor );
 		System.out.println( c.keyframes.size() );*/
+	}
+	public Animation()
+	{
+		keyframes = new ArrayList< Keyframe >();
 	}
 
 	public Animation( String fileName )
@@ -57,6 +62,8 @@ public class Animation {
 
 	void copy( Animation ani )
 	{
+		actor = ani.actor;
+		dof = ani.dof;
 		keyframes = new ArrayList< Keyframe >();
 		for( Keyframe kf: ani.keyframes )
 		{
@@ -201,7 +208,7 @@ public class Animation {
 
 		if( actor == 0 )
 		{
-			float lastValue = 0.0f;
+			lastValue = 0.0f;
 			for( Keyframe kf: keyframes )
 			{
 				float ydist = kf.pose[ 0 ] - lastValue;
@@ -210,9 +217,6 @@ public class Animation {
 
 				float angle = (float) Math.asin( o/h );
 
-			//	lastValue = kf.pose[ 0 ];
-			//	kf.pose[ 0 ] = angle;
-			//	kf.pose[ 0 ] = (float) (((ydist*180.0f/Math.PI)%180-90.0)*Math.PI/180.0f);
 				kf.pose[ 0 ] = 0;
 			}
 		}
@@ -241,6 +245,15 @@ public class Animation {
 	}
 
 	public void addKeyFrame(float[] fs, double inputTimeReference) {
+		float ydist = (float)((fs[0] - lastValue)/Math.pow( 10, 8 ));
+		lastValue = fs[ 0 ];
+		float h = (float) Math.sqrt( 1.0f +  ydist*ydist );
+		float o = ydist;
+
+		float angle = (float) Math.asin( o/h );
+		fs[0] = (float) (angle/Math.PI*180.0f);
+		System.out.println( fs[0] );
+		keyframes.add( new Keyframe( fs, (float)inputTimeReference, keyframes.size() - 1 ) ); 
 	}
 
 }
