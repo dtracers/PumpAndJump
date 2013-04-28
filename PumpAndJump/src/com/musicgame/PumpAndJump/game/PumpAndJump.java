@@ -48,16 +48,16 @@ public class PumpAndJump extends Game
 
 	private static void initialize()
 	{
-		preGameThread = new PreGame();
-		postGameThread = new PostGame();
-		runningGameThread = new RunningGame();
-		pauseGameThread = new PauseGame();
+	//	preGameThread = new PreGame();
+	//	postGameThread = new PostGame();
+	//	runningGameThread = new RunningGame();
+	//	pauseGameThread = new PauseGame();
 	//	demoGameThread = new DemoGame();
-		aboutGameThread = new AboutGame();
-		inctructionsGameThread = new InstructionGame();
-		optionsGameThread = new OptionsGame();
+	//	aboutGameThread = new AboutGame();
+	//	inctructionsGameThread = new InstructionGame();
+	//	optionsGameThread = new OptionsGame();
 		bufferingThread = new Buffering();
-		fileChooserThread=new FileChooserState();
+	//	fileChooserThread=new FileChooserState();
 	}
 
 	/**
@@ -141,7 +141,30 @@ public class PumpAndJump extends Game
 	}
 
 	/**
-	 * gets the thread
+	 * sets the current thread to null for garbage collecting
+	 * @param switchTo
+	 * @return
+	 */
+
+	public static void setThreadToNull(ThreadName switchTo)
+	{
+		switch(switchTo)
+		{
+			case  PreGame:		preGameThread = null;break;
+			case  PostGame:		postGameThread = null;break;
+			case  RunningGame:	runningGameThread = null;break;
+			case  PauseGame:	pauseGameThread = null;break;
+			case  DemoGame:		demoGameThread = null;break;
+			case  AboutGame:		aboutGameThread = null;break;
+			case  OptionsGame:		optionsGameThread = null;break;
+			case  InstructionGame:		inctructionsGameThread = null;break;
+			case  Buffering:		bufferingThread = null;break;
+			case FileChooser:		fileChooserThread = null;break;
+		}
+	}
+
+	/**
+	 * gets the thread and creates it if the thread happens to be null
 	 * @param switchTo
 	 * @return
 	 */
@@ -149,16 +172,86 @@ public class PumpAndJump extends Game
 	{
 		switch(switchTo)
 		{
-			case  PreGame:		return preGameThread;
-			case  PostGame:		return postGameThread;
-			case  RunningGame:	return runningGameThread;
-			case  PauseGame:	return pauseGameThread;
-			case  DemoGame:		return demoGameThread;
-			case  AboutGame:		return aboutGameThread;
-			case  OptionsGame:		return optionsGameThread;
-			case  InstructionGame:		return inctructionsGameThread;
-			case  Buffering:		return bufferingThread;
-			case FileChooser:		return fileChooserThread;
+			case  PreGame:
+			{
+				if(preGameThread == null)
+				{
+					preGameThread = new PreGame();
+				}
+				return preGameThread;
+			}
+			case  PostGame:
+			{
+				if(postGameThread == null)
+				{
+					postGameThread = new PostGame();
+				}
+				return postGameThread;
+			}
+			case  RunningGame:
+			{
+				if(runningGameThread == null)
+				{
+					runningGameThread = new RunningGame();
+				}
+				return runningGameThread;
+			}
+			case  PauseGame:
+			{
+				if(pauseGameThread == null)
+				{
+					pauseGameThread = new PauseGame();
+				}
+				return pauseGameThread;
+			}
+			case  DemoGame:
+			{
+				if(demoGameThread == null)
+				{
+					demoGameThread = new DemoGame();
+				}
+				return demoGameThread;
+			}
+			case  AboutGame:
+			{
+				if(aboutGameThread == null)
+				{
+					aboutGameThread = new AboutGame();
+				}
+				return aboutGameThread;
+			}
+			case  OptionsGame:
+			{
+				if(optionsGameThread == null)
+				{
+					optionsGameThread = new OptionsGame();
+				}
+				return optionsGameThread;
+			}
+			case  InstructionGame:
+			{
+				if(inctructionsGameThread == null)
+				{
+					inctructionsGameThread = new InstructionGame();
+				}
+				return inctructionsGameThread;
+			}
+			case  Buffering:
+			{
+				if(bufferingThread == null)
+				{
+					bufferingThread = new Buffering();
+				}
+				return bufferingThread;
+			}
+			case FileChooser:
+			{
+				if(fileChooserThread == null)
+				{
+					fileChooserThread = new FileChooserState();
+				}
+				return fileChooserThread;
+			}
 		}
 		return null;
 	}
