@@ -168,4 +168,9 @@ public class BeatDetector
 		 */
 	}
 
+	public void createObjects()
+	{
+
+	}
+
 }
