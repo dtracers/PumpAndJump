@@ -494,14 +494,14 @@ public class RunningGame extends GameThread
 	/**
 	 * multiplies and sets the input matrix by the world pos, rotation, and scale
 	 */
-	private void makeWorldView( Matrix4 mv )
+	private synchronized void makeWorldView( Matrix4 mv )
 	{
 		mv.translate( -pos.x*tempo, pos.y, pos.z );
 
 		mv.scale( scale.x, scale.y, scale.z );
 	}
 
-	private void rotateWorldView(Matrix4 mv)
+	private synchronized void rotateWorldView(Matrix4 mv)
 	{
 		mv.rotate( 1.0f, 0.0f, 0.0f, rotation.x );
 		mv.rotate( 0.0f, 1.0f, 0.0f, rotation.y );
@@ -509,7 +509,7 @@ public class RunningGame extends GameThread
 	}
 
 
-	void setRotation( float[] f )
+	synchronized void setRotation( float[] f )
 	{
 		rotation.z = f[ 0 ];
 	}

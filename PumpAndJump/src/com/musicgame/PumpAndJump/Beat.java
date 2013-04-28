@@ -10,6 +10,7 @@ public class Beat extends Obstacle{
 
 	static ParticleEffect effect = null;
 	float tempo;
+	boolean triggered = false;
 	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt" ) );
 
 	public Beat(float startTime){
@@ -54,9 +55,12 @@ public class Beat extends Obstacle{
 
 	public void Impacted( float tempo )
 	{
-		effect.reset();
-		effect.setPosition( CameraHelp.virtualWidth/2.0f, 0.0f );
-		this.tempo = tempo/60.0f/2.0f;
+		if( !triggered )
+		{
+			effect.reset();
+			effect.setPosition( CameraHelp.virtualWidth/2.0f, 0.0f );
+			this.tempo = tempo/60.0f/2.0f;
+		}
 		//effect.start();
 	}
 }

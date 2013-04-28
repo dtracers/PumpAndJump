@@ -247,7 +247,7 @@ public class Animation {
 	public void addKeyFrame(float[] fs, double inputTimeReference) {
 		float ydist = (float)((fs[0] - lastValue)/Math.pow( 10, 8 ));
 		lastValue = fs[ 0 ];
-		float h = (float) Math.sqrt( 100.0f*100.0f +  ydist*ydist );
+		float h = (float) Math.sqrt( 1000.0f*1000.0f +  ydist*ydist );
 		float o = ydist;
 
 		float angle = (float) Math.asin( o/h );
