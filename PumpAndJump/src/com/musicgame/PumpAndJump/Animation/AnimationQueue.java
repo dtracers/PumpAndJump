@@ -67,7 +67,7 @@ public class AnimationQueue {
 
 					lastKeyFrame = 1;
 				}
-				queue[3] = ani.keyframes.get( 1 ).copy();
+				queue[3] = ani.keyframes.get( 0 ).copy();
 			}
 			else
 			{

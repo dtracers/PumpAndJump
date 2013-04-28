@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 /**
  * A blank animation template that has animation methods for the players
@@ -42,6 +43,11 @@ public class Animation {
 		keyframes = new ArrayList< Keyframe >();
 		System.out.println( fileName );
 		loadAnimation( fileName );
+		if( actor == 1 )
+		{
+			scaleTimes( 1.0f / keyframes.get( keyframes.size() - 1 ).t );
+			scaleTimes( 1.0f / ( RunningGame.tempo/120.0f ) );
+		}
 	}
 
 	public Animation( Animation ani )

@@ -50,7 +50,7 @@ public class RunningGame extends GameThread
 	static double timeReference = 0;
 	static double lastTimeReference = 0;
 
-	static float tempo = 240.0f;
+	public static float tempo = 240.0f;
 	static Point pos;
 	static Point rotation;
 	static Point scale;
