@@ -6,7 +6,7 @@ lowMin: 1.0
 lowMax: 1.0
 - Count - 
 min: 0
-max: 50
+max: 25
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
@@ -160,7 +160,7 @@ lowMin: 1.0
 lowMax: 1.0
 - Count - 
 min: 0
-max: 50
+max: 25
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
@@ -296,7 +296,7 @@ lowMin: 1.0
 lowMax: 1.0
 - Count - 
 min: 0
-max: 50
+max: 25
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0

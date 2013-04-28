@@ -101,7 +101,6 @@ public class RunningGame extends GameThread
 		System.out.println("WHY IS THIS NOT WORKING?");
 		lastTimeReference = 0;
 		lastStartIndex = 0;
-		timeReference = 0;
 		stage = new Stage();
 
 		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
