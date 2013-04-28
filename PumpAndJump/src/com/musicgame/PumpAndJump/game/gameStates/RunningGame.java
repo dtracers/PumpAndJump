@@ -65,6 +65,7 @@ public class RunningGame extends GameThread
 	static Matrix4 oldProjection;
 
 	private boolean songFinished = false;
+	private boolean stopRunning = false;//if this is set to true the Thread will cease to exist
 	GameControls controls;
 	//define my listeners
 	public ChangeListener jumpListener = new ChangeListener() {
@@ -118,15 +119,15 @@ public class RunningGame extends GameThread
         background.setSize( CameraHelp.virtualWidth, Gdx.graphics.getHeight()  );
         background.setPosition( 0.0f, -Gdx.graphics.getHeight()/2.0f );
         background.setColor( 0.0f, 0.0f, 0.0f, 1.0f );
-        
+
         leftBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
         rightBar = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
         float barWidth = ( Gdx.graphics.getWidth() - CameraHelp.virtualWidth ) / 2.0f;
-        
+
         leftBar.setSize( barWidth, Gdx.graphics.getHeight() );
         leftBar.setPosition( -barWidth, -Gdx.graphics.getHeight()/2.0f );
         leftBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
-        
+
         rightBar.setSize( barWidth, Gdx.graphics.getHeight() );
         rightBar.setPosition( CameraHelp.virtualWidth, -Gdx.graphics.getHeight()/2.0f );
         rightBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
@@ -134,7 +135,7 @@ public class RunningGame extends GameThread
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
         scale = new Point( tempo, 1.0f, 1.0f );
-        
+
         oldProjection = batch.getProjectionMatrix();
         batch.setProjectionMatrix( cam.combined );
 		// Create a table that fills the screen. Everything else will go inside this table.
@@ -148,10 +149,11 @@ public class RunningGame extends GameThread
 	@Override
 	public void run()
 	{
+		stopRunning = false;
 		float delta = 0;
 		timeReference = 0;
 		lastTimeReference = 0;
-		while(true)
+		while(!stopRunning)
 		{
 			if(streamer.bufferingNeeded())
 			{
@@ -185,7 +187,7 @@ public class RunningGame extends GameThread
 					lastStartIndex++;
 				}
 			}
-			
+
 			// update the obstacles that are onscreen
 			for(int k = lastStartIndex;k<actualObjects.size();k++)
 			{
@@ -216,6 +218,9 @@ public class RunningGame extends GameThread
 				e.printStackTrace();
 			}
 		}
+
+		System.out.println("MY THREAD HAS STOPPED RUNNNNNNING!!!!");
+
 	}
 
 	@Override
@@ -258,15 +263,15 @@ public class RunningGame extends GameThread
 		}
 		//reset to the original transform matrix
 		batch.setTransformMatrix( beforeWV );
-		
+
 		player.draw( batch );
-		
+
 		batch.setTransformMatrix( before );
-		
-		
+
+
 		leftBar.draw( batch );
 		rightBar.draw( batch );
-		
+
 		batch.end();
 		if(!toWait)
 		{
@@ -328,13 +333,6 @@ public class RunningGame extends GameThread
 				e.printStackTrace();
 			}
 
-			/*System.out.println( "Size:"+actualObjects.size() );
-			JFileChooser jfc = new JFileChooser("../PumpAndJump-android/assets/");
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
-			jfc.setFileFilter(filter);
-		    jfc.showDialog(null,"Open");
-		    jfc.setVisible(true);
-		    File filename = jfc.getSelectedFile();*/
 			if(pick)
 			{
 				filename=FileChooserState.fileDialog.getFile();
@@ -361,16 +359,7 @@ public class RunningGame extends GameThread
 			}
 			streamer.start();
 
-
-
-			if(!started)
-			{
-				started = true;
-				startThread();
-			}else
-			{
-				this.myNotify();
-			}
+			startThread();
 
 		}
 			//mysounddecoder = new WavDecoder(Gdx.files.internal("drop.wav"));
@@ -392,6 +381,8 @@ public class RunningGame extends GameThread
 	public void removeFrom(GameThread currentThread)
 	{
 		streamer.dispose();
+		this.myNotify();//notifies to exit the thread
+		stopRunning = true;
 		System.out.println("BEING REMOVED");
 	}
 

@@ -52,6 +52,8 @@ public class MusicHandler extends Thread
 	int inputLocation = 0;
 	public static double timeReference = 0;
 
+	private boolean stopRunning = false;
+
 	public MusicHandler()
 	{
 		for(int k = 0;k<arraySampleLength;k++)
@@ -65,6 +67,9 @@ public class MusicHandler extends Thread
 
 	public void loadSound() throws FileNotFoundException, FileFormatException
 	{
+		outputFrame = 0;
+		inputFrame = 0;
+		timeReference = 0;
 		slowingDownBuffer = false;
 		forceStop = false;
 		FileHandle file = null;
@@ -125,7 +130,7 @@ public class MusicHandler extends Thread
 		int readSong = 1;
 		System.out.println("Starting reading ");
 
-		while(readSong > 0)
+		while(readSong > 0&&!stopRunning)
 		{
 			if(!slowingDownBuffer)
 			{
@@ -255,6 +260,12 @@ public class MusicHandler extends Thread
 
 	//othe
 
-	public void dispose() {
+	public void dispose()
+	{
+		stopRunning = true;
+		songFinished = true;
+		musicFile.clear();
+		device = null;
+		fileName = "the_hand_that_feeds.wav";
 	}
 }
