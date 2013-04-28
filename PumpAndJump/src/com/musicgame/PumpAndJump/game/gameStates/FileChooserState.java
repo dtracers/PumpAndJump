@@ -21,14 +21,14 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 public class FileChooserState extends GameThread
 {
 	Stage stage;
-	SpriteBatch batch;
 	public static FileChooser fileDialog;
 	public static String type;
 	public static String test;
 	//need to make a file chooser
 	public FileChooserState()
 	{
-		batch = new SpriteBatch();
+		if(batch == null)
+			batch = new SpriteBatch();
 		stage = new Stage();
 
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly

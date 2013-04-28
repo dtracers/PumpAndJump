@@ -34,15 +34,12 @@ public class PreGame extends GameThread
 {
 
 	Stage stage;
-	SpriteBatch batch;
 	Dialog check;
 	TextButton yes;
 	TextButton no;
 
 	public PreGame()
 	{
-		if(batch == null)
-			batch = new SpriteBatch();
 		stage = new Stage();
 	}
 
@@ -51,6 +48,9 @@ public class PreGame extends GameThread
 	 */
 	public void setUp()
 	{
+
+		if(batch == null)
+			batch = new SpriteBatch();
 
 		stage = new Stage();
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
