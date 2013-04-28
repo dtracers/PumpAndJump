@@ -10,6 +10,7 @@ public class Obstacle extends GameObject
 	private float end;
 	private float width;
 	private float height;
+	
 	public Obstacle(float Start, float End, float Y, float Height ){
 		super( );
 		start = Start;
@@ -51,6 +52,11 @@ public class Obstacle extends GameObject
 	 * @param screenRightTime
 	 * @return
 	 */
+	public void done()
+	{
+		
+	}
+	
 	public boolean leftOfRightSideOfScreen( float screenRightTime )
 	{
 		return start <= screenRightTime;
@@ -64,5 +70,10 @@ public class Obstacle extends GameObject
 	public boolean inScreenRange(float screenLeftTime,float screenRightTime)
 	{
 		return start<=screenRightTime&&end>=screenLeftTime;
+	}
+	
+	public void Impacted()
+	{
+		
 	}
 }

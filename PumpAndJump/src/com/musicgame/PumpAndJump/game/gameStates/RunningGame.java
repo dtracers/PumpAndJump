@@ -181,6 +181,7 @@ public class RunningGame extends GameThread
 				}
 				else
 				{
+					currentObj.done();
 					lastStartIndex++;
 				}
 			}
@@ -192,6 +193,13 @@ public class RunningGame extends GameThread
 				if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
 				{
 					currentObj.update( mv, delta );
+					if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 1.0f ) )
+					{
+						if( player.intersects( currentObj.hull ) )
+						{
+							currentObj.Impacted();
+						}
+					}
 				}
 				else
 				{

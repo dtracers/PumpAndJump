@@ -149,7 +149,7 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-C:\Users\Matt\Documents\GitHub\PumpAndJump\PumpAndJump-android\assets\square.jpg
+square.png
 
 
 Blue Fireworks
@@ -285,10 +285,10 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-C:\Users\Matt\Documents\GitHub\PumpAndJump\PumpAndJump-android\assets\square.jpg
+square.png
 
 
-Greeen Fireworks
+Green Fireworks
 - Delay -
 active: false
 - Duration - 
@@ -439,4 +439,4 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-C:\Users\Matt\Documents\GitHub\PumpAndJump\PumpAndJump-android\assets\square.jpg
+square.png

@@ -1,0 +1,11 @@
+square.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+square
+  rotate: false
+  xy: 2, 2
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
