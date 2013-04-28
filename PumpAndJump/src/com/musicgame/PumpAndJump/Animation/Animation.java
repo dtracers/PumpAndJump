@@ -240,4 +240,7 @@ public class Animation {
 		}
 	}
 
+	public void addKeyFrame(float[] fs, double inputTimeReference) {
+	}
+
 }

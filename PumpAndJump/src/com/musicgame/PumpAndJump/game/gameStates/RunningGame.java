@@ -54,7 +54,7 @@ public class RunningGame extends GameThread
 	static Point pos;
 	static Point rotation;
 	static Point scale;
-	static Animation levelAni;
+	public static Animation levelAni;
 	static AnimationQueue levelAniQ;
 	static boolean toWait = false;
 	private boolean started = false;
@@ -412,6 +412,7 @@ public class RunningGame extends GameThread
 	public void removeFrom(GameThread currentThread)
 	{
 		streamer.dispose();
+		streamer = null;
 		this.myNotify();//notifies to exit the thread
 		stopRunning = true;
 		System.out.println("BEING REMOVED");

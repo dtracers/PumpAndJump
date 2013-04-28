@@ -140,6 +140,8 @@ public class MusicHandler extends Thread
 
 		while(readSong > 0&&!stopRunning)
 		{
+			if(stopRunning)
+				break;
 			if(!slowingDownBuffer)
 			{
 				short[] currentFrame = musicFile.get(inputLocation);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.musicgame.PumpAndJump.Beat;
 import com.musicgame.PumpAndJump.Obstacle;
+import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 
 public class BeatDetector
@@ -103,6 +104,8 @@ public class BeatDetector
 		//moves the index for the history which is a looping value
 		currentHistoryIndex++;
 		currentHistoryIndex%=historyLength;
+
+		RunningGame.levelAni.addKeyFrame(new float[]{(float)value},MusicHandler.inputTimeReference);
 
 		if(counterIndex>=shiftAvg)
 			beatDetectionAlgorithm();
