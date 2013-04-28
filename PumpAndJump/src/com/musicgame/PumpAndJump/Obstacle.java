@@ -72,7 +72,7 @@ public class Obstacle extends GameObject
 		return start<=screenRightTime&&end>=screenLeftTime;
 	}
 	
-	public void Impacted()
+	public void Impacted( float tempo )
 	{
 		
 	}

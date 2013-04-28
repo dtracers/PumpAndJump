@@ -193,11 +193,11 @@ public class RunningGame extends GameThread
 				if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
 				{
 					currentObj.update( mv, delta );
-					if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 1.0f ) )
+					if( currentObj.inScreenRange( (float)timeReference - .33333f, (float) timeReference + .33333f ) )
 					{
 						if( player.intersects( currentObj.hull ) )
 						{
-							currentObj.Impacted();
+							currentObj.Impacted( tempo );
 						}
 					}
 				}
