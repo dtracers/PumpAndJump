@@ -122,6 +122,8 @@ public class RunningGame extends GameThread
 				Matrix4 mv = new Matrix4();
 				makeWorldView( mv );
 
+
+
 				// move last index
 				for(int k = lastStartIndex;k<actualObjects.size();k++)
 				{
@@ -134,6 +136,7 @@ public class RunningGame extends GameThread
 					{
 						currentObj.done();
 						lastStartIndex++;
+						System.out.println("Indexes "+ lastStartIndex);
 					}
 				}
 

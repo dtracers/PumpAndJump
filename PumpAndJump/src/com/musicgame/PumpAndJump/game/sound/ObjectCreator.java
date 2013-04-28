@@ -2,6 +2,7 @@ package com.musicgame.PumpAndJump.game.sound;
 
 import java.util.ArrayList;
 
+import com.musicgame.PumpAndJump.Beat;
 import com.musicgame.PumpAndJump.DuckObstacle;
 import com.musicgame.PumpAndJump.JumpObstacle;
 import com.musicgame.PumpAndJump.Obstacle;
@@ -11,15 +12,16 @@ public class ObjectCreator
 	ArrayList<SignificantItem> importantItems;
 	ArrayList<Obstacle> objects;
 	double timeSinceLastObjectEnded = 0;
-	public static final double maxObjectLength = .75;//in seconds
-	public static final double minObjectLength = 0.3;//in seconds
+	public static final double maxObjectLength = .6;//in seconds
+	public static final double minObjectLength = 0.2;//in seconds
 	public static final double maxDistanceBetweenObjects = 5;//in seconds
-	public static final double minDistanceBetweenObjects = 1;//in seconds
+	public static final double minDistanceBetweenObjects = .5;//in seconds
 
 
-	//temp values
-	double timeSinceLastDuckEnded = 0;
-	double timeSinceLastJumpEnded = 0;
+	Beat start = null;
+	double startObjectTime = 0;
+	double endObjectTime = 0;
+	boolean readyForObjectCreation = false;
 
 	int currentIndex;
 	int realIndex;
@@ -31,36 +33,46 @@ public class ObjectCreator
 		SignificantItem i = importantItems.get(currentIndex);
 		double timeSince = i.timeIndex-timeSinceLastObjectEnded;
 
-		if(timeSince>minDistanceBetweenObjects||timeSinceLastObjectEnded ==0)
+		if(!readyForObjectCreation&&(timeSince>minDistanceBetweenObjects||timeSinceLastObjectEnded ==0))
 		{
-			System.out.println("I am able to create an object");
-			double startTime = i.timeIndex;
-			double endingTime = i.timeIndex;
+			readyForObjectCreation = true;
 
-			while(endingTime-startTime<minObjectLength&&endingTime-startTime<maxObjectLength&&currentIndex<endingIndex)
+			System.out.println("I am able to create an object");
+			startObjectTime = i.timeIndex;
+			endObjectTime = i.timeIndex;
+
+			start = i.associatedBeat;
+
+		}
+
+		if(readyForObjectCreation&&i.timeIndex-startObjectTime>=minObjectLength)
+		{
+			readyForObjectCreation = false;
+			endObjectTime = i.timeIndex;
+
+			if(endObjectTime -startObjectTime >= maxObjectLength)
 			{
-				endingTime = importantItems.get(currentIndex).timeIndex;
-				currentIndex++;
+				endObjectTime = startObjectTime+maxObjectLength;
 			}
 
-			System.out.println("Creating object with\n"+startTime+"\n"+endingTime);
+//			System.out.println("Creating object with\n"+startObjectTime+"\n"+endObjectTime);
 
-			timeSinceLastObjectEnded = endingTime;
+			timeSinceLastObjectEnded = endObjectTime;
 
 			Obstacle create;
 			//we need to create an object!
 			if((i.soundIntensity)%10>5)
 			{
-				System.out.println("I am a jump object");
-				create = new JumpObstacle((float)startTime,(float)endingTime);
+//				System.out.println("I am a jump object");
+				create = new JumpObstacle((float)startObjectTime,(float)endObjectTime);
 				//create jump
 			}else
 			{
-				System.out.println("I am a duck object");
-				create = new DuckObstacle((float)startTime,(float)endingTime);
+//				System.out.println("I am a duck object");
+				create = new DuckObstacle((float)startObjectTime,(float)endObjectTime);
 			}
 
-			int index = objects.indexOf(i.associatedBeat);
+			int index = objects.indexOf(start);
 			System.out.println("Ading at "+index);
 			if(index>0)
 			{
@@ -69,8 +81,8 @@ public class ObjectCreator
 			{
 				objects.add(0,create);
 			}
-
 		}
+
 		currentIndex++;
 		if(currentIndex>=endingIndex)
 		{
