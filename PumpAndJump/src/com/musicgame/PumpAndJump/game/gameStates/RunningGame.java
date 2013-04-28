@@ -327,9 +327,9 @@ public class RunningGame extends GameThread
 			reset();
 			Gdx.input.setInputProcessor(stage);
 			try {
-			//	actualObjects = LevelInterpreter.loadLevel();
+				actualObjects = LevelInterpreter.loadLevel();
 
-				actualObjects = new ArrayList<Obstacle>();
+			//	actualObjects = new ArrayList<Obstacle>();
 			} catch (Exception e) {
 				actualObjects = new ArrayList<Obstacle>();
 				e.printStackTrace();

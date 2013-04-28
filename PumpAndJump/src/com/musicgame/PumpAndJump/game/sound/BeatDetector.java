@@ -140,7 +140,8 @@ public class BeatDetector
 			aboveAverage = false;
 			if(division<senstitivity)
 			{
-				createdObjects.add(new Beat((float) timeIndex));
+			//	Beat b = new Beat((float) timeIndex);
+			//	createdObjects.add(b);
 				detectedBeats.add(new SignificantItem(highestIndex,highestPoint,detectedBeats.size(),timeIndex));
 			}
 			highestPoint = 0;
