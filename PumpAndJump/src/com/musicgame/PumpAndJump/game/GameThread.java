@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public abstract class GameThread implements InputProcessor, Screen, Runnable
 {
 	public static Skin uiSkin;
-	public static SpriteBatch batch = new SpriteBatch();
+	public static SpriteBatch batch;
 	public int height, width;
 
 	@Override
