@@ -134,6 +134,8 @@ public class MusicHandler extends Thread
 		outputFrame = 0;
 		inputFrame = 0;
 		int readSong = 1;
+		slowingDownBuffer = false;
+		buffering = true;
 		System.out.println("Starting reading ");
 
 		while(readSong > 0&&!stopRunning)
@@ -176,13 +178,13 @@ public class MusicHandler extends Thread
 				}else
 				{
 				//	System.out.println("Music Input");
-
+					/*
 					try {
 						Thread.sleep(5);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-
+					*/
 				}
 			}else
 			{
