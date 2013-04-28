@@ -80,7 +80,6 @@ public class LevelInterpreter
 	 */
 	public static ArrayList<Obstacle> loadLevel() throws FileNotFoundException
 	{
-		Beat b = new Beat(0);
 		if(true)
 			return null;
 		//Gdx.files.internal("Something in assets");

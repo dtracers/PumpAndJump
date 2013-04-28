@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.musicgame.PumpAndJump.Beat;
 import com.musicgame.PumpAndJump.CameraHelp;
 import com.musicgame.PumpAndJump.GameObject;
 import com.musicgame.PumpAndJump.Obstacle;
@@ -332,8 +333,8 @@ public class RunningGame extends GameThread
 			reset();
 			Gdx.input.setInputProcessor(stage);
 			try {
-				actualObjects = LevelInterpreter.loadLevel();
-
+			//	actualObjects = LevelInterpreter.loadLevel();
+				Beat b = new Beat(0);
 				actualObjects = new ArrayList<Obstacle>();
 			} catch (Exception e) {
 				actualObjects = new ArrayList<Obstacle>();
