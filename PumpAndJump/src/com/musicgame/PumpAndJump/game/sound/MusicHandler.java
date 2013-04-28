@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.io.Decoder;
 import com.badlogic.gdx.audio.io.VorbisDecoder;
 import com.badlogic.gdx.audio.io.WavDecoder;
 import com.badlogic.gdx.files.FileHandle;
+import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Util.FileFormatException;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 
@@ -34,7 +35,7 @@ public class MusicHandler extends Thread
 	short[] buf = new short[frameSize*2];
 	Decoder decoder;
 	static int inputFrame;
-	BeatDetector detect = new BeatDetector();
+	BeatDetector detect;
 
 	//other methods
 	public boolean buffering = true;
@@ -54,8 +55,9 @@ public class MusicHandler extends Thread
 
 	private boolean stopRunning = false;
 
-	public MusicHandler()
+	public MusicHandler(ArrayList<Obstacle> actualObjects)
 	{
+		detect = new BeatDetector(actualObjects);
 		for(int k = 0;k<arraySampleLength;k++)
 		{
 			musicFile.add(new short[frameSize]);

@@ -327,7 +327,9 @@ public class RunningGame extends GameThread
 			reset();
 			Gdx.input.setInputProcessor(stage);
 			try {
-				actualObjects = LevelInterpreter.loadLevel();
+			//	actualObjects = LevelInterpreter.loadLevel();
+
+				actualObjects = new ArrayList<Obstacle>();
 			} catch (Exception e) {
 				actualObjects = new ArrayList<Obstacle>();
 				e.printStackTrace();
@@ -339,7 +341,7 @@ public class RunningGame extends GameThread
 			}
 			//System.out.println(filename);
 
-		    streamer = new MusicHandler();
+		    streamer = new MusicHandler(actualObjects);
 
 			if(filename != null)
 			{

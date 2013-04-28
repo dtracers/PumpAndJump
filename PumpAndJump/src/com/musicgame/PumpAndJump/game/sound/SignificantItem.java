@@ -1,11 +1,11 @@
 package com.musicgame.PumpAndJump.game.sound;
 
-public class Beat implements Comparable
+public class SignificantItem implements Comparable
 {
 
 	static boolean SORT_BY_LOCATION = false;
 	static boolean SORT_BY_INTENSITY = false;
-	public Beat(long highestIndex, float highestPoint,int indexInList, double timeIndex)
+	public SignificantItem(long highestIndex, float highestPoint,int indexInList, double timeIndex)
 	{
 		System.out.println("Creating a beat at "+highestIndex+" time index "+timeIndex);
 		soundIntensity = highestPoint;
@@ -26,10 +26,10 @@ public class Beat implements Comparable
 	{
 		if(SORT_BY_LOCATION)
 		{
-			return (int) Math.signum(this.sampleLocation-((Beat)o).sampleLocation);
+			return (int) Math.signum(this.sampleLocation-((SignificantItem)o).sampleLocation);
 		}else if(SORT_BY_INTENSITY)
 		{
-			return (int) Math.signum(this.soundIntensity-((Beat)o).soundIntensity);
+			return (int) Math.signum(this.soundIntensity-((SignificantItem)o).soundIntensity);
 		}else
 			return 0;
 	}

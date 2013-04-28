@@ -164,7 +164,31 @@ public class PumpAndJump extends Game
 	}
 
 	/**
+	 * This does a similar function to getThread but it may return null if the thread is null at that point
+	 * @param switchTo
+	 * @return
+	 */
+	private static GameThread getCurrentThreadState(ThreadName switchTo)
+	{
+		switch(switchTo)
+		{
+			case  PreGame:		return preGameThread;
+			case  PostGame:		return postGameThread;
+			case  RunningGame:	return runningGameThread;
+			case  PauseGame:	return pauseGameThread;
+			case  DemoGame:		return demoGameThread;
+			case  AboutGame:		return aboutGameThread;
+			case  OptionsGame:		return optionsGameThread;
+			case  InstructionGame:		return inctructionsGameThread;
+			case  Buffering:		return bufferingThread;
+			case FileChooser:		return fileChooserThread;
+		}
+		return null;
+	}
+
+	/**
 	 * gets the thread and creates it if the thread happens to be null
+	 * This will never ever return null
 	 * @param switchTo
 	 * @return
 	 */
@@ -260,8 +284,11 @@ public class PumpAndJump extends Game
 	{
 		for(ThreadName name: ThreadName.values())
 		{
-			if(getThread(name)!=null)
+			if(getCurrentThreadState(name)!=null)
+			{
 				getThread(name).dispose();
+				setThreadToNull(name);
+			}
 		}
 	}
 

@@ -3,6 +3,9 @@ package com.musicgame.PumpAndJump.game.sound;
 
 import java.util.ArrayList;
 
+import com.musicgame.PumpAndJump.Beat;
+import com.musicgame.PumpAndJump.Obstacle;
+
 
 public class BeatDetector
 {
@@ -19,7 +22,8 @@ public class BeatDetector
 	int currentHistoryIndex = 0;
 
 
-	ArrayList<Beat> detectedBeats = new ArrayList<Beat>();
+	ArrayList<SignificantItem> detectedBeats = new ArrayList<SignificantItem>();
+	ArrayList<Obstacle> createdObjects;
 
 	double maxEnergy = 0;
 
@@ -43,14 +47,14 @@ public class BeatDetector
 	int shiftIndex = 0;//this number is (counterIndex-avgShift)%historyLength*2
 
 
-	public BeatDetector()
+	public BeatDetector(ArrayList<Obstacle> actualObjects)
 	{
-
 		for(int k = 0;k<=LongHistoryLength;k++)
 		{
 			VEdata.add(new float[2]);
 		}
 		AveragedEnergydata = new double[LongHistoryLength];
+		createdObjects = actualObjects;
 	}
 
 	public void combineArray(ArrayList<short[]> timeData,int startIndex)
@@ -136,7 +140,8 @@ public class BeatDetector
 			aboveAverage = false;
 			if(division<senstitivity)
 			{
-				detectedBeats.add(new Beat(highestIndex,highestPoint,detectedBeats.size(),timeIndex));
+				createdObjects.add(new Beat((float) timeIndex));
+				detectedBeats.add(new SignificantItem(highestIndex,highestPoint,detectedBeats.size(),timeIndex));
 			}
 			highestPoint = 0;
 			highestIndex = -1;
