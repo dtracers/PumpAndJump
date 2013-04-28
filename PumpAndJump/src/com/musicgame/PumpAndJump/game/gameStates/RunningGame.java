@@ -155,67 +155,73 @@ public class RunningGame extends GameThread
 		lastTimeReference = 0;
 		while(!stopRunning)
 		{
-			if(streamer.bufferingNeeded())
+			if(!toWait)
 			{
-				goBuffer();
-			}else
-			{
-				writeSound();
-			}
-			timeReference = MusicHandler.timeReference;
-			delta = (float)(timeReference-lastTimeReference);
-			pos.x = (float)timeReference-( player.p.x/scale.x );
+				//where music output is
+				timeReference = MusicHandler.outputTimeReference;
+				delta = (float)(timeReference-lastTimeReference);
+				pos.x = (float)timeReference-( player.p.x/scale.x );
 
-			player.update( new Matrix4(), delta);
+				player.update( new Matrix4(), delta);
 
-			//setRotation( levelAniQ.getPose( delta ) );
-			//update based on object's modelview
-			Matrix4 mv = new Matrix4();
-			makeWorldView( mv );
+				//setRotation( levelAniQ.getPose( delta ) );
+				//update based on object's modelview
+				Matrix4 mv = new Matrix4();
+				makeWorldView( mv );
 
-			// move last index
-			for(int k = lastStartIndex;k<actualObjects.size();k++)
-			{
-				Obstacle currentObj = actualObjects.get(k);
-				if(currentObj.rightOfLeftSideOfScreen( (float) timeReference - .33333f ) )
+				// move last index
+				for(int k = lastStartIndex;k<actualObjects.size();k++)
 				{
-					break;
-				}
-				else
-				{
-					currentObj.done();
-					lastStartIndex++;
-				}
-			}
-
-			// update the obstacles that are onscreen
-			for(int k = lastStartIndex;k<actualObjects.size();k++)
-			{
-				Obstacle currentObj = actualObjects.get(k);
-				if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
-				{
-					currentObj.update( mv, delta );
-					if( currentObj.inScreenRange( (float)timeReference - .33333f, (float) timeReference + .33333f ) )
+					Obstacle currentObj = actualObjects.get(k);
+					if(currentObj.rightOfLeftSideOfScreen( (float) timeReference - .33333f ) )
 					{
-						if( player.intersects( currentObj.hull ) )
-						{
-							currentObj.Impacted( tempo );
-						}
+						break;
+					}
+					else
+					{
+						currentObj.done();
+						lastStartIndex++;
 					}
 				}
-				else
-				{
-					break;
-				}
-			}
 
-			lastTimeReference += delta;
-			if(toWait)
-				myWait();
-			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				// update the obstacles that are onscreen
+				for(int k = lastStartIndex;k<actualObjects.size();k++)
+				{
+					Obstacle currentObj = actualObjects.get(k);
+					if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
+					{
+						currentObj.update( mv, delta );
+						if( currentObj.inScreenRange( (float)timeReference - .33333f, (float) timeReference + .33333f ) )
+						{
+							if( player.intersects( currentObj.hull ) )
+							{
+								currentObj.Impacted( tempo );
+							}
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				lastTimeReference += delta;
+				/*
+				if(toWait)
+					myWait();
+				*/
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}else
+			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -371,7 +377,31 @@ public class RunningGame extends GameThread
 	private void startThread()
 	{
 		Thread running = new Thread(this);
+		Thread musicOutput = new Thread(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				while(!stopRunning)
+				{
+					if(streamer.bufferingNeeded())
+					{
+						goBuffer();
+					}else
+					{
+						writeSound();
+					}
+						if(toWait)
+						{
+							myWait();
+						}
+					}
+			}
+
+		});
 		running.start();
+		musicOutput.start();
 	}
 
 	@Override

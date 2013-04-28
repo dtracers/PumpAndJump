@@ -128,7 +128,7 @@ public class BeatDetector
 			{
 				highestPoint = instantEnergy;
 				highestIndex = counterIndex;
-				timeIndex = (MusicHandler.inputFrame*MusicHandler.frameSize)/((double)MusicHandler.sampleRate);
+				timeIndex = MusicHandler.inputTimeReference;
 				highestShiftIndex = shiftIndex;
 			}
 			aboveAverage = true;

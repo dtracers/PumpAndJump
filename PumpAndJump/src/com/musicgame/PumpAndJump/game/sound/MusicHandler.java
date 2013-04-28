@@ -34,7 +34,7 @@ public class MusicHandler extends Thread
 	//for input streaming
 	short[] buf = new short[frameSize*2];
 	Decoder decoder;
-	static int inputFrame;
+	int inputFrame;
 	BeatDetector detect;
 
 	//other methods
@@ -51,7 +51,8 @@ public class MusicHandler extends Thread
 	//location objects
 	int outputLocation = 0;
 	int inputLocation = 0;
-	public static double timeReference = 0;
+	public static double outputTimeReference = 0;
+	public static double inputTimeReference = 0;
 
 	private boolean stopRunning = false;
 
@@ -69,9 +70,10 @@ public class MusicHandler extends Thread
 
 	public void loadSound() throws FileNotFoundException, FileFormatException
 	{
+		buffering = true;
 		outputFrame = 0;
 		inputFrame = 0;
-		timeReference = 0;
+		outputTimeReference = 0;
 		slowingDownBuffer = false;
 		forceStop = false;
 		FileHandle file = null;
@@ -129,6 +131,8 @@ public class MusicHandler extends Thread
 	 */
 	public void run()
 	{
+		outputFrame = 0;
+		inputFrame = 0;
 		int readSong = 1;
 		System.out.println("Starting reading ");
 
@@ -150,6 +154,7 @@ public class MusicHandler extends Thread
 					readSong = decoder.readSamples(currentFrame,0, frameSize);
 				}
 				inputFrame++;
+				inputTimeReference = (inputFrame*MusicHandler.frameSize)/((double)MusicHandler.sampleRate);
 				inputLocation = inputFrame%arraySampleLength;
 				if(inputFrame%4==0)
 					detect.combineArray(musicFile, inputFrame-4);
@@ -250,7 +255,7 @@ public class MusicHandler extends Thread
 			}
 			outputFrame++;
 			outputLocation =(outputFrame%arraySampleLength);//puts the output location at the correct place
-			timeReference = (outputFrame*frameSize)/((double)sampleRate);
+			outputTimeReference = (outputFrame*frameSize)/((double)sampleRate);
 			if(doneReading&&bufferDistance()<2)
 			{
 				System.out.println("DONE READING?");
