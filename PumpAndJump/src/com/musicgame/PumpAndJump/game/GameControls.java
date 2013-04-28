@@ -45,10 +45,12 @@ public class GameControls
 
 	public GameControls()
 	{
+		this.uiSkin = GameThread.uiSkin;
 		if(uiSkin == null)
 		{
 	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
 	        GameThread.uiSkin = new Skin( skinFile );
+	        this.uiSkin = GameThread.uiSkin;
 		}
 		this.uiSkin = GameThread.uiSkin;
 		this.visibility=this.prefs.getFloat("visibility", 1.0f);
@@ -59,12 +61,13 @@ public class GameControls
 	}
 	public GameControls(ChangeListener jumpL, ChangeListener duckL, ChangeListener pauseL)
 	{
+		this.uiSkin = GameThread.uiSkin;
 		if(uiSkin == null)
 		{
 	        FileHandle skinFile = Gdx.files.internal( "uiskin/uiskin.json" );
 	        GameThread.uiSkin = new Skin( skinFile );
+	        this.uiSkin = GameThread.uiSkin;
 		}
-		this.uiSkin = GameThread.uiSkin;
 		this.visibility=this.prefs.getFloat("visibility", 1.0f);
 		this.controllerLayout=this.prefs.getInteger("controllerLayout", 0);
 		this.jumpListener = jumpL;

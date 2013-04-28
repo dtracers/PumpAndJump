@@ -47,6 +47,16 @@ public class PreLoaderState extends GameThread
 	{
 	}
 
+	/**
+	 * Calls the reset method in a separate thread
+	 */
+	@Override
+	public void run()
+	{
+		loadingThread.reset();
+		PumpAndJump.removeThread(PreLoaderState.this.getThreadName(), PreLoaderState.this);
+	}
+
 	@Override
 	public void addFrom(GameThread currentThread)
 	{
@@ -55,15 +65,8 @@ public class PreLoaderState extends GameThread
 		{
 			shapeRenderer = new ShapeRenderer();
 			loadingThread = ((RunningGame)currentThread);
-			Thread d = new Thread(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					loadingThread.reset();
-					PumpAndJump.removeThread(PreLoaderState.this.getThreadName(), PreLoaderState.this);
-				}
-			});
+			Thread d = new Thread(this);
+			d.start();
 		}
 	}
 
