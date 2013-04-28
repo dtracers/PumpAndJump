@@ -162,7 +162,7 @@ public class RunningGame extends GameThread
 			{
 				writeSound();
 			}
-			timeReference = streamer.timeReference;
+			timeReference = MusicHandler.timeReference;
 			delta = (float)(timeReference-lastTimeReference);
 			pos.x = (float)timeReference-( player.p.x/scale.x );
 
