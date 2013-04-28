@@ -15,6 +15,7 @@ import com.musicgame.PumpAndJump.game.gameStates.OptionsGame;
 import com.musicgame.PumpAndJump.game.gameStates.PauseGame;
 import com.musicgame.PumpAndJump.game.gameStates.PostGame;
 import com.musicgame.PumpAndJump.game.gameStates.PreGame;
+import com.musicgame.PumpAndJump.game.gameStates.PreLoaderState;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 import com.musicgame.PumpAndJump.game.sound.MP3Decoder;
 
@@ -160,6 +161,7 @@ public class PumpAndJump extends Game
 			case  InstructionGame:		inctructionsGameThread = null;break;
 			case  BufferingState:		bufferingThread = null;break;
 			case FileChooserState:		fileChooserThread = null;break;
+			case PreLoaderState:		preLoaderThread = null;break;
 		}
 	}
 
@@ -182,6 +184,7 @@ public class PumpAndJump extends Game
 			case  InstructionGame:		return inctructionsGameThread;
 			case  BufferingState:		return bufferingThread;
 			case FileChooserState:		return fileChooserThread;
+			case PreLoaderState:		return preLoaderThread;
 		}
 		return null;
 	}
@@ -276,6 +279,14 @@ public class PumpAndJump extends Game
 				}
 				return fileChooserThread;
 			}
+			case PreLoaderState:
+			{
+				if(preLoaderThread == null)
+				{
+					preLoaderThread = new PreLoaderState();
+				}
+				return preLoaderThread;
+			}
 		}
 		return null;
 	}
@@ -303,5 +314,6 @@ public class PumpAndJump extends Game
 	private static InstructionGame inctructionsGameThread;
 	private static BufferingState bufferingThread;
 	private static FileChooserState fileChooserThread;
+	private static PreLoaderState preLoaderThread;
 
 }
