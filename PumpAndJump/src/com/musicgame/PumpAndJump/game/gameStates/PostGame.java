@@ -27,7 +27,7 @@ public class PostGame extends GameThread
 	static Stage stage;
 	ParticleEffect effect;
 	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt") );
-	
+
 	int emitterIndex;
 	Array<ParticleEmitter> emitters;
 	public PostGame()
@@ -35,7 +35,7 @@ public class PostGame extends GameThread
 		stage = new Stage();
 		Table table = new Table();
 		stage.addActor(table);
-	
+
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
 		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
 		if(uiSkin == null)
@@ -52,9 +52,11 @@ public class PostGame extends GameThread
 						PumpAndJump.switchThread(ThreadName.PreGame, PostGame.this);
 					}
 				});
-		
+
 		table.setFillParent(true);
-		Image youwinImage = new Image(new TextureRegion(new Texture(Gdx.files.internal("youwin.png")),0,0,331,78 ) );
+
+		Image youwinImage = new Image(new TextureRegion(new Texture(Gdx.files.internal("music_note.png")),0,0,331,78 ) );
+	//	Image youwinImage = new Image(new TextureRegion(new Texture(Gdx.files.internal("youwin.png")),0,0,331,78 ) );
 		table.add().expand().fill();
 		table.add(youwinImage).expand().fill().colspan(3);
 		table.add().expand().fill();
@@ -85,7 +87,9 @@ public class PostGame extends GameThread
 
 	}
 	@Override
-	public void switchFrom(GameThread currentThread) {
+	public void switchFrom(GameThread currentThread)
+	{
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override

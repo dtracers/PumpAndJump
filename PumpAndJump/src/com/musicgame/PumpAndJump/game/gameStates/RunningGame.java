@@ -82,7 +82,6 @@ public class RunningGame extends GameThread
 	public ChangeListener endJumpListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
-			System.out.println("end jump!");
 			endJump();
 		}
 	};
@@ -95,7 +94,6 @@ public class RunningGame extends GameThread
 	public ChangeListener endDuckListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
-			System.out.println("end jump!");
 			endJump();
 		}
 	};
@@ -107,6 +105,7 @@ public class RunningGame extends GameThread
 	};
 	public int loadingPercent = 0;
 	public int maxLoading = 11;
+	private Point textPostion;
 
 	public static int score = 0;
 	public static int superSaiyanScore=0;
@@ -232,7 +231,8 @@ public class RunningGame extends GameThread
 		//font.setColor(Color.WHITE);
 		//font.setScale(2.0f);
 
-		font.draw(batch,"Score: "+score,Gdx.graphics.getWidth()/2.0f,Gdx.graphics.getHeight()/2.0f);
+		font.draw(batch,"Score:",textPostion.x,textPostion.y);
+		font.draw(batch,""+score,textPostion.x,textPostion.y-font.getCapHeight());
 
 		if(score > superSaiyanScore && !player.isSuperSaiyan)
 			player.goSuperSaiyan(true);
@@ -391,6 +391,8 @@ public class RunningGame extends GameThread
         rightBar.setColor( 0.8f, 0.8f, 1.0f, 1.0f );
 
         loadingPercent++;
+
+        textPostion = new Point(CameraHelp.virtualWidth,Gdx.graphics.getHeight()/2.0f,0.0f);
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
@@ -552,6 +554,7 @@ public class RunningGame extends GameThread
 		songFinished = streamer.songFinished;
 		if(songFinished)
 		{
+			streamer.dispose();
 			Gdx.app.postRunnable(new Runnable()
 			{
 				@Override
