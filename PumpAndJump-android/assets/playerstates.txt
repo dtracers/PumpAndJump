@@ -1,4 +1,4 @@
-11
+12
 w walk.txt
 r run.txt
 h handstand.txt
@@ -10,4 +10,5 @@ sdbf startbellyslide.txt
 sdss startspyslide.txt
 sdhbf handstobellyslide.txt
 jtl2r jumptransrun.txt
+jtrsf endrightsideflip.txt
 0
