@@ -11,8 +11,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.musicgame.PumpAndJump.CameraHelp;
 import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Animation.Animation;
@@ -67,16 +70,26 @@ public class RunningGame extends GameThread
 	private boolean stopRunning = false;//if this is set to true the Thread will cease to exist
 	GameControls controls;
 	//define my listeners
-	public ChangeListener jumpListener = new ChangeListener() {
-		public void changed(ChangeEvent event, Actor actor)
-		{
+	public InputListener startJumpListener = new InputListener() {
+		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 			startJump();
+			return false;
 		}
 	};
-	public ChangeListener duckListener = new ChangeListener() {
-		public void changed(ChangeEvent event, Actor actor)
-		{
+	public InputListener endJumpListener = new InputListener() {
+		public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+			endJump();
+		}
+	};
+	public InputListener startDuckListener = new InputListener() {
+		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 			startDuck();
+			return false;
+		}
+	};
+	public InputListener endDuckListener = new InputListener() {
+		public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+			endDuck();
 		}
 	};
 	public ChangeListener pauseListener = new ChangeListener() {
@@ -85,7 +98,6 @@ public class RunningGame extends GameThread
 			pausingButton();
 		}
 	};
-
 	public int loadingPercent = 0;
 	public int maxLoading = 11;
 
@@ -372,7 +384,9 @@ public class RunningGame extends GameThread
 		loadingPercent++;
 
 		//adds game controls
-		this.controls = new GameControls(jumpListener,duckListener,pauseListener);
+		this.controls = new GameControls(startJumpListener,startDuckListener,pauseListener);
+		this.controls.jumpButton.addListener(endJumpListener);
+		this.controls.duckButton.addListener(endDuckListener);
 		this.controls.controlsTable.setFillParent(true);
 		stage.addActor(this.controls.controlsTable);
 

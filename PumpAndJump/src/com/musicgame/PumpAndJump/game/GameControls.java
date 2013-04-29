@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,26 +18,26 @@ public class GameControls
 	public Table controlsTable= new Table();
 	Preferences prefs = Gdx.app.getPreferences("ControlsPreferences");
 	Skin uiSkin;
-	TextButton jumpButton;
-	TextButton pauseButton;
-	TextButton duckButton;
+	public TextButton jumpButton;
+	public TextButton pauseButton;
+	public TextButton duckButton;
 
 	float visibility;
 	int controllerLayout;
 	//define my listeners
-	public ChangeListener jumpListener = new ChangeListener() {
+	public EventListener jumpListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
 			//System.out.println("jump!");
 		}
 	};
-	public ChangeListener duckListener = new ChangeListener() {
+	public EventListener duckListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
 			//System.out.println("duck!");
 		}
 	};
-	public ChangeListener pauseListener = new ChangeListener() {
+	public EventListener pauseListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
 			//System.out.println("pause!");
@@ -59,7 +60,7 @@ public class GameControls
 		this.defineControlsTable();
 
 	}
-	public GameControls(ChangeListener jumpL, ChangeListener duckL, ChangeListener pauseL)
+	public GameControls(EventListener jumpL, EventListener duckL, EventListener pauseL)
 	{
 		this.uiSkin = GameThread.uiSkin;
 		if(uiSkin == null)
