@@ -233,19 +233,9 @@ public class Player extends GameObject implements Animated{
 	}
 
 	public void endJump() {
-		float[] f = new float[ pose.length ];
-		getPose( f );
-		Animation ta = aniFSM.getAni();
-		if( ta != null )
-		aniQ.switchAnimation( ta, f );
 	}
 
 	public void endDuck() {
-		float[] f = new float[ pose.length ];
-		getPose( f );
-		Animation ta = aniFSM.getAni();
-		if( ta != null )
-		aniQ.switchAnimation( ta, f );
 	}
 }
 
