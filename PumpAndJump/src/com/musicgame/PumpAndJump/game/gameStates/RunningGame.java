@@ -641,7 +641,7 @@ public class RunningGame extends GameThread
 		mv.scale( scale.x, scale.y, scale.z );
 	}
 
-	private synchronized void rotateWorldView(Matrix4 mv)
+	private synchronized void rotateLasers(Matrix4 mv)
 	{
 		mv.rotate( 1.0f, 0.0f, 0.0f, rotation.x );
 		mv.rotate( 0.0f, 1.0f, 0.0f, rotation.y );
