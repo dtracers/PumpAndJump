@@ -72,12 +72,15 @@ public class RunningGame extends GameThread
 	//define my listeners
 	public InputListener startJumpListener = new InputListener() {
 		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+			System.out.println("startjump");
 			startJump();
 			return false;
 		}
 	};
-	public InputListener endJumpListener = new InputListener() {
-		public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+	public ChangeListener endJumpListener = new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+			System.out.println("end jump!");
 			endJump();
 		}
 	};
@@ -87,9 +90,11 @@ public class RunningGame extends GameThread
 			return false;
 		}
 	};
-	public InputListener endDuckListener = new InputListener() {
-		public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-			endDuck();
+	public ChangeListener endDuckListener = new ChangeListener() {
+		public void changed(ChangeEvent event, Actor actor)
+		{
+			System.out.println("end jump!");
+			endJump();
 		}
 	};
 	public ChangeListener pauseListener = new ChangeListener() {
@@ -385,8 +390,8 @@ public class RunningGame extends GameThread
 
 		//adds game controls
 		this.controls = new GameControls(startJumpListener,startDuckListener,pauseListener);
-		this.controls.jumpButton.addListener(endJumpListener);
-		this.controls.duckButton.addListener(endDuckListener);
+		this.controls.jumpButton.addListener(this.endJumpListener);
+		this.controls.duckButton.addListener(this.endDuckListener);
 		this.controls.controlsTable.setFillParent(true);
 		stage.addActor(this.controls.controlsTable);
 
