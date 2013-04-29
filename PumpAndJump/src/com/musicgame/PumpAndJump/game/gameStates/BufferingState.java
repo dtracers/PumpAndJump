@@ -18,7 +18,7 @@ public class BufferingState extends GameThread
 	long delay = 5000;
 	boolean threadStarted;
 	long counter = 0;
-	BitmapFont font;
+	BitmapFont font = new BitmapFont();
 
 	public BufferingState()
 	{
