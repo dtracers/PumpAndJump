@@ -15,7 +15,7 @@ public class DuckObstacle extends Obstacle {
 	{
 		if( !triggered )
 		{
-			triggered = true;
+		//	triggered = true;
 			RunningGame.score--;
 		}
 	}
