@@ -29,6 +29,7 @@ public class Player extends GameObject implements Animated{
 	public final int WAMS_PLAYER_DOF = 16;
 	AnimationQueue aniQ;
 	PlayerAnimationFSM aniFSM;
+	public boolean boolIsInSpecial = false;
 
 	public boolean isSuperSaiyan = false;
 
@@ -173,7 +174,7 @@ public class Player extends GameObject implements Animated{
 	public synchronized void update( Matrix4 mv, float delta )
 	{
 		time += delta;
-		if( aniQ.stop )
+		if( aniQ.stop && !boolIsInSpecial )
 		{
 			float[] f = new float[ pose.length ];
 			getPose( f );
@@ -201,6 +202,7 @@ public class Player extends GameObject implements Animated{
 		float[] f = new float[ pose.length ];
 		getPose( f );
 		Animation ta = aniFSM.startJump();
+		boolIsInSpecial = true;
 		if( ta != null )
 			aniQ.switchAnimation( ta, f );
 	}
@@ -210,9 +212,11 @@ public class Player extends GameObject implements Animated{
 		float[] f = new float[ pose.length ];
 		getPose( f );
 		Animation ta = aniFSM.startDuck();
+		boolIsInSpecial = true;
 		if( ta != null )
-		aniQ.switchAnimation( ta, f );
+			aniQ.switchAnimation( ta, f );
 	}
+	
 	public void goSuperSaiyan(boolean goOrNo)
 	{
 		if(goOrNo)
@@ -227,15 +231,20 @@ public class Player extends GameObject implements Animated{
 		}
 		this.isSuperSaiyan = goOrNo;
 	}
+	
 	public void print()
 	{
 		hip.torso.print();
 	}
 
-	public void endJump() {
+	public void endJump() 
+	{
+		boolIsInSpecial = false;
 	}
 
-	public void endDuck() {
+	public void endDuck() 
+	{
+		boolIsInSpecial = false;
 	}
 }
 

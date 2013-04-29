@@ -107,7 +107,7 @@ public class AnimationQueue {
 
 		//for( int i = 0; i < )
 
-		while( highTime <  lastTime )
+		while( highTime <  lastTime && !stop )
 		{
 			pushKeyFrame();
 			//queue[2].print();
