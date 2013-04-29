@@ -2,10 +2,12 @@ package com.musicgame.PumpAndJump.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix4;
 import com.musicgame.PumpAndJump.CameraHelp;
+import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class Beat extends Obstacle{
@@ -15,8 +17,10 @@ public class Beat extends Obstacle{
 	boolean triggered = false;
 	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt" ) );
 
+	static float scaleNote = 3;
+
 	public Beat(float startTime){
-		super( startTime, startTime+.01f, 55.0f, 10.0f );
+		super( startTime, startTime+.02f*scaleNote, 55.0f-scaleNote/2, (6.0f)*scaleNote,"white_music_note.png");
 		image.setColor( 1.0f, 0.0f, 1.0f, 1.0f );
 		if(effect == null)
 		{
@@ -59,6 +63,7 @@ public class Beat extends Obstacle{
 	{
 		if( !triggered )
 		{
+			triggered = true;
 			effect.reset();
 			effect.setPosition( CameraHelp.virtualWidth/2.0f, 0.0f );
 			this.tempo = tempo/60.0f/2.0f;

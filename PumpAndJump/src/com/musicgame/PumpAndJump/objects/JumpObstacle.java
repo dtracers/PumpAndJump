@@ -17,6 +17,7 @@ public class JumpObstacle extends Obstacle
 	{
 		if( !triggered )
 		{
+			triggered = true;
 			RunningGame.score--;
 		}
 	}

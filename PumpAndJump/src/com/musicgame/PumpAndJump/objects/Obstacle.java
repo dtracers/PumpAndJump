@@ -10,7 +10,7 @@ public class Obstacle extends GameObject
 	private float end;
 	private float width;
 	private float height;
-	
+
 	public Obstacle(float Start, float End, float Y, float Height ){
 		super( );
 		start = Start;
@@ -21,6 +21,19 @@ public class Obstacle extends GameObject
 		height = Height;
 		makeHull();
 		image = new Sprite( TextureMapping.staticGet( "WhiteTemp.png" ) );
+		image.setSize( End - Start, Height );
+	}
+
+	public Obstacle(float Start, float End, float Y, float Height ,String imageFile){
+		super( );
+		start = Start;
+		end = End;
+		p.x = Start;
+		p.y = Y;
+		width = End - Start;
+		height = Height;
+		makeHull();
+		image = new Sprite( TextureMapping.staticGet( imageFile ) );
 		image.setSize( End - Start, Height );
 	}
 
@@ -54,26 +67,26 @@ public class Obstacle extends GameObject
 	 */
 	public void done()
 	{
-		
+
 	}
-	
+
 	public boolean leftOfRightSideOfScreen( float screenRightTime )
 	{
 		return start <= screenRightTime;
 	}
-	
+
 	public boolean rightOfLeftSideOfScreen( float screenLeftTime )
 	{
 		return end >= screenLeftTime;
 	}
-	
+
 	public boolean inScreenRange(float screenLeftTime,float screenRightTime)
 	{
 		return start<=screenRightTime&&end>=screenLeftTime;
 	}
-	
+
 	public void Impacted( float tempo )
 	{
-		
+
 	}
 }
