@@ -29,9 +29,9 @@ public class Player extends GameObject implements Animated{
 	public final int WAMS_PLAYER_DOF = 16;
 	AnimationQueue aniQ;
 	PlayerAnimationFSM aniFSM;
-	
+
 	public boolean isSuperSaiyan = false;
-	
+
 	public Player( Point pos, Point angle )
 	{
 		hip = new PlayerHip( new Point( 0.0f, 0.0f, 0.0f ), angle );
@@ -196,7 +196,7 @@ public class Player extends GameObject implements Animated{
 		return hip.intersects( p );
 	}
 
-	public synchronized void jump()
+	public synchronized void startJump()
 	{
 		float[] f = new float[ pose.length ];
 		getPose( f );
@@ -205,7 +205,7 @@ public class Player extends GameObject implements Animated{
 			aniQ.switchAnimation( ta, f );
 	}
 
-	public synchronized void duck()
+	public synchronized void startDuck()
 	{
 		float[] f = new float[ pose.length ];
 		getPose( f );
@@ -225,11 +225,21 @@ public class Player extends GameObject implements Animated{
 			hip.rightThigh.shin.foot.showFireFeet = false;
 			hip.leftThigh.shin.foot.showFireFeet = false;
 		}
+<<<<<<< HEAD
 		this.isSuperSaiyan = goOrNo;
+=======
+
+>>>>>>> e84d9539796d25cc57173fe5bd545d686b88160f
 	}
 	public void print()
 	{
 		hip.torso.print();
+	}
+
+	public void endJump() {
+	}
+
+	public void endDuck() {
 	}
 }
 
