@@ -88,7 +88,7 @@ public class Clip
 		filters[10] = new BandPass(18.75f, 6.25f, input.getSampleRate() );
 
 		detectors[0] = new BeatDetector(null);
-		detectors[1] = new BeatDetector(new BandPass(150.0f, 6.25f, input.getSampleRate() ));//lower register
+		detectors[1] = new BeatDetector(new BandPass(150.0f, 150.0f, input.getSampleRate() ));//lower register
 		detectors[2] = new BeatDetector(new BandPass(800.0f, 200f, input.getSampleRate() ));//middle register
 		detectors[3] = new BeatDetector(new BandPass(16400.0f,900f, input.getSampleRate() ));//high register
 		//preWindowFunction = new VorbisWindowFunction(input.frameSize);
