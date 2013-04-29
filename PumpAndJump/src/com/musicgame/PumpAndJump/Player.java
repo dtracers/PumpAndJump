@@ -236,7 +236,7 @@ public class Player extends GameObject implements Animated{
 		float[] f = new float[ pose.length ];
 		getPose( f );
 		Animation ta = aniFSM.getAni();
-		if( ta != null )
+		if( ta != null && !ta.isLooping)
 		aniQ.switchAnimation( ta, f );
 	}
 
@@ -244,7 +244,7 @@ public class Player extends GameObject implements Animated{
 		float[] f = new float[ pose.length ];
 		getPose( f );
 		Animation ta = aniFSM.getAni();
-		if( ta != null )
+		if( ta != null && !ta.isLooping)
 		aniQ.switchAnimation( ta, f );
 	}
 }
