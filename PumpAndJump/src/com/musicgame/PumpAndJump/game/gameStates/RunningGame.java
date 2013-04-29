@@ -246,7 +246,11 @@ public class RunningGame extends GameThread
 
 		player.draw( batch );
 
+		rotateLasers(mv);
 
+		batch.setTransformMatrix( mv );
+
+		//draw lazers! here
 
 		batch.setTransformMatrix( before );
 
