@@ -8,7 +8,7 @@ import com.musicgame.PumpAndJump.Player;
 
 public class ObjectHandler
 {
-	public ArrayList<Obstacle> actualObjects;
+	public ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
 	public int lastStartIndex = 0;
 
 	/**

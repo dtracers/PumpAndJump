@@ -28,6 +28,7 @@ import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.sound.MusicHandler;
 import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.Cloud;
 import com.musicgame.PumpAndJump.objects.ObjectHandler;
 import com.musicgame.PumpAndJump.objects.Obstacle;
 
@@ -42,8 +43,6 @@ public class RunningGame extends GameThread
 
 	//contains the list of all objects that are in the level
 	static ObjectHandler mainObjects;
-//	static ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
-//	static int lastStartIndex = 0;
 
 	//Player object
 	static Player player;
@@ -149,51 +148,11 @@ public class RunningGame extends GameThread
 
 				// move last index
 				mainObjects.updateIndex((float)timeReference);
-				/*
-				for(int k = lastStartIndex; k<actualObjects.size(); k++)
-				{
-					Obstacle currentObj = actualObjects.get(k);
-					if(currentObj.rightOfLeftSideOfScreen( (float) timeReference - .33333f ) )
-					{
-						break;
-					}
-					else
-					{
-						currentObj.done();
-						lastStartIndex++;
-					}
-				}
-				*/
 
-				mainObjects.updateObstacles((float)timeReference, mv, delta, player, delta);
-				/*
 				// update the obstacles that are onscreen
-				for(int k = lastStartIndex;k<actualObjects.size();k++)
-				{
-					Obstacle currentObj = actualObjects.get(k);
-					if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
-					{
-						currentObj.update( mv, delta );
-						if( currentObj.inScreenRange( (float)timeReference - .33333f, (float) timeReference + .33333f ) )
-						{
-							if( player.intersects( currentObj.hull ) )
-							{
-								currentObj.Impacted( tempo );
-							}
-						}
-					}
-					else
-					{
-						break;
-					}
-				}
-				*/
+				mainObjects.updateObstacles((float)timeReference, mv, delta, player, tempo);
 
 				lastTimeReference += delta;
-				/*
-				if(toWait)
-					myWait();
-				*/
 				try {
 					Thread.sleep(5);
 				} catch (InterruptedException e) {
@@ -242,21 +201,7 @@ public class RunningGame extends GameThread
 		//draw gameObjects
 
 		mainObjects.renderObstacles((float)timeReference, batch);
-		/*
-		for(int k = lastStartIndex;k<actualObjects.size();k++)
-		{
-			Obstacle currentObj = actualObjects.get(k);
-			if( currentObj.leftOfRightSideOfScreen( (float) timeReference + 3.0f ) )
-			{
-				currentObj.draw( batch );
-			}
-			else
-			{
-				break;
-			}
-		}
 
-		*/
 		rotateLasers(mv);
 
 		batch.setTransformMatrix( mv );
@@ -458,8 +403,7 @@ public class RunningGame extends GameThread
 		//	actualObjects = LevelInterpreter.loadLevel();
 		Beat b = new Beat(0);
 		mainObjects = new ObjectHandler();
-		ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
-		mainObjects.actualObjects = actualObjects;
+		ArrayList<Obstacle> actualObjects = mainObjects.actualObjects;
 
 		if(pick)
 		{
