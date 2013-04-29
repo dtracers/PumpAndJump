@@ -66,6 +66,8 @@ public class RunningGame extends GameThread
 	static OrthographicCamera cam;
 	static Matrix4 oldProjection;
 
+	private double timeSinceButtonPress = 0;
+
 	private boolean songFinished = false;
 	private boolean stopRunning = false;//if this is set to true the Thread will cease to exist
 	GameControls controls;
@@ -151,6 +153,12 @@ public class RunningGame extends GameThread
 
 				// update the obstacles that are onscreen
 				mainObjects.updateObstacles((float)timeReference, mv, delta, player, tempo);
+
+				timeSinceButtonPress+= delta;
+				if(timeSinceButtonPress>1)
+				{
+					endJump();
+				}
 
 				lastTimeReference += delta;
 				try {
@@ -567,6 +575,7 @@ public class RunningGame extends GameThread
 	 */
 	public void startJump()
 	{
+		timeSinceButtonPress = 0;
 		//System.out.println("Jumping");
 		player.startJump();
 	}
@@ -576,6 +585,7 @@ public class RunningGame extends GameThread
 	 */
 	public void startDuck()
 	{
+		timeSinceButtonPress = 0;
 		//System.out.println("Ducking");
 		player.startDuck();
 	}
