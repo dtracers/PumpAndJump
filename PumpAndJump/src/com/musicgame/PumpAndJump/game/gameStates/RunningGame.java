@@ -246,13 +246,8 @@ public class RunningGame extends GameThread
 		//font.setScale(2.0f);
 
 		font.draw(batch,"Score: "+score,Gdx.graphics.getWidth()/2.0f,Gdx.graphics.getHeight()/2.0f);
-<<<<<<< HEAD
-		
-		if(score > superSaiyanScore && !player.isSuperSaiyan)
-=======
 
-		if(score>superSaiyanScore && !player.isSuperSaiyan)
->>>>>>> e84d9539796d25cc57173fe5bd545d686b88160f
+		if(score > superSaiyanScore && !player.isSuperSaiyan)
 			player.goSuperSaiyan(true);
 		else if(score <= superSaiyanScore && player.isSuperSaiyan)
 			player.goSuperSaiyan(false);
