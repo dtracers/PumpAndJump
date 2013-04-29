@@ -241,16 +241,18 @@ public class RunningGame extends GameThread
 				break;
 			}
 		}
-		//reset to the original transform matrix
-		batch.setTransformMatrix( beforeWV );
-
-		player.draw( batch );
-
 		rotateLasers(mv);
 
 		batch.setTransformMatrix( mv );
 
 		//draw lazers! here
+
+		//reset to the original transform matrix
+		batch.setTransformMatrix( beforeWV );
+
+		player.draw( batch );
+
+
 
 		batch.setTransformMatrix( before );
 
