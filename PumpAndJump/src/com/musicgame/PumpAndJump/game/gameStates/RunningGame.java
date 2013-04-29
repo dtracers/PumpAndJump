@@ -92,7 +92,7 @@ public class RunningGame extends GameThread
 	public int maxLoading = 11;
 
 	public static int score = 0;
-
+	public static int superSaiyanScore=50;
 
 	/**
 	 * Run method happens while the game is running
@@ -248,7 +248,11 @@ public class RunningGame extends GameThread
 		//font.setScale(2.0f);
 
 		font.draw(batch,"Score: "+score,Gdx.graphics.getWidth()/2.0f,Gdx.graphics.getHeight()/2.0f);
-
+		
+		if(score>superSaiyanScore && !player.isSuperSaiyan)
+			player.goSuperSaiyan(true);
+		else if(score<superSaiyanScore && player.isSuperSaiyan)
+			player.goSuperSaiyan(false);
 
 		batch.end();
 

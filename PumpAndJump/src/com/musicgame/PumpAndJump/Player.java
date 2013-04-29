@@ -29,7 +29,9 @@ public class Player extends GameObject implements Animated{
 	public final int WAMS_PLAYER_DOF = 16;
 	AnimationQueue aniQ;
 	PlayerAnimationFSM aniFSM;
-
+	
+	public boolean isSuperSaiyan = false;
+	
 	public Player( Point pos, Point angle )
 	{
 		hip = new PlayerHip( new Point( 0.0f, 0.0f, 0.0f ), angle );
@@ -211,7 +213,20 @@ public class Player extends GameObject implements Animated{
 		if( ta != null )
 		aniQ.switchAnimation( ta, f );
 	}
-
+	public void goSuperSaiyan(boolean goOrNo)
+	{
+		if(goOrNo)
+		{
+			hip.rightThigh.shin.foot.showFireFeet = true;
+			hip.leftThigh.shin.foot.showFireFeet = true;
+		}
+		else
+		{
+			hip.rightThigh.shin.foot.showFireFeet = false;
+			hip.leftThigh.shin.foot.showFireFeet = false;
+		}
+		
+	}
 	public void print()
 	{
 		hip.torso.print();
@@ -483,7 +498,7 @@ class PlayerFoot extends Model
 	public float height = 5.0f;
 	ParticleEffect effect;
 	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt" ) );
-
+	public boolean showFireFeet = false;
 	public PlayerFoot( Side a )
 	{
 		super( new Point( 20.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f ,1.0f ) );
@@ -536,7 +551,8 @@ class PlayerFoot extends Model
 		Matrix4 mv = sb.getTransformMatrix();
 		mv.rotate( 1.0f, 0.0f, 0.0f, 180.0f );
 		sb.setTransformMatrix( mv );
-		effect.draw( sb, Gdx.graphics.getDeltaTime() );
+		if(showFireFeet)
+			effect.draw( sb, Gdx.graphics.getDeltaTime() );
 
 		popTransforms( sb );
 	}
