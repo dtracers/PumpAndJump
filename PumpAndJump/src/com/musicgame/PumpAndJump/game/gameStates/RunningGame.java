@@ -246,6 +246,12 @@ public class RunningGame extends GameThread
 				break;
 			}
 		}
+		rotateLasers(mv);
+
+		batch.setTransformMatrix( mv );
+
+		//draw lazers! here
+
 		//reset to the original transform matrix
 		batch.setTransformMatrix( beforeWV );
 
