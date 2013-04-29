@@ -67,6 +67,7 @@ public class RunningGame extends GameThread
 	static Matrix4 oldProjection;
 
 	private double timeSinceButtonPress = 0;
+	private boolean startedSpecial = false;
 
 	private boolean songFinished = false;
 	private boolean stopRunning = false;//if this is set to true the Thread will cease to exist
@@ -578,7 +579,11 @@ public class RunningGame extends GameThread
 	 */
 	public void startJump()
 	{
-		timeSinceButtonPress = 0;
+		if(!startedSpecial)
+		{
+			startedSpecial = true;
+			timeSinceButtonPress = 0;
+		}
 		//System.out.println("Jumping");
 		player.startJump();
 	}
@@ -588,7 +593,11 @@ public class RunningGame extends GameThread
 	 */
 	public void startDuck()
 	{
-		timeSinceButtonPress = 0;
+		if(!startedSpecial)
+		{
+			startedSpecial = true;
+			timeSinceButtonPress = 0;
+		}
 		//System.out.println("Ducking");
 		player.startDuck();
 	}
@@ -598,6 +607,7 @@ public class RunningGame extends GameThread
 	 */
 	public void endJump()
 	{
+		startedSpecial = false;
 		//System.out.println("Jumping");
 		player.endJump();
 	}
@@ -607,6 +617,7 @@ public class RunningGame extends GameThread
 	 */
 	public void endDuck()
 	{
+		startedSpecial = false;
 		//System.out.println("Ducking");
 		player.endDuck();
 	}
