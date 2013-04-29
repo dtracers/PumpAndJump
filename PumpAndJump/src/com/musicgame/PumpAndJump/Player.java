@@ -225,7 +225,7 @@ public class Player extends GameObject implements Animated{
 			hip.rightThigh.shin.foot.showFireFeet = false;
 			hip.leftThigh.shin.foot.showFireFeet = false;
 		}
-		
+		this.isSuperSaiyan = goOrNo;
 	}
 	public void print()
 	{
