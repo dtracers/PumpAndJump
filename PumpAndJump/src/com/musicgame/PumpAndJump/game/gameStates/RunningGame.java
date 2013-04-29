@@ -147,7 +147,7 @@ public class RunningGame extends GameThread
 
 
 				// move last index
-				for(int k = lastStartIndex;k<actualObjects.size();k++)
+				for(int k = lastStartIndex; k<actualObjects.size(); k++)
 				{
 					Obstacle currentObj = actualObjects.get(k);
 					if(currentObj.rightOfLeftSideOfScreen( (float) timeReference - .33333f ) )
