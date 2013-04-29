@@ -24,7 +24,7 @@ public abstract class Model
 	public Polygon hull;
 	public Polygon poly;
 	Matrix4 before;
-	Sprite image;
+	protected Sprite image;
 	ArrayList< Model > children;
 
 	public Model( Point _p, Point _angle, Point _scale )
