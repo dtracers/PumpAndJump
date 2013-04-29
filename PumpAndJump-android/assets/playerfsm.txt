@@ -9,5 +9,5 @@ sdbf 4 w r h sjtl
 sdhbf 4 w r h sjtl
 sdss 4 w r sh sjtl
 sjbf 4 w r sdbf sdss
-jtrsf 4 w r h sh
+sjrsf 4 w r h sh
 jtl2r 1 r
