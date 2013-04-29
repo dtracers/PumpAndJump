@@ -11,5 +11,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx-audio.jar"/>
 	<classpathentry kind="lib" path="libs/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="libs/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="/PumpAndJump/libs/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="/PumpAndJump/libs/mp3spi1.9.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
