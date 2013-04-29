@@ -1,15 +1,19 @@
 package com.musicgame.PumpAndJump.game.gameStates;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.CameraHelp;
 import com.musicgame.PumpAndJump.Player;
@@ -28,6 +32,7 @@ import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class RunningGame extends GameThread
 {
+	BitmapFont font;
 	static Stage stage;
 	static MusicHandler streamer;
 	static File filename=null;
@@ -231,13 +236,22 @@ public class RunningGame extends GameThread
 
 		player.draw( batch );
 
+
+
 		batch.setTransformMatrix( before );
 
 
 		leftBar.draw( batch );
 		rightBar.draw( batch );
 
+		//font.setColor(Color.WHITE);
+		//font.setScale(2.0f);
+
+		font.draw(batch,"Score: "+score,Gdx.graphics.getWidth()/2.0f,Gdx.graphics.getHeight()/2.0f);
+
+
 		batch.end();
+
 		if(!toWait)
 		{
 			stage.act(Math.min(delta, 1 / 30f));
@@ -390,6 +404,10 @@ public class RunningGame extends GameThread
         scale = new Point( tempo, 1.0f, 1.0f );
 
         player = new Player( new Point( 80.0f, 40.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ) );
+
+        if(font == null)
+			font = new BitmapFont();
+        font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	/**

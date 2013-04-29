@@ -10,8 +10,7 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 
 public class BufferingState extends GameThread
 {
-	Texture bufferingImage = new Texture(Gdx.files.internal("buffering.png"));
-	BitmapFont  font = new BitmapFont();
+	static Texture bufferingImage = new Texture(Gdx.files.internal("buffering.png"));
 	float x,y;
 	long position;
 	Thread runMethod;
@@ -19,6 +18,7 @@ public class BufferingState extends GameThread
 	long delay = 5000;
 	boolean threadStarted;
 	long counter = 0;
+	BitmapFont font;
 
 	public BufferingState()
 	{

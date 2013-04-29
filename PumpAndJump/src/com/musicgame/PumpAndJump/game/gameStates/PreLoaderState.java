@@ -14,8 +14,7 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 public class PreLoaderState extends GameThread
 {
 	RunningGame loadingThread;
-	BitmapFont  font;
-
+	BitmapFont font;
 	private ShapeRenderer shapeRenderer;
 	@Override
 	public void render(float delta)
@@ -72,7 +71,9 @@ public class PreLoaderState extends GameThread
 		if(currentThread instanceof RunningGame)
 		{
 			width = Gdx.graphics.getWidth();height = Gdx.graphics.getHeight();
-			font = new BitmapFont();
+			if(font == null)
+				font = new BitmapFont();
+			font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
 			shapeRenderer = new ShapeRenderer();
 			loadingThread = ((RunningGame)currentThread);
 			Thread d = new Thread(this);
