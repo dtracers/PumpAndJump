@@ -39,18 +39,12 @@ public class PlayerAnimationFSM extends FSM{
 	
 	public synchronized Animation startJump()
 	{
-		Animation jump= startSpecial( 'j' );
-		if(jump!=null)
-			jump.scaleTimes(1.0f);
-		return jump;
+		return startSpecial( 'j' );
 	}
 
 	public synchronized Animation startDuck()
 	{
-		Animation duck=startSpecial( 'd' );
-		if(duck!=null)
-			duck.scaleTimes(1.5f);
-		return duck;
+		return startSpecial( 'd' );
 	}
 	
 	ArrayList< String > removeJumpsAndDucks( ArrayList< String > stateChoices )
@@ -103,7 +97,7 @@ public class PlayerAnimationFSM extends FSM{
 		
 		if( ani == null )
 			return null;
-		
+
 		currentAni = AnimationToName.get( ani );
 		nextAni = AnimationToName.get( ani );
 		getAni();
