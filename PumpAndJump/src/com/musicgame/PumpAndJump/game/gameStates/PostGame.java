@@ -55,8 +55,8 @@ public class PostGame extends GameThread
 
 		table.setFillParent(true);
 
-		Image youwinImage = new Image(new TextureRegion(new Texture(Gdx.files.internal("music_note.png")),0,0,331,78 ) );
-	//	Image youwinImage = new Image(new TextureRegion(new Texture(Gdx.files.internal("youwin.png")),0,0,331,78 ) );
+	//	Image youwinImage = new Image(new TextureRegion(new Texture(Gdx.files.internal("music_note.png")),0,0,331,78 ) );
+		Image youwinImage = new Image(new TextureRegion(new Texture(Gdx.files.internal("youwin.png")),0,0,331,78 ) );
 		table.add().expand().fill();
 		table.add(youwinImage).expand().fill().colspan(3);
 		table.add().expand().fill();
