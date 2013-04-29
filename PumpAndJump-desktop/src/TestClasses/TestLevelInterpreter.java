@@ -6,11 +6,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.musicgame.PumpAndJump.DuckObstacle;
-import com.musicgame.PumpAndJump.GameObject;
-import com.musicgame.PumpAndJump.JumpObstacle;
-import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Util.LevelInterpreter;
+import com.musicgame.PumpAndJump.objects.DuckObstacle;
+import com.musicgame.PumpAndJump.objects.GameObject;
+import com.musicgame.PumpAndJump.objects.JumpObstacle;
+import com.musicgame.PumpAndJump.objects.Obstacle;
 
 import java.io.File;
 import java.io.FileWriter;

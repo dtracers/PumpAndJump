@@ -11,9 +11,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.musicgame.PumpAndJump.Beat;
 import com.musicgame.PumpAndJump.CameraHelp;
-import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Animation.Animation;
 import com.musicgame.PumpAndJump.Animation.AnimationQueue;
@@ -25,6 +23,8 @@ import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.sound.MusicHandler;
+import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class RunningGame extends GameThread
 {
@@ -86,7 +86,7 @@ public class RunningGame extends GameThread
 	public int loadingPercent = 0;
 	public int maxLoading = 11;
 
-	public int score = 0;
+	public static int score = 0;
 
 
 	/**
@@ -344,6 +344,8 @@ public class RunningGame extends GameThread
 	 */
 	public void quickReset()
 	{
+		score = 0;
+
 		loadingPercent = 0;
 		lastTimeReference = 0;
 		lastStartIndex = 0;
@@ -409,11 +411,11 @@ public class RunningGame extends GameThread
 
 		if(filename != null)
 		{
-			streamer.fileName=filename.getAbsolutePath();
+			MusicHandler.fileName = filename.getAbsolutePath();
 		}
 		if(!pick && test!=null)
 		{
-			streamer.fileName=test;
+			MusicHandler.fileName = test;
 		}
 
 		try {

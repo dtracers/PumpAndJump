@@ -9,9 +9,9 @@ import com.badlogic.gdx.audio.io.Decoder;
 import com.badlogic.gdx.audio.io.VorbisDecoder;
 import com.badlogic.gdx.audio.io.WavDecoder;
 import com.badlogic.gdx.files.FileHandle;
-import com.musicgame.PumpAndJump.Obstacle;
 import com.musicgame.PumpAndJump.Util.FileFormatException;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
+import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class MusicHandler extends Thread
 {

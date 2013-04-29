@@ -1,22 +1,18 @@
-package com.musicgame.PumpAndJump;
+package com.musicgame.PumpAndJump.objects;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.musicgame.PumpAndJump.Model;
 import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
-import com.musicgame.PumpAndJump.Util.IntersectionUtil;
 
 
 
 
 public class GameObject extends Model
 {
-	
+
 	public GameObject()
 	{
 		super( new Point( 0.0f, 0.0f, 0.0f ), new Point( 0.0f, 0.0f, 0.0f ), new Point( 1.0f, 1.0f, 1.0f ) );
@@ -50,7 +46,7 @@ public class GameObject extends Model
 	public void draw( SpriteBatch sb )
 	{
 		display( sb );
-	} 
+	}
 
 	public void draw( ShapeRenderer sr )
 	{

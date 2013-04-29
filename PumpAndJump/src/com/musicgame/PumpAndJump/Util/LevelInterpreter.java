@@ -11,11 +11,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.*;
-import com.musicgame.PumpAndJump.Beat;
-import com.musicgame.PumpAndJump.DuckObstacle;
-import com.musicgame.PumpAndJump.GameObject;
-import com.musicgame.PumpAndJump.JumpObstacle;
-import com.musicgame.PumpAndJump.Obstacle;
+import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.DuckObstacle;
+import com.musicgame.PumpAndJump.objects.GameObject;
+import com.musicgame.PumpAndJump.objects.JumpObstacle;
+import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class LevelInterpreter
 {

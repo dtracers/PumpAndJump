@@ -1,4 +1,4 @@
-package com.musicgame.PumpAndJump;
+package com.musicgame.PumpAndJump.objects;
 
 public class DuckObstacle extends Obstacle {
 

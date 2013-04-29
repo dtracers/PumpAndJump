@@ -1,10 +1,11 @@
-package com.musicgame.PumpAndJump;
+package com.musicgame.PumpAndJump.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix4;
+import com.musicgame.PumpAndJump.CameraHelp;
 
 public class Beat extends Obstacle{
 

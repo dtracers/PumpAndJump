@@ -1,6 +1,6 @@
 package com.musicgame.PumpAndJump.game.sound;
 
-import com.musicgame.PumpAndJump.Beat;
+import com.musicgame.PumpAndJump.objects.Beat;
 
 public class SignificantItem implements Comparable
 {

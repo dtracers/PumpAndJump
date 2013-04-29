@@ -1,4 +1,4 @@
-package com.musicgame.PumpAndJump;
+package com.musicgame.PumpAndJump.objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;

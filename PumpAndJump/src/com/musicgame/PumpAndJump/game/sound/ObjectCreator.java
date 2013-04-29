@@ -2,10 +2,10 @@ package com.musicgame.PumpAndJump.game.sound;
 
 import java.util.ArrayList;
 
-import com.musicgame.PumpAndJump.Beat;
-import com.musicgame.PumpAndJump.DuckObstacle;
-import com.musicgame.PumpAndJump.JumpObstacle;
-import com.musicgame.PumpAndJump.Obstacle;
+import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.DuckObstacle;
+import com.musicgame.PumpAndJump.objects.JumpObstacle;
+import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class ObjectCreator
 {
