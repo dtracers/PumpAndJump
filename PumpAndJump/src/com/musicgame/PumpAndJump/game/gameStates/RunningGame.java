@@ -86,6 +86,8 @@ public class RunningGame extends GameThread
 	public int loadingPercent = 0;
 	public int maxLoading = 11;
 
+	public int score = 0;
+
 
 	/**
 	 * Run method happens while the game is running
@@ -536,6 +538,18 @@ public class RunningGame extends GameThread
 	{
 		streamer.writeSound();
 		songFinished = streamer.songFinished;
+		if(songFinished)
+		{
+			Gdx.app.postRunnable(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					PumpAndJump.switchThread(ThreadName.PostGame, RunningGame.this);
+				}
+			});
+
+		}
 	}
 
 	@Override
