@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.musicgame.PumpAndJump.CameraHelp;
 import com.musicgame.PumpAndJump.Player;
 import com.musicgame.PumpAndJump.Animation.Animation;
@@ -29,6 +28,7 @@ import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.sound.MusicHandler;
 import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.ObjectHandler;
 import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class RunningGame extends GameThread
@@ -41,8 +41,9 @@ public class RunningGame extends GameThread
 	static String test=null;
 
 	//contains the list of all objects that are in the level
-	static ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
-	static int lastStartIndex = 0;
+	static ObjectHandler mainObjects;
+//	static ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
+//	static int lastStartIndex = 0;
 
 	//Player object
 	static Player player;
@@ -147,6 +148,8 @@ public class RunningGame extends GameThread
 
 
 				// move last index
+				mainObjects.updateIndex((float)timeReference);
+				/*
 				for(int k = lastStartIndex; k<actualObjects.size(); k++)
 				{
 					Obstacle currentObj = actualObjects.get(k);
@@ -160,7 +163,10 @@ public class RunningGame extends GameThread
 						lastStartIndex++;
 					}
 				}
+				*/
 
+				mainObjects.updateObstacles((float)timeReference, mv, delta, player, delta);
+				/*
 				// update the obstacles that are onscreen
 				for(int k = lastStartIndex;k<actualObjects.size();k++)
 				{
@@ -181,6 +187,7 @@ public class RunningGame extends GameThread
 						break;
 					}
 				}
+				*/
 
 				lastTimeReference += delta;
 				/*
@@ -234,6 +241,8 @@ public class RunningGame extends GameThread
 		batch.setTransformMatrix( mv );
 		//draw gameObjects
 
+		mainObjects.renderObstacles((float)timeReference, batch);
+		/*
 		for(int k = lastStartIndex;k<actualObjects.size();k++)
 		{
 			Obstacle currentObj = actualObjects.get(k);
@@ -246,6 +255,8 @@ public class RunningGame extends GameThread
 				break;
 			}
 		}
+
+		*/
 		rotateLasers(mv);
 
 		batch.setTransformMatrix( mv );
@@ -370,6 +381,9 @@ public class RunningGame extends GameThread
 		{
 			Gdx.input.setInputProcessor(stage);
 
+		     oldProjection = batch.getProjectionMatrix();
+		     batch.setProjectionMatrix( cam.combined );
+
 			streamer.start();
 
 			startThread();
@@ -387,7 +401,6 @@ public class RunningGame extends GameThread
 
 		loadingPercent = 0;
 		lastTimeReference = 0;
-		lastStartIndex = 0;
 
 		//creates a new stage
 		stage = new Stage();
@@ -444,7 +457,9 @@ public class RunningGame extends GameThread
 	{
 		//	actualObjects = LevelInterpreter.loadLevel();
 		Beat b = new Beat(0);
-		actualObjects = new ArrayList<Obstacle>();
+		mainObjects = new ObjectHandler();
+		ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
+		mainObjects.actualObjects = actualObjects;
 
 		if(pick)
 		{
@@ -492,8 +507,6 @@ public class RunningGame extends GameThread
 
         loadingPercent++;
 
-        oldProjection = batch.getProjectionMatrix();
-        batch.setProjectionMatrix( cam.combined );
 		// Create a table that fills the screen. Everything else will go inside this table.
 
         loadingPercent++;

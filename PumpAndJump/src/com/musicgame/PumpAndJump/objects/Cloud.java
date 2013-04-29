@@ -14,6 +14,7 @@ public class Cloud extends Obstacle
 	public void update( Matrix4 m, float delta )
 	{
 		super.update( m, delta);
+		//image.setColor(tint);
 	}
 
 }

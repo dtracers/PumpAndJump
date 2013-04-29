@@ -63,7 +63,7 @@ public class Beat extends Obstacle{
 	{
 		if( !triggered )
 		{
-			triggered = true;
+		//	triggered = true;
 			effect.reset();
 			effect.setPosition( CameraHelp.virtualWidth/2.0f, 0.0f );
 			this.tempo = tempo/60.0f/2.0f;

@@ -61,7 +61,15 @@ public class PreLoaderState extends GameThread
 	{
 		Animation.loadingAnimation = 0;
 		loadingThread.longReset();
-		PumpAndJump.removeThread(PreLoaderState.this.getThreadName(), PreLoaderState.this);
+		Gdx.app.postRunnable(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				PumpAndJump.removeThread(PreLoaderState.this.getThreadName(), PreLoaderState.this);
+			}
+		});
+
 	}
 
 	@Override
