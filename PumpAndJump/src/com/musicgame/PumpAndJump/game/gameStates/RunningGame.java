@@ -6,14 +6,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.musicgame.PumpAndJump.CameraHelp;
 import com.musicgame.PumpAndJump.Player;
@@ -72,13 +70,13 @@ public class RunningGame extends GameThread
 	public ChangeListener jumpListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
-			jump();
+			startJump();
 		}
 	};
 	public ChangeListener duckListener = new ChangeListener() {
 		public void changed(ChangeEvent event, Actor actor)
 		{
-			duck();
+			startDuck();
 		}
 	};
 	public ChangeListener pauseListener = new ChangeListener() {
@@ -248,7 +246,7 @@ public class RunningGame extends GameThread
 		//font.setScale(2.0f);
 
 		font.draw(batch,"Score: "+score,Gdx.graphics.getWidth()/2.0f,Gdx.graphics.getHeight()/2.0f);
-		
+
 		if(score>superSaiyanScore && !player.isSuperSaiyan)
 			player.goSuperSaiyan(true);
 		else if(score<superSaiyanScore && player.isSuperSaiyan)
@@ -585,20 +583,39 @@ public class RunningGame extends GameThread
 	/**
 	 * Called when the player presses the jump button
 	 */
-	public void jump()
+	public void startJump()
 	{
 		//System.out.println("Jumping");
-		player.jump();
+		player.startJump();
 	}
 
 	/**
 	 * Called when the player presses the duck button
 	 */
-	public void duck()
+	public void startDuck()
 	{
 		//System.out.println("Ducking");
-		player.duck();
+		player.startDuck();
 	}
+
+	/**
+	 * Called when the player presses the jump button
+	 */
+	public void endJump()
+	{
+		//System.out.println("Jumping");
+		player.endJump();
+	}
+
+	/**
+	 * Called when the player presses the duck button
+	 */
+	public void endDuck()
+	{
+		//System.out.println("Ducking");
+		player.endDuck();
+	}
+
 
 	/**
 	 * multiplies and sets the input matrix by the world pos, rotation, and scale
