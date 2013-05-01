@@ -278,7 +278,13 @@ public class MusicHandler extends Thread
 		stopRunning = true;
 		songFinished = true;
 		musicFile.clear();
-		device.dispose();
+		try
+		{
+			device.dispose();
+		}catch(Exception e)
+		{
+
+		}
 		fileName = "the_hand_that_feeds.wav";
 	}
 }
