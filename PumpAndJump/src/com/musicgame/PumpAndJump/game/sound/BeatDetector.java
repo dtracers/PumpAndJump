@@ -63,7 +63,7 @@ public class BeatDetector
 		obj.objects = createdObjects;
 	}
 
-	public void combineArray(ArrayList<short[]> timeData,int startIndex)
+	public void combineArray(ArrayList<short[]> timeData,int startIndex,double inputTimeReference)
 	{
 		for(int k = 0 ;k<4;k++)
 		{
@@ -74,10 +74,10 @@ public class BeatDetector
 				longArray[q+skipIndex] = tempArray[q];
 			}
 		}
-		calculateVE(longArray);
+		calculateVE(longArray,inputTimeReference);
 	}
 
-	public void calculateVE(short[] timeData)
+	public void calculateVE(short[] timeData,double inputTimeReference)
    	{
    		//the size of bits that the array is taken over
    		int averageSize = MusicHandler.LargeFrameSize;
@@ -114,12 +114,12 @@ public class BeatDetector
 		if(slowDown == 17)
 		{
 			slowDown = 0;
-			RunningGame.levelAni.addKeyFrame(new float[]{(float)value},MusicHandler.inputTimeReference);
+			RunningGame.levelAni.addKeyFrame(new float[]{(float)value},inputTimeReference);
 		}
 		slowDown++;
 
 		if(counterIndex>=shiftAvg)
-			beatDetectionAlgorithm();
+			beatDetectionAlgorithm(inputTimeReference);
 		//moves the index for the index in VEdata
 		counterIndex++;
 		currentIndex=counterIndex%LongHistoryLength;
@@ -131,7 +131,7 @@ public class BeatDetector
 	 * Goes through each point once and sees if it is large enough away from the average to be considered a beat
 	 * Need to make this static and go through all beats to determine Major beats
 	 */
-	public void beatDetectionAlgorithm()
+	public void beatDetectionAlgorithm(double inputTimeReference)
 	{
 		shiftIndex = (counterIndex-shiftAvg)%LongHistoryLength;
 		float instantEnergy = VEdata.get((currentIndex))[1];
@@ -142,7 +142,7 @@ public class BeatDetector
 			{
 				highestPoint = instantEnergy;
 				highestIndex = counterIndex;
-				timeIndex = MusicHandler.inputTimeReference;
+				timeIndex = inputTimeReference;
 				highestShiftIndex = shiftIndex;
 			}
 			aboveAverage = true;

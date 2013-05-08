@@ -26,6 +26,7 @@ import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
+import com.musicgame.PumpAndJump.game.sound.IOMusic;
 import com.musicgame.PumpAndJump.game.sound.MusicHandler;
 import com.musicgame.PumpAndJump.objects.Beat;
 import com.musicgame.PumpAndJump.objects.Cloud;
@@ -36,7 +37,7 @@ public class RunningGame extends GameThread
 {
 	BitmapFont font;
 	static Stage stage;
-	static MusicHandler streamer;
+	static IOMusic streamer;
 	static File filename=null;
 	static boolean pick=false;
 	static String test=null;
@@ -126,7 +127,7 @@ public class RunningGame extends GameThread
 			if(!toWait)
 			{
 				//where music output is
-				timeReference = MusicHandler.outputTimeReference;
+				timeReference = streamer.outputTimeReference;
 				delta = (float)(timeReference-lastTimeReference);
 				pos.x = (float)timeReference-( player.p.x/scale.x );
 
@@ -338,7 +339,7 @@ public class RunningGame extends GameThread
 		     oldProjection = batch.getProjectionMatrix();
 		     batch.setProjectionMatrix( cam.combined );
 
-			streamer.start();
+			streamer.startThreads();
 
 			startThread();
 		}
@@ -422,7 +423,7 @@ public class RunningGame extends GameThread
 		}
 		//System.out.println(filename);
 
-	    streamer = new MusicHandler(actualObjects);
+	    streamer = new IOMusic(actualObjects, this);
 
 		if(filename != null)
 		{
@@ -474,6 +475,7 @@ public class RunningGame extends GameThread
 	{
 		started = true;
 		Thread running = new Thread(this);
+		/*
 		Thread musicOutput = new Thread(new Runnable()
 		{
 
@@ -497,8 +499,10 @@ public class RunningGame extends GameThread
 			}
 
 		});
-		running.start();
 		musicOutput.start();
+		*/
+		running.start();
+
 	}
 
 	@Override
@@ -549,6 +553,7 @@ public class RunningGame extends GameThread
 		PumpAndJump.addThread(ThreadName.PauseGame, this);
 	}
 
+	/*
 	public void writeSound()
 	{
 		streamer.writeSound();
@@ -567,6 +572,7 @@ public class RunningGame extends GameThread
 
 		}
 	}
+	*/
 
 	@Override
 	public ThreadName getThreadName()

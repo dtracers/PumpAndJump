@@ -10,11 +10,13 @@ import com.badlogic.gdx.audio.io.WavDecoder;
 import com.badlogic.gdx.files.FileHandle;
 import com.musicgame.PumpAndJump.Util.FileFormatException;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
+import com.musicgame.PumpAndJump.game.ThreadName;
+import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class IOMusic extends io.MusicHandler
 {
-
+	RunningGame parentGame = null;
 	public static String fileName= "the_hand_that_feeds.wav";
 
 	BeatDetector detect;
@@ -80,16 +82,17 @@ public class IOMusic extends io.MusicHandler
 		this.loadOutput(new LibGDXOutputDevice(44100,true));
 	}
 
-	public IOMusic(ArrayList<Obstacle> actualObjects)
+	public IOMusic(ArrayList<Obstacle> actualObjects,RunningGame parent)
 	{
 		detect = new BeatDetector(actualObjects);
 		setUpOutputStream();
+		this.parentGame = parent;
 	}
 
 	@Override
 	public void postWriteMethod(short[] longerArray)
 	{
-		detect.calculateVE(longerArray);
+		detect.calculateVE(longerArray,inputTimeReference);
 	}
 
 	@Override
@@ -100,6 +103,31 @@ public class IOMusic extends io.MusicHandler
 	@Override
 	public void slowingDownInput()
 	{
+	}
+
+	@Override
+	public void dispose() {
+		musicFile.reset();
+		musicFile.empty();
+		fileName = "the_hand_that_feeds.wav";
+	}
+
+	@Override
+	protected void finishedSongOutput()
+	{
+		dispose();
+		Gdx.app.postRunnable(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				PumpAndJump.switchThread(ThreadName.PostGame,parentGame);
+			}
+		});
+	}
+
+	@Override
+	protected void finishedSongInput() {
 	}
 
 }

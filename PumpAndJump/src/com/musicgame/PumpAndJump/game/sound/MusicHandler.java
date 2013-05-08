@@ -163,7 +163,7 @@ public class MusicHandler extends Thread
 					inputTimeReference = (inputFrame*MusicHandler.frameSize)/((double)MusicHandler.sampleRate);
 				inputLocation = inputFrame%arraySampleLength;
 				if(inputFrame%4==0)
-					detect.combineArray(musicFile, inputFrame-4);
+					detect.combineArray(musicFile, inputFrame-4,inputTimeReference);
 				if(bufferDistance()>maxBufferDistance)
 				{
 			//		System.out.println("slow down doggy");
