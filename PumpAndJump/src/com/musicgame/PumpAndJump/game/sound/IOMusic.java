@@ -71,21 +71,25 @@ public class IOMusic extends io.MusicHandler
 		{
 			throw new FileFormatException("File format not supported "+extension);
 		}
+
+		this.loadInput(new LibGDXInputDevice(decoder));
 	}
 
 	public void setUpOutputStream()
 	{
-		device = Gdx.audio.newAudioDevice(44100, true);
+		this.loadOutput(new LibGDXOutputDevice(44100,true));
 	}
 
 	public IOMusic(ArrayList<Obstacle> actualObjects)
 	{
-
+		detect = new BeatDetector(actualObjects);
+		setUpOutputStream();
 	}
 
 	@Override
 	public void postWriteMethod(short[] longerArray)
 	{
+		detect.calculateVE(longerArray);
 	}
 
 	@Override
