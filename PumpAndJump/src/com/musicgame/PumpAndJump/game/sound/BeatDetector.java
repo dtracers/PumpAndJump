@@ -3,6 +3,8 @@ package com.musicgame.PumpAndJump.game.sound;
 
 import java.util.ArrayList;
 
+import math.StaticNumbers;
+
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 import com.musicgame.PumpAndJump.objects.Beat;
 import com.musicgame.PumpAndJump.objects.Obstacle;
@@ -43,7 +45,7 @@ public class BeatDetector
 	//the senstitivity of the beat detector:  smaller numbers remove more beats and is more strict
 	double senstitivity = 0.8;
 
-	short[] longArray = new short[MusicHandler.LargeFrameSize];
+	short[] longArray = new short[StaticNumbers.LargeFrameSize];
 
 	//location for VEdata
 	int counterIndex = 0;//this number always counts up
@@ -67,9 +69,9 @@ public class BeatDetector
 	{
 		for(int k = 0 ;k<4;k++)
 		{
-			short[] tempArray = timeData.get((k+startIndex)%MusicHandler.arraySampleLength);
-			int skipIndex = k*MusicHandler.frameSize;
-			for(int q = 0;q<MusicHandler.frameSize;q++)
+			short[] tempArray = timeData.get((k+startIndex)%StaticNumbers.arraySampleLength);
+			int skipIndex = k*StaticNumbers.frameSize;
+			for(int q = 0;q<StaticNumbers.frameSize;q++)
 			{
 				longArray[q+skipIndex] = tempArray[q];
 			}
@@ -80,7 +82,7 @@ public class BeatDetector
 	public void calculateVE(short[] timeData,double inputTimeReference)
    	{
    		//the size of bits that the array is taken over
-   		int averageSize = MusicHandler.LargeFrameSize;
+   		int averageSize = StaticNumbers.LargeFrameSize;
    		//number of values
 
    		float[] result = VEdata.get(currentIndex);

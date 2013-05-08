@@ -27,7 +27,6 @@ import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.sound.IOMusic;
-import com.musicgame.PumpAndJump.game.sound.MusicHandler;
 import com.musicgame.PumpAndJump.objects.Beat;
 import com.musicgame.PumpAndJump.objects.Cloud;
 import com.musicgame.PumpAndJump.objects.ObjectHandler;
@@ -427,11 +426,11 @@ public class RunningGame extends GameThread
 
 		if(filename != null)
 		{
-			MusicHandler.fileName = filename.getAbsolutePath();
+			streamer.fileName = filename.getAbsolutePath();
 		}
 		if(!pick && test!=null)
 		{
-			MusicHandler.fileName = test;
+			streamer.fileName = test;
 		}
 
 		try {

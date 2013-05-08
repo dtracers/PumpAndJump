@@ -2,6 +2,8 @@ package com.musicgame.PumpAndJump.game.sound;
 
 import java.util.ArrayList;
 
+import math.StaticNumbers;
+
 import ddf.minim.effects.BandPass;
 import ddf.minim.effects.IIRFilter;
 
@@ -24,7 +26,7 @@ public class FrequencyHandler
 		int bandSize;
 		for(int k =0;k<numFilters;k++)
 		{
-			filters.add(new BandPass(150.0f, 6.25f, MusicHandler.sampleRate));
+			filters.add(new BandPass(150.0f, 6.25f, StaticNumbers.sampleRate));
 		}
 	}
 }
