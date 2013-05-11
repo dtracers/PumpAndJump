@@ -7,6 +7,7 @@ import math.StaticNumbers;
 
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.MagicBeat;
 import com.musicgame.PumpAndJump.objects.ObjectHandler;
 import com.musicgame.PumpAndJump.objects.Obstacle;
 
@@ -159,6 +160,8 @@ public class BeatDetector
 			if(division<senstitivity)
 			{
 				Beat b = new Beat((float) timeIndex);
+				if(highestIndex%33==0)
+					b = new MagicBeat((float)timeIndex);
 				objectHolder.add(b);
 				importantItems.add(new SignificantItem(highestIndex,highestPoint,importantItems.size(),timeIndex,b));
 			//	obj.createObjects(createdObjects, timeIndex);

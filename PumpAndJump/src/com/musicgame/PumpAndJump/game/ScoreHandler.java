@@ -30,11 +30,11 @@ public class ScoreHandler
 	public void hitNegative(double ratio)
 	{
 		score--;
-		health--;
+		health-=.5;
 	}
 	public void hitPositive(double ratio)
 	{
-		health+=1*ratio;
+		health+=.5*ratio;
 		score+=1*ratio;
 		if(score>maxScore)
 			maxScore = score;
@@ -67,9 +67,15 @@ public class ScoreHandler
 		Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		shapeRenderer.begin(ShapeType.FilledRectangle);
-		shapeRenderer.filledRect(x, y-(float)maxHealth, 20f,(float)maxHealth , new Color(1f, 0f, 0f, 0.8f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.8f));
+		if(health>0)
+			shapeRenderer.filledRect(x, y-(float)maxHealth, 20f,(float)health , new Color(1f, 0f, 0f, 0.8f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.8f));
 		shapeRenderer.end();
 
 		Gdx.gl.glDisable(GL10.GL_BLEND);
+	}
+
+	public boolean isAlive()
+	{
+		return health>0;
 	}
 }
