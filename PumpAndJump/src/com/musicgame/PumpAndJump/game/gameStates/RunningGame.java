@@ -221,10 +221,7 @@ public class RunningGame extends GameThread
 
 		player.draw( batch );
 
-
-
 		batch.setTransformMatrix( before );
-
 
 		leftBar.draw( batch );
 		rightBar.draw( batch );
@@ -249,7 +246,6 @@ public class RunningGame extends GameThread
 			stage.act(Math.min(delta, 1 / 30f));
 			stage.draw();
 		}
-
 
 	//	Table.drawDebug(stage);
 	//	System.out.println(frame);
