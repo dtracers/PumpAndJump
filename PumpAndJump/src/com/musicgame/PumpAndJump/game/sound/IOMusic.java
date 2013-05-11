@@ -1,5 +1,7 @@
 package com.musicgame.PumpAndJump.game.sound;
 
+import io.MusicHandler;
+
 import java.io.FileNotFoundException;
 
 import com.badlogic.gdx.Gdx;
@@ -13,12 +15,17 @@ import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 import com.musicgame.PumpAndJump.objects.ObjectHandler;
 
-public class IOMusic extends io.MusicHandler
+public class IOMusic extends MusicHandler
 {
 	RunningGame parentGame = null;
 	public static String fileName= "the_hand_that_feeds.wav";
 
 	BeatDetector detect;
+
+	public IOMusic()
+	{
+		super();
+	}
 
 	public void loadSound() throws FileNotFoundException, FileFormatException
 	{

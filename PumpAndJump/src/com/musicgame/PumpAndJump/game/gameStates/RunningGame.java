@@ -239,7 +239,7 @@ public class RunningGame extends GameThread
 
 		batch.end();
 
-		mainObjects.getScoreKeeper().drawHealth(textPosition.x, textPosition.y);
+		mainObjects.getScoreKeeper().drawHealth(textPosition.x, textPosition.y-font.getCapHeight()*2.0f,batch.getProjectionMatrix(),batch.getTransformMatrix());
 
 		if(!toWait)
 		{
@@ -349,7 +349,6 @@ public class RunningGame extends GameThread
 	 */
 	public void quickReset()
 	{
-
 		loadingPercent = 0;
 		lastTimeReference = 0;
 
@@ -391,7 +390,7 @@ public class RunningGame extends GameThread
 
         loadingPercent++;
 
-        textPosition = new Point(CameraHelp.virtualWidth,Gdx.graphics.getHeight()/2.0f,0.0f);
+        textPosition = new Point(CameraHelp.virtualWidth,CameraHelp.virtualHeight/2.0f,0.0f);
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );

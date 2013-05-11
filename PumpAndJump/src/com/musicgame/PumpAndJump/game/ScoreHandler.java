@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Matrix4;
 import com.musicgame.PumpAndJump.objects.Beat;
 import com.musicgame.PumpAndJump.objects.DuckObstacle;
 import com.musicgame.PumpAndJump.objects.JumpObstacle;
@@ -58,13 +59,15 @@ public class ScoreHandler
 		if(currentObj instanceof JumpObstacle||currentObj instanceof DuckObstacle)
 			hitNegative(ratio);
 	}
-	public void drawHealth(float x,float y)
+	public void drawHealth(float x,float y, Matrix4 proj, Matrix4 trans)
 	{
+		shapeRenderer.setProjectionMatrix(proj);
+		shapeRenderer.setTransformMatrix(trans);
 		Gdx.gl.glEnable(GL10.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		shapeRenderer.begin(ShapeType.FilledRectangle);
-		shapeRenderer.filledRect(x, y, 20f,(float)health , new Color(1f, 0f, 0f, 0.8f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.8f));
+		shapeRenderer.filledRect(x, y-(float)maxHealth, 20f,(float)maxHealth , new Color(1f, 0f, 0f, 0.8f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.5f), new Color(1f, 0f, 0f, 0.8f));
 		shapeRenderer.end();
 
 		Gdx.gl.glDisable(GL10.GL_BLEND);
