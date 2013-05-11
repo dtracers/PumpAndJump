@@ -25,6 +25,7 @@ import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
+import com.musicgame.PumpAndJump.game.ScoreHandler;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.sound.IOMusic;
 import com.musicgame.PumpAndJump.objects.Beat;
@@ -108,8 +109,9 @@ public class RunningGame extends GameThread
 	public int maxLoading = 11;
 	private Point textPostion;
 
-	public static int score = 0;
-	public static int superSaiyanScore=0;
+	ScoreHandler scorekeeper;
+//	public static int score = 0;
+//	public static int superSaiyanScore=0;
 
 	/**
 	 * Run method happens while the game is running
@@ -233,11 +235,11 @@ public class RunningGame extends GameThread
 		//font.setScale(2.0f);
 
 		font.draw(batch,"Score:",textPostion.x,textPostion.y);
-		font.draw(batch,""+score,textPostion.x,textPostion.y-font.getCapHeight());
+		font.draw(batch,scorekeeper.getScore(),textPostion.x,textPostion.y-font.getCapHeight());
 
-		if(score > superSaiyanScore && !player.isSuperSaiyan)
+		if(scorekeeper.isSuperSaiyan() && !player.isSuperSaiyan)
 			player.goSuperSaiyan(true);
-		else if(score <= superSaiyanScore && player.isSuperSaiyan)
+		else if(!scorekeeper.isSuperSaiyan() && player.isSuperSaiyan)
 			player.goSuperSaiyan(false);
 
 		batch.end();
@@ -351,7 +353,7 @@ public class RunningGame extends GameThread
 	 */
 	public void quickReset()
 	{
-		score = 0;
+		scorekeeper = new ScoreHandler();
 
 		loadingPercent = 0;
 		lastTimeReference = 0;

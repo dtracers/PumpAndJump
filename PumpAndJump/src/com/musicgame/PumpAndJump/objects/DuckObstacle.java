@@ -1,6 +1,5 @@
 package com.musicgame.PumpAndJump.objects;
 
-import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class DuckObstacle extends Obstacle {
 
@@ -16,7 +15,7 @@ public class DuckObstacle extends Obstacle {
 		if( !triggered )
 		{
 		//	triggered = true;
-			RunningGame.score--;
+		//	RunningGame.score--;
 		}
 	}
 }

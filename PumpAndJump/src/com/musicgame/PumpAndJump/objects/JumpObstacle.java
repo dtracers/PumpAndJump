@@ -1,9 +1,5 @@
 package com.musicgame.PumpAndJump.objects;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.musicgame.PumpAndJump.CameraHelp;
-import com.musicgame.PumpAndJump.Util.TextureMapping;
-import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class JumpObstacle extends Obstacle
 {
@@ -18,7 +14,7 @@ public class JumpObstacle extends Obstacle
 		if( !triggered )
 		{
 		//	triggered = true;
-			RunningGame.score--;
+		//	RunningGame.score--;
 		}
 	}
 }

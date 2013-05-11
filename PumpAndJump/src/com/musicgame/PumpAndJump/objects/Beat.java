@@ -2,13 +2,10 @@ package com.musicgame.PumpAndJump.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix4;
 import com.musicgame.PumpAndJump.CameraHelp;
-import com.musicgame.PumpAndJump.Util.TextureMapping;
-import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 
 public class Beat extends Obstacle{
 
@@ -59,6 +56,7 @@ public class Beat extends Obstacle{
 			effect.update( delta*tempo );
 	}
 
+	@Override
 	public void Impacted( float tempo )
 	{
 		if( !triggered )
@@ -67,7 +65,7 @@ public class Beat extends Obstacle{
 			effect.reset();
 			effect.setPosition( CameraHelp.virtualWidth/2.0f, 0.0f );
 			this.tempo = tempo/60.0f/2.0f;
-			RunningGame.score++;
+		//	RunningGame.score++;
 		}
 		//effect.start();
 	}
