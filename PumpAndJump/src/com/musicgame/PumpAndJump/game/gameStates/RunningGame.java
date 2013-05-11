@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,11 +26,9 @@ import com.musicgame.PumpAndJump.Util.TextureMapping;
 import com.musicgame.PumpAndJump.game.GameControls;
 import com.musicgame.PumpAndJump.game.GameThread;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
-import com.musicgame.PumpAndJump.game.ScoreHandler;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.sound.IOMusic;
 import com.musicgame.PumpAndJump.objects.Beat;
-import com.musicgame.PumpAndJump.objects.Cloud;
 import com.musicgame.PumpAndJump.objects.ObjectHandler;
 import com.musicgame.PumpAndJump.objects.Obstacle;
 
@@ -41,6 +40,7 @@ public class RunningGame extends GameThread
 	static File filename=null;
 	static boolean pick=false;
 	static String test=null;
+	ShapeRenderer shapeRenderer;
 
 	//contains the list of all objects that are in the level
 	ObjectHandler mainObjects;
@@ -50,16 +50,16 @@ public class RunningGame extends GameThread
 	//the current frame that the sound player is at
 	long soundFrame = 0;
 	//the timeRefernce of each object
-	static double timeReference = 0;
-	static double lastTimeReference = 0;
+	double timeReference = 0;
+	double lastTimeReference = 0;
 
 	public static float tempo = 240.0f;
 	static Point pos;
 	static Point rotation;
 	static Point scale;
 	public static Animation levelAni;
-	static AnimationQueue levelAniQ = null;
-	static boolean toWait = false;
+	AnimationQueue levelAniQ = null;
+	boolean toWait = false;
 	private boolean started = false;
 	static Sprite background;
 	static Sprite leftBar;
@@ -107,7 +107,7 @@ public class RunningGame extends GameThread
 	};
 	public int loadingPercent = 0;
 	public int maxLoading = 11;
-	private Point textPostion;
+	private Point textPosition;
 //	public static int score = 0;
 //	public static int superSaiyanScore=0;
 
@@ -232,8 +232,8 @@ public class RunningGame extends GameThread
 		//font.setColor(Color.WHITE);
 		//font.setScale(2.0f);
 
-		font.draw(batch,"Score:",textPostion.x,textPostion.y);
-		font.draw(batch,mainObjects.getScoreKeeper().getScore(),textPostion.x,textPostion.y-font.getCapHeight());
+		font.draw(batch,"Score:",textPosition.x,textPosition.y);
+		font.draw(batch,mainObjects.getScoreKeeper().getScore(),textPosition.x,textPosition.y-font.getCapHeight());
 
 		if(mainObjects.getScoreKeeper().isSuperSaiyan() && !player.isSuperSaiyan)
 			player.goSuperSaiyan(true);
@@ -241,6 +241,8 @@ public class RunningGame extends GameThread
 			player.goSuperSaiyan(false);
 
 		batch.end();
+
+		mainObjects.getScoreKeeper().drawHealth(textPosition.x, textPosition.y);
 
 		if(!toWait)
 		{
@@ -357,6 +359,7 @@ public class RunningGame extends GameThread
 
 		//creates a new stage
 		stage = new Stage();
+		shapeRenderer = new ShapeRenderer();
 
 		loadingPercent++;
 
@@ -392,7 +395,7 @@ public class RunningGame extends GameThread
 
         loadingPercent++;
 
-        textPostion = new Point(CameraHelp.virtualWidth,Gdx.graphics.getHeight()/2.0f,0.0f);
+        textPosition = new Point(CameraHelp.virtualWidth,Gdx.graphics.getHeight()/2.0f,0.0f);
 
         pos = new Point( 0.0f, 0.0f, 0.0f );
         rotation = new Point( 0.0f, 0.0f, 0.0f );
@@ -413,6 +416,7 @@ public class RunningGame extends GameThread
 		//	actualObjects = LevelInterpreter.loadLevel();
 		Beat b = new Beat(0);
 		mainObjects = new ObjectHandler();
+		mainObjects.getScoreKeeper().shapeRenderer = shapeRenderer;
 		ArrayList<Obstacle> actualObjects = mainObjects.actualObjects;
 
 		if(pick)
