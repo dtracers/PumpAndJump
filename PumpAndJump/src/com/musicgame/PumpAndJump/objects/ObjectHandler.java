@@ -32,11 +32,8 @@ public class ObjectHandler
 			{
 				break;
 			}
-			else
-			{
-				currentObj.done();
-				lastStartIndex++;
-			}
+			currentObj.done();
+			lastStartIndex++;
 		}
 	}
 
@@ -51,7 +48,7 @@ public class ObjectHandler
 	 */
 	public void updateObstacles(float timeReference, Matrix4 mv,float delta, Player player,float tempo)
 	{
-		ratio = (double)numberOfNegatives/((double)numberOfPositives);
+		ratio = (double)numberOfNegatives/((double)numberOfPositives*.7);
 		// update the obstacles that are onscreen
 		for(int k = lastStartIndex;k<actualObjects.size();k++)
 		{

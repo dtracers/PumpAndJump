@@ -2,6 +2,7 @@ package com.musicgame.PumpAndJump.game.sound;
 
 import java.util.ArrayList;
 
+import com.musicgame.PumpAndJump.Util.AnimationUtil.Point;
 import com.musicgame.PumpAndJump.objects.Beat;
 import com.musicgame.PumpAndJump.objects.DuckObstacle;
 import com.musicgame.PumpAndJump.objects.JumpObstacle;
@@ -20,6 +21,7 @@ public class ObjectCreator
 
 
 	Beat start = null;
+	Beat end = null;
 	double startObjectTime = 0;
 	double endObjectTime = 0;
 	boolean readyForObjectCreation = false;
@@ -50,6 +52,8 @@ public class ObjectCreator
 			readyForObjectCreation = false;
 			endObjectTime = i.timeIndex;
 
+			end = i.associatedBeat;
+
 			if(endObjectTime -startObjectTime >= maxObjectLength)
 			{
 				endObjectTime = startObjectTime+maxObjectLength;
@@ -60,8 +64,9 @@ public class ObjectCreator
 			timeSinceLastObjectEnded = endObjectTime;
 
 			Obstacle create;
+			boolean jump = (i.soundIntensity)%10>5;
 			//we need to create an object!
-			if((i.soundIntensity)%10>5)
+			if(jump)
 			{
 //				System.out.println("I am a jump object");
 				create = new JumpObstacle((float)startObjectTime,(float)endObjectTime);
@@ -72,11 +77,14 @@ public class ObjectCreator
 				create = new DuckObstacle((float)startObjectTime,(float)endObjectTime);
 			}
 
-			int index = objects.actualObjects.indexOf(start);
+			int startIndex = objects.actualObjects.indexOf(start);
+			int endIndex = objects.actualObjects.indexOf(end);
+			adjustBeatHeight(startIndex,endIndex,jump);
+
 //			System.out.println("Ading at "+index);
-			if(index>0)
+			if(startIndex>0)
 			{
-				objects.add(index-1,create);
+				objects.add(startIndex-1,create);
 			}else
 			{
 				objects.add(0,create);
@@ -87,6 +95,16 @@ public class ObjectCreator
 		if(currentIndex>=endingIndex)
 		{
 			currentIndex = endingIndex;
+		}
+	}
+
+	private void adjustBeatHeight(int startIndex, int endIndex, boolean jump)
+	{
+		Point jumpPoint = new Point(0,20,0);
+		Point duckPoint= new Point(0,-20,0);
+		for(int k = startIndex;k<=endIndex;k++)
+		{
+			objects.actualObjects.get(k).translate(0,jump?30:-30,0);
 		}
 	}
 
