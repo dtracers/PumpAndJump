@@ -51,7 +51,7 @@ public class ObjectHandler
 	 */
 	public void updateObstacles(float timeReference, Matrix4 mv,float delta, Player player,float tempo)
 	{
-		ratio = (double)numberOfNegatives/((double)numberOfPositives*1.3);
+		ratio = (double)numberOfNegatives/((double)numberOfPositives);
 		// update the obstacles that are onscreen
 		for(int k = lastStartIndex;k<actualObjects.size();k++)
 		{
