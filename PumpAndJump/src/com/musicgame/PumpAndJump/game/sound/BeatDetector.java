@@ -7,6 +7,7 @@ import math.StaticNumbers;
 
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
 import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.ObjectHandler;
 import com.musicgame.PumpAndJump.objects.Obstacle;
 
 
@@ -27,7 +28,8 @@ public class BeatDetector
 
 
 	ArrayList<SignificantItem> importantItems = new ArrayList<SignificantItem>();
-	ArrayList<Obstacle> createdObjects;
+	//ArrayList<Obstacle> createdObjects;
+	ObjectHandler objectHolder;
 
 	double maxEnergy = 0;
 
@@ -53,16 +55,16 @@ public class BeatDetector
 	int shiftIndex = 0;//this number is (counterIndex-avgShift)%historyLength*2
 
 
-	public BeatDetector(ArrayList<Obstacle> actualObjects)
+	public BeatDetector(ObjectHandler actualObjects)
 	{
 		for(int k = 0;k<=LongHistoryLength;k++)
 		{
 			VEdata.add(new float[2]);
 		}
 		AveragedEnergydata = new double[LongHistoryLength];
-		createdObjects = actualObjects;
+		objectHolder = actualObjects;
 		obj.importantItems = importantItems;
-		obj.objects = createdObjects;
+		obj.objects = objectHolder;
 	}
 
 	public void combineArray(ArrayList<short[]> timeData,int startIndex,double inputTimeReference)
@@ -157,7 +159,7 @@ public class BeatDetector
 			if(division<senstitivity)
 			{
 				Beat b = new Beat((float) timeIndex);
-				createdObjects.add(b);
+				objectHolder.add(b);
 				importantItems.add(new SignificantItem(highestIndex,highestPoint,importantItems.size(),timeIndex,b));
 			//	obj.createObjects(createdObjects, timeIndex);
 				obj.createObjects();

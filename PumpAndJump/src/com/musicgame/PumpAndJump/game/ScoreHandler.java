@@ -1,5 +1,10 @@
 package com.musicgame.PumpAndJump.game;
 
+import com.musicgame.PumpAndJump.objects.Beat;
+import com.musicgame.PumpAndJump.objects.DuckObstacle;
+import com.musicgame.PumpAndJump.objects.JumpObstacle;
+import com.musicgame.PumpAndJump.objects.Obstacle;
+
 /**
  * Holds the score and computes the score (so we can change out scoring options easier)
  *
@@ -11,15 +16,17 @@ public class ScoreHandler
 	double score;
 	double health;
 	int objectRatio;
-	private double superSaiyanScore;
+	private double superSaiyanScore = 50.0;
 
-	public void hitNegative()
+	public void hitNegative(double ratio)
 	{
-
+		score--;
+		health--;
 	}
-	public void hitPositive()
+	public void hitPositive(double ratio)
 	{
-
+		health+=1*ratio;
+		score+=1*ratio;
 	}
 
 	public boolean isSuperSaiyan()
@@ -30,6 +37,13 @@ public class ScoreHandler
 			return false;
 	}
 	public String getScore() {
-		return null;
+		return ""+score;
+	}
+	public void Impacted(Obstacle currentObj, double ratio)
+	{
+		if(currentObj instanceof Beat)
+			hitPositive(ratio);
+		if(currentObj instanceof JumpObstacle||currentObj instanceof DuckObstacle)
+			hitNegative(ratio);
 	}
 }

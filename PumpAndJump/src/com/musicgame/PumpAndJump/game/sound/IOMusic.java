@@ -1,7 +1,6 @@
 package com.musicgame.PumpAndJump.game.sound;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.io.Decoder;
@@ -12,7 +11,7 @@ import com.musicgame.PumpAndJump.Util.FileFormatException;
 import com.musicgame.PumpAndJump.game.PumpAndJump;
 import com.musicgame.PumpAndJump.game.ThreadName;
 import com.musicgame.PumpAndJump.game.gameStates.RunningGame;
-import com.musicgame.PumpAndJump.objects.Obstacle;
+import com.musicgame.PumpAndJump.objects.ObjectHandler;
 
 public class IOMusic extends io.MusicHandler
 {
@@ -82,7 +81,7 @@ public class IOMusic extends io.MusicHandler
 		this.loadOutput(new LibGDXOutputDevice(44100,true));
 	}
 
-	public IOMusic(ArrayList<Obstacle> actualObjects,RunningGame parent)
+	public IOMusic(ObjectHandler actualObjects,RunningGame parent)
 	{
 		detect = new BeatDetector(actualObjects);
 		setUpOutputStream();

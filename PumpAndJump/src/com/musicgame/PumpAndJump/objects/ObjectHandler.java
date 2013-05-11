@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.musicgame.PumpAndJump.Player;
+import com.musicgame.PumpAndJump.game.ScoreHandler;
 
 public class ObjectHandler
 {
+	ScoreHandler score = new ScoreHandler();
 	public ArrayList<Obstacle> actualObjects = new ArrayList<Obstacle>();
 	public int lastStartIndex = 0;
+
+	double numberOfPositives;
+	double numberOfNegatives;
+
+	double ratio = 1;
 
 	/**
 	 * Updates the last index
@@ -44,6 +51,7 @@ public class ObjectHandler
 	 */
 	public void updateObstacles(float timeReference, Matrix4 mv,float delta, Player player,float tempo)
 	{
+		ratio = (double)numberOfNegatives/((double)numberOfPositives*1.3);
 		// update the obstacles that are onscreen
 		for(int k = lastStartIndex;k<actualObjects.size();k++)
 		{
@@ -56,6 +64,7 @@ public class ObjectHandler
 					if( player.intersects( currentObj.hull ) )
 					{
 						currentObj.Impacted( tempo );
+						score.Impacted(currentObj,ratio);
 					}
 				}
 			}
@@ -86,5 +95,29 @@ public class ObjectHandler
 				break;
 			}
 		}
+	}
+
+
+	public void add(Beat b)
+	{
+		actualObjects.add(b);
+		numberOfPositives++;
+	}
+	public void add(Obstacle create)
+	{
+		numberOfNegatives++;
+		actualObjects.add(create);
+	}
+
+
+	public void add(int i, Obstacle create)
+	{
+		numberOfNegatives++;
+		actualObjects.add(i,create);
+	}
+
+	public ScoreHandler getScoreKeeper()
+	{
+		return score;
 	}
 }

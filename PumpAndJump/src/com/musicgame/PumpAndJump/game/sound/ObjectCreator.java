@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import com.musicgame.PumpAndJump.objects.Beat;
 import com.musicgame.PumpAndJump.objects.DuckObstacle;
 import com.musicgame.PumpAndJump.objects.JumpObstacle;
+import com.musicgame.PumpAndJump.objects.ObjectHandler;
 import com.musicgame.PumpAndJump.objects.Obstacle;
 
 public class ObjectCreator
 {
 	ArrayList<SignificantItem> importantItems;
-	ArrayList<Obstacle> objects;
+	ObjectHandler objects;
 	double timeSinceLastObjectEnded = 0;
 	public static final double maxObjectLength = .6;//in seconds
 	public static final double minObjectLength = 0.2;//in seconds
@@ -71,7 +72,7 @@ public class ObjectCreator
 				create = new DuckObstacle((float)startObjectTime,(float)endObjectTime);
 			}
 
-			int index = objects.indexOf(start);
+			int index = objects.actualObjects.indexOf(start);
 //			System.out.println("Ading at "+index);
 			if(index>0)
 			{

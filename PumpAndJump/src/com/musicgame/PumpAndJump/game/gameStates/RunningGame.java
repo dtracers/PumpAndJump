@@ -43,7 +43,7 @@ public class RunningGame extends GameThread
 	static String test=null;
 
 	//contains the list of all objects that are in the level
-	static ObjectHandler mainObjects;
+	ObjectHandler mainObjects;
 
 	//Player object
 	static Player player;
@@ -108,8 +108,6 @@ public class RunningGame extends GameThread
 	public int loadingPercent = 0;
 	public int maxLoading = 11;
 	private Point textPostion;
-
-	ScoreHandler scorekeeper;
 //	public static int score = 0;
 //	public static int superSaiyanScore=0;
 
@@ -235,11 +233,11 @@ public class RunningGame extends GameThread
 		//font.setScale(2.0f);
 
 		font.draw(batch,"Score:",textPostion.x,textPostion.y);
-		font.draw(batch,scorekeeper.getScore(),textPostion.x,textPostion.y-font.getCapHeight());
+		font.draw(batch,mainObjects.getScoreKeeper().getScore(),textPostion.x,textPostion.y-font.getCapHeight());
 
-		if(scorekeeper.isSuperSaiyan() && !player.isSuperSaiyan)
+		if(mainObjects.getScoreKeeper().isSuperSaiyan() && !player.isSuperSaiyan)
 			player.goSuperSaiyan(true);
-		else if(!scorekeeper.isSuperSaiyan() && player.isSuperSaiyan)
+		else if(!mainObjects.getScoreKeeper().isSuperSaiyan() && player.isSuperSaiyan)
 			player.goSuperSaiyan(false);
 
 		batch.end();
@@ -353,7 +351,6 @@ public class RunningGame extends GameThread
 	 */
 	public void quickReset()
 	{
-		scorekeeper = new ScoreHandler();
 
 		loadingPercent = 0;
 		lastTimeReference = 0;
@@ -424,7 +421,7 @@ public class RunningGame extends GameThread
 		}
 		//System.out.println(filename);
 
-	    streamer = new IOMusic(actualObjects, this);
+	    streamer = new IOMusic(mainObjects, this);
 
 		if(filename != null)
 		{
