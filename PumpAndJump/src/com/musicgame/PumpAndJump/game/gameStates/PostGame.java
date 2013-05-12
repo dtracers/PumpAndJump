@@ -30,6 +30,11 @@ public class PostGame extends GameThread
 
 	int emitterIndex;
 	Array<ParticleEmitter> emitters;
+
+	String score;
+	boolean alive = true;
+	String healthMessage;
+	String scoreMessage;
 	public PostGame()
 	{
 		stage = new Stage();
@@ -60,24 +65,16 @@ public class PostGame extends GameThread
 		table.add().expand().fill();
 		table.add(youwinImage).expand().fill().colspan(3);
 		table.add().expand().fill();
-		table.row();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.row();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.row();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
-		table.add().expand().fill();
+		for(int k =0;k<3;k++)
+		{
+			table.row();
+			table.add().expand().fill();
+			table.add().expand().fill();
+			table.add().expand().fill();
+			table.add().expand().fill();
+			table.add().expand().fill();
+		}
+
 		table.row();
 		table.add().expand().fill();
 		table.add().expand().fill();
@@ -90,6 +87,17 @@ public class PostGame extends GameThread
 	public void switchFrom(GameThread currentThread)
 	{
 		Gdx.input.setInputProcessor(stage);
+		if(currentThread instanceof RunningGame)
+		{
+			double[] statistics = ((RunningGame)currentThread).getPostGameScore();
+			alive = ((RunningGame)currentThread).isAlive();
+			if(alive)
+				healthMessage = "You Survived with "+statistics[0]+" left ";
+			else
+				healthMessage = "You Died!";
+			scoreMessage = "Final Score: "+statistics[1]+" Max Score During Run: "+statistics[2];
+
+		}
 	}
 
 	@Override

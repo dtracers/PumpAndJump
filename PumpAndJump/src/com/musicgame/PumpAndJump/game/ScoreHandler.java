@@ -78,4 +78,16 @@ public class ScoreHandler
 	{
 		return health>0;
 	}
+	public double getCurrentHealth()
+	{
+		return health;
+	}
+	public double getCurrentScore()
+	{
+		return score;
+	}
+	public double getMaxScore()
+	{
+		return maxScore;
+	}
 }

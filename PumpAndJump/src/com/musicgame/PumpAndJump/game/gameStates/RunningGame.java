@@ -183,6 +183,7 @@ public class RunningGame extends GameThread
 	@Override
 	public void pause()
 	{
+		pausingButton();
 		toWait = true;
 	}
 
@@ -281,6 +282,7 @@ public class RunningGame extends GameThread
 			this.controls.loadPrefs();
 			this.controls.defineControlsTable();
 			System.out.println("unpause");
+			streamer.playOutput();
 		}else
 		if(currentThread instanceof BufferingState)
 		{
@@ -545,7 +547,7 @@ public class RunningGame extends GameThread
 	 */
 	public void pausingButton()
 	{
-		pause();
+		streamer.pauseOutput();
 		toWait = true;
 		PumpAndJump.addThread(ThreadName.PauseGame, this);
 	}
@@ -647,6 +649,25 @@ public class RunningGame extends GameThread
 	synchronized void setRotation( float[] f )
 	{
 		rotation.z = -f[ 0 ];
+	}
+
+	/**
+	 * Returns the score as 3 doubles
+	 * [0] = current health
+	 * [1] = current score
+	 * [2] = max score
+	 * @return
+	 */
+	public double[] getPostGameScore()
+	{
+		return new double[]{mainObjects.getScoreKeeper().getCurrentHealth(),
+				mainObjects.getScoreKeeper().getCurrentScore(),
+				mainObjects.getScoreKeeper().getMaxScore()};
+	}
+
+	public boolean isAlive()
+	{
+		return mainObjects.getScoreKeeper().isAlive();
 	}
 
 }
