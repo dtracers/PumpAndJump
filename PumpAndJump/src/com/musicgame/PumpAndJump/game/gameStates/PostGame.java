@@ -24,7 +24,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 
 public class PostGame extends GameThread
 {
-	static Stage stage;
+	Stage stage;
 	ParticleEffect effect;
 	static TextureAtlas particle = new TextureAtlas( Gdx.files.internal( "square.txt") );
 
