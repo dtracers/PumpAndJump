@@ -7,6 +7,5 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/PumpAndJump/libs/gdx.jar" sourcepath="/PumpAndJump/libs/gdx-sources.jar"/>
-	<classpathentry kind="lib" path="/PumpAndJump/libs/SnailWhale/SnailWhale-v.000.003.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
