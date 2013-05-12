@@ -123,6 +123,11 @@ public class RunningGame extends GameThread
 		lastTimeReference = 0;
 		while(!stopRunning)
 		{
+			if(!mainObjects.getScoreKeeper().isAlive())
+			{
+				stopRunning = false;
+				switchToPostGame(this);
+			}
 			if(!toWait)
 			{
 				//where music output is
@@ -145,8 +150,6 @@ public class RunningGame extends GameThread
 				//update based on object's modelview
 				Matrix4 mv = new Matrix4();
 				makeWorldView( mv );
-
-
 
 				// move last index
 				mainObjects.updateIndex((float)timeReference);
@@ -474,34 +477,7 @@ public class RunningGame extends GameThread
 	{
 		started = true;
 		Thread running = new Thread(this);
-		/*
-		Thread musicOutput = new Thread(new Runnable()
-		{
-
-			@Override
-			public void run()
-			{
-				while(!stopRunning)
-				{
-					if(streamer.bufferingNeeded())
-					{
-						goBuffer();
-					}else
-					{
-						writeSound();
-					}
-					if(toWait)
-					{
-						myWait();
-					}
-				}
-			}
-
-		});
-		musicOutput.start();
-		*/
 		running.start();
-
 	}
 
 	@Override
@@ -551,27 +527,6 @@ public class RunningGame extends GameThread
 		toWait = true;
 		PumpAndJump.addThread(ThreadName.PauseGame, this);
 	}
-
-	/*
-	public void writeSound()
-	{
-		streamer.writeSound();
-		songFinished = streamer.songFinished;
-		if(songFinished)
-		{
-			streamer.dispose();
-			Gdx.app.postRunnable(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					PumpAndJump.switchThread(ThreadName.PostGame, RunningGame.this);
-				}
-			});
-
-		}
-	}
-	*/
 
 	@Override
 	public ThreadName getThreadName()
@@ -668,6 +623,18 @@ public class RunningGame extends GameThread
 	public boolean isAlive()
 	{
 		return mainObjects.getScoreKeeper().isAlive();
+	}
+
+	public static void switchToPostGame(final RunningGame parentGame)
+	{
+		Gdx.app.postRunnable(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				PumpAndJump.switchThread(ThreadName.PostGame,parentGame);
+			}
+		});
 	}
 
 }

@@ -113,6 +113,7 @@ public class IOMusic extends MusicHandler
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		musicFile.reset();
 		musicFile.empty();
 		fileName = "the_hand_that_feeds.wav";
@@ -122,14 +123,7 @@ public class IOMusic extends MusicHandler
 	protected void finishedSongOutput()
 	{
 		dispose();
-		Gdx.app.postRunnable(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				PumpAndJump.switchThread(ThreadName.PostGame,parentGame);
-			}
-		});
+		RunningGame.switchToPostGame(parentGame);
 	}
 
 	@Override
